@@ -7,6 +7,7 @@
 //
 
 #import "NumberLabel.h"
+#import "Strings.h"
 
 @implementation NumberLabel
 
@@ -53,6 +54,11 @@
 
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
+    if ([self.text isEqualToString:[Strings pendingString]])
+    {
+        return NO;
+    }
+
     if (action == @selector(copy:))
     {
         return ([self.text length] > 0);

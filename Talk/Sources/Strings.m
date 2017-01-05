@@ -647,4 +647,10 @@
     return NSLocalizedString(@"Pending", @"Indicate that something is waiting to happen.");
 }
 
+
++ (NSString*)addressVerificationPhraseString
+{
+    return NSLocalizedString(@"Verification may take a few days.", @"States how long it may to check something.");
+}
+
 @end

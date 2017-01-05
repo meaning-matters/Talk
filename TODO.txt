@@ -252,3 +252,5 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 
 * Perhaps use PhoneNumber isPossible instead of isValid. Especially imporant when adding Phone, don't want to block people based on state of LibPhoneNumber.
 
+* Check why Common addCountryImageToCell is only needed/used for NumberAreaVC.
+

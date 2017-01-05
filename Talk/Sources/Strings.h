@@ -155,4 +155,6 @@
 
 + (NSString*)pendingString;
 
++ (NSString*)addressVerificationPhraseString;
+
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "AddressStatus.h"
+#import "Strings.h"
 
 @implementation AddressStatus
 
@@ -250,13 +251,57 @@
 {
     switch (mask)
     {
-        case AddressStatusUnknown:                   return NSLocalizedString(@"Unknown",               @"");
+        case AddressStatusUnknown:                   return NSLocalizedString(@"Unknown",                  @"");
+        case AddressStatusStagedMask:                return NSLocalizedString(@"Awaiting Verification",    @"");
+        case AddressStatusVerificationRequestedMask: return NSLocalizedString(@"Verification In Progress", @"");
+        case AddressStatusNotVerifiedMask:
+        case AddressStatusVerifiedMask:              return NSLocalizedString(@"Verified",                 @"");
+        case AddressStatusRejectedMask:              return NSLocalizedString(@"Rejected",                 @"");
+        case AddressStatusDisabledMask:              return NSLocalizedString(@"Disabled",                 @"");
+    }
+}
+
+
++ (NSString*)localizedMessageForAddressStatusMask:(AddressStatusMask)mask
+{
+    switch (mask)
+    {
+        case AddressStatusUnknown:
+        {
+            return NSLocalizedString(@"The verification status of this Address is unknown\n\nPlease check again later.",
+                                     @"");
+        }
         case AddressStatusStagedMask:
-        case AddressStatusVerificationRequestedMask: return NSLocalizedString(@"Awaiting Verification", @"");
-        case AddressStatusNotVerifiedMask:;
-        case AddressStatusVerifiedMask:              return NSLocalizedString(@"Verified",              @"");
-        case AddressStatusRejectedMask:              return NSLocalizedString(@"Rejected",              @"");
-        case AddressStatusDisabledMask:              return NSLocalizedString(@"Disabled",              @"");
+        {
+            NSString* message;
+            message = NSLocalizedString(@"We will soon start verifying your Address. You can still make changes.\n\n%@",
+                                        @"");
+            return [NSString stringWithFormat:message, [Strings addressVerificationPhraseString]];
+        }
+        case AddressStatusVerificationRequestedMask:
+        {
+            NSString* message;
+            message = NSLocalizedString(@"Your Address is in the process of being verified. You can no longer make "
+                                        @"changes.\n\n%@", @"");
+            return [NSString stringWithFormat:message, [Strings addressVerificationPhraseString]];
+        }
+        case AddressStatusNotVerifiedMask:
+        case AddressStatusVerifiedMask:
+        {
+            return NSLocalizedString(@"Your Address has been successfully verified. Numbers that are purchased using "
+                                     @"this Address will be immediately activated.", @"");
+        }
+        case AddressStatusRejectedMask:
+        {
+            return NSLocalizedString(@"Verification of your Address was not successful.", @"");
+        }
+        case AddressStatusDisabledMask:
+        {
+            return NSLocalizedString(@"This Address has been disabled. Your Numbers that were using this Address have "
+                                     @"probably been disconnected.\n\nIf we have not contacted you, please get in touch "
+                                     @"via Help > Contact Us so we can resolve this issue as soon as possible.",
+                                     @"");
+        }
     }
 }
 

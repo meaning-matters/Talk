@@ -259,6 +259,25 @@ typedef enum
 
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
+        case TableSectionInfo:
+        {
+            NSString* title   = NSLocalizedString(@"Pending Activation", @"");
+            NSString* message = NSLocalizedString(@"The Address you created or selected, needs to be verified. %@\n\n"
+                                                  @"When verification is successful, your Number will be activated "
+                                                  @"automatically. You will then see your new telephone number.",
+                                                  @"");
+            message = [NSString stringWithFormat:message, [Strings addressVerificationPhraseString]];
+
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+            {
+                [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            }
+                                 cancelButtonTitle:[Strings closeString]
+                                 otherButtonTitles:nil];
+            break;
+        }
         case TableSectionDestination:
         {
             destinationsViewController = [[NumberDestinationsViewController alloc] initWithNumber:number];
@@ -519,15 +538,16 @@ typedef enum
 
 - (void)updateInfoE164Cell:(UITableViewCell*)cell
 {
-    NumberLabel*   numberLabel    = [Common addNumberLabelToCell:cell];
-    NumberTypeMask numberTypeMask = [NumberType numberTypeMaskForString:number.numberType];
-
     if ([number isPending])
     {
-        numberLabel.text = [Strings pendingString];
+        cell.detailTextLabel.text      = [Strings pendingString];
+        cell.detailTextLabel.textColor = [Skinning tintColor];
+
+        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     }
     else
     {
+        NumberLabel*               numberLabel      = [Common addNumberLabelToCell:cell];
         PhoneNumber*               phoneNumber      = [[PhoneNumber alloc] initWithNumber:number.e164];
         NSString*                  string           = phoneNumber.internationalFormat;
         NSMutableAttributedString* attributedString = [[NSMutableAttributedString alloc] initWithString:string];
@@ -549,10 +569,13 @@ typedef enum
         [attributedString addAttribute:NSFontAttributeName value:boldFont range:range];
         
         numberLabel.attributedText = attributedString;
+
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
 
+    NumberTypeMask numberTypeMask = [NumberType numberTypeMaskForString:number.numberType];
+
     cell.textLabel.text = [NumberType localizedStringForNumberTypeMask:numberTypeMask];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
 

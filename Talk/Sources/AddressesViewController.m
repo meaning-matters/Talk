@@ -472,6 +472,8 @@
             NSString* title;
             NSString* message;
 
+            NSLog(@"############################################################################# Do we still need this, or when will it occur actually? The message is wrong because STAGED addresses (included in isAvailableAddressStatusMask (see above)) are also not verified yet.");
+
             title   = NSLocalizedStringWithDefaultValue(@"...", nil,
                                                         [NSBundle mainBundle], @"Address Not Verified",
                                                         @"....\n"
@@ -479,10 +481,10 @@
             message = NSLocalizedStringWithDefaultValue(@"...", nil,
                                                         [NSBundle mainBundle],
                                                         @"This Address is being verified by us. Once verified, "
-                                                        @"you can use it for this Number.\n\nVerification may take "
-                                                        @"a few days.",
+                                                        @"you can use it for this Number.\n\n%@",
                                                         @"....\n"
                                                         @"[iOS alert message size]");
+            message = [NSString stringWithFormat:message, [Strings addressVerificationPhraseString]];
             [BlockAlertView showAlertViewWithTitle:title
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)

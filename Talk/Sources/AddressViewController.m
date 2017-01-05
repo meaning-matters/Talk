@@ -1045,11 +1045,11 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
     // Mandatory sections.
     self.sections |= TableSectionName;
-    self.sections |= TableSectionStatus;
     self.sections |= TableSectionDetails;
     self.sections |= TableSectionAddress;
 
     // Optional sections.
+    self.sections |= self.isNew ? 0 : TableSectionStatus;
     self.sections |= ((self.proofType != nil) || self.address.hasProof) ? TableSectionProof : 0;
 
     // We need to determine the existence of the ExtraFields section dynamically, based on
@@ -1284,6 +1284,21 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     {
         switch ([Common nthBitSet:indexPath.section inValue:self.sections])
         {
+            case TableSectionStatus:
+            {
+                NSString* title   = [AddressStatus localizedStringForAddressStatusMask:self.address.addressStatus];
+                NSString* message = [AddressStatus localizedMessageForAddressStatusMask:self.address.addressStatus];
+
+                [BlockAlertView showAlertViewWithTitle:title
+                                               message:message
+                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
+                 {
+                     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+                 }
+                                     cancelButtonTitle:[Strings closeString]
+                                     otherButtonTitles:nil];
+                break;
+            }
             case TableSectionProof:
             {
                 if ((self.isNew || self.isUpdatable) && self.address.hasProof == NO)
@@ -1493,10 +1508,11 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
         cell.accessoryType  = UITableViewCellAccessoryNone;
         cell.textLabel.text = NSLocalizedString(@"Status", @"");
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     }
 
-    cell.detailTextLabel.text = [AddressStatus localizedStringForAddressStatusMask:self.address.addressStatus];
+    cell.detailTextLabel.text      = [AddressStatus localizedStringForAddressStatusMask:self.address.addressStatus];
+    cell.detailTextLabel.textColor = [Skinning tintColor];
 
     return cell;
 }

@@ -52,6 +52,8 @@ typedef NS_ENUM(NSUInteger, RejectionReasonMask)
 
 + (NSString*)localizedStringForAddressStatusMask:(AddressStatusMask)mask;
 
++ (NSString*)localizedMessageForAddressStatusMask:(AddressStatusMask)mask;
+
 /**
  *  Checks if the address mask indicates available for use; i.e., it is AddressStatusStagedMask,
  *  AddressStatusNotVerifiedMask or AddressStatusVerifiedMask.

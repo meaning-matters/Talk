@@ -1206,13 +1206,14 @@ static Common* sharedCommon;
 
 + (void)addCountryImageToCell:(UITableViewCell*)cell isoCountryCode:(NSString*)isoCountryCode
 {
-    static const int CountryCellTag = 4321;
+    static const int CountryCellTag = 84239; // Some random value.
 
     UIImage*     image     = [UIImage imageNamed:isoCountryCode];
     UIImageView* imageView = (UIImageView*)[cell viewWithTag:CountryCellTag];
     CGRect       frame     = CGRectMake(15, 4, image.size.width, image.size.height);
 
-    imageView       = (imageView == nil) ? [[UIImageView alloc] initWithFrame:frame] : imageView;
+    imageView = (imageView == nil) ? [[UIImageView alloc] initWithFrame:frame] : imageView;
+
     imageView.tag   = CountryCellTag;
     imageView.image = image;
 
@@ -1222,11 +1223,14 @@ static Common* sharedCommon;
 
 + (NumberLabel*)addNumberLabelToCell:(UITableViewCell*)cell
 {
-    NumberLabel* label;
+    static const int NumberLabelCellTag = 39562; // Some random value.
+
+    NumberLabel* label = (NumberLabel*)[cell viewWithTag:NumberLabelCellTag];
     CGRect       frame = CGRectMake(80, 7, 225, 30);
 
-    label = [[NumberLabel alloc] initWithFrame:frame];
+    label = (label == nil) ? [[NumberLabel alloc] initWithFrame:frame] : label;
 
+    label.tag                    = NumberLabelCellTag;
     label.backgroundColor        = [UIColor clearColor];
     label.userInteractionEnabled = YES;
     label.textAlignment          = NSTextAlignmentRight;
