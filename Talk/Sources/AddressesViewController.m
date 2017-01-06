@@ -35,6 +35,7 @@
 @property (nonatomic, copy) void (^completion)(AddressData* selectedAddress);
 
 @property (nonatomic, strong) NSPredicate*                predicate;
+@property (nonatomic, assign) BOOL                        isVerified;
 
 @property (nonatomic, weak) id<NSObject>                  observer;
 
@@ -53,6 +54,7 @@
                                   addressType:0
                                    proofTypes:nil
                                     predicate:nil
+                                   isVerified:NO
                                    completion:nil];
 }
 
@@ -65,6 +67,7 @@
                                  addressType:(AddressTypeMask)addressTypeMask
                                   proofTypes:(NSDictionary*)proofTypes
                                    predicate:(NSPredicate*)predicate
+                                  isVerified:(BOOL)isVerified
                                   completion:(void (^)(AddressData* selectedAddress))completion
 {
     if (self = [super init])
@@ -81,6 +84,7 @@
         self.addressTypeMask      = addressTypeMask;
         self.proofTypes           = proofTypes;
         self.predicate            = predicate;
+        self.isVerified           = isVerified;
         self.completion           = completion;
 
         __weak typeof(self) weakSelf = self;
@@ -182,7 +186,6 @@
                                      areaCode:(NSString*)areaCode
                                    numberType:(NumberTypeMask)numberTypeMask
                                  areAvailable:(BOOL)areAvailable
-                                  areVerified:(BOOL)areVerified  // Addition to areAvailable, only
                                    completion:(void (^)(NSPredicate* predicate, NSError* error))completion
 {
     switch (addressTypeMask)
@@ -199,23 +202,7 @@
                                                  isExtranational:(addressTypeMask == AddressTypeExtranational)
                                                            reply:^(NSError *error, NSArray *addressIds)
     {
-        if (areVerified)
-        {
-            NSMutableArray* verifiedAddressIds = [NSMutableArray array];
-
-            for (NSString* addressId in addressIds)
-            {
-                AddressData* address = [[DataManager sharedManager] lookupAddressWithId:addressId];
-
-                if ([AddressStatus isVerifiedAddressStatusMask:address.addressStatus])
-                {
-                    [verifiedAddressIds addObject:addressId];
-                }
-            }
-
-            addressIds = verifiedAddressIds;
-        }
-        else if (areAvailable)
+        if (areAvailable)
         {
             NSMutableArray* availableAddressIds = [NSMutableArray array];
 
@@ -476,7 +463,8 @@
     }
     else
     {
-        if ([AddressStatus isAvailableAddressStatusMask:address.addressStatus])
+        if ((self.isVerified == NO  && [AddressStatus isAvailableAddressStatusMask:address.addressStatus]) ||
+            (self.isVerified == YES && [AddressStatus isVerifiedAddressStatusMask:address.addressStatus]))
         {
             if (address != self.selectedAddress)
             {
@@ -489,8 +477,6 @@
         {
             NSString* title;
             NSString* message;
-
-            NSLog(@"############################################################################# Do we still need this, or when will it occur actually? The message is wrong because STAGED addresses (included in isAvailableAddressStatusMask (see above)) are also not verified yet.");
 
             title   = NSLocalizedStringWithDefaultValue(@"...", nil,
                                                         [NSBundle mainBundle], @"Address Not Verified",
@@ -583,7 +569,6 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
                                                                       areaCode:self.areaCode
                                                                     numberType:self.numberTypeMask
                                                                   areAvailable:NO
-                                                                   areVerified:NO
                                                                     completion:^(NSPredicate *predicate, NSError *error)
                 {
                     self.isLoading = NO;

@@ -336,6 +336,7 @@ typedef enum
                                                                                addressType:addressTypeMask
                                                                                 proofTypes:number.proofTypes
                                                                                  predicate:self.addressesPredicate
+                                                                                isVerified:[number isPending] ? NO : YES
                                                                                 completion:^(AddressData *selectedAddress)
             {
                 if (selectedAddress != number.address)
@@ -730,7 +731,6 @@ typedef enum
                                                           areaCode:number.areaCode
                                                         numberType:numberTypeMask
                                                       areAvailable:YES
-                                                       areVerified:[number isPending] ? NO : YES
                                                         completion:^(NSPredicate *predicate, NSError *error)
     {
         isLoadingAddress = NO;

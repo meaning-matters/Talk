@@ -26,6 +26,7 @@
                                  addressType:(AddressTypeMask)addressTypeMask
                                   proofTypes:(NSDictionary*)proofTypes
                                    predicate:(NSPredicate*)predicate    // Used to select between modes.
+                                  isVerified:(BOOL)isVerified           // Only allow selection of verified Address.
                                   completion:(void (^)(AddressData* selectedAddress))completion;
 
 + (void)loadAddressesPredicateWithAddressType:(AddressTypeMask)addressTypeMask
@@ -33,7 +34,6 @@
                                      areaCode:(NSString*)areaCode
                                    numberType:(NumberTypeMask)numberTypeMask
                                  areAvailable:(BOOL)areAvailable // Only addresses that are ready to be used.
-                                  areVerified:(BOOL)areVerified  // Only verified Addresses. Addition to areAvailable.
                                    completion:(void (^)(NSPredicate* predicate, NSError* error))completion;
 
 + (void)cancelLoadingAddressPredicate;

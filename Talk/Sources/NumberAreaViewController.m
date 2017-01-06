@@ -235,7 +235,6 @@ typedef enum
                                                           areaCode:areaCode
                                                         numberType:numberTypeMask
                                                       areAvailable:NO
-                                                       areVerified:NO
                                                         completion:^(NSPredicate *predicate, NSError *error)
     {
         self.isLoadingAddress = NO;
@@ -561,6 +560,7 @@ typedef enum
                                                                                addressType:addressTypeMask
                                                                                 proofTypes:area[@"proofTypes"]
                                                                                  predicate:self.addressesPredicate
+                                                                                isVerified:NO
                                                                                 completion:^(AddressData *selectedAddress)
             {
                 self.address = selectedAddress;
