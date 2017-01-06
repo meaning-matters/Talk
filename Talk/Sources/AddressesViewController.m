@@ -6,6 +6,7 @@
 //  Copyright © 2015 NumberBay Ltd. All rights reserved.
 //
 
+#import <objc/runtime.h>
 #import "AddressesViewController.h"
 #import "AddressViewController.h"
 #import "DataManager.h"
@@ -634,8 +635,60 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
 
+    if (self.completion != nil && address.addressStatus == AddressStatusStagedMask)
+    {
+        UIButton* button = [self addEditButtonWToCell:cell];
+        objc_setAssociatedObject(button, @"AddressKey", address, OBJC_ASSOCIATION_RETAIN);
+        [button addTarget:self action:@selector(showAddress:) forControlEvents:UIControlEventTouchUpInside];
+    }
+
     CellDotView* dotView = [CellDotView getFromCell:cell];
     dotView.hidden = ([[AddressUpdatesHandler sharedHandler] addressUpdateWithId:address.addressId] == nil);
+}
+
+
+- (void)showAddress:(UIButton*)button
+{
+    AddressData* address = objc_getAssociatedObject(button, @"AddressKey");
+
+    UIViewController* viewController = [[AddressViewController alloc] initWithAddress:address
+                                                                 managedObjectContext:self.managedObjectContext
+                                                                          addressType:self.addressTypeMask
+                                                                       isoCountryCode:self.isoCountryCode
+                                                                             areaCode:self.areaCode
+                                                                           numberType:self.numberTypeMask
+                                                                           proofTypes:self.proofTypes
+                                                                           completion:nil];
+
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+
+- (UIButton*)addEditButtonWToCell:(UITableViewCell*)cell
+{
+    static const int ButtonCellTag = 341152; // Some random value.
+
+    CGFloat width    = 34.0f;
+    CGFloat height   = 17.0f;
+    CGFloat trailing = 38.0f;   // Space between right most button and right side of cell.
+    CGFloat x;
+    CGFloat y        = 13.0f;
+    CGFloat fontSize = cell.detailTextLabel.font.pointSize;
+
+    x = cell.frame.size.width - trailing - width;
+
+    UIButton* button = [cell viewWithTag:ButtonCellTag];
+    button = (button == nil) ? [UIButton buttonWithType:UIButtonTypeCustom] : button;
+
+    button.frame           = CGRectMake(x, y, width, height);
+    button.tag             = ButtonCellTag;
+    button.titleLabel.font = [UIFont systemFontOfSize:fontSize];
+    [button setTitle:NSLocalizedString(@"Edit", @"Edit button title.") forState:UIControlStateNormal];
+    [Common styleButton:button];
+
+    [cell addSubview:button];
+
+    return button;
 }
 
 

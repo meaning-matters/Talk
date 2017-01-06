@@ -51,6 +51,11 @@
 
 - (int16_t)expiryDays
 {
+    if ([self isPending])
+    {
+        return INT16_MAX;   // No expiryDate known yet.
+    }
+
     NSCalendar*       calendar   = [NSCalendar currentCalendar];
     NSDateComponents* components = [NSDateComponents new];  // Below adding to `day` also works around New Year.
     NSDate*           daysDate;
@@ -83,7 +88,7 @@
         return 7;
     }
 
-    return INT16_MAX;    // Not expired soon.
+    return INT16_MAX;   // Not expired soon.
 }
 
 

@@ -1209,7 +1209,7 @@ static Common* sharedCommon;
     static const int CountryCellTag = 84239; // Some random value.
 
     UIImage*     image     = [UIImage imageNamed:isoCountryCode];
-    UIImageView* imageView = (UIImageView*)[cell viewWithTag:CountryCellTag];
+    UIImageView* imageView = (UIImageView*)[cell.contentView viewWithTag:CountryCellTag];
     CGRect       frame     = CGRectMake(15, 4, image.size.width, image.size.height);
 
     imageView = (imageView == nil) ? [[UIImageView alloc] initWithFrame:frame] : imageView;
@@ -1225,7 +1225,7 @@ static Common* sharedCommon;
 {
     static const int NumberLabelCellTag = 39562; // Some random value.
 
-    NumberLabel* label = (NumberLabel*)[cell viewWithTag:NumberLabelCellTag];
+    NumberLabel* label = (NumberLabel*)[cell.contentView viewWithTag:NumberLabelCellTag];
     CGRect       frame = CGRectMake(80, 7, 225, 30);
 
     label = (label == nil) ? [[NumberLabel alloc] initWithFrame:frame] : label;
@@ -1510,6 +1510,9 @@ static Common* sharedCommon;
                            toCell:(UITableViewCell*)cell
                        atPosition:(int)position
 {
+    static const int Use0CellTag = 59262; // Some random value.
+    static const int Use1CellTag = 68204; // Some random value.
+
     CGFloat width    = 27.0f;
     CGFloat height   = 17.0f;
     CGFloat gap      =  6.0f;   // Horizontal gap between buttons.
@@ -1528,10 +1531,12 @@ static Common* sharedCommon;
         x = cell.frame.size.width - trailing - width - gap - width;
     }
 
-    UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton* button = [cell viewWithTag:(position == 0) ? CommonUseButton0Tag : CommonUseButton1Tag];
+
+    button = (button == nil) ? [UIButton buttonWithType:UIButtonTypeCustom] : button;
 
     button.frame           = CGRectMake(x, y, width, height);
-    button.tag             = CommonUseButtonTag;
+    button.tag             = (position == 0) ? CommonUseButton0Tag : CommonUseButton1Tag;
     button.titleLabel.font = [UIFont systemFontOfSize:fontSize];
     [button setTitle:text forState:UIControlStateNormal];
     [Common styleButton:button];

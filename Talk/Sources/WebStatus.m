@@ -36,6 +36,7 @@
                      @"FAIL_E164_IDENTITY_UNKNOWN"   : @(WebStatusFailE164IndentityUnknown),
                      @"FAIL_E164_CALLBACK_UNKNOWN"   : @(WebStatusFailE164CallbackUnknown),
                      @"FAIL_E164_BOTH_UNKNOWN"       : @(WebStatusFailE164BothUnknown),
+                     @"FAIL_NUMBER_UNKNOWN"          : @(WebStatusFailNumberUnknown),
                      @"FAIL_ADDRESS_IN_USE"          : @(WebStatusFailAddressInUse),
                      @"FAIL_ADDRESS_UNKNOWN"         : @(WebStatusFailAddressUnknown),
                      @"FAIL_STOCK_EXHAUSTED"         : @(WebStatusFailStockExhausted),
@@ -179,6 +180,14 @@
         {
             string = NSLocalizedStringWithDefaultValue(@"WebClient FailE164BothUnknown", nil, [NSBundle mainBundle],
                                                        @"The selected Phone and Caller ID are unknown.",// Shown on call screen
+                                                       @"Status text.\n"
+                                                       @"[].");
+            break;
+        }
+        case WebStatusFailNumberUnknown:
+        {
+            string = NSLocalizedStringWithDefaultValue(@"WebClient FailNumberUnknown", nil, [NSBundle mainBundle],
+                                                       @"This Number is unknown.",
                                                        @"Status text.\n"
                                                        @"[].");
             break;

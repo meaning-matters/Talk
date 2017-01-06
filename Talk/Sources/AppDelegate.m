@@ -196,6 +196,12 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     NSArray* numbers = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"];
     for (NumberData* number in numbers)
     {
+        // Skip pending Numbers.
+        if ([number isPending])
+        {
+            continue;
+        }
+
         if (number.notifiedExpiryDays > [number expiryDays])
         {
             number.notifiedExpiryDays = [number expiryDays];

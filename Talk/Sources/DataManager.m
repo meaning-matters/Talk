@@ -454,7 +454,7 @@
             {
                 if (error == nil)
                 {
-                    [self synchronizeNumbers:^(NSError* error)
+                    [self synchronizeNumbers:^(NSError* error, NSArray* expiredNumbers)
                     {
                         if (error == nil)
                         {
@@ -466,7 +466,7 @@
                                     {
                                         if (error == nil)
                                         {
-                                            [self synchronizeNumberDestinations:^(NSError* error)
+                                            [self synchronizeNumberDestinations:expiredNumbers completion:^(NSError* error)
                                             {
                                                 if (error == nil)
                                                 {
@@ -474,6 +474,8 @@
                                                     if (error == nil)
                                                     {
                                                         [self updateDefaultDestinations];
+
+                                                        [self saveManagedObjectContext:nil];
 
                                                         completion ? completion(nil) : 0;
                                                     }
@@ -662,8 +664,10 @@
 }
 
 
-- (void)synchronizeNumbers:(void (^)(NSError* error))completion
+- (void)synchronizeNumbers:(void (^)(NSError* error, NSArray* expiredNumbers))completion
 {
+    NSMutableArray* expiredNumbers = [NSMutableArray array];
+
     [[WebClient sharedClient] retrieveNumbersList:^(NSError* error, NSArray* uuids)
     {
         if (error == nil)
@@ -677,9 +681,13 @@
             {
                 for (NumberData* number in deleteArray)
                 {
-                    if (![number hasExpired])
+                    if (![number hasExpired] || [number isPending])
                     {
                         [self.managedObjectContext deleteObject:number];
+                    }
+                    else
+                    {
+                        [expiredNumbers addObject:number];
                     }
                 }
             }
@@ -693,7 +701,7 @@
             __block NSUInteger count = uuids.count;
             if (count == 0)
             {
-                completion ? completion(nil) : 0;
+                completion ? completion(nil, expiredNumbers) : 0;
 
                 return;
             }
@@ -782,21 +790,21 @@
                     }
                     else
                     {
-                        completion ? completion(error) : 0;
+                        completion ? completion(error, nil) : 0;
 
                         return;
                     }
 
                     if (--count == 0)
                     {
-                        completion ? completion(nil) : 0;
+                        completion ? completion(nil, expiredNumbers) : 0;
                     }
                 }];
             }
         }
         else
         {
-            completion ? completion(error) : 0;
+            completion ? completion(error, nil) : 0;
         }
     }];
 }
@@ -804,13 +812,13 @@
 
 - (void)synchronizeDestinations:(void (^)(NSError* error))completion
 {
-    [[WebClient sharedClient] retrieveDestinationsList:^(NSError* error, NSArray* list)
+    [[WebClient sharedClient] retrieveDestinationsList:^(NSError* error, NSArray* uuids)
     {
         if (error == nil)
         {
             // Delete Destinations that are no longer on the server.
             NSFetchRequest* request     = [NSFetchRequest fetchRequestWithEntityName:@"Destination"];
-            [request setPredicate:[NSPredicate predicateWithFormat:@"(NOT (uuid IN %@)) OR (uuid == nil)", list]];
+            [request setPredicate:[NSPredicate predicateWithFormat:@"(NOT (uuid IN %@)) OR (uuid == nil)", uuids]];
             NSArray*        deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
             if (error == nil)
             {
@@ -826,7 +834,7 @@
                 return;
             }
 
-            __block NSUInteger count = list.count;
+            __block NSUInteger count = uuids.count;
             if (count == 0)
             {
                 completion ? completion(nil) : 0;
@@ -834,7 +842,7 @@
                 return;
             }
 
-            for (NSString* uuid in list)
+            for (NSString* uuid in uuids)
             {
                 [[WebClient sharedClient] retrieveDestinationForUuid:uuid
                                                                reply:^(NSError* error, NSString* name, NSDictionary* action)
@@ -976,7 +984,7 @@
 }
 
 
-- (void)synchronizeNumberDestinations:(void (^)(NSError* error))completion
+- (void)synchronizeNumberDestinations:(NSArray*)expiredNumbers completion:(void (^)(NSError* error))completion
 {
     NSError*        error   = nil;
     NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
@@ -999,6 +1007,13 @@
 
     for (NumberData* number in array)
     {
+        // Skip expired Numbers, because they are no longer on the server. We're keeping them until
+        // the user has seen an alert that they were actually expired.
+        if ([expiredNumbers indexOfObject:number] != NSNotFound)
+        {
+            continue;
+        }
+
         [[WebClient sharedClient] retrieveDestinationOfNumberWithUuid:number.uuid
                                                                 reply:^(NSError* error, NSString* destinationUuid)
         {

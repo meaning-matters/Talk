@@ -26,10 +26,11 @@ typedef enum
     WebStatusFailE164IndentityUnknown  = 911013,  // Callback: When caller ID is unknown on server.
     WebStatusFailE164CallbackUnknown   = 911014,  // Callback: When called back number is unknown.
     WebStatusFailE164BothUnknown       = 911015,  // Callback: When both called ID and called back number unknown.
-    WebStatusFailAddressInUse          = 911016,
-    WebStatusFailAddressUnknown        = 911017,
-    WebStatusFailStockExhausted        = 911018,
-    WebStatusFailAudioInUse            = 911019,
+    WebStatusFailNumberUnknown         = 911016,
+    WebStatusFailAddressInUse          = 911017,
+    WebStatusFailAddressUnknown        = 911018,
+    WebStatusFailStockExhausted        = 911019,
+    WebStatusFailAudioInUse            = 911020,
     WebStatusFailNoInternet            = 911051,  // Indirect: not sent by server, from NSURLErrorNotConnectedToInternet.
     WebStatusFailSecureInternet        = 911052,  // Indirect: not sent by server, from other NSURLError... SSL related.
     WebStatusFailProblemInternet       = 911053,  // Indirect: not sent by server, from NSURLErrorCannotFindHost.

@@ -362,7 +362,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 
     for (UIView* subview in cell.subviews)
     {
-        if (subview.tag == CommonUseButtonTag)
+        if (subview.tag == CommonUseButton0Tag || subview.tag == CommonUseButton1Tag)
         {
             [subview removeFromSuperview];
         }

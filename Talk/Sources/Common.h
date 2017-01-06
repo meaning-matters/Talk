@@ -18,8 +18,9 @@
 
 #define RADIANS(degrees)                                (((degrees) * M_PI) / 180.0)
 
-static const NSInteger CommonTextFieldCellTag = 1111;
-static const NSInteger CommonUseButtonTag     =  123;
+static const NSInteger CommonTextFieldCellTag = 54032;
+static const NSInteger CommonUseButton0Tag    = 97545;
+static const NSInteger CommonUseButton1Tag    = 30469;
 
 
 @interface Common : NSObject <MFMailComposeViewControllerDelegate>

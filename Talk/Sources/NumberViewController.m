@@ -240,7 +240,7 @@ typedef enum
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    if ([number hasExpired])
+    if (![number isPending] && [number hasExpired])
     {
         [self.navigationController popViewControllerAnimated:YES];
 
@@ -351,6 +351,7 @@ typedef enum
                         if (error == nil)
                         {
                             number.address = selectedAddress;
+                            [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
                             [self reloadAddressCell];
                         }
                         else

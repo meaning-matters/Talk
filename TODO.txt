@@ -254,3 +254,6 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 
 * Check why Common addCountryImageToCell is only needed/used for NumberAreaVC.
 
+* Check DB saves: synchronizeAll now saves the parent context, this is fine for new objects (like Phones) because they are created on a child context, but existing objects are changed on the parent context so a background syncAll may interfere. Perhaps it would be good to always create a child context when drilling down to object detail screens.
+
+* Test Number expiration logic: A popup must be shown and everything related to the Number must be cleared away: E.g. default Caller ID must be reset, ...

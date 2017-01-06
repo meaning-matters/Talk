@@ -788,18 +788,16 @@ static void processDnsReply(DNSServiceRef       sdRef,
       parameters:(NSDictionary*)parameters
            reply:(void (^)(NSError* error, id content))reply
 {
-    NBLog(@"POST %@ : %@", path, parameters ? parameters : @"");
-    
     [self postPath:path
         parameters:parameters
            success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
-        NBLog(@"POST response: %@", responseObject);
+        NBLog(@"POST %@ : %@\n==> %@", path, parameters ? parameters : @"", responseObject);
         [self handleSuccess:responseObject reply:reply];
     }
            failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
-        NBLog(@"POST failure: %@", error);
+        NBLog(@"POST %@ failure: %@", path, error);
         [self handleFailure:error reply:reply];
     }];
 }
@@ -809,18 +807,16 @@ static void processDnsReply(DNSServiceRef       sdRef,
      parameters:(NSDictionary*)parameters
           reply:(void (^)(NSError* error, id content))reply
 {
-    NBLog(@" PUT %@ : %@", path, parameters ? parameters : @"");
-    
     [self putPath:path
        parameters:parameters
           success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
-        NBLog(@"PUT response: %@", responseObject);
+        NBLog(@"PUT %@ : %@\n==> %@", path, parameters ? parameters : @"", responseObject);
         [self handleSuccess:responseObject reply:reply];
     }
           failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
-        NBLog(@"PUT failure: %@", error);
+        NBLog(@"PUT %@ failure: %@", path, error);
         [self handleFailure:error reply:reply];
     }];
 }
@@ -830,18 +826,16 @@ static void processDnsReply(DNSServiceRef       sdRef,
      parameters:(NSDictionary*)parameters
           reply:(void (^)(NSError* error, id content))reply
 {
-    NBLog(@" GET %@ : %@", path, parameters ? parameters : @"");
-    
     [self getPath:path
        parameters:parameters
           success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
-        NBLog(@"GET response: %@", responseObject);
+        NBLog(@"GET %@ : %@\n==> %@", path, parameters ? parameters : @"", responseObject);
         [self handleSuccess:responseObject reply:reply];
     }
           failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
-        NBLog(@"GET failure: %@", error);
+        NBLog(@"GET %@ failure: %@", path, error);
         [self handleFailure:error reply:reply];
     }];
 }
@@ -851,18 +845,16 @@ static void processDnsReply(DNSServiceRef       sdRef,
         parameters:(NSDictionary*)parameters
              reply:(void (^)(NSError* error, id content))reply
 {
-    NBLog(@" DELETE %@ : %@", path, parameters ? parameters : @"");
-    
     [self deletePath:path
           parameters:parameters
              success:^(AFHTTPRequestOperation* operation, id responseObject)
     {
-        NBLog(@"DELETE response: %@", responseObject);
+        NBLog(@"DELETE %@ : %@\n==> %@", path, parameters ? parameters : @"", responseObject);
         [self handleSuccess:responseObject reply:reply];
     }
              failure:^(AFHTTPRequestOperation* operation, NSError* error)
     {
-        NBLog(@"DELETE failure: %@", error);
+        NBLog(@"DELETE %@ failure: %@", path, error);
         [self handleFailure:error reply:reply];
     }];
 }
