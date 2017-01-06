@@ -1318,7 +1318,7 @@
     (data        != nil) ? parameters[@"data"]     = [Base64 encode:data] : 0;
     (name.length  > 0)   ? parameters[@"name"]     = name                 : 0;
 
-    [self putPath:[NSString stringWithFormat:@"/users/%@/audio/%@", username, uuid]
+    [self putPath:[NSString stringWithFormat:@"/users/%@/audios/%@", username, uuid]
        parameters:parameters
             reply:^(NSError* error, id content)
     {
@@ -1334,7 +1334,7 @@
 
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self getPath:[NSString stringWithFormat:@"/users/%@/audio/%@", username, uuid]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/audios/%@", username, uuid]
        parameters:nil
             reply:^(NSError* error, id content)
     {
@@ -1359,7 +1359,7 @@
 
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self deletePath:[NSString stringWithFormat:@"/users/%@/audio/%@", username, uuid]
+    [self deletePath:[NSString stringWithFormat:@"/users/%@/audios/%@", username, uuid]
           parameters:nil
                reply:^(NSError *error, id content)
     {
@@ -1375,7 +1375,7 @@
 
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self getPath:[NSString stringWithFormat:@"/users/%@/audio", username]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/audios", username]
        parameters:nil
             reply:reply];
 }
@@ -1390,7 +1390,7 @@
     NSDictionary* parameters = @{@"data"     : [Base64 encode:data],
                                  @"name"     : name};
 
-    [self postPath:[NSString stringWithFormat:@"/users/%@/audio", username]
+    [self postPath:[NSString stringWithFormat:@"/users/%@/audios", username]
         parameters:parameters
              reply:^(NSError* error, id content)
     {
@@ -1928,7 +1928,7 @@
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self.webInterface cancelAllHttpOperationsWithMethod:@"PUT"
-                                                    path:[NSString stringWithFormat:@"/users/%@/audio/%@",
+                                                    path:[NSString stringWithFormat:@"/users/%@/audios/%@",
                                                           username, uuid]];
 }
 
@@ -1939,7 +1939,7 @@
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
-                                                    path:[NSString stringWithFormat:@"/users/%@/audio/%@",
+                                                    path:[NSString stringWithFormat:@"/users/%@/audios/%@",
                                                           username, uuid]];
 }
 
@@ -1950,7 +1950,7 @@
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self.webInterface cancelAllHttpOperationsWithMethod:@"DELETE"
-                                                    path:[NSString stringWithFormat:@"/users/%@/audio/%@",
+                                                    path:[NSString stringWithFormat:@"/users/%@/audios/%@",
                                                           username, uuid]];}
 
 
@@ -1960,7 +1960,7 @@
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
-                                                    path:[NSString stringWithFormat:@"/users/%@/audio",
+                                                    path:[NSString stringWithFormat:@"/users/%@/audios",
                                                           username]];
 }
 
@@ -1971,7 +1971,7 @@
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self.webInterface cancelAllHttpOperationsWithMethod:@"POST"
-                                                    path:[NSString stringWithFormat:@"/users/%@/audio",
+                                                    path:[NSString stringWithFormat:@"/users/%@/audios",
                                                           username]];
 }
 
