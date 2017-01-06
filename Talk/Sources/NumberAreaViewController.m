@@ -235,6 +235,7 @@ typedef enum
                                                           areaCode:areaCode
                                                         numberType:numberTypeMask
                                                       areAvailable:NO
+                                                       areVerified:NO
                                                         completion:^(NSPredicate *predicate, NSError *error)
     {
         self.isLoadingAddress = NO;

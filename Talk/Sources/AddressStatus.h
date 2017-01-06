@@ -60,4 +60,10 @@ typedef NS_ENUM(NSUInteger, RejectionReasonMask)
  */
 + (BOOL)isAvailableAddressStatusMask:(AddressStatusMask)mask;
 
+/**
+ *  Checks is the address mask indicates verified; i.e., it is AddressStatusNotVerifiedMask or 
+ *  AddressStatusVerifiedMask
+ */
++ (BOOL)isVerifiedAddressStatusMask:(AddressStatusMask)mask;
+
 @end

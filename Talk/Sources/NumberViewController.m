@@ -730,6 +730,7 @@ typedef enum
                                                           areaCode:number.areaCode
                                                         numberType:numberTypeMask
                                                       areAvailable:YES
+                                                       areVerified:[number isPending] ? NO : YES
                                                         completion:^(NSPredicate *predicate, NSError *error)
     {
         isLoadingAddress = NO;

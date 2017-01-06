@@ -33,6 +33,7 @@
                                      areaCode:(NSString*)areaCode
                                    numberType:(NumberTypeMask)numberTypeMask
                                  areAvailable:(BOOL)areAvailable // Only addresses that are ready to be used.
+                                  areVerified:(BOOL)areVerified  // Only verified Addresses. Addition to areAvailable.
                                    completion:(void (^)(NSPredicate* predicate, NSError* error))completion;
 
 + (void)cancelLoadingAddressPredicate;

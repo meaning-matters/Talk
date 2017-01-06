@@ -314,4 +314,11 @@
            ((mask & AddressStatusVerifiedMask)    > 0);     // Verified by both NumberBay and Voxbone.
 }
 
+
++ (BOOL)isVerifiedAddressStatusMask:(AddressStatusMask)mask
+{
+    return ((mask & AddressStatusNotVerifiedMask) > 0) ||   // Verified by NumberBay and not needing Voxbone check.
+           ((mask & AddressStatusVerifiedMask)    > 0);     // Verified by both NumberBay and Voxbone.
+}
+
 @end

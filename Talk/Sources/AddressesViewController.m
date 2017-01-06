@@ -182,6 +182,7 @@
                                      areaCode:(NSString*)areaCode
                                    numberType:(NumberTypeMask)numberTypeMask
                                  areAvailable:(BOOL)areAvailable
+                                  areVerified:(BOOL)areVerified  // Addition to areAvailable, only
                                    completion:(void (^)(NSPredicate* predicate, NSError* error))completion
 {
     switch (addressTypeMask)
@@ -198,7 +199,23 @@
                                                  isExtranational:(addressTypeMask == AddressTypeExtranational)
                                                            reply:^(NSError *error, NSArray *addressIds)
     {
-        if (areAvailable)
+        if (areVerified)
+        {
+            NSMutableArray* verifiedAddressIds = [NSMutableArray array];
+
+            for (NSString* addressId in addressIds)
+            {
+                AddressData* address = [[DataManager sharedManager] lookupAddressWithId:addressId];
+
+                if ([AddressStatus isVerifiedAddressStatusMask:address.addressStatus])
+                {
+                    [verifiedAddressIds addObject:addressId];
+                }
+            }
+
+            addressIds = verifiedAddressIds;
+        }
+        else if (areAvailable)
         {
             NSMutableArray* availableAddressIds = [NSMutableArray array];
 
@@ -566,6 +583,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
                                                                       areaCode:self.areaCode
                                                                     numberType:self.numberTypeMask
                                                                   areAvailable:NO
+                                                                   areVerified:NO
                                                                     completion:^(NSPredicate *predicate, NSError *error)
                 {
                     self.isLoading = NO;
