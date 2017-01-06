@@ -377,7 +377,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                                                    action:@selector(cancelAction)];
         self.navigationItem.rightBarButtonItem = buttonItem;
     }
-    else
+    else if (self.isUpdatable == NO)
     {
         buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
                                                                    target:self
@@ -387,7 +387,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     
     [self updateSaveBarButtonItem];
     
-    if (self.isNew /*### || self.isUpdatable*/) //### Loading requires number information. Results in nulls in URL if isUpdatable.
+    if (self.isNew || self.isUpdatable)
     {
         [self loadData];
     }
@@ -2145,7 +2145,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
 - (BOOL)textFieldShouldReturn:(UITextField*)textField
 {
-    if (self.isNew == NO || self.isUpdatable == YES)
+    if (self.isUpdatable == YES && [self isAddressComplete] == YES)
     {
         return [super textFieldShouldReturn:textField];
     }
@@ -2298,11 +2298,6 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
 - (void)saveAction
 {
-    if (self.isUpdatable == YES)
-    {
-        self.navigationItem.rightBarButtonItem.enabled = NO;
-    }
-
     self.isLoading = YES;
     [[WebClient sharedClient] updateAddressWithId:self.address.addressId
                                              name:self.address.name

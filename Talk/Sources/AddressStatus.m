@@ -274,15 +274,16 @@
         case AddressStatusStagedMask:
         {
             NSString* message;
-            message = NSLocalizedString(@"We will soon start verifying your Address. You can still make changes.\n\n%@",
+            message = NSLocalizedString(@"We will soon start verifying your Address. %@\n\nYou can still make changes, "
+                                        @"but only via Numbers > [Number] > Address > Edit.",
                                         @"");
             return [NSString stringWithFormat:message, [Strings addressVerificationPhraseString]];
         }
         case AddressStatusVerificationRequestedMask:
         {
             NSString* message;
-            message = NSLocalizedString(@"Your Address is in the process of being verified. You can no longer make "
-                                        @"changes.\n\n%@", @"");
+            message = NSLocalizedString(@"Your Address is in the process of being verified. %@\n\nYou can no longer make "
+                                        @"changes.", @"");
             return [NSString stringWithFormat:message, [Strings addressVerificationPhraseString]];
         }
         case AddressStatusNotVerifiedMask:

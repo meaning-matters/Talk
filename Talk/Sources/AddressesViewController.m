@@ -658,7 +658,10 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
                                                                              areaCode:self.areaCode
                                                                            numberType:self.numberTypeMask
                                                                            proofTypes:self.proofTypes
-                                                                           completion:nil];
+                                                                           completion:^(AddressData *address)
+    {
+
+    }];
 
     [self.navigationController pushViewController:viewController animated:YES];
 }
