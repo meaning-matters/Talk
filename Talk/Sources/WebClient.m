@@ -957,9 +957,9 @@
 
 
 // 12. GET LIST OF NUMBERS
-- (void)retrieveNumbersList:(void (^)(NSError* error, NSArray* uuids))reply
+- (void)retrieveNumbersList:(void (^)(NSError* error, NSArray* numberDictionaries))reply
 {
-    [self getPath:[NSString stringWithFormat:@"/users/%@/numbers", [Settings sharedSettings].webUsername]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/numbers/*", [Settings sharedSettings].webUsername]
        parameters:nil
             reply:^(NSError* error, id content)
     {
@@ -1822,7 +1822,7 @@
 - (void)cancelAllRetrieveNumbersList
 {
     [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
-                                                    path:[NSString stringWithFormat:@"/users/%@/numbers",
+                                                    path:[NSString stringWithFormat:@"/users/%@/numbers/*",
                                                           [Settings sharedSettings].webUsername]];
 }
 

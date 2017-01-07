@@ -668,8 +668,9 @@
 {
     NSMutableArray* expiredNumbers = [NSMutableArray array];
 
-    [[WebClient sharedClient] retrieveNumbersList:^(NSError* error, NSArray* uuids)
+    [[WebClient sharedClient] retrieveNumbersList:^(NSError* error, NSArray* numberDictionaries)
     {
+        NSArray* uuids = [numberDictionaries valueForKey:@"uuid"];
         if (error == nil)
         {
             // Delete Numbers that are no longer on the server, except expired Numbers to allow
@@ -698,109 +699,71 @@
                 return;
             }
 
-            __block NSUInteger count = uuids.count;
-            if (count == 0)
+            if (numberDictionaries.count == 0)
             {
                 completion ? completion(nil, expiredNumbers) : 0;
 
                 return;
             }
 
-            for (NSString* uuid in uuids)
+            for (NSDictionary* numberDictionary in numberDictionaries)
             {
-                [[WebClient sharedClient] retrieveNumberWithUuid:uuid
-                                                           reply:^(NSError*        error,
-                                                                   NSString*       e164,
-                                                                   NSString*       name,
-                                                                   NSString*       numberType,
-                                                                   NSString*       areaCode,
-                                                                   NSString*       areaName,
-                                                                   NSString*       stateCode,
-                                                                   NSString*       stateName,
-                                                                   NSString*       isoCountryCode,
-                                                                   NSString*       addressId,
-                                                                   AddressTypeMask addressType,
-                                                                   NSDictionary*   proofTypes,
-                                                                   NSDate*         purchaseDate,
-                                                                   NSDate*         expiryDate,
-                                                                   BOOL            autoRenew,
-                                                                   float           fixedRate,
-                                                                   float           fixedSetup,
-                                                                   float           mobileRate,
-                                                                   float           mobileSetup,
-                                                                   float           payphoneRate,
-                                                                   float           payphoneSetup,
-                                                                   float           monthFee,
-                                                                   float           renewFee)
+                NSString* uuid = numberDictionary[@"uuid"];
+                NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
+                [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", uuid]];
+
+                NumberData* number = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
+                if (error == nil)
                 {
-                    if (error == nil)
+                    if (number == nil)
                     {
-                        NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
-                        [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", uuid]];
-
-                        NumberData* number = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
-                        if (error == nil)
-                        {
-                            if (number == nil)
-                            {
-                                number = [NSEntityDescription insertNewObjectForEntityForName:@"Number"
-                                                                       inManagedObjectContext:self.managedObjectContext];
-                                number.notifiedExpiryDays = INT16_MAX;  // Not notified yet.
-                            }
-                        }
-                        else
-                        {
-                            [self handleError:error];
-
-                            return;
-                        }
-
-                        number.uuid           = uuid;
-                        number.name           = name;
-                        number.e164           = e164;
-                        number.numberType     = numberType;
-                        number.areaCode       = areaCode;
-                        number.stateCode      = stateCode;
-                        number.stateName      = stateName;
-                        number.isoCountryCode = isoCountryCode;
-                        number.address        = [self lookupAddressWithId:addressId]; // May return nil.
-                        number.addressType    = [AddressType stringForAddressTypeMask:addressType];
-                        number.proofTypes     = proofTypes;
-                        number.purchaseDate   = purchaseDate;
-                        number.expiryDate     = expiryDate;
-                        number.autoRenew      = autoRenew;
-                        number.fixedRate      = fixedRate;
-                        number.fixedSetup     = fixedSetup;
-                        number.mobileRate     = mobileRate;
-                        number.mobileSetup    = mobileSetup;
-                        number.payphoneRate   = payphoneRate;
-                        number.payphoneSetup  = payphoneSetup;
-                        number.monthFee       = monthFee;
-                        number.renewFee       = renewFee;
-
-                        // For non-geograpic numbers, areaName is <null>.
-                        if ([areaName isEqual:[NSNull null]] || areaName.length == 0)
-                        {
-                            number.areaName = nil;
-                        }
-                        else
-                        {
-                            number.areaName = [Common capitalizedString:areaName];
-                        }
+                        number = [NSEntityDescription insertNewObjectForEntityForName:@"Number"
+                                                               inManagedObjectContext:self.managedObjectContext];
+                        number.notifiedExpiryDays = INT16_MAX;  // Not notified yet.
                     }
-                    else
-                    {
-                        completion ? completion(error, nil) : 0;
+                }
+                else
+                {
+                    [self handleError:error];
 
-                        return;
-                    }
+                    return;
+                }
 
-                    if (--count == 0)
-                    {
-                        completion ? completion(nil, expiredNumbers) : 0;
-                    }
-                }];
+                number.e164           = numberDictionary[@"e164"] ? [@"+" stringByAppendingString:numberDictionary[@"e164"]] : nil;
+                number.name           = numberDictionary[@"name"];
+                number.numberType     = numberDictionary[@"numberType"];
+                number.areaCode       = numberDictionary[@"areaCode"];
+                number.areaName       = numberDictionary[@"areaName"];
+                number.stateCode      = numberDictionary[@"stateCode"];
+                number.stateName      = numberDictionary[@"stateName"];
+                number.isoCountryCode = numberDictionary[@"isoCountryCode"];
+                number.address        = [self lookupAddressWithId:numberDictionary[@"addressId"]]; // May return nil.
+                number.addressType    = numberDictionary[@"addressType"];
+                number.proofTypes     = numberDictionary[@"proofTypes"];
+                number.purchaseDate   = [Common dateWithString:numberDictionary[@"purchaseDateTime"]];
+                number.expiryDate     = [Common dateWithString:numberDictionary[@"expiryDateTime"]];
+                number.autoRenew      = [numberDictionary[@"autoRenew"] boolValue];
+                number.fixedRate      = [numberDictionary[@"fixedRate"] floatValue];
+                number.fixedSetup     = [numberDictionary[@"fixedSetup"] floatValue];
+                number.mobileRate     = [numberDictionary[@"mobileRate"] floatValue];
+                number.mobileSetup    = [numberDictionary[@"mobileSetup"] floatValue];
+                number.payphoneRate   = [numberDictionary[@"payphoneRate"] floatValue];
+                number.payphoneSetup  = [numberDictionary[@"payphoneSetup"] floatValue];
+                number.monthFee       =[numberDictionary[@"monthFee"] floatValue];
+                number.renewFee       = [numberDictionary[@"renewFee"] floatValue];
+
+                // For non-geograpic numbers, areaName is <null>.
+                if ([number.areaName isEqual:[NSNull null]] || number.areaName.length == 0)
+                {
+                    number.areaName = nil;
+                }
+                else
+                {
+                    number.areaName = [Common capitalizedString:number.areaName];
+                }
             }
+
+            completion ? completion(nil, expiredNumbers) : 0;
         }
         else
         {

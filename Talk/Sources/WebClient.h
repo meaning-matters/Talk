@@ -242,7 +242,7 @@
                                        NSDate*  expiryDate))reply;
 
 // 12. GET LIST OF NUMBERS
-- (void)retrieveNumbersList:(void (^)(NSError* error, NSArray* uuids))reply;
+- (void)retrieveNumbersList:(void (^)(NSError* error, NSArray* numberDictionaries))reply;
 
 // 13. GET NUMBER INFO
 - (void)retrieveNumberWithUuid:(NSString*)uuid
