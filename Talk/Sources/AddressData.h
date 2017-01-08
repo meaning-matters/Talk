@@ -30,6 +30,7 @@
 @property (nonatomic, retain) NSString* city;
 @property (nonatomic, retain) NSString* postcode;
 @property (nonatomic, retain) NSString* isoCountryCode;
+@property (nonatomic, retain) NSString* areaCode;         // Area code without country code nor leading 0.
 @property (nonatomic, assign) BOOL      hasProof;         // Indicates there's an image available on server.
 @property (nonatomic, retain) NSData*   addressProof;     // Image data.
 @property (nonatomic, retain) NSData*   identityProof;    // Image data.

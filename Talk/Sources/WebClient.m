@@ -640,6 +640,7 @@
                                         NSString*           city,
                                         NSString*           postcode,
                                         NSString*           isoCountryCode,
+                                        NSString*           areaCode,
                                         BOOL                hasProof,
                                         NSString*           idType,
                                         NSString*           idNumber,
@@ -670,6 +671,7 @@
                   content[@"city"],
                   content[@"postcode"],
                   content[@"isoCountryCode"],
+                  content[@"areaCode"],
                   [content[@"hasProof"] boolValue],
                   content[@"idType"],
                   content[@"idNumber"],
@@ -681,7 +683,7 @@
         }
         else
         {
-            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, NO, nil, nil, nil, nil, nil, 0, 0);
+            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, NO, nil, nil, nil, nil, nil, 0, 0);
         }
     }];
 }
@@ -702,6 +704,7 @@
                                   city:(NSString*)city
                               postcode:(NSString*)postcode
                         isoCountryCode:(NSString*)isoCountryCode
+                              areaCode:(NSString*)areaCode
                           addressProof:(NSData*)addressProof
                          identityProof:(NSData*)identityProof
                            nationality:(NSString*)nationality   // Also an ISO-2 cpountry code.
@@ -731,6 +734,7 @@
     (city.length               > 0) ? parameters[@"city"]               = city                          : 0;
     (postcode.length           > 0) ? parameters[@"postcode"]           = postcode                      : 0;
     (isoCountryCode.length     > 0) ? parameters[@"isoCountryCode"]     = isoCountryCode                : 0;
+    (areaCode.length           > 0) ? parameters[@"areaCode"]           = areaCode                      : 0;
     (addressProof.length       > 0) ? parameters[@"addressProof"]       = [Base64 encode:addressProof]  : 0;
     (identityProof.length      > 0) ? parameters[@"identityProof"]      = [Base64 encode:identityProof] : 0;
     (nationality.length        > 0) ? parameters[@"nationality"]        = nationality                   : 0;

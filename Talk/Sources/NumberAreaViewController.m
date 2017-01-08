@@ -556,6 +556,7 @@ typedef enum
                                                                            selectedAddress:self.address
                                                                             isoCountryCode:numberIsoCountryCode
                                                                                   areaCode:areaCode
+                                                                                      city:area[@"city"]
                                                                                 numberType:numberTypeMask
                                                                                addressType:addressTypeMask
                                                                                 proofTypes:area[@"proofTypes"]

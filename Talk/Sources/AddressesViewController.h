@@ -22,6 +22,7 @@
                              selectedAddress:(AddressData*)selectedAddress
                               isoCountryCode:(NSString*)isoCountryCode
                                     areaCode:(NSString*)areaCode
+                                        city:(NSString*)city
                                   numberType:(NumberTypeMask)numberTypeMask
                                  addressType:(AddressTypeMask)addressTypeMask
                                   proofTypes:(NSDictionary*)proofTypes

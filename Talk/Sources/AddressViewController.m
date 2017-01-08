@@ -59,6 +59,7 @@ typedef NS_ENUM(NSUInteger, TableRowsAddress)
     TableRowAddressCity           = 1UL << 3,
     TableRowAddressPostcode       = 1UL << 4,
     TableRowAddressCountry        = 1UL << 5,
+    TableRowAddressAreaCode       = 1UL << 6,
 };
 
 // https://developers.voxbone.com/docs/v3/regulation/#extra-fields-list
@@ -142,6 +143,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                     addressType:(AddressTypeMask)addressTypeMask
                  isoCountryCode:(NSString*)isoCountryCode
                        areaCode:(NSString*)areaCode
+                           city:(NSString*)city
                      numberType:(NumberTypeMask)numberTypeMask
                      proofTypes:(NSDictionary*)proofTypes
                      completion:(void (^)(AddressData* address))completion;
@@ -172,6 +174,12 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             self.address = [NSEntityDescription insertNewObjectForEntityForName:@"Address"
                                                          inManagedObjectContext:self.managedObjectContext];
             self.address.salutation = @"MS";
+
+            if (self.addressTypeMask == AddressTypeLocalMask)
+            {
+                self.address.areaCode = areaCode;
+                self.address.city     = [city capitalizedString];
+            }
         }
         else
         {
@@ -215,10 +223,12 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         if (self.isNew == YES || self.isUpdatable)
         {
             self.rowsAddress |= TableRowAddressBuildingLetter;
+            self.rowsAddress |= (self.addressTypeMask == AddressTypeLocalMask) ? TableRowAddressAreaCode : 0;
         }
         else
         {
             self.rowsAddress |= (self.address.buildingLetter.length > 0) ? TableRowAddressBuildingLetter : 0;
+            self.rowsAddress |= (self.address.areaCode.length       > 0) ? TableRowAddressAreaCode       : 0;
         }
     }
     
@@ -563,10 +573,13 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         if (error == nil)
         {
             strongSelf.citiesArray = [NSArray arrayWithArray:content];
-            strongSelf.address.postcode = @"";     // Resets what user may have typed while loading (on slow internet).
-            strongSelf.address.city     = @"";     // Resets what user may have typed while loading (on slow internet).
+            if (strongSelf.citiesArray.count > 0)
+            {
+                strongSelf.address.postcode = @"";     // Resets what user may have typed while loading (on slow internet).
+                strongSelf.address.city     = @"";     // Resets what user may have typed while loading (on slow internet).
             
-            [strongSelf.tableView reloadData];
+                [strongSelf.tableView reloadData];
+            }
         }
         else if (error.code == WebStatusFailServiceUnavailable)
         {
@@ -1404,6 +1417,10 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                         [self.navigationController pushViewController:countriesViewController animated:YES];
                         break;
                     }
+                    case TableRowAddressAreaCode:
+                    {
+                        //####
+                    }
                 }
 
                 break;
@@ -1786,10 +1803,22 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             
             break;
         }
+        case TableRowAddressAreaCode:
+        {
+            cell.textLabel.text = [Strings areaCodeString];
+            textField.userInteractionEnabled = NO;
+
+            // When creating an address we have the correct `numberIsoCountryCode`, but when showing without
+            // Number context (from Numbers > Addresses), we use the `address`' country as backup.
+            NSString* isoCountryCode = self.numberIsoCountryCode ? self.numberIsoCountryCode : self.address.isoCountryCode;
+            textField.text = [NSString stringWithFormat:@"+%@ %@", [Common callingCodeForCountry:isoCountryCode],
+                                                                   self.address.areaCode];
+            break;
+        }
     }
-    
+
     [self updateTextField:textField onCell:cell];
-    
+
     return cell;
 }
 
@@ -2257,6 +2286,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                                         city:self.address.city
                                                     postcode:self.address.postcode
                                               isoCountryCode:self.address.isoCountryCode
+                                                    areaCode:self.address.areaCode
                                                 addressProof:self.address.addressProof
                                                identityProof:self.address.identityProof
                                                  nationality:self.address.nationality

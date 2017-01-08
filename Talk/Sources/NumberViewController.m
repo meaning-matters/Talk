@@ -332,6 +332,7 @@ typedef enum
                                                                            selectedAddress:number.address
                                                                             isoCountryCode:number.isoCountryCode
                                                                                   areaCode:number.areaCode
+                                                                                      city:nil
                                                                                 numberType:numberTypeMask
                                                                                addressType:addressTypeMask
                                                                                 proofTypes:number.proofTypes

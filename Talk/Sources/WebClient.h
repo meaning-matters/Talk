@@ -140,6 +140,7 @@
                                         NSString*           city,
                                         NSString*           postcode,
                                         NSString*           isoCountryCode,
+                                        NSString*           areaCode,
                                         BOOL                hasProof,
                                         NSString*           idType,
                                         NSString*           idNumber,
@@ -164,6 +165,7 @@
                                   city:(NSString*)city
                               postcode:(NSString*)postcode
                         isoCountryCode:(NSString*)isoCountryCode
+                              areaCode:(NSString*)areaCode
                           addressProof:(NSData*)addressProof
                          identityProof:(NSData*)identityProof
                            nationality:(NSString*)nationality   // Also an ISO-2 cpountry code.

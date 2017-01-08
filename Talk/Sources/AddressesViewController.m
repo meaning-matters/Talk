@@ -28,6 +28,7 @@
 
 @property (nonatomic, strong) NSString*                   isoCountryCode;
 @property (nonatomic, strong) NSString*                   areaCode;
+@property (nonatomic, strong) NSString*                   city;
 @property (nonatomic, assign) NumberTypeMask              numberTypeMask;
 @property (nonatomic, assign) AddressTypeMask             addressTypeMask;
 @property (nonatomic, strong) NSDictionary*               proofTypes;
@@ -50,6 +51,7 @@
                               selectedAddress:nil
                                isoCountryCode:nil
                                      areaCode:nil
+                                         city:nil
                                    numberType:NumberTypeGeographicMask
                                   addressType:0
                                    proofTypes:nil
@@ -63,6 +65,7 @@
                              selectedAddress:(AddressData*)selectedAddress
                               isoCountryCode:(NSString*)isoCountryCode
                                     areaCode:(NSString*)areaCode
+                                        city:(NSString*)city
                                   numberType:(NumberTypeMask)numberTypeMask
                                  addressType:(AddressTypeMask)addressTypeMask
                                   proofTypes:(NSDictionary*)proofTypes
@@ -80,6 +83,7 @@
         self.selectedAddress      = selectedAddress;
         self.isoCountryCode       = isoCountryCode;
         self.areaCode             = areaCode;
+        self.city                 = city;
         self.numberTypeMask       = numberTypeMask;
         self.addressTypeMask      = addressTypeMask;
         self.proofTypes           = proofTypes;
@@ -455,6 +459,7 @@
                                                             addressType:0
                                                          isoCountryCode:nil
                                                                areaCode:nil
+                                                                   city:nil
                                                              numberType:NumberTypeGeographicMask
                                                              proofTypes:nil
                                                              completion:nil];
@@ -557,6 +562,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
                                                             addressType:self.addressTypeMask
                                                          isoCountryCode:self.isoCountryCode
                                                                areaCode:self.areaCode
+                                                                   city:self.city
                                                              numberType:self.numberTypeMask
                                                              proofTypes:self.proofTypes
                                                              completion:^(AddressData *address)
@@ -659,6 +665,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
                                                                           addressType:self.addressTypeMask
                                                                        isoCountryCode:self.isoCountryCode
                                                                              areaCode:self.areaCode
+                                                                                 city:nil
                                                                            numberType:self.numberTypeMask
                                                                            proofTypes:self.proofTypes
                                                                            completion:^(AddressData *address)

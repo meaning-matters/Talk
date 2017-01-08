@@ -23,6 +23,7 @@
                     addressType:(AddressTypeMask)addressTypeMask
                  isoCountryCode:(NSString*)isoCountryCode
                        areaCode:(NSString*)areaCode
+                           city:(NSString*)city
                      numberType:(NumberTypeMask)numberTypeMask
                      proofTypes:(NSDictionary*)proofTypes
                      completion:(void (^)(AddressData* address))completion; // Only if new address was created.

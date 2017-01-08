@@ -590,6 +590,7 @@
                                                                   NSString*           city,
                                                                   NSString*           postcode,
                                                                   NSString*           isoCountryCode,
+                                                                  NSString*           areaCode,
                                                                   BOOL                hasProof,
                                                                   NSString*           idType,
                                                                   NSString*           idNumber,
@@ -633,6 +634,7 @@
                         address.city               = city;
                         address.postcode           = postcode;
                         address.isoCountryCode     = isoCountryCode;
+                        address.areaCode           = areaCode;
                         address.hasProof           = hasProof;
                         address.idType             = idType;
                         address.idNumber           = idNumber;

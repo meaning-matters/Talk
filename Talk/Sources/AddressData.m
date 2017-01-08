@@ -31,6 +31,7 @@
 @dynamic city;
 @dynamic postcode;
 @dynamic isoCountryCode;
+@dynamic areaCode;
 @dynamic hasProof;
 @dynamic addressProof;
 @dynamic identityProof;
