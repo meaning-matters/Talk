@@ -18,38 +18,70 @@
 
 @interface ProofImageViewController ()
 
-@property (nonatomic, strong) AddressData* address;
-@property (nonatomic, strong) UIImageView* imageView;
-@property (nonatomic, strong) ImagePicker* imagePicker;
+@property (nonatomic, strong) AddressData*   address;
+@property (nonatomic, strong) UIImageView*   imageView;
+@property (nonatomic, strong) ImagePicker*   imagePicker;
+@property (nonatomic, assign) ProofImageType type;
 
 @end
 
 
 @implementation ProofImageViewController
 
-- (instancetype)initWithAddress:(AddressData*)address
+- (instancetype)initWithAddress:(AddressData*)address type:(ProofImageType)type
 {
     if (self = [super init])
     {
         self.address   = address;
+        self.type      = type;
         self.imageView = [[UIImageView alloc] init];
 
-        if (self.address.addressProof != nil)
+        switch (self.type)
         {
-            self.imageView.image = [UIImage imageWithData:self.address.addressProof];
-        }
-        else
-        {
-            self.isLoading = YES;
-
-            __weak typeof(self) weakSelf = self;
-            [self.address loadProofImagesWithCompletion:^(BOOL succeeded)
+            case ProofImageTypeAddress:
             {
-                __strong typeof(weakSelf) strongSelf = weakSelf;
-                strongSelf.isLoading = NO;
+                if (self.address.addressProof != nil)
+                {
+                    self.imageView.image = [UIImage imageWithData:self.address.addressProof];
+                }
+                else
+                {
+                    self.isLoading = YES;
 
-                strongSelf.imageView.image = [UIImage imageWithData:strongSelf.address.addressProof];
-            }];
+                    __weak typeof(self) weakSelf = self;
+                    [self.address loadProofImagesWithCompletion:^(BOOL succeeded)
+                    {
+                        __strong typeof(weakSelf) strongSelf = weakSelf;
+                        strongSelf.isLoading = NO;
+
+                        strongSelf.imageView.image = [UIImage imageWithData:strongSelf.address.addressProof];
+                    }];
+                }
+
+                break;
+            }
+            case ProofImageTypeIdentity:
+            {
+                if (self.address.identityProof != nil)
+                {
+                    self.imageView.image = [UIImage imageWithData:self.address.identityProof];
+                }
+                else
+                {
+                    self.isLoading = YES;
+
+                    __weak typeof(self) weakSelf = self;
+                    [self.address loadProofImagesWithCompletion:^(BOOL succeeded)
+                    {
+                        __strong typeof(weakSelf) strongSelf = weakSelf;
+                        strongSelf.isLoading = NO;
+
+                        strongSelf.imageView.image = [UIImage imageWithData:strongSelf.address.identityProof];
+                    }];
+                }
+
+                break;
+            }
         }
     }
 
@@ -112,10 +144,25 @@
         {
             if (imageData != nil)
             {
-                self.imageView.image      = [UIImage imageWithData:imageData];
+                self.imageView.image = [UIImage imageWithData:imageData];
 
-                self.address.addressProof = imageData;
-                self.address.hasProof     = YES;
+                switch (self.type)
+                {
+                    case ProofImageTypeAddress:
+                    {
+                        self.address.addressProof    = imageData;
+                        self.address.hasAddressProof = YES;
+
+                        break;
+                    }
+                    case ProofImageTypeIdentity:
+                    {
+                        self.address.identityProof    = imageData;
+                        self.address.hasIdentityProof = YES;
+
+                        break;
+                    }
+                }
             }
         }];
     }

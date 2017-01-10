@@ -228,7 +228,6 @@
     number.isoCountryCode     = self.isoCountryCode;
     number.address            = self.address;
     number.addressType        = self.area[@"addressType"];
-    number.proofTypes         = self.area[@"proofTypes"];
     number.purchaseDate       = purchaseDate;
     number.expiryDate         = expiryDate;
     number.notifiedExpiryDays = INT16_MAX;  // Indicated not notified yet.

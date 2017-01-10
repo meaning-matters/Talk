@@ -112,8 +112,11 @@
 
 //  9. GET PURCHASE INFO DATA
 - (void)retrieveNumberAreaInfoForIsoCountryCode:(NSString*)isoCountryCode
-                                       areaCode:(NSString*)areaCode
-                                          reply:(void (^)(NSError* error, NSArray* areaInfo))reply;
+                                         areaId:(NSString*)areaId
+                                          reply:(void (^)(NSError*      error,
+                                                          NSArray*      cities,
+                                                          NSDictionary* personRegulations,
+                                                          NSDictionary* companyRegulations))reply;
 
 // 10. CHECK IF PURCHASE INFO IS VALID
 - (void)checkPurchaseInfo:(NSDictionary*)info reply:(void (^)(NSError* error, BOOL isValid))reply;
@@ -141,7 +144,8 @@
                                         NSString*           postcode,
                                         NSString*           isoCountryCode,
                                         NSString*           areaCode,
-                                        BOOL                hasProof,
+                                        BOOL                hasAddressProof,
+                                        BOOL                hasIdentityProof,
                                         NSString*           idType,
                                         NSString*           idNumber,
                                         NSString*           fiscalIdCode,
@@ -259,7 +263,6 @@
                                          NSString*       isoCountryCode,
                                          NSString*       addressId,
                                          AddressTypeMask addressType,
-                                         NSDictionary*   proofTypes,
                                          NSDate*         purchaseDate,
                                          NSDate*         expiryDate,
                                          BOOL            autoRenew,
@@ -403,7 +406,7 @@
 - (void)cancelAllRetrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode;
 
 // 9.
-- (void)cancelAllRetrieveAreaInfoForIsoCountryCode:(NSString*)isoCountryCode areaCode:(NSString*)areaCode;
+- (void)cancelAllRetrieveAreaInfoForIsoCountryCode:(NSString*)isoCountryCode areaId:(NSString*)areaId;
 
 // 10.
 - (void)cancelAllCheckPurchaseInfo;

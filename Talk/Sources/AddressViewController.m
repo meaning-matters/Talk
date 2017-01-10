@@ -25,7 +25,7 @@
 #import "BlockActionSheet.h"
 #import "Settings.h"
 #import "Salutation.h"
-#import "ProofType.h"
+#import "ProofTypes.h"
 #import "ImagePicker.h"
 #import "AddressUpdatesHandler.h"
 #import "AddressStatus.h"
@@ -41,6 +41,12 @@ typedef NS_ENUM(NSUInteger, TableSections)
     TableSectionAddress     = 1UL << 4, // Street, number, city, postcode.
     TableSectionExtraFields = 1UL << 5, // Extra for few countries.  Assumed last section in updateExtraFieldsSection.
     TableSectionNumbers     = 1UL << 6, // Optional list of Numbers for which this Address is used currently.
+};
+
+typedef NS_ENUM(NSUInteger, TableRowsProof)
+{
+    TableRowsProofAddress  = 1UL << 0,
+    TableRowsProofIdentity = 1UL << 1,
 };
 
 typedef NS_ENUM(NSUInteger, TableRowsDetails)
@@ -77,6 +83,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 @interface AddressViewController ()
 
 @property (nonatomic, assign) TableSections               sections;
+@property (nonatomic, assign) TableRowsProof              rowsProof;
 @property (nonatomic, assign) TableRowsExtraFields        rowsExtraFields;
 @property (nonatomic, assign) TableRowsDetails            rowsDetails;
 @property (nonatomic, assign) TableRowsAddress            rowsAddress;
@@ -87,15 +94,17 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 @property (nonatomic, strong) NSFetchedResultsController* fetchedAddressesController;
 @property (nonatomic, strong) NSString*                   numberIsoCountryCode;
 @property (nonatomic, strong) NSString*                   areaCode;
+@property (nonatomic, strong) NSString*                   areaId;
 @property (nonatomic, assign) NumberTypeMask              numberTypeMask;
 @property (nonatomic, assign) AddressTypeMask             addressTypeMask;
 @property (nonatomic, strong) IdType*                     idType;
 @property (nonatomic, strong) Salutation*                 salutation;
-@property (nonatomic, strong) ProofType*                  proofType;
+@property (nonatomic, strong) ProofTypes*                 proofTypes;
 @property (nonatomic, readonly) NSDictionary*             extraFieldsInfo;
 
 @property (nonatomic, strong) NSArray*                    citiesArray;
-@property (nonatomic, assign) BOOL                        isChecked;
+@property (nonatomic, strong) NSDictionary*               personRegulations;
+@property (nonatomic, strong) NSDictionary*               companyRegulations;
 
 @property (nonatomic, strong) UITextField*                idTypeTextField;
 @property (nonatomic, strong) UITextField*                idNumberTextField;
@@ -143,9 +152,9 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                     addressType:(AddressTypeMask)addressTypeMask
                  isoCountryCode:(NSString*)isoCountryCode
                        areaCode:(NSString*)areaCode
+                         areaId:(NSString*)areaId
                            city:(NSString*)city
                      numberType:(NumberTypeMask)numberTypeMask
-                     proofTypes:(NSDictionary*)proofTypes
                      completion:(void (^)(AddressData* address))completion;
 {
     if (self = [super initWithManagedObjectContext:managedObjectContext])
@@ -157,6 +166,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
         self.numberIsoCountryCode = isoCountryCode;
         self.areaCode             = areaCode;
+        self.areaId               = areaId;
         self.numberTypeMask       = numberTypeMask;
         self.addressTypeMask      = addressTypeMask;
         self.createCompletion     = completion;
@@ -189,10 +199,6 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         self.item = self.address;
 
         self.salutation = [[Salutation alloc] initWithString:self.address.salutation];
-        if (proofTypes != nil)
-        {
-            self.proofType  = [[ProofType alloc] initWithProofTypes:proofTypes salutation:self.salutation];
-        }
 
         if (self.addressTypeMask == AddressTypeLocalMask || self.addressTypeMask == AddressTypeNationalMask)
         {
@@ -525,8 +531,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
 - (void)dealloc
 {
-    [[WebClient sharedClient] cancelAllRetrieveAreaInfoForIsoCountryCode:self.numberIsoCountryCode
-                                                                areaCode:self.areaCode];
+    [[WebClient sharedClient] cancelAllRetrieveAreaInfoForIsoCountryCode:self.numberIsoCountryCode areaId:self.areaId];
 }
 
 
@@ -546,9 +551,9 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     {
         complete = [self isAddressComplete];
 
-        if (self.proofType != nil)
+        if (self.proofTypes != nil)
         {
-            complete = complete && self.address.hasProof;
+            complete = complete && self.address.hasIdentityProof;
         }
     }
     else
@@ -565,21 +570,29 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     self.isLoading = YES;
     __weak typeof(self) weakSelf = self;
     [[WebClient sharedClient] retrieveNumberAreaInfoForIsoCountryCode:self.numberIsoCountryCode
-                                                             areaCode:self.areaCode
-                                                                reply:^(NSError* error, id content)
+                                                               areaId:self.areaId
+                                                                reply:^(NSError*      error,
+                                                                        NSArray*      cities,
+                                                                        NSDictionary* personRegulations,
+                                                                        NSDictionary* companyRegulations)
     {
         __strong typeof(weakSelf) strongSelf = weakSelf;
 
         if (error == nil)
         {
-            strongSelf.citiesArray = [NSArray arrayWithArray:content];
+            strongSelf.citiesArray        = cities;
+            strongSelf.personRegulations  = personRegulations;
+            strongSelf.companyRegulations = companyRegulations;
+            strongSelf.proofTypes         = [[ProofTypes alloc] initWithPerson:personRegulations
+                                                                       company:companyRegulations
+                                                                    salutation:self.salutation];
             if (strongSelf.citiesArray.count > 0)
             {
                 strongSelf.address.postcode = @"";     // Resets what user may have typed while loading (on slow internet).
                 strongSelf.address.city     = @"";     // Resets what user may have typed while loading (on slow internet).
-            
-                [strongSelf.tableView reloadData];
             }
+
+            [strongSelf.tableView reloadData];
         }
         else if (error.code == WebStatusFailServiceUnavailable)
         {
@@ -740,26 +753,31 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     {
         if (self.salutation.isPerson)
         {
-            complete = [self.address.name           stringByRemovingWhiteSpace].length > 0 &&
-                       [self.address.firstName      stringByRemovingWhiteSpace].length > 0 &&
-                       [self.address.lastName       stringByRemovingWhiteSpace].length > 0 &&
-                       [self.address.street         stringByRemovingWhiteSpace].length > 0 &&
-                       [self.address.buildingNumber stringByRemovingWhiteSpace].length > 0 &&
-                       [self.address.city           stringByRemovingWhiteSpace].length > 0 &&
-                       [self.address.postcode       stringByRemovingWhiteSpace].length > 0 &&
-                       [self.address.isoCountryCode stringByRemovingWhiteSpace].length > 0 &&
+            complete = [self.address.name           stringByRemovingWhiteSpace].length > 0    &&
+                       [self.address.firstName      stringByRemovingWhiteSpace].length > 0    &&
+                       [self.address.lastName       stringByRemovingWhiteSpace].length > 0    &&
+                       [self.address.street         stringByRemovingWhiteSpace].length > 0    &&
+                       [self.address.buildingNumber stringByRemovingWhiteSpace].length > 0    &&
+                       [self.address.city           stringByRemovingWhiteSpace].length > 0    &&
+                       [self.address.postcode       stringByRemovingWhiteSpace].length > 0    &&
+                       [self.address.isoCountryCode stringByRemovingWhiteSpace].length > 0    &&
+                       self.proofTypes.requiresAddressProof  == self.address.hasAddressProof  &&
+                       self.proofTypes.requiresIdentityProof == self.address.hasIdentityProof &&
                        [self areExtraFieldsComplete];
+
         }
 
         if (self.salutation.isCompany)
         {
-            complete = [self.address.name           stringByRemovingWhiteSpace].length > 0 &&
-                       [self.address.companyName    stringByRemovingWhiteSpace].length > 0 &&
-                       [self.address.street         stringByRemovingWhiteSpace].length > 0 &&
-                       [self.address.buildingNumber stringByRemovingWhiteSpace].length > 0 &&
-                       [self.address.city           stringByRemovingWhiteSpace].length > 0 &&
-                       [self.address.postcode       stringByRemovingWhiteSpace].length > 0 &&
-                       [self.address.isoCountryCode stringByRemovingWhiteSpace].length > 0 &&
+            complete = [self.address.name           stringByRemovingWhiteSpace].length > 0    &&
+                       [self.address.companyName    stringByRemovingWhiteSpace].length > 0    &&
+                       [self.address.street         stringByRemovingWhiteSpace].length > 0    &&
+                       [self.address.buildingNumber stringByRemovingWhiteSpace].length > 0    &&
+                       [self.address.city           stringByRemovingWhiteSpace].length > 0    &&
+                       [self.address.postcode       stringByRemovingWhiteSpace].length > 0    &&
+                       [self.address.isoCountryCode stringByRemovingWhiteSpace].length > 0    &&
+                       self.proofTypes.requiresAddressProof  == self.address.hasAddressProof  &&
+                       self.proofTypes.requiresIdentityProof == self.address.hasIdentityProof &&
                        [self areExtraFieldsComplete];
         }
     }
@@ -928,7 +946,8 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
 - (void)refreshExtraFieldsSection
 {
-    NSArray* idTypes = self.extraFieldsInfo[self.salutation.typeString][@"idTypes"];
+    NSArray* idTypes = self.salutation.isPerson ? self.personRegulations[@"idTypes"]
+                                                : self.companyRegulations[@"idTypes"];
 
     if (idTypes.count == 1)
     {
@@ -1063,28 +1082,30 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
     // Optional sections.
     self.sections |= self.isNew ? 0 : TableSectionStatus;
-    self.sections |= ((self.proofType != nil) || self.address.hasProof) ? TableSectionProof : 0;
+    self.sections |= (self.proofTypes.requiresAddressProof  || self.proofTypes.requiresIdentityProof ||
+                      self.address.hasAddressProof          || self.address.hasIdentityProof) ? TableSectionProof : 0;
+
+    self.rowsProof = 0;
+    self.rowsProof |= self.proofTypes.requiresAddressProof  ? TableRowsProofAddress  : 0;
+    self.rowsProof |= self.proofTypes.requiresIdentityProof ? TableRowsProofIdentity : 0;
 
     // We need to determine the existence of the ExtraFields section dynamically, based on
     // the country of the address (which the user may have to select from a list).
     self.rowsExtraFields = 0;
     if (self.isNew)
     {
-        if (self.extraFieldsInfo != nil)
+        NSArray* fields = self.salutation.isPerson ? self.personRegulations[@"extraFields"]
+                                                   : self.companyRegulations[@"extraFields"];
+        if (fields.count > 0)
         {
-            NSString* numberTypeMaskString = [NumberType stringForNumberTypeMask:self.numberTypeMask];
-            if ([self.extraFieldsInfo[@"numberTypes"] containsObject:numberTypeMaskString])
-            {
-                self.sections |= TableSectionExtraFields;
+            self.sections |= TableSectionExtraFields;
 
-                NSArray* fields = self.extraFieldsInfo[self.salutation.typeString][@"fields"];
-                self.rowsExtraFields |= [fields containsObject:@"nationality"]      ? TableRowExtraFieldsNationality      : 0;
-                self.rowsExtraFields |= [fields containsObject:@"idType"]           ? TableRowExtraFieldsIdType           : 0;
-                self.rowsExtraFields |= [fields containsObject:@"idNumber"]         ? TableRowExtraFieldsIdNumber         : 0;
-                self.rowsExtraFields |= [fields containsObject:@"fiscalIdCode"]     ? TableRowExtraFieldsFiscalIdCode     : 0;
-                self.rowsExtraFields |= [fields containsObject:@"streetCode"]       ? TableRowExtraFieldsStreetCode       : 0;
-                self.rowsExtraFields |= [fields containsObject:@"municipalityCode"] ? TableRowExtraFieldsMunicipalityCode : 0;
-            }
+            self.rowsExtraFields |= [fields containsObject:@"nationality"]      ? TableRowExtraFieldsNationality      : 0;
+            self.rowsExtraFields |= [fields containsObject:@"idType"]           ? TableRowExtraFieldsIdType           : 0;
+            self.rowsExtraFields |= [fields containsObject:@"idNumber"]         ? TableRowExtraFieldsIdNumber         : 0;
+            self.rowsExtraFields |= [fields containsObject:@"fiscalIdCode"]     ? TableRowExtraFieldsFiscalIdCode     : 0;
+            self.rowsExtraFields |= [fields containsObject:@"streetCode"]       ? TableRowExtraFieldsStreetCode       : 0;
+            self.rowsExtraFields |= [fields containsObject:@"municipalityCode"] ? TableRowExtraFieldsMunicipalityCode : 0;
         }
     }
     else
@@ -1114,7 +1135,8 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     {
         case TableSectionName:        numberOfRows = 1;                                          break;
         case TableSectionStatus:      numberOfRows = 1;                                          break;
-        case TableSectionProof:       numberOfRows = 1;                                          break;
+        case TableSectionProof:       numberOfRows = self.proofTypes.requiresAddressProof +
+                                                     self.proofTypes.requiresIdentityProof;      break;
         case TableSectionDetails:     numberOfRows = [Common bitsSetCount:self.rowsDetails];     break;
         case TableSectionAddress:     numberOfRows = [Common bitsSetCount:self.rowsAddress];     break;
         case TableSectionExtraFields: numberOfRows = [Common bitsSetCount:self.rowsExtraFields]; break;
@@ -1233,21 +1255,15 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         }
         case TableSectionProof:
         {
-            if (self.proofType != nil && self.address.hasProof == NO)
+            if ((self.proofTypes.requiresAddressProof  && self.address.hasAddressProof == NO) ||
+                (self.proofTypes.requiresIdentityProof && self.address.hasIdentityProof == NO))
             {
                 title = NSLocalizedStringWithDefaultValue(@"Address:Action SectionFooterTakePicture", nil,
                                                           [NSBundle mainBundle],
-                                                          @"For this area a proof of address is (legally) required.\n\n"
+                                                          @"###### NEEDS DYNAMIC TEXT ... For this area a proof of address is (legally) required.\n\n"
                                                           @"Take a picture of a recent utility bill, or bank statement. "
                                                           @"Make sure the date, your name & address, and the name of "
                                                           @"the company/bank are clearly visible.",
-                                                          @"Telephone area (or city).");
-            }
-            else if (self.isChecked == NO)
-            {
-                title = NSLocalizedStringWithDefaultValue(@"Address:Action SectionFooterCheck", nil,
-                                                          [NSBundle mainBundle],
-                                                          @"The information supplied must first be checked.",
                                                           @"Telephone area (or city).");
             }
             else
@@ -1314,34 +1330,79 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             }
             case TableSectionProof:
             {
-                if ((self.isNew || self.isUpdatable) && self.address.hasProof == NO)
+                switch ([Common nthBitSet:indexPath.row inValue:self.rowsProof])
                 {
-                    __weak typeof(self) weakSelf = self;
-                    [self.imagePicker pickImageWithCompletion:^(NSData* imageData)
+                    case TableRowsProofAddress:
                     {
-                        __strong typeof(weakSelf) strongSelf = weakSelf;
-
-                        if (imageData != nil)
+                        if ((self.isNew || self.isUpdatable) && self.address.hasAddressProof == NO)
                         {
-                            strongSelf.address.addressProof = imageData;
-                            strongSelf.address.hasProof     = YES;
-                            [Common reloadSections:TableSectionProof
-                                       allSections:strongSelf.sections
-                                         tableView:strongSelf.tableView];
+                            __weak typeof(self) weakSelf = self;
+                            [self.imagePicker pickImageWithCompletion:^(NSData* imageData)
+                            {
+                                __strong typeof(weakSelf) strongSelf = weakSelf;
+
+                                [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+                                if (imageData != nil)
+                                {
+                                    strongSelf.address.addressProof    = imageData;
+                                    strongSelf.address.hasAddressProof = YES;
+                                    [Common reloadSections:TableSectionProof
+                                               allSections:strongSelf.sections
+                                                 tableView:strongSelf.tableView];
+                                }
+                            }];
                         }
-                    }];
+                        else
+                        {
+                            UITableViewCell*          cell = [self.tableView cellForRowAtIndexPath:indexPath];
+                            ProofImageViewController* viewController;
+
+                            viewController       = [[ProofImageViewController alloc] initWithAddress:self.address
+                                                                                                type:ProofImageTypeAddress];
+                            viewController.title = cell.textLabel.text;
+                            
+                            [self.navigationController pushViewController:viewController animated:YES];
+                        }
+
+                        break;
+                    }
+                    case TableRowsProofIdentity:
+                    {
+                        if ((self.isNew || self.isUpdatable) && self.address.hasIdentityProof == NO)
+                        {
+                            __weak typeof(self) weakSelf = self;
+                            [self.imagePicker pickImageWithCompletion:^(NSData* imageData)
+                            {
+                                __strong typeof(weakSelf) strongSelf = weakSelf;
+
+                                [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+                                if (imageData != nil)
+                                {
+                                    strongSelf.address.identityProof    = imageData;
+                                    strongSelf.address.hasIdentityProof = YES;
+                                    [Common reloadSections:TableSectionProof
+                                               allSections:strongSelf.sections
+                                                 tableView:strongSelf.tableView];
+                                }
+                            }];
+                        }
+                        else
+                        {
+                            UITableViewCell*          cell = [self.tableView cellForRowAtIndexPath:indexPath];
+                            ProofImageViewController* viewController;
+
+                            viewController       = [[ProofImageViewController alloc] initWithAddress:self.address
+                                                                                                type:ProofImageTypeIdentity];
+                            viewController.title = cell.textLabel.text;
+                            
+                            [self.navigationController pushViewController:viewController animated:YES];
+                        }
+
+                        break;
+                    }
                 }
-                else
-                {
-                    UITableViewCell*          cell = [self.tableView cellForRowAtIndexPath:indexPath];
-                    ProofImageViewController* viewController;
-
-                    viewController       = [[ProofImageViewController alloc] initWithAddress:self.address];
-                    viewController.title = cell.textLabel.text;
-
-                    [self.navigationController pushViewController:viewController animated:YES];
-                }
-
                 break;
             }
             case TableSectionDetails:
@@ -1545,17 +1606,44 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"ProofCell"];
     }
 
-    cell.textLabel.text            = NSLocalizedString(@"Proof Image", @"Proof cell title");
     cell.detailTextLabel.textColor = [Skinning placeholderColor];
-    if ((self.isNew || self.isUpdatable) && self.address.hasProof == NO)
+
+    switch ([Common nthBitSet:indexPath.row inValue:self.rowsProof])
     {
-        cell.detailTextLabel.text = [Strings requiredString];
-        cell.accessoryType        = UITableViewCellAccessoryNone;
-    }
-    else
-    {
-        cell.detailTextLabel.text = nil;
-        cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
+        case TableRowsProofAddress:
+        {
+            cell.textLabel.text = self.proofTypes.localizedAddressProofsString;
+
+            if ((self.isNew || self.isUpdatable) && self.address.hasAddressProof == NO)
+            {
+                cell.detailTextLabel.text = [Strings requiredString];
+                cell.accessoryType        = UITableViewCellAccessoryNone;
+            }
+            else
+            {
+                cell.detailTextLabel.text = nil;
+                cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
+            }
+
+            break;
+        }
+        case TableRowsProofIdentity:
+        {
+            cell.textLabel.text = self.proofTypes.localizedIdentityProofsString;
+
+            if ((self.isNew || self.isUpdatable) && self.address.hasIdentityProof == NO)
+            {
+                cell.detailTextLabel.text = [Strings requiredString];
+                cell.accessoryType        = UITableViewCellAccessoryNone;
+            }
+            else
+            {
+                cell.detailTextLabel.text = nil;
+                cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
+            }
+
+            break;
+        }
     }
 
     return cell;

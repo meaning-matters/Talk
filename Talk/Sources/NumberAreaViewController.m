@@ -329,98 +329,78 @@ typedef enum
     }
     else
     {
-        if (area[@"proofTypes"] == nil)
+        switch (self.address.addressStatus)
         {
-            // No proof is required.
-            if (self.address.addressStatus != AddressStatusStagedMask &&
-                self.address.addressStatus != AddressStatusNotVerifiedMask)
+            case AddressStatusUnknown:
             {
                 title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                            @"Unexpected Address Status",
+                                                            @"Unknown Address Status",
                                                             @"....\n"
                                                             @"[iOS alert title size].");
                 message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                            @"The selected address has an unexpected status.",
+                                                            @"Your proof of address image needs to be verified, "
+                                                            @"but it's state is unknown at the moment.",
                                                             @"....\n"
                                                             @"[iOS alert message size]");
+                break;
             }
-        }
-        else
-        {
-            // Proof is required, which much be verified.
-            switch (self.address.addressStatus)
+            case AddressStatusStagedMask:
             {
-                case AddressStatusUnknown:
-                {
-                    title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                                @"Unknown Address Status",
-                                                                @"....\n"
-                                                                @"[iOS alert title size].");
-                    message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                                @"Your proof of address image needs to be verified, "
-                                                                @"but it's state is unknown at the moment.",
-                                                                @"....\n"
-                                                                @"[iOS alert message size]");
-                    break;
-                }
-                case AddressStatusStagedMask:
-                {
-                    break;
-                }
-                case AddressStatusNotVerifiedMask:
-                {
-                    // This can't occur, if we understand Voxbone correctly.
-                    title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                                @"Address Not Verified",
-                                                                @"....\n"
-                                                                @"[iOS alert title size].");
-                    message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                                @"Your proof of address image has not been verified.",
-                                                                @"....\n"
-                                                                @"[iOS alert message size]");
-                    break;
-                }
-                case AddressStatusDisabledMask:
-                {
-                    // Don't know when this occurs, it at all.
-                    title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                                @"Address Disabled",
-                                                                @"....\n"
-                                                                @"[iOS alert title size].");
-                    message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                                @"Your address has been disabled.",
-                                                                @"....\n"
-                                                                @"[iOS alert message size]");
-                    break;
-                }
-                case AddressStatusVerifiedMask:
-                {
-                    break;
-                }
-                case AddressStatusVerificationRequestedMask:
-                {
-                    title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                                @"Address Waiting Verification",
-                                                                @"....\n"
-                                                                @"[iOS alert title size].");
-                    message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                                @"Your proof of address image is waiting to be verified.",
-                                                                @"....\n"
-                                                                @"[iOS alert message size]");
-                    break;
-                }
-                case AddressStatusRejectedMask:
-                {
-                    title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                                @"Address Rejected",
-                                                                @"....\n"
-                                                                @"[iOS alert title size].");
-                    message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                                @"Your proof of address image has been rejected.",
-                                                                @"....\n"
-                                                                @"[iOS alert message size]");
-                    break;
-                }
+                break;
+            }
+            case AddressStatusNotVerifiedMask:
+            {
+                // This can't occur, if we understand Voxbone correctly.
+                title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                            @"Address Not Verified",
+                                                            @"....\n"
+                                                            @"[iOS alert title size].");
+                message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                            @"Your proof of address image has not been verified.",
+                                                            @"....\n"
+                                                            @"[iOS alert message size]");
+                break;
+            }
+            case AddressStatusDisabledMask:
+            {
+                // Don't know when this occurs, it at all.
+                title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                            @"Address Disabled",
+                                                            @"....\n"
+                                                            @"[iOS alert title size].");
+                message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                            @"Your address has been disabled.",
+                                                            @"....\n"
+                                                            @"[iOS alert message size]");
+                break;
+            }
+            case AddressStatusVerifiedMask:
+            {
+                break;
+            }
+            case AddressStatusVerificationRequestedMask:
+            {
+                title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                            @"Address Waiting Verification",
+                                                            @"....\n"
+                                                            @"[iOS alert title size].");
+                message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                            @"Your proof of address image is waiting to be verified.",
+                                                            @"....\n"
+                                                            @"[iOS alert message size]");
+                break;
+            }
+            case AddressStatusRejectedMask:
+            {
+                title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                            @"Address Rejected",
+                                                            @"....\n"
+                                                            @"[iOS alert title size].");
+                message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                            @"Your proof of address image has been rejected.",
+                                                            @"....\n"
+                                                            @"[iOS alert message size]");
+                break;
             }
         }
     }
@@ -556,10 +536,10 @@ typedef enum
                                                                            selectedAddress:self.address
                                                                             isoCountryCode:numberIsoCountryCode
                                                                                   areaCode:areaCode
+                                                                                    areaId:area[@"areaId"]
                                                                                       city:area[@"city"]
                                                                                 numberType:numberTypeMask
                                                                                addressType:addressTypeMask
-                                                                                proofTypes:area[@"proofTypes"]
                                                                                  predicate:self.addressesPredicate
                                                                                 isVerified:NO
                                                                                 completion:^(AddressData *selectedAddress)

@@ -332,10 +332,10 @@ typedef enum
                                                                            selectedAddress:number.address
                                                                             isoCountryCode:number.isoCountryCode
                                                                                   areaCode:number.areaCode
+                                                                                    areaId:number.areaId
                                                                                       city:nil
                                                                                 numberType:numberTypeMask
                                                                                addressType:addressTypeMask
-                                                                                proofTypes:number.proofTypes
                                                                                  predicate:self.addressesPredicate
                                                                                 isVerified:[number isPending] ? NO : YES
                                                                                 completion:^(AddressData *selectedAddress)

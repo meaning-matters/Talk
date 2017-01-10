@@ -15,8 +15,7 @@
 #import "BlockAlertView.h"
 
 
-@interface ImagePicker () <UINavigationControllerDelegate,
-                           UIImagePickerControllerDelegate>
+@interface ImagePicker () <UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 @property (nonatomic, weak) UIViewController* presentingViewController;
 @property (nonatomic, copy) void (^completion)(NSData* imageData);
@@ -93,6 +92,7 @@
             case 2:
             {
                 // Cancelled.
+                self.completion(nil);
                 break;
             }
          }

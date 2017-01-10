@@ -22,10 +22,10 @@
                              selectedAddress:(AddressData*)selectedAddress
                               isoCountryCode:(NSString*)isoCountryCode
                                     areaCode:(NSString*)areaCode
+                                      areaId:(NSString*)areaId
                                         city:(NSString*)city
                                   numberType:(NumberTypeMask)numberTypeMask
                                  addressType:(AddressTypeMask)addressTypeMask
-                                  proofTypes:(NSDictionary*)proofTypes
                                    predicate:(NSPredicate*)predicate    // Used to select between modes.
                                   isVerified:(BOOL)isVerified           // Only allow selection of verified Address.
                                   completion:(void (^)(AddressData* selectedAddress))completion;

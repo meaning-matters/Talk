@@ -19,6 +19,7 @@
 @dynamic addressType;
 @dynamic areaCode;
 @dynamic areaName;
+@dynamic areaId;
 @dynamic isoCountryCode;
 @dynamic purchaseDate;
 @dynamic expiryDate;
@@ -27,7 +28,6 @@
 
 @dynamic stateName;
 @dynamic stateCode;
-@dynamic proofTypes;
 
 @dynamic fixedRate;
 @dynamic fixedSetup;

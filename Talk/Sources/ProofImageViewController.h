@@ -11,8 +11,14 @@
 #import "AddressData.h"
 
 
+typedef enum
+{
+    ProofImageTypeAddress  = 0,
+    ProofImageTypeIdentity = 1,
+} ProofImageType;
+
 @interface ProofImageViewController : UIViewController
 
-- (instancetype)initWithAddress:(AddressData*)address;
+- (instancetype)initWithAddress:(AddressData*)address type:(ProofImageType)type;
 
 @end

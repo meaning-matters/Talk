@@ -675,7 +675,7 @@
 		48F5D2ED16B9A380001576E1 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F5D2EC16B9A380001576E1 /* Base64.m */; };
 		48F5D2EE16B9A380001576E1 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F5D2EC16B9A380001576E1 /* Base64.m */; };
 		48FC30BD1C220E300032387E /* AddressType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FC30BC1C220E300032387E /* AddressType.m */; };
-		48FC30C51C2221360032387E /* ProofType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FC30C41C2221360032387E /* ProofType.m */; };
+		48FC30C51C2221360032387E /* ProofTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FC30C41C2221360032387E /* ProofTypes.m */; };
 		48FC54321C89EDA3007658FE /* CellDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FC54311C89EDA3007658FE /* CellDotView.m */; };
 		48FD99D5161855D30061191B /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99D4161855D30061191B /* CoreMedia.framework */; };
 		48FD99D9161855EF0061191B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FD99D8161855EF0061191B /* AVFoundation.framework */; };
@@ -1492,8 +1492,8 @@
 		48F5D2EC16B9A380001576E1 /* Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
 		48FC30BB1C220E300032387E /* AddressType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressType.h; sourceTree = "<group>"; };
 		48FC30BC1C220E300032387E /* AddressType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressType.m; sourceTree = "<group>"; };
-		48FC30C31C2221360032387E /* ProofType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProofType.h; sourceTree = "<group>"; };
-		48FC30C41C2221360032387E /* ProofType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProofType.m; sourceTree = "<group>"; };
+		48FC30C31C2221360032387E /* ProofTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProofTypes.h; sourceTree = "<group>"; };
+		48FC30C41C2221360032387E /* ProofTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProofTypes.m; sourceTree = "<group>"; };
 		48FC54301C89EDA3007658FE /* CellDotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellDotView.h; sourceTree = "<group>"; };
 		48FC54311C89EDA3007658FE /* CellDotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellDotView.m; sourceTree = "<group>"; };
 		48FD99D4161855D30061191B /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -2442,8 +2442,8 @@
 				489B4B3C1CC95F51002E8F54 /* IdType.m */,
 				48200D1A16EC89BA0069677E /* NumberType.h */,
 				48200D1B16EC89BA0069677E /* NumberType.m */,
-				48FC30C31C2221360032387E /* ProofType.h */,
-				48FC30C41C2221360032387E /* ProofType.m */,
+				48FC30C31C2221360032387E /* ProofTypes.h */,
+				48FC30C41C2221360032387E /* ProofTypes.m */,
 				482881571C5F5E4C00210DF1 /* Salutation.h */,
 				482881581C5F5E4C00210DF1 /* Salutation.m */,
 			);
@@ -3368,7 +3368,7 @@
 				48200D1C16EC89BA0069677E /* NumberType.m in Sources */,
 				48FDF65D1DF9FE4900A2A7F6 /* UIView+LayerProperties.m in Sources */,
 				4822B42A1C92EB7C004BD2F5 /* TabBadgeView.m in Sources */,
-				48FC30C51C2221360032387E /* ProofType.m in Sources */,
+				48FC30C51C2221360032387E /* ProofTypes.m in Sources */,
 				48232B721BFC8E5D006D667E /* AddressData.m in Sources */,
 				4830462416EE269D000F9B05 /* NumberAreaViewController.m in Sources */,
 				48F14EE61BF9C63A00541EEC /* AddressViewController.m in Sources */,

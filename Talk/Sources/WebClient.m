@@ -575,12 +575,25 @@
 
 // 9. GET PURCHASE INFO DATA
 - (void)retrieveNumberAreaInfoForIsoCountryCode:(NSString*)isoCountryCode
-                                       areaCode:(NSString*)areaCode
-                                          reply:(void (^)(NSError* error, NSArray* areaInfo))reply
+                                         areaId:(NSString*)areaId
+                                          reply:(void (^)(NSError*      error,
+                                                          NSArray*      cities,
+                                                          NSDictionary* personRegulations,
+                                                          NSDictionary* companyRegulations))reply
 {
-    [self getPath:[NSString stringWithFormat:@"/numbers/countries/%@/areas/%@", isoCountryCode, areaCode]
+    [self getPath:[NSString stringWithFormat:@"/numbers/countries/%@/areas/%@", isoCountryCode, areaId]
        parameters:nil
-            reply:reply];
+            reply:^(NSError *error, id content)
+    {
+        if (error == nil)
+        {
+            reply(nil, content[@"cities"], content[@"person"], content[@"company"]);
+        }
+        else
+        {
+            reply(error, nil, nil, nil);
+        }
+    }];
 }
 
 
@@ -641,7 +654,8 @@
                                         NSString*           postcode,
                                         NSString*           isoCountryCode,
                                         NSString*           areaCode,
-                                        BOOL                hasProof,
+                                        BOOL                hasAddressProof,
+                                        BOOL                hasIdentityProof,
                                         NSString*           idType,
                                         NSString*           idNumber,
                                         NSString*           fiscalIdCode,
@@ -672,7 +686,8 @@
                   content[@"postcode"],
                   content[@"isoCountryCode"],
                   content[@"areaCode"],
-                  [content[@"hasProof"] boolValue],
+                  [content[@"hasAddressProof"] boolValue],
+                  [content[@"hasIdentityProof"] boolValue],
                   content[@"idType"],
                   content[@"idNumber"],
                   content[@"fiscalIdCode"],
@@ -683,7 +698,7 @@
         }
         else
         {
-            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, NO, nil, nil, nil, nil, nil, 0, 0);
+            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, NO, NO, nil, nil, nil, nil, nil, 0, 0);
         }
     }];
 }
@@ -992,7 +1007,6 @@
                                          NSString*       isoCountryCode,
                                          NSString*       addressId,
                                          AddressTypeMask addressType,
-                                         NSDictionary*   proofTypes,
                                          NSDate*         purchaseDate,
                                          NSDate*         expiryDate,
                                          BOOL            autoRenew,
@@ -1027,7 +1041,6 @@
                   content[@"isoCountryCode"],
                   content[@"addressId"],
                   [AddressType addressTypeMaskForString:content[@"addressType"]],
-                  content[@"proofTypes"],
                   [Common dateWithString:content[@"purchaseDateTime"]],
                   [Common dateWithString:content[@"expiryDateTime"]],
                   [content[@"autoRenew"] boolValue],
@@ -1042,7 +1055,7 @@
         }
         else
         {
-            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, AddressTypeWorldwideMask, nil, nil, nil, NO,
+            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, AddressTypeWorldwideMask, nil, nil, NO,
                   0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
         }
     }];
@@ -1709,11 +1722,11 @@
 
 
 // 9.
-- (void)cancelAllRetrieveAreaInfoForIsoCountryCode:(NSString*)isoCountryCode areaCode:(NSString*)areaCode
+- (void)cancelAllRetrieveAreaInfoForIsoCountryCode:(NSString*)isoCountryCode areaId:(NSString*)areaId
 {
     [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
                                                     path:[NSString stringWithFormat:@"/numbers/countries/%@/areas/%@",
-                                                          isoCountryCode, areaCode]];
+                                                          isoCountryCode, areaId]];
 }
 
 

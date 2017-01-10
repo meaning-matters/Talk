@@ -28,10 +28,10 @@
 
 @property (nonatomic, strong) NSString*                   isoCountryCode;
 @property (nonatomic, strong) NSString*                   areaCode;
+@property (nonatomic, strong) NSString*                   areaId;
 @property (nonatomic, strong) NSString*                   city;
 @property (nonatomic, assign) NumberTypeMask              numberTypeMask;
 @property (nonatomic, assign) AddressTypeMask             addressTypeMask;
-@property (nonatomic, strong) NSDictionary*               proofTypes;
 
 @property (nonatomic, copy) void (^completion)(AddressData* selectedAddress);
 
@@ -51,10 +51,10 @@
                               selectedAddress:nil
                                isoCountryCode:nil
                                      areaCode:nil
+                                       areaId:nil
                                          city:nil
                                    numberType:NumberTypeGeographicMask
                                   addressType:0
-                                   proofTypes:nil
                                     predicate:nil
                                    isVerified:NO
                                    completion:nil];
@@ -65,10 +65,10 @@
                              selectedAddress:(AddressData*)selectedAddress
                               isoCountryCode:(NSString*)isoCountryCode
                                     areaCode:(NSString*)areaCode
+                                      areaId:(NSString*)areaId
                                         city:(NSString*)city
                                   numberType:(NumberTypeMask)numberTypeMask
                                  addressType:(AddressTypeMask)addressTypeMask
-                                  proofTypes:(NSDictionary*)proofTypes
                                    predicate:(NSPredicate*)predicate
                                   isVerified:(BOOL)isVerified
                                   completion:(void (^)(AddressData* selectedAddress))completion
@@ -83,10 +83,10 @@
         self.selectedAddress      = selectedAddress;
         self.isoCountryCode       = isoCountryCode;
         self.areaCode             = areaCode;
+        self.areaId               = areaId;
         self.city                 = city;
         self.numberTypeMask       = numberTypeMask;
         self.addressTypeMask      = addressTypeMask;
-        self.proofTypes           = proofTypes;
         self.predicate            = predicate;
         self.isVerified           = isVerified;
         self.completion           = completion;
@@ -459,9 +459,9 @@
                                                             addressType:0
                                                          isoCountryCode:nil
                                                                areaCode:nil
+                                                                 areaId:nil
                                                                    city:nil
                                                              numberType:NumberTypeGeographicMask
-                                                             proofTypes:nil
                                                              completion:nil];
         
         [self.navigationController pushViewController:viewController animated:YES];
@@ -562,9 +562,9 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
                                                             addressType:self.addressTypeMask
                                                          isoCountryCode:self.isoCountryCode
                                                                areaCode:self.areaCode
+                                                                 areaId:self.areaId
                                                                    city:self.city
                                                              numberType:self.numberTypeMask
-                                                             proofTypes:self.proofTypes
                                                              completion:^(AddressData *address)
         {
             if (address != nil)
@@ -665,9 +665,9 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
                                                                           addressType:self.addressTypeMask
                                                                        isoCountryCode:self.isoCountryCode
                                                                              areaCode:self.areaCode
+                                                                               areaId:self.areaId
                                                                                  city:nil
                                                                            numberType:self.numberTypeMask
-                                                                           proofTypes:self.proofTypes
                                                                            completion:^(AddressData *address)
     {
 

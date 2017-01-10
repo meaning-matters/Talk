@@ -591,7 +591,8 @@
                                                                   NSString*           postcode,
                                                                   NSString*           isoCountryCode,
                                                                   NSString*           areaCode,
-                                                                  BOOL                hasProof,
+                                                                  BOOL                hasAddressProof,
+                                                                  BOOL                hasIdentityProof,
                                                                   NSString*           idType,
                                                                   NSString*           idNumber,
                                                                   NSString*           fiscalIdCode,
@@ -635,7 +636,8 @@
                         address.postcode           = postcode;
                         address.isoCountryCode     = isoCountryCode;
                         address.areaCode           = areaCode;
-                        address.hasProof           = hasProof;
+                        address.hasAddressProof    = hasAddressProof;
+                        address.hasIdentityProof   = hasIdentityProof;
                         address.idType             = idType;
                         address.idNumber           = idNumber;
                         address.fiscalIdCode       = fiscalIdCode;
@@ -722,7 +724,6 @@
                                                                    NSString*       isoCountryCode,
                                                                    NSString*       addressId,
                                                                    AddressTypeMask addressType,
-                                                                   NSDictionary*   proofTypes,
                                                                    NSDate*         purchaseDate,
                                                                    NSDate*         expiryDate,
                                                                    BOOL            autoRenew,
@@ -767,7 +768,6 @@
                         number.isoCountryCode = isoCountryCode;
                         number.address        = [self lookupAddressWithId:addressId]; // May return nil.
                         number.addressType    = [AddressType stringForAddressTypeMask:addressType];
-                        number.proofTypes     = proofTypes;
                         number.purchaseDate   = purchaseDate;
                         number.expiryDate     = expiryDate;
                         number.autoRenew      = autoRenew;

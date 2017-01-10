@@ -21,6 +21,7 @@
 @property (nonatomic, retain) NSString*        addressType;
 @property (nonatomic, retain) NSString*        areaCode;
 @property (nonatomic, retain) NSString*        areaName;
+@property (nonatomic, retain) NSString*        areaId;
 @property (nonatomic, retain) NSString*        isoCountryCode;
 @property (nonatomic, retain) NSDate*          purchaseDate;
 @property (nonatomic, retain) NSDate*          expiryDate;
@@ -30,7 +31,6 @@
 // Optional.
 @property (nonatomic, retain) NSString*        stateName;
 @property (nonatomic, retain) NSString*        stateCode;
-@property (nonatomic, retain) NSDictionary*    proofTypes;
 
 @property (nonatomic, assign) float_t          fixedRate;
 @property (nonatomic, assign) float_t          fixedSetup;

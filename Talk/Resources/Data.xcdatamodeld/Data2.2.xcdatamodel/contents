@@ -12,7 +12,8 @@
         <attribute name="companyName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="fiscalIdCode" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="hasProof" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="hasAddressProof" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="hasIdentityProof" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="identityProof" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="idNumber" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="idType" optional="YES" attributeType="String" syncable="YES"/>
@@ -69,6 +70,7 @@
     <entity name="Number" representedClassName="NumberData" parentEntity="Callable" syncable="YES">
         <attribute name="addressType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="areaCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="areaId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="areaName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="autoRenew" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="expiryDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -82,7 +84,6 @@
         <attribute name="numberType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="payphoneRate" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="payphoneSetup" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="proofTypes" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="purchaseDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="renewFee" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="stateCode" optional="YES" attributeType="String" syncable="YES"/>
@@ -100,7 +101,7 @@
         <relationship name="destinations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Destination" inverseName="recordings" inverseEntity="Destination" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Address" positionX="295" positionY="-345" width="128" height="433"/>
+        <element name="Address" positionX="295" positionY="-345" width="128" height="450"/>
         <element name="Callable" positionX="117" positionY="-468" width="128" height="103"/>
         <element name="CallerId" positionX="313" positionY="-451" width="128" height="73"/>
         <element name="CallRecord" positionX="486" positionY="-342" width="128" height="315"/>
