@@ -13,7 +13,7 @@
 @interface UIViewController (Common) <UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) UIActivityIndicatorView* activityIndicator;
-@property (nonatomic, strong) UIImageView*             imageView;
+@property (nonatomic, strong) UIImageView*             loadingImageView;
 @property (nonatomic, assign) BOOL                     hasCenteredActivityIndicator;
 @property (nonatomic, assign) BOOL                     isLoading;   // Show/Hide spinner.
 

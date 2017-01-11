@@ -50,7 +50,7 @@
 
 - (void)deleteWithCompletion:(void (^)(BOOL succeeded))completion;
 
-- (void)loadProofImagesWithCompletion:(void (^)(BOOL succeeded))completion;
+- (void)loadProofImagesWithCompletion:(void (^)(NSError* error))completion;
 
 - (void)cancelLoadProofImages;
 

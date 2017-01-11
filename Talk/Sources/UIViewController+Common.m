@@ -67,15 +67,15 @@
 }
 
 
-- (UIImageView*)imageView
+- (UIImageView*)loadingImageView
 {
-    return objc_getAssociatedObject(self, @selector(imageView));
+    return objc_getAssociatedObject(self, @selector(loadingImageView));
 }
 
 
-- (void)setImageView:(UIImageView*)imageView
+- (void)setLoadingImageView:(UIImageView*)loadingImageView
 {
-    objc_setAssociatedObject(self, @selector(imageView), imageView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(loadingImageView), loadingImageView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 
@@ -108,9 +108,9 @@
             [self respondsToSelector:NSSelectorFromString(@"tableView:numberOfRowsInSection:")] &&
             ([(id)self tableView:[(id)self tableView] numberOfRowsInSection:0] == 0))
         {
-            self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TableLoading"]];
-            self.imageView.alpha = 0.13f;  // Desaturated logo needs this to get (almost) equal shade as table headers.
-            [self.view addSubview:self.imageView];
+            self.loadingImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TableLoading"]];
+            self.loadingImageView.alpha = 0.13f;  // Desaturated logo needs this to get (almost) equal shade as table headers.
+            [self.view addSubview:self.loadingImageView];
         }
 
         self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -129,8 +129,8 @@
         self.activityIndicator = nil;
         self.hasCenteredActivityIndicator = NO;
 
-        [self.imageView removeFromSuperview];
-        self.imageView = nil;
+        [self.loadingImageView removeFromSuperview];
+        self.loadingImageView = nil;
         self.view.userInteractionEnabled = YES;
         self.navigationController.view.userInteractionEnabled = YES;
     }
@@ -217,7 +217,7 @@
         CGPoint center = topView.center;
         center = [topView convertPoint:center toView:self.view];
 
-        self.imageView.center = center;
+        self.loadingImageView.center = center;
 
         // For some reason iOS' spinner is on pixels off in both X and Y.
         center.x += 1.0f;

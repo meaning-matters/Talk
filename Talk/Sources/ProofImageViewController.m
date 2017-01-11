@@ -9,11 +9,11 @@
 #import "ProofImageViewController.h"
 #import "UIViewController+Common.h"
 #import "Skinning.h"
-#import "WebClient.h"
 #import "ImagePicker.h"
 #import "BlockAlertView.h"
 #import "Strings.h"
 #import "AddressStatus.h"
+#import "DataManager.h"
 
 
 @interface ProofImageViewController ()
@@ -51,12 +51,21 @@
                     self.isLoading = YES;
 
                     __weak typeof(self) weakSelf = self;
-                    [self.address loadProofImagesWithCompletion:^(BOOL succeeded)
+                    [self.address loadProofImagesWithCompletion:^(NSError* error)
                     {
                         __strong typeof(weakSelf) strongSelf = weakSelf;
                         strongSelf.isLoading = NO;
 
-                        strongSelf.imageView.image = [UIImage imageWithData:strongSelf.address.addressProof];
+                        if (error == nil)
+                        {
+                            strongSelf.imageView.image = [UIImage imageWithData:strongSelf.address.addressProof];
+
+                            [[DataManager sharedManager] saveManagedObjectContext:nil];
+                        }
+                        else
+                        {
+                            [strongSelf showLoadError:error];
+                        }
                     }];
                 }
 
@@ -73,12 +82,21 @@
                     self.isLoading = YES;
 
                     __weak typeof(self) weakSelf = self;
-                    [self.address loadProofImagesWithCompletion:^(BOOL succeeded)
+                    [self.address loadProofImagesWithCompletion:^(NSError* error)
                     {
                         __strong typeof(weakSelf) strongSelf = weakSelf;
                         strongSelf.isLoading = NO;
 
-                        strongSelf.imageView.image = [UIImage imageWithData:strongSelf.address.identityProof];
+                        if (error == nil)
+                        {
+                            strongSelf.imageView.image = [UIImage imageWithData:strongSelf.address.identityProof];
+
+                            [[DataManager sharedManager] saveManagedObjectContext:nil];
+                        }
+                        else
+                        {
+                            [strongSelf showLoadError:error];
+                        }
                     }];
                 }
 
@@ -90,6 +108,20 @@
     return self;
 }
 
+
+- (void)showLoadError:(NSError*)error
+{
+    NSString* title   = NSLocalizedString(@"Error Loading Image", @"");
+    NSString* message = NSLocalizedString(@"Loading this proof image failed: %@\n\nPlease try again later.", @"");
+    message = [NSString stringWithFormat:message, error.localizedDescription];
+
+    [BlockAlertView showAlertViewWithTitle:title message:message completion:^(BOOL cancelled, NSInteger buttonIndex)
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+                         cancelButtonTitle:[Strings closeString]
+                         otherButtonTitles:nil];
+}
 
 - (void)dealloc
 {

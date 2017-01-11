@@ -148,7 +148,7 @@
 }
 
 
-- (void)loadProofImagesWithCompletion:(void (^)(BOOL succeeded))completion
+- (void)loadProofImagesWithCompletion:(void (^)(NSError* error))completion
 {
     [[WebClient sharedClient] retrieveProofImagesForAddressWithUuid:self.uuid
                                                               reply:^(NSError* error,
@@ -159,11 +159,12 @@
         {
             self.addressProof  = addressProof;
             self.identityProof = identityProof;
-            completion ? completion(YES) : 0;
+            
+            completion ? completion(nil) : 0;
         }
         else
         {
-            completion ? completion(NO) : 0;
+            completion ? completion(error) : 0;
         }
     }];
 }
