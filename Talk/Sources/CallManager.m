@@ -325,6 +325,11 @@
             recent.status = @(CallStatusCancelled);
             break;
         }
+        case CallStateRequesting:
+        {
+            //### TODO.
+            break;
+        }
         case CallStateCalling:
         case CallStateRinging:
         case CallStateConnecting:

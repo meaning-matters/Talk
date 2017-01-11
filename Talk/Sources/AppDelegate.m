@@ -1281,7 +1281,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 #if 1  // muni nested
     NSMutableDictionary* muniDictionary = [NSMutableDictionary new]; // dictionary of municipalities with dictionary of postcodes inside
     NSMutableDictionary* postcodeMap    = [NSMutableDictionary new]; // maps all postcodes to postcode item in muniDictionary
-    NSMutableDictionary* streetMap      = [NSMutableDictionary new]; // maps muni code to all street code objects
+    //NSMutableDictionary* streetMap      = [NSMutableDictionary new]; // maps muni code to all street code objects
     for (NSDictionary* item in muniPostCity)
     {
         if ([item[@"postcode"] isEqualToString:@"9999"])

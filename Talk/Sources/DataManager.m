@@ -899,13 +899,13 @@
 
 - (void)synchronizeRecordings:(void (^)(NSError* error))completion
 {
-    [[WebClient sharedClient] retrieveAudioList:^(NSError* error, NSArray* list)
+    [[WebClient sharedClient] retrieveAudioList:^(NSError* error, NSArray* uuids)
     {
         if (error == nil)
         {
             // Delete Recordings that are no longer on the server.
             NSFetchRequest* request     = [NSFetchRequest fetchRequestWithEntityName:@"Recording"];
-            [request setPredicate:[NSPredicate predicateWithFormat:@"(NOT (uuid IN %@)) OR (uuid == nil)", list]];
+            [request setPredicate:[NSPredicate predicateWithFormat:@"(NOT (uuid IN %@)) OR (uuid == nil)", uuids]];
             NSArray*        deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
             if (error == nil)
             {
@@ -921,7 +921,7 @@
                 return;
             }
 
-            __block NSUInteger count = list.count;
+            __block NSUInteger count = uuids.count;
             if (count == 0)
             {
                 completion ? completion(nil) : 0;
@@ -929,7 +929,7 @@
                 return;
             }
 
-            for (NSString* uuid in list)
+            for (NSString* uuid in uuids)
             {
                 /*
                 [[WebClient sharedClient] retrieveAudioForUuid:uuid

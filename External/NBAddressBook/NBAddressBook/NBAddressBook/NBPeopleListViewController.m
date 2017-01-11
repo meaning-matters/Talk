@@ -166,7 +166,7 @@
         {
             if ([section count] > 0)
             {
-                scrollToSectionIndex = [contactsDatasource indexOfObject:section];
+                scrollToSectionIndex = (int)[contactsDatasource indexOfObject:section];
                 break;
             }
         }

@@ -1510,9 +1510,6 @@ static Common* sharedCommon;
                            toCell:(UITableViewCell*)cell
                        atPosition:(int)position
 {
-    static const int Use0CellTag = 59262; // Some random value.
-    static const int Use1CellTag = 68204; // Some random value.
-
     CGFloat width    = 27.0f;
     CGFloat height   = 17.0f;
     CGFloat gap      =  6.0f;   // Horizontal gap between buttons.
