@@ -22,18 +22,20 @@
 @property (nonatomic, strong) UIImageView*   imageView;
 @property (nonatomic, strong) ImagePicker*   imagePicker;
 @property (nonatomic, assign) ProofImageType type;
+@property (nonatomic, assign) BOOL           editable;
 
 @end
 
 
 @implementation ProofImageViewController
 
-- (instancetype)initWithAddress:(AddressData*)address type:(ProofImageType)type
+- (instancetype)initWithAddress:(AddressData*)address type:(ProofImageType)type editable:(BOOL)editable
 {
     if (self = [super init])
     {
         self.address   = address;
         self.type      = type;
+        self.editable  = editable;
         self.imageView = [[UIImageView alloc] init];
 
         switch (self.type)
@@ -108,10 +110,13 @@
 
     [self.view addSubview:self.imageView];
 
-    UIBarButtonItem* buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
-                                                                                target:self
-                                                                                action:@selector(pickImageAction)];
-    self.navigationItem.rightBarButtonItem = buttonItem;
+    if (self.editable)
+    {
+        UIBarButtonItem* buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
+                                                                                    target:self
+                                                                                    action:@selector(pickImageAction)];
+        self.navigationItem.rightBarButtonItem = buttonItem;
+    }
 }
 
 

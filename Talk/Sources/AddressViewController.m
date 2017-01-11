@@ -1031,12 +1031,12 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
     // Optional sections.
     self.sections |= self.isNew ? 0 : TableSectionStatus;
-    self.sections |= (self.proofTypes.requiresAddressProof  || self.proofTypes.requiresIdentityProof ||
-                      self.address.hasAddressProof          || self.address.hasIdentityProof) ? TableSectionProof : 0;
+    self.sections |= (self.proofTypes.requiresAddressProof || self.proofTypes.requiresIdentityProof ||
+                      self.address.hasAddressProof         || self.address.hasIdentityProof) ? TableSectionProof : 0;
 
     self.rowsProof = 0;
-    self.rowsProof |= self.proofTypes.requiresAddressProof  ? TableRowsProofAddress  : 0;
-    self.rowsProof |= self.proofTypes.requiresIdentityProof ? TableRowsProofIdentity : 0;
+    self.rowsProof |= (self.proofTypes.requiresAddressProof  || self.address.hasAddressProof)  ? TableRowsProofAddress  : 0;
+    self.rowsProof |= (self.proofTypes.requiresIdentityProof || self.address.hasIdentityProof) ? TableRowsProofIdentity : 0;
 
     // We need to determine the existence of the ExtraFields section dynamically, based on
     // the country of the address (which the user may have to select from a list).
@@ -1084,8 +1084,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     {
         case TableSectionName:        numberOfRows = 1;                                          break;
         case TableSectionStatus:      numberOfRows = 1;                                          break;
-        case TableSectionProof:       numberOfRows = self.proofTypes.requiresAddressProof +
-                                                     self.proofTypes.requiresIdentityProof;      break;
+        case TableSectionProof:       numberOfRows = [Common bitsSetCount:self.rowsProof];       break;
         case TableSectionDetails:     numberOfRows = [Common bitsSetCount:self.rowsDetails];     break;
         case TableSectionAddress:     numberOfRows = [Common bitsSetCount:self.rowsAddress];     break;
         case TableSectionExtraFields: numberOfRows = [Common bitsSetCount:self.rowsExtraFields]; break;
@@ -1204,6 +1203,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         }
         case TableSectionProof:
         {
+#warning Texts below NEED UPDATE
             if ((self.proofTypes.requiresAddressProof  && self.address.hasAddressProof == NO) ||
                 (self.proofTypes.requiresIdentityProof && self.address.hasIdentityProof == NO))
             {
@@ -1219,7 +1219,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             {
                 title = NSLocalizedStringWithDefaultValue(@"Address:Action SectionFooterBuy", nil,
                                                           [NSBundle mainBundle],
-                                                          @"You can always buy extra months to use "
+                                                          @"######## NEEDS UPDATE: You can always buy extra months to use "
                                                           @"this phone number.",
                                                           @"Explaining that user can buy more months.");
             }
@@ -1308,7 +1308,8 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                             ProofImageViewController* viewController;
 
                             viewController       = [[ProofImageViewController alloc] initWithAddress:self.address
-                                                                                                type:ProofImageTypeAddress];
+                                                                                                type:ProofImageTypeAddress
+                                                                                            editable:(self.isNew || self.isUpdatable)];
                             viewController.title = cell.textLabel.text;
                             
                             [self.navigationController pushViewController:viewController animated:YES];
@@ -1343,7 +1344,9 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                             ProofImageViewController* viewController;
 
                             viewController       = [[ProofImageViewController alloc] initWithAddress:self.address
-                                                                                                type:ProofImageTypeIdentity];
+                                                                                                type:ProofImageTypeIdentity
+                                                                                            editable:(self.isNew || self.isUpdatable)];
+
                             viewController.title = cell.textLabel.text;
                             
                             [self.navigationController pushViewController:viewController animated:YES];
@@ -1561,7 +1564,8 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     {
         case TableRowsProofAddress:
         {
-            cell.textLabel.text = self.proofTypes.localizedAddressProofsString;
+            cell.textLabel.text = (self.proofTypes != nil) ? self.proofTypes.localizedAddressProofsString
+                                                           : NSLocalizedString(@"Address Proof", @"");
 
             if ((self.isNew || self.isUpdatable) && self.address.hasAddressProof == NO)
             {
@@ -1578,7 +1582,8 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         }
         case TableRowsProofIdentity:
         {
-            cell.textLabel.text = self.proofTypes.localizedIdentityProofsString;
+            cell.textLabel.text = (self.proofTypes != nil) ? self.proofTypes.localizedIdentityProofsString
+                                                           : NSLocalizedString(@"Identity Proof", @"");
 
             if ((self.isNew || self.isUpdatable) && self.address.hasIdentityProof == NO)
             {

@@ -19,6 +19,6 @@ typedef enum
 
 @interface ProofImageViewController : UIViewController
 
-- (instancetype)initWithAddress:(AddressData*)address type:(ProofImageType)type;
+- (instancetype)initWithAddress:(AddressData*)address type:(ProofImageType)type editable:(BOOL)editable;
 
 @end
