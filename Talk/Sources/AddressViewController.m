@@ -96,15 +96,17 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 @property (nonatomic, strong) NSString*                   areaCode;
 @property (nonatomic, strong) NSString*                   areaId;
 @property (nonatomic, assign) NumberTypeMask              numberTypeMask;
+
 @property (nonatomic, assign) AddressTypeMask             addressTypeMask;
 @property (nonatomic, strong) IdType*                     idType;
 @property (nonatomic, strong) Salutation*                 salutation;
 @property (nonatomic, strong) ProofTypes*                 proofTypes;
-@property (nonatomic, readonly) NSDictionary*             extraFieldsInfo;
-
 @property (nonatomic, strong) NSArray*                    citiesArray;
 @property (nonatomic, strong) NSDictionary*               personRegulations;
 @property (nonatomic, strong) NSDictionary*               companyRegulations;
+@property (nonatomic, assign) BOOL                        alwaysRequired;
+@property (nonatomic, readonly) NSArray*                  extraFields;    // Has get method.
+@property (nonatomic, readonly) NSArray*                  idTypes;        // Has get method.
 
 @property (nonatomic, strong) UITextField*                idTypeTextField;
 @property (nonatomic, strong) UITextField*                idNumberTextField;
@@ -149,7 +151,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
 - (instancetype)initWithAddress:(AddressData*)address
            managedObjectContext:(NSManagedObjectContext*)managedObjectContext
-                    addressType:(AddressTypeMask)addressTypeMask
+                    addressType:(AddressTypeMask)addressTypeMask //### TODO Delete and let is come from API 9.
                  isoCountryCode:(NSString*)isoCountryCode
                        areaCode:(NSString*)areaCode
                          areaId:(NSString*)areaId
@@ -239,88 +241,6 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     }
     
     return self;
-}
-
-
-- (NSDictionary*)extraFieldsInfo
-{
-    // "alwaysRequired" indicates if this is also required when the address in another country as the Number.
-    NSDictionary* info =
-    @{
-        @"ES" :
-        @{
-            @"numberTypes"    : @[ @"MOBILE" ],
-            @"alwaysRequired" : @(YES), // Redundantly enforced by addressType == NATIONAL.
-            @"person" :
-            @{
-                @"idTypes" : @[ @"DNI", @"NIE", @"PASSPORT", @"NIF" ],
-                @"fields"  : @[ @"nationality", @"idType", @"idNumber" ]
-            },
-            @"company" :
-            @{
-                @"idTypes" : @[ ],
-                @"fields"  : @[ @"nationality", @"fiscalIdCode" ]
-            }
-        },
-        @"DK" :
-        @{
-            @"numberTypes"    : @[ @"GEOGRAPHIC", @"NATIONAL", @"MOBILE", @"TOLL_FREE", @"SHARED_COST", @"SPECIAL" ],
-            @"alwaysRequired" : @(NO),
-            @"person" :
-            @{
-                @"idTypes" : @[ ],
-                @"fields"  : @[ @"streetCode", @"municipalityCode" ]
-            },
-            @"company" :
-            @{
-                @"idTypes" : @[ ],
-                @"fields"  : @[ @"streetCode", @"municipalityCode" ]
-            }
-        },
-        @"ZA" :
-        @{
-            @"numberTypes"    : @[ @"GEOGRAPHIC", @"NATIONAL", @"MOBILE", @"TOLL_FREE", @"SHARED_COST", @"SPECIAL" ],
-            @"alwaysRequired" : @(NO),
-            @"person" :
-            @{
-                @"idTypes" : @[ @"PASSPORT", @"ZA_NATIONAL_ID_CARD" ],
-                @"fields"  : @[ @"nationality", @"idType", @"idNumber", @"idProof" ]
-            },
-            @"company" :
-            @{
-                @"idTypes" : @[ @"ZA_BUSINESS_REGISTRATION" ],
-                @"fields"  : @[ @"nationality", @"idType", @"idNumber", @"idProof" ]
-            }
-        },
-        @"AT" :
-        @{
-            @"numberTypes"    : @[ @"MOBILE" ],
-            @"alwaysRequired" : @(YES),
-            @"person" :
-            @{
-                @"idTypes" : @[ @"PASSPORT", @"NATIONAL_ID_CARD" ],
-                @"fields"  : @[ @"nationality", @"idType", @"idNumber", @"idProof", @"issuingAuthority", @"dateOfBirth" ]
-            },
-            @"company" :
-            @{
-                @"idTypes" : @[ @"BUSINESS_REGISTRATION" ],
-                @"fields"  : @[ @"nationality", @"idType", @"idNumber", @"idProof" ]
-            }
-        }
-    };
-
-    if ([info[self.numberIsoCountryCode][@"alwaysRequired"] boolValue] == YES)
-    {
-        return info[self.numberIsoCountryCode];
-    }
-    else if ([self.address.isoCountryCode isEqualToString:self.numberIsoCountryCode])
-    {
-        return info[self.address.isoCountryCode];
-    }
-    else
-    {
-        return nil;
-    }
 }
 
 
@@ -571,16 +491,20 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     __weak typeof(self) weakSelf = self;
     [[WebClient sharedClient] retrieveNumberAreaInfoForIsoCountryCode:self.numberIsoCountryCode
                                                                areaId:self.areaId
-                                                                reply:^(NSError*      error,
-                                                                        NSArray*      cities,
-                                                                        NSDictionary* personRegulations,
-                                                                        NSDictionary* companyRegulations)
+                                                                reply:^(NSError*        error,
+                                                                        NSArray*        cities,
+                                                                        AddressTypeMask addressType,
+                                                                        BOOL            alwaysRequired,
+                                                                        NSDictionary*   personRegulations,
+                                                                        NSDictionary*   companyRegulations)
     {
         __strong typeof(weakSelf) strongSelf = weakSelf;
 
         if (error == nil)
         {
             strongSelf.citiesArray        = cities;
+            strongSelf.addressTypeMask    = addressType;
+            strongSelf.alwaysRequired     = alwaysRequired;
             strongSelf.personRegulations  = personRegulations;
             strongSelf.companyRegulations = companyRegulations;
             strongSelf.proofTypes         = [[ProofTypes alloc] initWithPerson:personRegulations
@@ -946,8 +870,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
 - (void)refreshExtraFieldsSection
 {
-    NSArray* idTypes = self.salutation.isPerson ? self.personRegulations[@"idTypes"]
-                                                : self.companyRegulations[@"idTypes"];
+    NSArray* idTypes = self.idTypes;
 
     if (idTypes.count == 1)
     {
@@ -969,7 +892,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
 - (void)updateExtraFieldsSection
 {
-    if (self.extraFieldsInfo != nil)
+    if (self.extraFields.count > 0)
     {
         // Assumes that Extra Fields section is bottom one.
         NSUInteger  index    = [self numberOfSectionsInTableView:self.tableView] - 1;
@@ -1053,7 +976,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 {
     AddressIdTypesViewController* idTypesViewController;
 
-    NSArray* idTypes = self.extraFieldsInfo[self.salutation.typeString][@"idTypes"];
+    NSArray* idTypes = self.idTypes;
     idTypesViewController = [[AddressIdTypesViewController alloc] initWithIdType:self.idType
                                                                          idTypes:idTypes
                                                                       completion:^
@@ -1066,6 +989,32 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
     idTypesViewController.title = cell.textLabel.text;
     [self.navigationController pushViewController:idTypesViewController animated:YES];
+}
+
+
+- (NSArray*)extraFields
+{
+    if (self.alwaysRequired || [self.address.isoCountryCode isEqualToString:self.numberIsoCountryCode])
+    {
+        return self.salutation.isPerson ? self.personRegulations[@"extraFields"] : self.companyRegulations[@"extraFields"];
+    }
+    else
+    {
+        return nil;
+    }
+}
+
+
+- (NSArray*)idTypes
+{
+    if (self.alwaysRequired || [self.address.isoCountryCode isEqualToString:self.numberIsoCountryCode])
+    {
+        return self.salutation.isPerson ? self.personRegulations[@"idTypes"] : self.companyRegulations[@"idTypes"];
+    }
+    else
+    {
+        return nil;
+    }
 }
 
 
@@ -1094,8 +1043,8 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     self.rowsExtraFields = 0;
     if (self.isNew)
     {
-        NSArray* fields = self.salutation.isPerson ? self.personRegulations[@"extraFields"]
-                                                   : self.companyRegulations[@"extraFields"];
+        NSArray* fields = self.extraFields;
+
         if (fields.count > 0)
         {
             self.sections |= TableSectionExtraFields;
@@ -1446,7 +1395,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                     }
                     case TableRowAddressCountry:
                     {
-                        BOOL hadExtraFields = (self.extraFieldsInfo != nil);
+                        BOOL hadExtraFields = (self.extraFields.count > 0);
                         isoCountryCode = self.address.isoCountryCode;
                         completion = ^(BOOL cancelled, NSString* isoCountryCode)
                         {
@@ -1457,7 +1406,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                 // Update the cell.
                                 self.countryTextField.text = [[CountryNames sharedNames] nameForIsoCountryCode:isoCountryCode];
 
-                                if (hadExtraFields != (self.extraFieldsInfo != nil))
+                                if (hadExtraFields != (self.extraFields.count > 0))
                                 {
                                     [self updateExtraFieldsSection];
                                 }
@@ -1512,7 +1461,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                     }
                     case TableRowExtraFieldsIdType:
                     {
-                        if ([self.extraFieldsInfo[self.salutation.typeString][@"idTypes"] count] == 1)
+                        if (self.idTypes.count == 1)
                         {
                             return;
                         }
@@ -1965,7 +1914,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         {
             textField.userInteractionEnabled = NO;
 
-            if ((self.isNew || self.isUpdatable) && [self.extraFieldsInfo[self.salutation.typeString][@"idTypes"] count] > 1)
+            if ((self.isNew || self.isUpdatable) && self.idTypes.count > 1)
             {
                 cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;

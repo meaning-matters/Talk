@@ -576,10 +576,12 @@
 // 9. GET PURCHASE INFO DATA
 - (void)retrieveNumberAreaInfoForIsoCountryCode:(NSString*)isoCountryCode
                                          areaId:(NSString*)areaId
-                                          reply:(void (^)(NSError*      error,
-                                                          NSArray*      cities,
-                                                          NSDictionary* personRegulations,
-                                                          NSDictionary* companyRegulations))reply
+                                          reply:(void (^)(NSError*        error,
+                                                          NSArray*        cities,
+                                                          AddressTypeMask addressType,
+                                                          BOOL            alwaysRequired,
+                                                          NSDictionary*   personRegulations,
+                                                          NSDictionary*   companyRegulations))reply
 {
     [self getPath:[NSString stringWithFormat:@"/numbers/countries/%@/areas/%@", isoCountryCode, areaId]
        parameters:nil
@@ -587,11 +589,16 @@
     {
         if (error == nil)
         {
-            reply(nil, content[@"cities"], content[@"person"], content[@"company"]);
+            reply(nil,
+                  content[@"cities"],
+                  [AddressType addressTypeMaskForString:content[@"addressType"]],
+                  [content[@"alwaysRequired"] boolValue],
+                  content[@"person"],
+                  content[@"company"]);
         }
         else
         {
-            reply(error, nil, nil, nil);
+            reply(error, nil, 0, NO, nil, nil);
         }
     }];
 }
@@ -1055,7 +1062,7 @@
         }
         else
         {
-            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, AddressTypeWorldwideMask, nil, nil, NO,
+            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, 0, nil, nil, NO,
                   0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
         }
     }];

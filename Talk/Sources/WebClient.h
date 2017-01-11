@@ -110,13 +110,15 @@
                                 currencyCode:(NSString*)currencyCode
                                        reply:(void (^)(NSError* error, NSArray* areas))reply;
 
-//  9. GET PURCHASE INFO DATA
+// 9. GET PURCHASE INFO DATA
 - (void)retrieveNumberAreaInfoForIsoCountryCode:(NSString*)isoCountryCode
                                          areaId:(NSString*)areaId
-                                          reply:(void (^)(NSError*      error,
-                                                          NSArray*      cities,
-                                                          NSDictionary* personRegulations,
-                                                          NSDictionary* companyRegulations))reply;
+                                          reply:(void (^)(NSError*        error,
+                                                          NSArray*        cities,
+                                                          AddressTypeMask addressType,
+                                                          BOOL            alwaysRequired,
+                                                          NSDictionary*   personRegulations,
+                                                          NSDictionary*   companyRegulations))reply;
 
 // 10. CHECK IF PURCHASE INFO IS VALID
 - (void)checkPurchaseInfo:(NSDictionary*)info reply:(void (^)(NSError* error, BOOL isValid))reply;
