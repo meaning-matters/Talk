@@ -543,12 +543,13 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             NSString* message;
             
             title   = NSLocalizedStringWithDefaultValue(@"Address LoadFailAlertTitle", nil,
-                                                        [NSBundle mainBundle], @"Loading Failed",
+                                                        [NSBundle mainBundle], @"Loading Info Failed",
                                                         @"Alert title telling that loading information over internet failed.\n"
                                                         @"[iOS alert title size].");
             message = NSLocalizedStringWithDefaultValue(@"Address LoadFailAlertMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"Loading the list of cities and postcodes failed: %@\n\nPlease try again later.",
+                                                        @"Loading the Address regulations (and postcode list) failed: %@"
+                                                        @"\n\nPlease try again later.",
                                                         @"Alert message telling that loading information over internet failed.\n"
                                                         @"[iOS alert message size]");
             message = [NSString stringWithFormat:message, error.localizedDescription];

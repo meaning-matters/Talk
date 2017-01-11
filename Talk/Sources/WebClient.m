@@ -1009,6 +1009,7 @@
                                          NSString*       numberType,
                                          NSString*       areaCode,
                                          NSString*       areaName,
+                                         NSString*       areaId,
                                          NSString*       stateCode,
                                          NSString*       stateName,
                                          NSString*       isoCountryCode,
@@ -1043,6 +1044,7 @@
                   content[@"numberType"],
                   content[@"areaCode"],
                   content[@"areaName"],
+                  content[@"areaId"],
                   content[@"stateCode"],
                   content[@"stateName"],
                   content[@"isoCountryCode"],
@@ -1062,7 +1064,7 @@
         }
         else
         {
-            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, 0, nil, nil, NO,
+            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, 0, nil, nil, NO,
                   0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
         }
     }];

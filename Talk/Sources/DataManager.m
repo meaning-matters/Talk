@@ -719,6 +719,7 @@
                                                                    NSString*       numberType,
                                                                    NSString*       areaCode,
                                                                    NSString*       areaName,
+                                                                   NSString*       areaId,
                                                                    NSString*       stateCode,
                                                                    NSString*       stateName,
                                                                    NSString*       isoCountryCode,
@@ -763,6 +764,7 @@
                         number.e164           = e164;
                         number.numberType     = numberType;
                         number.areaCode       = areaCode;
+                        number.areaId         = areaId;
                         number.stateCode      = stateCode;
                         number.stateName      = stateName;
                         number.isoCountryCode = isoCountryCode;

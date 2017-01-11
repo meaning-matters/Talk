@@ -260,6 +260,7 @@
                                          NSString*       numberType,
                                          NSString*       areaCode,
                                          NSString*       areaName,
+                                         NSString*       areaId,
                                          NSString*       stateCode,
                                          NSString*       stateName,
                                          NSString*       isoCountryCode,
