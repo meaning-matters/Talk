@@ -17,8 +17,8 @@ extern NSString* const AddressUpdatesNotification;
 
 - (NSUInteger)addressUpdatesCount;
 
-- (NSDictionary*)addressUpdateWithId:(NSString*)addressId;
+- (NSDictionary*)addressUpdateWithUuid:(NSString*)uuid;
 
-- (void)removeAddressUpdateWithId:(NSString*)addressId;
+- (void)removeAddressUpdateWithUuid:(NSString*)uuid;
 
 @end

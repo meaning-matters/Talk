@@ -357,9 +357,9 @@
 }
 
 
-- (AddressData*)lookupAddressWithId:(NSString*)addressId
+- (AddressData*)lookupAddressWithUuid:(NSString*)uuid
 {
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"addressId == %@", addressId];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"uuid == %@", uuid];
     NSArray*     addresses = [self fetchEntitiesWithName:@"Address"
                                                 sortKeys:@[@"name"]
                                                predicate:predicate
@@ -536,13 +536,13 @@
                                                         areaCode:nil
                                                       numberType:0
                                                  isExtranational:NO
-                                                           reply:^(NSError *error, NSArray *addressIds)
+                                                           reply:^(NSError *error, NSArray *uuids)
     {
         if (error == nil)
         {
             // Delete Addresses that are no longer on the server.
             NSFetchRequest* request     = [NSFetchRequest fetchRequestWithEntityName:@"Address"];
-            [request setPredicate:[NSPredicate predicateWithFormat:@"(NOT (addressId IN %@)) OR (addressId == nil)", addressIds]];
+            [request setPredicate:[NSPredicate predicateWithFormat:@"(NOT (uuid IN %@)) OR (uuid == nil)", uuids]];
             NSArray*        deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
             if (error == nil)
             {
@@ -560,13 +560,13 @@
 
             // Delete Address Updates that are no longer on server.
             NSMutableSet* complement = [NSMutableSet setWithArray:[[Settings sharedSettings].addressUpdates allKeys]];
-            [complement minusSet:[NSSet setWithArray:addressIds]];
-            for (NSString* addressId in [complement allObjects])
+            [complement minusSet:[NSSet setWithArray:uuids]];
+            for (NSString* uuid in [complement allObjects])
             {
-                [[AddressUpdatesHandler sharedHandler] removeAddressUpdateWithId:addressId];
+                [[AddressUpdatesHandler sharedHandler] removeAddressUpdateWithUuid:uuid];
             }
 
-            __block NSUInteger count = addressIds.count;
+            __block NSUInteger count = uuids.count;
             if (count == 0)
             {
                 completion ? completion(nil) : 0;
@@ -574,37 +574,37 @@
                 return;
             }
             
-            for (NSString* addressId in addressIds)
+            for (NSString* uuid in uuids)
             {
-                [[WebClient sharedClient] retrieveAddressWithId:addressId
-                                                          reply:^(NSError*            error,
-                                                                  NSString*           name,
-                                                                  NSString*           salutation,
-                                                                  NSString*           firstName,
-                                                                  NSString*           lastName,
-                                                                  NSString*           companyName,
-                                                                  NSString*           companyDescription,
-                                                                  NSString*           street,
-                                                                  NSString*           buildingNumber,
-                                                                  NSString*           buildingLetter,
-                                                                  NSString*           city,
-                                                                  NSString*           postcode,
-                                                                  NSString*           isoCountryCode,
-                                                                  NSString*           areaCode,
-                                                                  BOOL                hasAddressProof,
-                                                                  BOOL                hasIdentityProof,
-                                                                  NSString*           idType,
-                                                                  NSString*           idNumber,
-                                                                  NSString*           fiscalIdCode,
-                                                                  NSString*           streetCode,
-                                                                  NSString*           municipalityCode,
-                                                                  AddressStatusMask   addressStatus,
-                                                                  RejectionReasonMask rejectionReasons)
+                [[WebClient sharedClient] retrieveAddressWithUuid:uuid
+                                                            reply:^(NSError*            error,
+                                                                    NSString*           name,
+                                                                    NSString*           salutation,
+                                                                    NSString*           firstName,
+                                                                    NSString*           lastName,
+                                                                    NSString*           companyName,
+                                                                    NSString*           companyDescription,
+                                                                    NSString*           street,
+                                                                    NSString*           buildingNumber,
+                                                                    NSString*           buildingLetter,
+                                                                    NSString*           city,
+                                                                    NSString*           postcode,
+                                                                    NSString*           isoCountryCode,
+                                                                    NSString*           areaCode,
+                                                                    BOOL                hasAddressProof,
+                                                                    BOOL                hasIdentityProof,
+                                                                    NSString*           idType,
+                                                                    NSString*           idNumber,
+                                                                    NSString*           fiscalIdCode,
+                                                                    NSString*           streetCode,
+                                                                    NSString*           municipalityCode,
+                                                                    AddressStatusMask   addressStatus,
+                                                                    RejectionReasonMask rejectionReasons)
                 {
                     if (error == nil)
                     {
                         NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Address"];
-                        [request setPredicate:[NSPredicate predicateWithFormat:@"addressId == %@", addressId]];
+                        [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", uuid]];
 
                         AddressData* address = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
                         if (error == nil)
@@ -622,7 +622,7 @@
                             return;
                         }
 
-                        address.addressId          = addressId;
+                        address.uuid               = uuid;
                         address.name               = name;
                         address.salutation         = salutation;
                         address.firstName          = firstName;
@@ -722,7 +722,7 @@
                                                                    NSString*       stateCode,
                                                                    NSString*       stateName,
                                                                    NSString*       isoCountryCode,
-                                                                   NSString*       addressId,
+                                                                   NSString*       addressUuid,
                                                                    AddressTypeMask addressType,
                                                                    NSDate*         purchaseDate,
                                                                    NSDate*         expiryDate,
@@ -766,7 +766,7 @@
                         number.stateCode      = stateCode;
                         number.stateName      = stateName;
                         number.isoCountryCode = isoCountryCode;
-                        number.address        = [self lookupAddressWithId:addressId]; // May return nil.
+                        number.address        = [self lookupAddressWithUuid:addressUuid]; // May return nil.
                         number.addressType    = [AddressType stringForAddressTypeMask:addressType];
                         number.purchaseDate   = purchaseDate;
                         number.expiryDate     = expiryDate;

@@ -57,22 +57,22 @@ NSString* const AddressUpdatesNotification = @"AddressUpdatesNotification";
 {
     NSMutableDictionary* addressUpdates = [NSMutableDictionary dictionary];
     NSArray*             addresses      = [[DataManager sharedManager] fetchEntitiesWithName:@"Address"];
-    NSArray*             addressIds     = [addresses valueForKey:@"addressId"];
+    NSArray*             uuids          = [addresses valueForKey:@"uuid"];
 
     // Convert to binaray representation.
-    for (NSString* addressId in dictionary)
+    for (NSString* uuid in dictionary)
     {
-        if ([addressIds containsObject:addressId])
+        if ([uuids containsObject:uuid])
         {
-            NSDictionary*       addressUpdate = dictionary[addressId];
+            NSDictionary*       addressUpdate = dictionary[uuid];
             AddressStatusMask   addressStatusMask;
             RejectionReasonMask rejectionReasonsMask;
 
             addressStatusMask    = [AddressStatus addressStatusMaskForString:addressUpdate[@"addressStatus"]];
             rejectionReasonsMask = [AddressStatus rejectionReasonsMaskForArray:addressUpdate[@"rejectionReasons"]];
 
-            addressUpdates[addressId] = @{@"addressStatus"    : @(addressStatusMask),
-                                          @"rejectionReasons" : @(rejectionReasonsMask)};
+            addressUpdates[uuid] = @{@"addressStatus"    : @(addressStatusMask),
+                                     @"rejectionReasons" : @(rejectionReasonsMask)};
         }
         else
         {
@@ -83,11 +83,11 @@ NSString* const AddressUpdatesNotification = @"AddressUpdatesNotification";
     // Settings contains the up-to-date state of address updates seen by user.
     // The server however only sends updates once, so the new set of updates
     // received by a notification must be combined with the local set.
-    for (NSString* addressId in [Settings sharedSettings].addressUpdates)
+    for (NSString* uuid in [Settings sharedSettings].addressUpdates)
     {
-        if (addressUpdates[addressId] == nil)
+        if (addressUpdates[uuid] == nil)
         {
-            addressUpdates[addressId] = [Settings sharedSettings].addressUpdates[addressId];
+            addressUpdates[uuid] = [Settings sharedSettings].addressUpdates[uuid];
         }
     }
 
@@ -122,7 +122,7 @@ NSString* const AddressUpdatesNotification = @"AddressUpdatesNotification";
     {
         if ([object.entity.name isEqualToString:@"Address"])
         {
-            [self removeAddressUpdateWithId:((AddressData*)object).addressId];
+            [self removeAddressUpdateWithUuid:((AddressData*)object).uuid];
         }
     }
 }
@@ -134,12 +134,12 @@ NSString* const AddressUpdatesNotification = @"AddressUpdatesNotification";
 
     if (address.addressStatus == AddressStatusVerifiedMask)
     {
-        addressUpdates[address.addressId] = @{@"addressStatus"    : @(address.addressStatus)};
+        addressUpdates[address.uuid] = @{@"addressStatus"    : @(address.addressStatus)};
     }
 
     if (address.addressStatus == AddressStatusRejectedMask)
     {
-        addressUpdates[address.addressId] = @{@"addressStatus"    : @(address.addressStatus),
+        addressUpdates[address.uuid] = @{@"addressStatus"    : @(address.addressStatus),
                                               @"rejectionReasons" : @(address.rejectionReasons)};
     }
 
@@ -165,17 +165,17 @@ NSString* const AddressUpdatesNotification = @"AddressUpdatesNotification";
 }
 
 
-- (NSDictionary*)addressUpdateWithId:(NSString *)addressId
+- (NSDictionary*)addressUpdateWithUuid:(NSString*)uuid
 {
-    return [Settings sharedSettings].addressUpdates[addressId];
+    return [Settings sharedSettings].addressUpdates[uuid];
 }
 
 
-- (void)removeAddressUpdateWithId:(NSString*)addressId
+- (void)removeAddressUpdateWithUuid:(NSString*)uuid
 {
     NSMutableDictionary* addressUpdates = [[Settings sharedSettings].addressUpdates mutableCopy];
 
-    addressUpdates[addressId] = nil;
+    addressUpdates[uuid] = nil;
 
     [self saveAddressUpdates:addressUpdates];
 }

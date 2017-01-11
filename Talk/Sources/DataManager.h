@@ -49,7 +49,7 @@
 
 - (PhoneData*)lookupPhoneForE164:(NSString*)e164;
 
-- (AddressData*)lookupAddressWithId:(NSString*)addressId;
+- (AddressData*)lookupAddressWithUuid:(NSString*)uuid;
 
 - (DestinationData*)lookupDestinationWithName:(NSString*)name;
 

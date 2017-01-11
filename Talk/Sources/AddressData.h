@@ -19,7 +19,7 @@
 
 // Optional.
 @property (nonatomic, retain) NSString* name;
-@property (nonatomic, retain) NSString* addressId;        // Server assigned ID for this address.
+@property (nonatomic, retain) NSString* uuid;             // Server assigned UUID for this address.
 @property (nonatomic, retain) NSString* firstName;
 @property (nonatomic, retain) NSString* lastName;
 @property (nonatomic, retain) NSString* companyName;
@@ -37,7 +37,7 @@
 @property (nonatomic, retain) NSData*   identityProof;    // Image data.
 @property (nonatomic, retain) NSString* idType;
 @property (nonatomic, retain) NSString* idNumber;
-@property (nonatomic, retain) NSString* nationality;     // ISO country code of nationality.
+@property (nonatomic, retain) NSString* nationality;      // ISO country code of nationality.
 @property (nonatomic, retain) NSString* fiscalIdCode;
 @property (nonatomic, retain) NSString* streetCode;
 @property (nonatomic, retain) NSString* municipalityCode;

@@ -361,7 +361,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 {
     NSString*     title = nil;
     NSString*     message;
-    NSDictionary* addressUpdate = [[AddressUpdatesHandler sharedHandler] addressUpdateWithId:self.address.addressId];
+    NSDictionary* addressUpdate = [[AddressUpdatesHandler sharedHandler] addressUpdateWithUuid:self.address.uuid];
     if (addressUpdate != nil)
     {
         AddressStatusMask mask = [addressUpdate[@"addressStatus"] integerValue];
@@ -429,14 +429,14 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                        message:message
                                     completion:^(BOOL cancelled, NSInteger buttonIndex)
         {
-            [[AddressUpdatesHandler sharedHandler] removeAddressUpdateWithId:self.address.addressId];
+            [[AddressUpdatesHandler sharedHandler] removeAddressUpdateWithUuid:self.address.uuid];
         }
                              cancelButtonTitle:[Strings okString]
                              otherButtonTitles:nil];
     }
     else
     {
-        [[AddressUpdatesHandler sharedHandler] removeAddressUpdateWithId:self.address.addressId];
+        [[AddressUpdatesHandler sharedHandler] removeAddressUpdateWithUuid:self.address.uuid];
     }
 }
 
@@ -2333,7 +2333,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                                   streetCode:self.address.streetCode
                                             municipalityCode:self.address.municipalityCode
                                                        reply:^(NSError*  error,
-                                                               NSString* addressId,
+                                                               NSString* uuid,
                                                                NSString* addressStatus,
                                                                NSArray*  missingFields)
     {
@@ -2341,7 +2341,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
         if (error == nil)
         {
-            self.address.addressId     = addressId;
+            self.address.uuid          = uuid;
             self.address.addressStatus = [AddressStatus addressStatusMaskForString:addressStatus];
 
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
@@ -2366,25 +2366,25 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 - (void)saveAction
 {
     self.isLoading = YES;
-    [[WebClient sharedClient] updateAddressWithId:self.address.addressId
-                                             name:self.address.name
-                                       salutation:self.address.salutation
-                                        firstName:self.address.firstName
-                                         lastName:self.address.lastName
-                                      companyName:self.address.companyName
-                               companyDescription:self.address.companyDescription
-                                           street:self.address.street
-                                   buildingNumber:self.address.buildingNumber
-                                   buildingLetter:self.address.buildingLetter
-                                             city:self.address.city
-                                         postcode:self.address.postcode
-                                   isoCountryCode:self.address.isoCountryCode
-                                           idType:self.address.idType
-                                         idNumber:self.address.idNumber
-                                     fiscalIdCode:self.address.fiscalIdCode
-                                       streetCode:self.address.streetCode
-                                 municipalityCode:self.address.municipalityCode
-                                            reply:^(NSError *error)
+    [[WebClient sharedClient] updateAddressWithUuid:self.address.uuid
+                                               name:self.address.name
+                                         salutation:self.address.salutation
+                                          firstName:self.address.firstName
+                                           lastName:self.address.lastName
+                                        companyName:self.address.companyName
+                                 companyDescription:self.address.companyDescription
+                                             street:self.address.street
+                                     buildingNumber:self.address.buildingNumber
+                                     buildingLetter:self.address.buildingLetter
+                                               city:self.address.city
+                                           postcode:self.address.postcode
+                                     isoCountryCode:self.address.isoCountryCode
+                                             idType:self.address.idType
+                                           idNumber:self.address.idNumber
+                                       fiscalIdCode:self.address.fiscalIdCode
+                                         streetCode:self.address.streetCode
+                                   municipalityCode:self.address.municipalityCode
+                                              reply:^(NSError *error)
     {
         self.isLoading = NO;
 

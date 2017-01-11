@@ -128,33 +128,33 @@
                                   areaCode:(NSString*)areaCode              // Optional (i.e. can be nil).
                                 numberType:(NumberTypeMask)numberTypeMask   // Mandatory.
                            isExtranational:(BOOL)isExtranational
-                                     reply:(void (^)(NSError* error, NSArray* addressIds))reply;
+                                     reply:(void (^)(NSError* error, NSArray* uuids))reply;
 
 // 10B. GET REGULATION ADDRESS
-- (void)retrieveAddressWithId:(NSString*)addressId
-                        reply:(void (^)(NSError*            error,
-                                        NSString*           name,
-                                        NSString*           salutation,
-                                        NSString*           firstName,
-                                        NSString*           lastName,
-                                        NSString*           companyName,
-                                        NSString*           companyDescription,
-                                        NSString*           street,
-                                        NSString*           buildingNumber,
-                                        NSString*           buildingLetter,
-                                        NSString*           city,
-                                        NSString*           postcode,
-                                        NSString*           isoCountryCode,
-                                        NSString*           areaCode,
-                                        BOOL                hasAddressProof,
-                                        BOOL                hasIdentityProof,
-                                        NSString*           idType,
-                                        NSString*           idNumber,
-                                        NSString*           fiscalIdCode,
-                                        NSString*           streetCode,
-                                        NSString*           municipalityCode,
-                                        AddressStatusMask   addressStatus,
-                                        RejectionReasonMask rejectionReasons))reply;
+- (void)retrieveAddressWithUuid:(NSString*)uuid
+                          reply:(void (^)(NSError*            error,
+                                          NSString*           name,
+                                          NSString*           salutation,
+                                          NSString*           firstName,
+                                          NSString*           lastName,
+                                          NSString*           companyName,
+                                          NSString*           companyDescription,
+                                          NSString*           street,
+                                          NSString*           buildingNumber,
+                                          NSString*           buildingLetter,
+                                          NSString*           city,
+                                          NSString*           postcode,
+                                          NSString*           isoCountryCode,
+                                          NSString*           areaCode,
+                                          BOOL                hasAddressProof,
+                                          BOOL                hasIdentityProof,
+                                          NSString*           idType,
+                                          NSString*           idNumber,
+                                          NSString*           fiscalIdCode,
+                                          NSString*           streetCode,
+                                          NSString*           municipalityCode,
+                                          AddressStatusMask   addressStatus,
+                                          RejectionReasonMask rejectionReasons))reply;
 
 // 10C. CREATE REGULATION ADDRESS
 - (void)createAddressForIsoCountryCode:(NSString*)numberIsoCountryCode
@@ -181,51 +181,51 @@
                             streetCode:(NSString*)streetCode
                       municipalityCode:(NSString*)municipalityCode
                                  reply:(void (^)(NSError*  error,
-                                                 NSString* addressId,
+                                                 NSString* uuid,
                                                  NSString* addressStatus,
                                                  NSArray*  missingFields))reply;
 
 // 10D. DELETE REGULATION ADDRESS
-- (void)deleteAddressWithId:(NSString*)addressId
-                      reply:(void (^)(NSError* error))reply;
+- (void)deleteAddressWithUuid:(NSString*)uuid
+                        reply:(void (^)(NSError* error))reply;
 
 // 10E. GET ADDRESS PROOF IMAGES
-- (void)retrieveProofImagesForAddressId:(NSString*)addressId
-                                  reply:(void (^)(NSError* error, NSData* addressProof, NSData* identityProof))reply;
+- (void)retrieveProofImagesForAddressWithUuid:(NSString*)uuid
+                                        reply:(void (^)(NSError* error, NSData* addressProof, NSData* identityProof))reply;
 
 // 10F. UPDATE ADDRESS PROOF IMAGE(S)
-- (void)updateProofImagesForAddressId:(NSString*)addressId
-                         addressProof:(NSData*)addressProof
-                        identityProof:(NSData*)identityProof
-                                reply:(void (^)(NSError* error))reply;
+- (void)updateProofImagesForAddressWithUuid:(NSString*)uuid
+                               addressProof:(NSData*)addressProof
+                              identityProof:(NSData*)identityProof
+                                      reply:(void (^)(NSError* error))reply;
 
 // 10G. UPDATE ADDRESS' NAME
-- (void)updateAddressWithId:(NSString*)addressId
-                       name:(NSString*)name
-                 salutation:(NSString*)salutation
-                  firstName:(NSString*)firstName
-                   lastName:(NSString*)lastName
-                companyName:(NSString*)companyName
-         companyDescription:(NSString*)companyDescription
-                     street:(NSString*)street
-             buildingNumber:(NSString*)buildingNumber
-             buildingLetter:(NSString*)buildingLetter
-                       city:(NSString*)city
-                   postcode:(NSString*)postcode
-             isoCountryCode:(NSString*)isoCountryCode
-                     idType:(NSString*)idType
-                   idNumber:(NSString*)idNumber
-               fiscalIdCode:(NSString*)fiscalIdCode
-                 streetCode:(NSString*)streetCode
-           municipalityCode:(NSString*)municipalityCode
-                      reply:(void (^)(NSError* error))reply;
+- (void)updateAddressWithUuid:(NSString*)uuid
+                         name:(NSString*)name
+                   salutation:(NSString*)salutation
+                    firstName:(NSString*)firstName
+                     lastName:(NSString*)lastName
+                  companyName:(NSString*)companyName
+           companyDescription:(NSString*)companyDescription
+                       street:(NSString*)street
+               buildingNumber:(NSString*)buildingNumber
+               buildingLetter:(NSString*)buildingLetter
+                         city:(NSString*)city
+                     postcode:(NSString*)postcode
+               isoCountryCode:(NSString*)isoCountryCode
+                       idType:(NSString*)idType
+                     idNumber:(NSString*)idNumber
+                 fiscalIdCode:(NSString*)fiscalIdCode
+                   streetCode:(NSString*)streetCode
+             municipalityCode:(NSString*)municipalityCode
+                        reply:(void (^)(NSError* error))reply;
 
 // 11A. PURCHASE NUMBER
 - (void)purchaseNumberForMonths:(NSUInteger)months
                            name:(NSString*)name
                  isoCountryCode:(NSString*)isoCountryCode
                          areaId:(NSString*)areaId
-                      addressId:(NSString*)addressId
+                    addressUuid:(NSString*)addressUuid
                       autoRenew:(BOOL)autoRenew
                           reply:(void (^)(NSError*  error,
                                           NSString* uuid,
@@ -239,7 +239,7 @@
 - (void)updateNumberWithUuid:(NSString*)uuid
                         name:(NSString*)name
                    autoRenew:(BOOL)autoRenew
-                   addressId:(NSString*)addressId
+                 addressUuid:(NSString*)addressUuid
                        reply:(void (^)(NSError* error))reply;
 
 // 11C. EXTEND NUMBER
@@ -263,7 +263,7 @@
                                          NSString*       stateCode,
                                          NSString*       stateName,
                                          NSString*       isoCountryCode,
-                                         NSString*       addressId,
+                                         NSString*       addressUuid,
                                          AddressTypeMask addressType,
                                          NSDate*         purchaseDate,
                                          NSDate*         expiryDate,
@@ -417,19 +417,19 @@
 - (void)cancelAllRetrieveAddresses;
 
 // 10B.
-- (void)cancelAllRetrieveAddressWithId:(NSString*)addressId;
+- (void)cancelAllRetrieveAddressWithUuid:(NSString*)uuid;
 
 // 10C.
 - (void)cancelAllCreateAddress;
 
 // 10D.
-- (void)cancelAllDeleteAddressWithId:(NSString*)addressId;
+- (void)cancelAllDeleteAddressWithUuid:(NSString*)uuid;
 
 // 10E.
-- (void)cancelAllRetrieveProofImagesForAddressId:(NSString*)addressId;
+- (void)cancelAllRetrieveProofImagesForAddressWithUuid:(NSString*)uuid;
 
 // 10F.
-- (void)cancelAllUpdateProofImagesForAddressId:(NSString*)addressId;
+- (void)cancelAllUpdateProofImagesForAddressWithUuid:(NSString*)uuid;
 
 // 11A.
 - (void)cancelAllPurchaseNumber;

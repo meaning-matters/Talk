@@ -20,7 +20,7 @@
 
 // Optional.
 @dynamic name;
-@dynamic addressId;
+@dynamic uuid;
 @dynamic firstName;
 @dynamic lastName;
 @dynamic companyName;
@@ -80,7 +80,7 @@
     }
     else
     {
-        [[WebClient sharedClient] deleteAddressWithId:self.addressId reply:^(NSError *error)
+        [[WebClient sharedClient] deleteAddressWithUuid:self.uuid reply:^(NSError *error)
         {
             if (error == nil || error.code == WebStatusFailAddressUnknown)
             {
@@ -150,10 +150,10 @@
 
 - (void)loadProofImagesWithCompletion:(void (^)(BOOL succeeded))completion
 {
-    [[WebClient sharedClient] retrieveProofImagesForAddressId:self.addressId
-                                                        reply:^(NSError* error,
-                                                                NSData*  addressProof,
-                                                                NSData*  identityProof)
+    [[WebClient sharedClient] retrieveProofImagesForAddressWithUuid:self.uuid
+                                                              reply:^(NSError* error,
+                                                                      NSData*  addressProof,
+                                                                      NSData*  identityProof)
     {
         if (error == nil)
         {
@@ -171,7 +171,7 @@
 
 - (void)cancelLoadProofImages
 {
-    [[WebClient sharedClient] cancelAllRetrieveProofImagesForAddressId:self.addressId];
+    [[WebClient sharedClient] cancelAllRetrieveProofImagesForAddressWithUuid:self.uuid];
 }
 
 @end

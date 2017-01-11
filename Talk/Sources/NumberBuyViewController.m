@@ -94,7 +94,7 @@
                                                  name:self.name
                                        isoCountryCode:self.isoCountryCode
                                                areaId:self.areaId
-                                            addressId:self.address.addressId
+                                          addressUuid:self.address.uuid
                                             autoRenew:self.autoRenew
                                                 reply:^(NSError*  error,
                                                         NSString* uuid,

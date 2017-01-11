@@ -628,7 +628,7 @@
                                   areaCode:(NSString*)areaCode
                                 numberType:(NumberTypeMask)numberTypeMask
                            isExtranational:(BOOL)isExtranational
-                                     reply:(void (^)(NSError* error, NSArray* addressIds))reply
+                                     reply:(void (^)(NSError* error, NSArray* uuids))reply
 {
     NSString*            username   = [Settings sharedSettings].webUsername;
     NSString*            numberType = [NumberType stringForNumberTypeMask:numberTypeMask];
@@ -646,34 +646,34 @@
 
 
 // 10B. GET REGULATION ADDRESS
-- (void)retrieveAddressWithId:(NSString*)addressId
-                        reply:(void (^)(NSError*            error,
-                                        NSString*           name,
-                                        NSString*           salutation,
-                                        NSString*           firstName,
-                                        NSString*           lastName,
-                                        NSString*           companyName,
-                                        NSString*           companyDescription,
-                                        NSString*           street,
-                                        NSString*           buildingNumber,
-                                        NSString*           buildingLetter,
-                                        NSString*           city,
-                                        NSString*           postcode,
-                                        NSString*           isoCountryCode,
-                                        NSString*           areaCode,
-                                        BOOL                hasAddressProof,
-                                        BOOL                hasIdentityProof,
-                                        NSString*           idType,
-                                        NSString*           idNumber,
-                                        NSString*           fiscalIdCode,
-                                        NSString*           streetCode,
-                                        NSString*           municipalityCode,
-                                        AddressStatusMask   addressStatus,
-                                        RejectionReasonMask rejectionReasons))reply;
+- (void)retrieveAddressWithUuid:(NSString*)uuid
+                          reply:(void (^)(NSError*            error,
+                                          NSString*           name,
+                                          NSString*           salutation,
+                                          NSString*           firstName,
+                                          NSString*           lastName,
+                                          NSString*           companyName,
+                                          NSString*           companyDescription,
+                                          NSString*           street,
+                                          NSString*           buildingNumber,
+                                          NSString*           buildingLetter,
+                                          NSString*           city,
+                                          NSString*           postcode,
+                                          NSString*           isoCountryCode,
+                                          NSString*           areaCode,
+                                          BOOL                hasAddressProof,
+                                          BOOL                hasIdentityProof,
+                                          NSString*           idType,
+                                          NSString*           idNumber,
+                                          NSString*           fiscalIdCode,
+                                          NSString*           streetCode,
+                                          NSString*           municipalityCode,
+                                          AddressStatusMask   addressStatus,
+                                          RejectionReasonMask rejectionReasons))reply;
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self getPath:[NSString stringWithFormat:@"/users/%@/addresses/%@", username, addressId]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/addresses/%@", username, uuid]
                                   parameters:nil
                                        reply:^(NSError *error, id content)
     {
@@ -736,7 +736,7 @@
                             streetCode:(NSString*)streetCode
                       municipalityCode:(NSString*)municipalityCode
                                  reply:(void (^)(NSError*  error,
-                                                 NSString* addressId,
+                                                 NSString* uuid,
                                                  NSString* addressStatus,
                                                  NSArray*  missingFields))reply
 {
@@ -773,7 +773,7 @@
      {
          if (error == nil)
          {
-             reply(nil, content[@"addressId"], content[@"addressStatus"], content[@"missingFields"]);
+             reply(nil, content[@"uuid"], content[@"addressStatus"], content[@"missingFields"]);
          }
          else
          {
@@ -784,11 +784,11 @@
 
 
 // 10D. DELETE REGULATION ADDRESS
-- (void)deleteAddressWithId:(NSString*)addressId reply:(void (^)(NSError* error))reply
+- (void)deleteAddressWithUuid:(NSString*)uuid reply:(void (^)(NSError* error))reply
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self deletePath:[NSString stringWithFormat:@"/users/%@/addresses/%@", username, addressId]
+    [self deletePath:[NSString stringWithFormat:@"/users/%@/addresses/%@", username, uuid]
           parameters:nil
                reply:^(NSError *error, id content)
     {
@@ -798,12 +798,12 @@
 
 
 // 10E. GET ADDRESS PROOF IMAGES
-- (void)retrieveProofImagesForAddressId:(NSString*)addressId
-                                  reply:(void (^)(NSError* error, NSData* addressProof, NSData* identityProof))reply
+- (void)retrieveProofImagesForAddressWithUuid:(NSString*)uuid
+                                        reply:(void (^)(NSError* error, NSData* addressProof, NSData* identityProof))reply
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self getPath:[NSString stringWithFormat:@"/users/%@/addresses/%@/images", username, addressId]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/addresses/%@/images", username, uuid]
        parameters:nil
             reply:^(NSError *error, id content)
     {
@@ -820,10 +820,10 @@
 
 
 // 10F. UPDATE ADDRESS PROOF IMAGE(s)
-- (void)updateProofImagesForAddressId:(NSString*)addressId
-                         addressProof:(NSData*)addressProof
-                        identityProof:(NSData*)identityProof
-                                reply:(void (^)(NSError* error))reply
+- (void)updateProofImagesForAddressWithUuid:(NSString*)uuid
+                               addressProof:(NSData*)addressProof
+                              identityProof:(NSData*)identityProof
+                                      reply:(void (^)(NSError* error))reply
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
@@ -831,7 +831,7 @@
     (addressProof.length  > 0) ? parameters[@"addressProof"]  = [Base64 encode:addressProof]  : 0;
     (identityProof.length > 0) ? parameters[@"identityProof"] = [Base64 encode:identityProof] : 0;
 
-    [self putPath:[NSString stringWithFormat:@"/users/%@/addresses/%@/images", username, addressId]
+    [self putPath:[NSString stringWithFormat:@"/users/%@/addresses/%@/images", username, uuid]
        parameters:parameters
             reply:^(NSError *error, id content)
     {
@@ -841,25 +841,25 @@
 
 
 // 10G. UPDATE ADDRESS' NAME
-- (void)updateAddressWithId:(NSString*)addressId
-                       name:(NSString*)name
-                 salutation:(NSString*)salutation
-                  firstName:(NSString*)firstName
-                   lastName:(NSString*)lastName
-                companyName:(NSString*)companyName
-         companyDescription:(NSString*)companyDescription
-                     street:(NSString*)street
-             buildingNumber:(NSString*)buildingNumber
-             buildingLetter:(NSString*)buildingLetter
-                       city:(NSString*)city
-                   postcode:(NSString*)postcode
-             isoCountryCode:(NSString*)isoCountryCode
-                     idType:(NSString*)idType
-                   idNumber:(NSString*)idNumber
-               fiscalIdCode:(NSString*)fiscalIdCode
-                 streetCode:(NSString*)streetCode
-           municipalityCode:(NSString*)municipalityCode
-                      reply:(void (^)(NSError* error))reply;
+- (void)updateAddressWithUuid:(NSString*)uuid
+                         name:(NSString*)name
+                   salutation:(NSString*)salutation
+                    firstName:(NSString*)firstName
+                     lastName:(NSString*)lastName
+                  companyName:(NSString*)companyName
+           companyDescription:(NSString*)companyDescription
+                       street:(NSString*)street
+               buildingNumber:(NSString*)buildingNumber
+               buildingLetter:(NSString*)buildingLetter
+                         city:(NSString*)city
+                     postcode:(NSString*)postcode
+               isoCountryCode:(NSString*)isoCountryCode
+                       idType:(NSString*)idType
+                     idNumber:(NSString*)idNumber
+                 fiscalIdCode:(NSString*)fiscalIdCode
+                   streetCode:(NSString*)streetCode
+             municipalityCode:(NSString*)municipalityCode
+                        reply:(void (^)(NSError* error))reply;
 {
     NSString*            username   = [Settings sharedSettings].webUsername;
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
@@ -882,7 +882,7 @@
     (streetCode.length         > 0) ? parameters[@"streetCode"]         = streetCode                    : 0;
     (municipalityCode.length   > 0) ? parameters[@"municipalityCode"]   = municipalityCode              : 0;
 
-    [self putPath:[NSString stringWithFormat:@"/users/%@/addresses/%@", username, addressId]
+    [self putPath:[NSString stringWithFormat:@"/users/%@/addresses/%@", username, uuid]
        parameters:parameters
             reply:^(NSError* error, id content)
     {
@@ -896,7 +896,7 @@
                            name:(NSString*)name
                  isoCountryCode:(NSString*)isoCountryCode
                          areaId:(NSString*)areaId
-                      addressId:(NSString*)addressId
+                    addressUuid:(NSString*)addressUuid
                       autoRenew:(BOOL)autoRenew
                           reply:(void (^)(NSError*  error,
                                           NSString* uuid,
@@ -912,7 +912,7 @@
                                          @"isoCountryCode" : isoCountryCode,
                                          @"areaId"         : areaId,
                                          @"autoRenew"      : @(autoRenew)} mutableCopy];
-    (addressId != nil) ? parameters[@"addressId"] = addressId : 0;
+    (addressUuid != nil) ? parameters[@"addressUuid"] = addressUuid : 0;
     // parameters[@"debug"] = @(false);
 
     [self postPath:[NSString stringWithFormat:@"/users/%@/numbers", username]
@@ -941,15 +941,15 @@
 - (void)updateNumberWithUuid:(NSString*)uuid
                         name:(NSString*)name
                    autoRenew:(BOOL)autoRenew
-                   addressId:(NSString*)addressId
+                 addressUuid:(NSString*)addressUuid
                        reply:(void (^)(NSError* error))reply;
 {
     NSString*            username   = [Settings sharedSettings].webUsername;
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
 
-    parameters[@"autoRenew"]                          = @(autoRenew);
-    (name.length      > 0) ? parameters[@"name"]      = name      : 0;
-    (addressId.length > 0) ? parameters[@"addressId"] = addressId : 0;
+    parameters[@"autoRenew"]                              = @(autoRenew);
+    (name.length      > 0) ? parameters[@"name"]          = name      : 0;
+    (addressUuid.length > 0) ? parameters[@"addressUuid"] = addressUuid : 0;
 
     [self postPath:[NSString stringWithFormat:@"/users/%@/numbers/%@", username, uuid]
         parameters:parameters
@@ -1012,7 +1012,7 @@
                                          NSString*       stateCode,
                                          NSString*       stateName,
                                          NSString*       isoCountryCode,
-                                         NSString*       addressId,
+                                         NSString*       addressUuid,
                                          AddressTypeMask addressType,
                                          NSDate*         purchaseDate,
                                          NSDate*         expiryDate,
@@ -1046,7 +1046,7 @@
                   content[@"stateCode"],
                   content[@"stateName"],
                   content[@"isoCountryCode"],
-                  content[@"addressId"],
+                  content[@"addressUuid"],
                   [AddressType addressTypeMaskForString:content[@"addressType"]],
                   [Common dateWithString:content[@"purchaseDateTime"]],
                   [Common dateWithString:content[@"expiryDateTime"]],
@@ -1756,13 +1756,13 @@
 
 
 // 10B.
-- (void)cancelAllRetrieveAddressWithId:(NSString*)addressId
+- (void)cancelAllRetrieveAddressWithUuid:(NSString*)uuid
 {
     NSString* username = [Settings sharedSettings].webUsername;
     
     [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
                                                     path:[NSString stringWithFormat:@"/users/%@/addresses/%@",
-                                                          username, addressId]];
+                                                          username, uuid]];
 }
 
 
@@ -1777,35 +1777,35 @@
 
 
 // 10D.
-- (void)cancelAllDeleteAddressWithId:(NSString*)addressId
+- (void)cancelAllDeleteAddressWithUuid:(NSString*)uuid
 {
     NSString* username = [Settings sharedSettings].webUsername;
     
     [self.webInterface cancelAllHttpOperationsWithMethod:@"DELETE"
                                                     path:[NSString stringWithFormat:@"/users/%@/addresses/%@",
-                                                          username, addressId]];
+                                                          username, uuid]];
 }
 
 
 // 10E.
-- (void)cancelAllRetrieveProofImagesForAddressId:(NSString*)addressId
+- (void)cancelAllRetrieveProofImagesForAddressWithUuid:(NSString*)uuid
 {
     NSString* username = [Settings sharedSettings].webUsername;
     
     [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
                                                     path:[NSString stringWithFormat:@"/users/%@/addresses/%@/images",
-                                                          username, addressId]];
+                                                          username, uuid]];
 }
 
 
 // 10F.
-- (void)cancelAllUpdateProofImagesForAddressId:(NSString*)addressId
+- (void)cancelAllUpdateProofImagesForAddressWithUuid:(NSString*)uuid
 {
     NSString* username = [Settings sharedSettings].webUsername;
     
     [self.webInterface cancelAllHttpOperationsWithMethod:@"PUT"
                                                     path:[NSString stringWithFormat:@"/users/%@/addresses/%@/images",
-                                                          username, addressId]];
+                                                          username, uuid]];
 }
 
 

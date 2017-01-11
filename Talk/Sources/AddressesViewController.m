@@ -204,26 +204,26 @@
                                                         areaCode:areaCode
                                                       numberType:numberTypeMask
                                                  isExtranational:(addressTypeMask == AddressTypeExtranational)
-                                                           reply:^(NSError *error, NSArray *addressIds)
+                                                           reply:^(NSError *error, NSArray *uuids)
     {
         if (areAvailable)
         {
-            NSMutableArray* availableAddressIds = [NSMutableArray array];
+            NSMutableArray* availableUuids = [NSMutableArray array];
 
-            for (NSString* addressId in addressIds)
+            for (NSString* uuid in uuids)
             {
-                AddressData* address = [[DataManager sharedManager] lookupAddressWithId:addressId];
+                AddressData* address = [[DataManager sharedManager] lookupAddressWithUuid:uuid];
 
                 if ([AddressStatus isAvailableAddressStatusMask:address.addressStatus])
                 {
-                    [availableAddressIds addObject:addressId];
+                    [availableUuids addObject:uuid];
                 }
             }
 
-            addressIds = availableAddressIds;
+            uuids = availableUuids;
         }
 
-        NSPredicate* predicate = (error == nil) ? [NSPredicate predicateWithFormat:@"addressId IN %@", addressIds] : nil;
+        NSPredicate* predicate = (error == nil) ? [NSPredicate predicateWithFormat:@"uuid IN %@", uuids] : nil;
 
         completion ? completion(predicate, error) : 0;
     }];
@@ -652,7 +652,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     }
 
     CellDotView* dotView = [CellDotView getFromCell:cell];
-    dotView.hidden = ([[AddressUpdatesHandler sharedHandler] addressUpdateWithId:address.addressId] == nil);
+    dotView.hidden = ([[AddressUpdatesHandler sharedHandler] addressUpdateWithUuid:address.uuid] == nil);
 }
 
 
