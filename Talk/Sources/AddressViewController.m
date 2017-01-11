@@ -470,11 +470,6 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     if (self.isNew == YES || self.isUpdatable)
     {
         complete = [self isAddressComplete];
-
-        if (self.proofTypes != nil)
-        {
-            complete = complete && self.address.hasIdentityProof;
-        }
     }
     else
     {

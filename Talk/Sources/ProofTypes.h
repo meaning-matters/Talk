@@ -18,7 +18,6 @@
 @property (nonatomic, readonly) BOOL      requiresAddressProof;
 @property (nonatomic, readonly) BOOL      requiresIdentityProof;
 
-
 - (instancetype)initWithPerson:(NSDictionary*)person company:(NSDictionary*)company salutation:(Salutation*)salutation;
 
 @end
