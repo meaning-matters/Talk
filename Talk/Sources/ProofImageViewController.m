@@ -23,20 +23,26 @@
 @property (nonatomic, strong) ImagePicker*   imagePicker;
 @property (nonatomic, assign) ProofImageType type;
 @property (nonatomic, assign) BOOL           editable;
+@property (nonatomic, copy)   void (^completion)(BOOL edited);
 
 @end
 
 
 @implementation ProofImageViewController
 
-- (instancetype)initWithAddress:(AddressData*)address type:(ProofImageType)type editable:(BOOL)editable
+- (instancetype)initWithAddress:(AddressData*)address
+                           type:(ProofImageType)type
+                       editable:(BOOL)editable
+                     completion:(void (^)(BOOL edited))completion
 {
     if (self = [super init])
     {
-        self.address   = address;
-        self.type      = type;
-        self.editable  = editable;
-        self.imageView = [[UIImageView alloc] init];
+        self.address    = address;
+        self.type       = type;
+        self.editable   = editable;
+        self.completion = completion;
+
+        self.imageView  = [[UIImageView alloc] init];
 
         switch (self.type)
         {
@@ -123,6 +129,7 @@
                          otherButtonTitles:nil];
 }
 
+
 - (void)dealloc
 {
     if (self.isLoading)
@@ -200,6 +207,14 @@
                         break;
                     }
                 }
+
+                // Wait for image picker to disappear, so that below pop animation becomes visible.
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                {
+                    self.completion ? self.completion(self.editable) : 0;
+
+                    [self.navigationController popViewControllerAnimated:YES];
+                });
             }
         }];
     }

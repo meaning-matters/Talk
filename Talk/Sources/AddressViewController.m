@@ -532,7 +532,15 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
             {
-                [self dismissViewControllerAnimated:YES completion:nil];
+                if (strongSelf.isNew == YES)
+                {
+                    // Shown as modal.
+                    [strongSelf dismissViewControllerAnimated:YES completion:nil];
+                }
+                else
+                {
+                    [strongSelf.navigationController popViewControllerAnimated:YES];
+                }
             }
                                  cancelButtonTitle:[Strings cancelString]
                                  otherButtonTitles:nil];
@@ -557,7 +565,15 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
             {
-                [strongSelf dismissViewControllerAnimated:YES completion:nil];
+                if (strongSelf.isNew == YES)
+                {
+                    // Shown as modal.
+                    [strongSelf dismissViewControllerAnimated:YES completion:nil];
+                }
+                else
+                {
+                    [strongSelf.navigationController popViewControllerAnimated:YES];
+                }
             }
                                  cancelButtonTitle:[Strings cancelString]
                                  otherButtonTitles:nil];
@@ -1031,6 +1047,60 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 }
 
 
+- (void)uploadProofImage:(ProofImageType)proofImageType
+{
+    switch (proofImageType)
+    {
+        case ProofImageTypeAddress:
+        {
+            [[WebClient sharedClient] updateProofImagesForAddressWithUuid:self.address.uuid
+                                                             addressProof:self.address.addressProof
+                                                            identityProof:nil
+                                                                    reply:^(NSError *error)
+            {
+                [self handleUploadProofImageError:error];
+            }];
+
+            break;
+        }
+        case ProofImageTypeIdentity:
+        {
+            [[WebClient sharedClient] updateProofImagesForAddressWithUuid:self.address.uuid
+                                                             addressProof:self.address.addressProof
+                                                            identityProof:nil
+                                                                    reply:^(NSError *error)
+            {
+                [self handleUploadProofImageError:error];
+            }];
+
+            break;
+        }
+    }
+}
+
+
+- (void)handleUploadProofImageError:(NSError*)error
+{
+    if (error == nil)
+    {
+        [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+    }
+    else
+    {
+        NSString* title = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                            @"Image Upload Failed",
+                                                            @"...");
+
+        [self.address.managedObjectContext refreshObject:self.address mergeChanges:NO];
+        [self showSaveError:error title:title itemName:[Strings addressString] completion:^
+        {
+            [Common reloadSections:self.sections allSections:self.sections tableView:self.tableView];
+            [self update];
+        }];
+    }
+}
+
+
 #pragma mark - Table View Delegates
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
@@ -1320,9 +1390,17 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                             UITableViewCell*          cell = [self.tableView cellForRowAtIndexPath:indexPath];
                             ProofImageViewController* viewController;
 
-                            viewController       = [[ProofImageViewController alloc] initWithAddress:self.address
-                                                                                                type:ProofImageTypeAddress
-                                                                                            editable:(self.isNew || self.isUpdatable)];
+                            viewController = [[ProofImageViewController alloc] initWithAddress:self.address
+                                                                                          type:ProofImageTypeAddress
+                                                                                      editable:(self.isNew || self.isUpdatable)
+                                                                                    completion:^(BOOL edited)
+                            {
+                                if (self.isUpdatable && edited)
+                                {
+                                    [self uploadProofImage:ProofImageTypeAddress];
+                                }
+                            }];
+
                             viewController.title = cell.textLabel.text;
                             
                             [self.navigationController pushViewController:viewController animated:YES];
@@ -1356,9 +1434,16 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                             UITableViewCell*          cell = [self.tableView cellForRowAtIndexPath:indexPath];
                             ProofImageViewController* viewController;
 
-                            viewController       = [[ProofImageViewController alloc] initWithAddress:self.address
-                                                                                                type:ProofImageTypeIdentity
-                                                                                            editable:(self.isNew || self.isUpdatable)];
+                            viewController = [[ProofImageViewController alloc] initWithAddress:self.address
+                                                                                          type:ProofImageTypeIdentity
+                                                                                      editable:(self.isNew || self.isUpdatable)
+                                                                                    completion:^(BOOL edited)
+                            {
+                                if (self.isUpdatable && edited)
+                                {
+                                    [self uploadProofImage:ProofImageTypeIdentity];
+                                }
+                            }];
 
                             viewController.title = cell.textLabel.text;
                             
@@ -2414,7 +2499,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
 
             [self.view endEditing:YES];
-            if (self.isNew == YES || self.isUpdatable == YES)
+            if (self.isUpdatable == YES)
             {
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
