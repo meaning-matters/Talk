@@ -140,7 +140,7 @@ NSString* const AddressUpdatesNotification = @"AddressUpdatesNotification";
     if (address.addressStatus == AddressStatusRejectedMask)
     {
         addressUpdates[address.uuid] = @{@"addressStatus"    : @(address.addressStatus),
-                                              @"rejectionReasons" : @(address.rejectionReasons)};
+                                         @"rejectionReasons" : @(address.rejectionReasons)};
     }
 
     [self saveAddressUpdates:addressUpdates];

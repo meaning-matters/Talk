@@ -860,7 +860,24 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
 - (NSString*)cellIdentifierForIndexPath:(NSIndexPath*)indexPath
 {
-    return [NSString stringWithFormat:@"Cell %d:%d", (int)indexPath.section, (int)indexPath.row];
+    TableSections section = [Common nthBitSet:indexPath.section inValue:self.sections];
+    NSUInteger    row;
+
+    // Because the type of cell with a certain indexPath can change, after loading regulation info or when switching
+    // salutation, we need to use the section and row mask to guarantee they're the right type (i.e. cell identifier).
+    // Can't just use indexPath.section and indexPath.row here, like is done in other view controllers.
+    switch (section)
+    {
+        case TableSectionName:        row = 1;                                                             break;
+        case TableSectionStatus:      row = 1;                                                             break;
+        case TableSectionProof:       row = 1;                                                             break;
+        case TableSectionDetails:     row = [Common nthBitSet:indexPath.row inValue:self.rowsDetails];     break;
+        case TableSectionAddress:     row = [Common nthBitSet:indexPath.row inValue:self.rowsAddress];     break;
+        case TableSectionExtraFields: row = [Common nthBitSet:indexPath.row inValue:self.rowsExtraFields]; break;
+        case TableSectionNumbers:     row = 1;                                                             break;
+    }
+
+    return [NSString stringWithFormat:@"Cell-%d:%d", (int)section, (int)row];
 }
 
 
@@ -1526,11 +1543,12 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 - (UITableViewCell*)statusCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
+    NSString*        identifier = [self cellIdentifierForIndexPath:indexPath];
 
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"StatusCell"];
+    cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"StatusCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
 
         cell.accessoryType  = UITableViewCellAccessoryNone;
         cell.textLabel.text = NSLocalizedString(@"Status", @"");
@@ -1547,11 +1565,12 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 - (UITableViewCell*)proofCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
+    NSString*        identifier = [self cellIdentifierForIndexPath:indexPath];
 
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"ProofCell"];
+    cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"ProofCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
     }
 
     cell.detailTextLabel.textColor = [Skinning placeholderColor];
@@ -1688,7 +1707,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     UITextField*     textField;
     BOOL             singlePostcode = NO;
     BOOL             singleCity     = NO;
-    NSString*        identifier = [self cellIdentifierForIndexPath:indexPath];
+    NSString*        identifier     = [self cellIdentifierForIndexPath:indexPath];
 
     if (self.citiesArray.count == 1)
     {
@@ -2018,11 +2037,12 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     NSArray*          sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
     NSArray*          numbersArray    = [self.address.numbers sortedArrayUsingDescriptors:sortDescriptors];
     NumberData*       number          = numbersArray[indexPath.row];
+    NSString*         identifier      = [self cellIdentifierForIndexPath:indexPath];
 
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"NumbersCell"];
+    cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"NumbersCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
     }
 
     cell.textLabel.text = number.name;
