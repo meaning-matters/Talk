@@ -350,15 +350,6 @@ typedef enum
             }
             case AddressStatusNotVerifiedMask:
             {
-                // This can't occur, if we understand Voxbone correctly.
-                title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                            @"Address Not Verified",
-                                                            @"....\n"
-                                                            @"[iOS alert title size].");
-                message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                            @"Your proof of address image has not been verified.",
-                                                            @"....\n"
-                                                            @"[iOS alert message size]");
                 break;
             }
             case AddressStatusDisabledMask:

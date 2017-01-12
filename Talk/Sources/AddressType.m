@@ -82,12 +82,7 @@
 {
     AddressTypeMask mask;
     
-    if ([string isEqualToString:@"NONE"])
-    {
-        mask = AddressTypeWorldwideMask;
-        NSLog(@"//### Remove NONE once server no longer sends it.");
-    }
-    else if ([string isEqualToString:@"WORLDWIDE"])
+    if ([string isEqualToString:@"WORLDWIDE"])
     {
         mask = AddressTypeWorldwideMask;
     }
@@ -105,7 +100,8 @@
     }
     else
     {
-        mask = 0;   //### We should never get here.
+        NBLog(@"Received unknown address type: %@", string);
+        mask = AddressTypeWorldwideMask;   //### We should never get here.
     }
     
     return mask;
