@@ -19,10 +19,10 @@
                             name:(NSString*)name
                   numberTypeMask:(NumberTypeMask)numberTypeMask
                   isoCountryCode:(NSString*)isoCountryCode
+                           state:(NSDictionary*)state
                             area:(NSDictionary*)area
                         areaCode:(NSString*)areaCode
                         areaName:(NSString*)areaName
-                           state:(NSDictionary*)state
                          areadId:(NSString*)areaId
                          address:(AddressData*)address;
 

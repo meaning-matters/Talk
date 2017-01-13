@@ -578,10 +578,10 @@ typedef enum
                                                                                  name:name
                                                                        numberTypeMask:numberTypeMask
                                                                        isoCountryCode:numberIsoCountryCode
+                                                                                state:state
                                                                                  area:area
                                                                              areaCode:areaCode
                                                                              areaName:self.areaName
-                                                                                state:state
                                                                               areadId:area[@"areaId"]
                                                                               address:self.address];
                 payViewController.title = cell.textLabel.text;

@@ -41,10 +41,10 @@
                             name:(NSString*)name
                   numberTypeMask:(NumberTypeMask)numberTypeMask
                   isoCountryCode:(NSString*)isoCountryCode
+                           state:(NSDictionary*)state
                             area:(NSDictionary*)area
                         areaCode:(NSString*)areaCode
                         areaName:(NSString*)areaName
-                           state:(NSDictionary*)state
                          areadId:(NSString*)areaId
                          address:(AddressData*)address
 {
@@ -223,6 +223,7 @@
     number.numberType         = [NumberType stringForNumberTypeMask:self.numberTypeMask];
     number.areaCode           = self.areaCode;
     number.areaName           = [Common capitalizedString:self.areaName];
+    number.areaId             = self.areaId;
     number.stateCode          = self.state[@"stateCode"];
     number.stateName          = self.state[@"stateName"];
     number.isoCountryCode     = self.isoCountryCode;
