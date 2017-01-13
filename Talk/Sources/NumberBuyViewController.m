@@ -127,9 +127,12 @@
                         if (destination != nil)
                         {
                             NSString* destinationUuid = (destination == nil) ? @"" : destination.uuid;
-                            [[WebClient sharedClient] setDestinationOfNumberWithUuid:number.uuid
-                                                                     destinationUuid:destinationUuid
-                                                                               reply:^(NSError* error)
+                            [[WebClient sharedClient] updateNumberWithUuid:number.uuid
+                                                                      name:nil
+                                                                 autoRenew:number.autoRenew
+                                                           destinationUuid:destinationUuid
+                                                               addressUuid:nil
+                                                                     reply:^(NSError* error)
                             {
                                 if (error == nil)
                                 {

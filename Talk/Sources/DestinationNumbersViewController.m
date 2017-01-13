@@ -117,9 +117,12 @@
     NumberData* number          = [self.fetchedNumbersController objectAtIndexPath:indexPath];
     NSString*   destinationUuid = [self.destination.numbers containsObject:number] ? @"" : self.destination.uuid;
 
-    [[WebClient sharedClient] setDestinationOfNumberWithUuid:number.uuid
-                                             destinationUuid:destinationUuid
-                                                       reply:^(NSError* error)
+    [[WebClient sharedClient] updateNumberWithUuid:number.uuid
+                                              name:nil
+                                         autoRenew:number.autoRenew
+                                   destinationUuid:destinationUuid
+                                       addressUuid:nil
+                                             reply:^(NSError* error)
     {
         if (error == nil)
         {

@@ -941,15 +941,17 @@
 - (void)updateNumberWithUuid:(NSString*)uuid
                         name:(NSString*)name
                    autoRenew:(BOOL)autoRenew
+             destinationUuid:(NSString*)destinationUuid
                  addressUuid:(NSString*)addressUuid
                        reply:(void (^)(NSError* error))reply;
 {
     NSString*            username   = [Settings sharedSettings].webUsername;
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
 
-    parameters[@"autoRenew"]                              = @(autoRenew);
-    (name.length      > 0) ? parameters[@"name"]          = name      : 0;
-    (addressUuid.length > 0) ? parameters[@"addressUuid"] = addressUuid : 0;
+    parameters[@"autoRenew"]                                      = @(autoRenew);
+    (name.length            > 0) ? parameters[@"name"]            = name            : 0;
+    (destinationUuid     != nil) ? parameters[@"destinationUuid"] = destinationUuid : 0;
+    (addressUuid.length     > 0) ? parameters[@"addressUuid"]     = addressUuid     : 0;
 
     [self postPath:[NSString stringWithFormat:@"/users/%@/numbers/%@", username, uuid]
         parameters:parameters
@@ -1282,49 +1284,6 @@
         else
         {
             reply(error, nil, nil);
-        }
-    }];
-}
-
-
-// 23. SET/CLEAR DESTINATION FOR A NUMBER
-- (void)setDestinationOfNumberWithUuid:(NSString*)numberUuid
-                       destinationUuid:(NSString*)destinationUuid
-                                 reply:(void (^)(NSError* error))reply
-{
-    AnalysticsTrace(@"API_23");
-
-    NSString*     username   = [Settings sharedSettings].webUsername;
-    NSDictionary* parameters = @{@"uuid" : destinationUuid};
-
-    [self putPath:[NSString stringWithFormat:@"/users/%@/numbers/%@/destination", username, numberUuid]
-       parameters:parameters
-            reply:^(NSError* error, id content)
-    {
-        reply(error);
-    }];
-}
-
-
-// 24. RETRIEVE DESTINATION FOR A NUMBER
-- (void)retrieveDestinationOfNumberWithUuid:(NSString*)numberUuid
-                                      reply:(void (^)(NSError* error, NSString* destinationUuid))reply
-{
-    AnalysticsTrace(@"API_24");
-
-    NSString* username = [Settings sharedSettings].webUsername;
-
-    [self getPath:[NSString stringWithFormat:@"/users/%@/numbers/%@/destination", username, numberUuid]
-       parameters:nil
-            reply:^(NSError* error, id content)
-    {
-        if (error == nil)
-        {
-            reply(nil, ([content[@"uuid"] length] > 0) ? content[@"uuid"] : nil);
-        }
-        else
-        {
-            reply(error, nil);
         }
     }];
 }
@@ -1933,17 +1892,6 @@
 
     [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
                                                     path:[NSString stringWithFormat:@"/users/%@/destinations/%@",
-                                                          username, uuid]];
-}
-
-
-// 23.
-- (void)cancelAllSetDestinationOfNumberWithUuid:(NSString*)uuid
-{
-    NSString* username = [Settings sharedSettings].webUsername;
-
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"PUT"
-                                                    path:[NSString stringWithFormat:@"/users/%@/numbers/%@/destination",
                                                           username, uuid]];
 }
 

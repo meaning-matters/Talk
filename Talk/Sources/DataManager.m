@@ -466,32 +466,21 @@
                                     {
                                         if (error == nil)
                                         {
-                                            [self synchronizeNumberDestinations:expiredNumbers completion:^(NSError* error)
+                                            [self.managedObjectContext save:&error];
+                                            if (error == nil)
                                             {
-                                                if (error == nil)
-                                                {
-                                                    [self.managedObjectContext save:&error];
-                                                    if (error == nil)
-                                                    {
-                                                        [self updateDefaultDestinations];
+                                                [self updateDefaultDestinations];
 
-                                                        [self saveManagedObjectContext:nil];
+                                                [self saveManagedObjectContext:nil];
 
-                                                        completion ? completion(nil) : 0;
-                                                    }
-                                                    else
-                                                    {
-                                                        [self handleError:error];
+                                                completion ? completion(nil) : 0;
+                                            }
+                                            else
+                                            {
+                                                [self handleError:error];
 
-                                                        return;
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    [self.managedObjectContext rollback];
-                                                    completion ? completion(error) : 0;
-                                                }
-                                            }];
+                                                return;
+                                            }
                                         }
                                         else
                                         {
@@ -985,83 +974,6 @@
             completion ? completion(error) : 0;
         }
     }];
-}
-
-
-- (void)synchronizeNumberDestinations:(NSArray*)expiredNumbers completion:(void (^)(NSError* error))completion
-{
-    NSError*        error   = nil;
-    NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
-    NSArray*        array   = [self.managedObjectContext executeFetchRequest:request error:&error];
-
-    if (error != nil)
-    {
-        completion ? completion(error) : 0;
-
-        return;
-    }
-
-    __block NSUInteger count = array.count;
-    if (count == 0)
-    {
-        completion ? completion(nil) : 0;
-
-        return;
-    }
-
-    for (NumberData* number in array)
-    {
-        // Skip expired Numbers, because they are no longer on the server. We're keeping them until
-        // the user has seen an alert that they were actually expired.
-        if ([expiredNumbers indexOfObject:number] != NSNotFound)
-        {
-            continue;
-        }
-
-        [[WebClient sharedClient] retrieveDestinationOfNumberWithUuid:number.uuid
-                                                                reply:^(NSError* error, NSString* destinationUuid)
-        {
-            if (error == nil)
-            {
-                if (destinationUuid == nil)
-                {
-                    number.destination = nil;
-                }
-                else
-                {
-                    // Lookup the destination.
-                    NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Destination"];
-                    [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", destinationUuid]];
-
-                    DestinationData* destination = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
-                    if (error == nil)
-                    {
-                        if (destination != nil)
-                        {
-                            number.destination = destination;
-                        }
-                    }
-                    else
-                    {
-                        [self handleError:error];
-
-                        return;
-                    }
-                }
-            }
-            else
-            {
-                completion ? completion(error) : 0;
-
-                return;
-            }
-
-            if (--count == 0)
-            {
-                completion ? completion(nil) : 0;
-            }
-        }];
-    }
 }
 
 

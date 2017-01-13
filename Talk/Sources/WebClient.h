@@ -239,6 +239,7 @@
 - (void)updateNumberWithUuid:(NSString*)uuid
                         name:(NSString*)name
                    autoRenew:(BOOL)autoRenew
+             destinationUuid:(NSString*)destinationUuid
                  addressUuid:(NSString*)addressUuid
                        reply:(void (^)(NSError* error))reply;
 
@@ -310,15 +311,6 @@
 // 22. DOWNLOAD DESTINATION
 - (void)retrieveDestinationForUuid:(NSString*)uuid
                              reply:(void (^)(NSError* error, NSString* name, NSDictionary* action))reply;
-
-// 23. SET/CLEAR DESTINATION FOR A NUMBER
-- (void)setDestinationOfNumberWithUuid:(NSString*)numberUuid
-                       destinationUuid:(NSString*)destinationUuid
-                                 reply:(void (^)(NSError* error))reply;
-
-// 24. RETRIEVE DESTINATION FOR A NUMBER
-- (void)retrieveDestinationOfNumberWithUuid:(NSString*)numberUuid
-                                      reply:(void (^)(NSError* error, NSString* destinationUuid))reply;
 
 // 25. UPDATE AUDIO
 - (void)updateAudioForUuid:(NSString*)uuid
@@ -467,9 +459,6 @@
 
 // 22.
 - (void)cancelAllRetrieveDestinationForUuid:(NSString*)uuid;
-
-// 23.
-- (void)cancelAllSetDestinationOfNumberWithUuid:(NSString*)uuid;
 
 // 25.
 - (void)cancellAllUpdateAudioForUuid:(NSString*)uuid;

@@ -346,6 +346,7 @@ typedef enum
                     [[WebClient sharedClient] updateNumberWithUuid:number.uuid
                                                               name:number.name
                                                          autoRenew:number.autoRenew
+                                                   destinationUuid:nil
                                                        addressUuid:selectedAddress.uuid
                                                              reply:^(NSError* error)
                     {
@@ -502,9 +503,10 @@ typedef enum
 {
     self.isLoading = YES;
     [[WebClient sharedClient] updateNumberWithUuid:number.uuid
-                                              name:number.name
+                                              name:nil
                                          autoRenew:switchView.isOn
-                                       addressUuid:number.address.uuid
+                                   destinationUuid:nil
+                                       addressUuid:nil
                                              reply:^(NSError* error)
     {
         self.isLoading = NO;
@@ -818,6 +820,7 @@ typedef enum
     [[WebClient sharedClient] updateNumberWithUuid:number.uuid
                                               name:number.name
                                          autoRenew:number.autoRenew
+                                   destinationUuid:(number.destination == nil) ? @"" : number.destination.uuid
                                        addressUuid:number.address.uuid
                                              reply:^(NSError* error)
     {
