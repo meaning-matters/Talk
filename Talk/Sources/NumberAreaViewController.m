@@ -207,7 +207,6 @@ typedef enum
             self.hasCorrectedInsets = NO;
         }
         
-        //####[self save];
         [[self.tableView superview] endEditing:YES];
     }
 }
@@ -338,7 +337,7 @@ typedef enum
                                                             @"....\n"
                                                             @"[iOS alert title size].");
                 message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                            @"Your proof of address image needs to be verified, "
+                                                            @"Your address needs to be verified, "
                                                             @"but it's state is unknown at the moment.",
                                                             @"....\n"
                                                             @"[iOS alert message size]");
@@ -376,11 +375,12 @@ typedef enum
                                                             @"....\n"
                                                             @"[iOS alert title size].");
                 message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                            @"Your proof of address image is waiting to be verified.",
+                                                            @"Your address is waiting to be verified.",
                                                             @"....\n"
                                                             @"[iOS alert message size]");
                 break;
             }
+            case AddressStatusStagedRejectedMask:
             case AddressStatusRejectedMask:
             {
                 title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
@@ -388,7 +388,7 @@ typedef enum
                                                             @"....\n"
                                                             @"[iOS alert title size].");
                 message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
-                                                            @"Your proof of address image has been rejected.",
+                                                            @"Your address has been rejected.",
                                                             @"....\n"
                                                             @"[iOS alert message size]");
                 break;
@@ -893,8 +893,6 @@ typedef enum
 
 - (BOOL)textFieldShouldReturn:(UITextField*)textField
 {
-    //####[self save];
-    
     [textField resignFirstResponder];
     
     if (self.hasCorrectedInsets == YES)

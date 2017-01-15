@@ -19,6 +19,10 @@
     {
         mask = AddressStatusStagedMask;
     }
+    else if ([string isEqualToString:@"STAGED_REJECTED"])
+    {
+        mask = AddressStatusStagedRejectedMask;
+    }
     else if ([string isEqualToString:@"NOT_VERIFIED"])
     {
         mask = AddressStatusNotVerifiedMask;
@@ -148,70 +152,70 @@
     if (mask & RejectionReasonInvalidDoctypeVirtualAddressMask)
     {
         [messages addObject:NSLocalizedStringWithDefaultValue(@"AddressStatus ...", nil, [NSBundle mainBundle],
-                                                              @"Document type not accepted - Virtual Office address proofs not accepted",
+                                                              @"Virtual Office address proofs not accepted",
                                                               @"...")];
     }
 
     if (mask & RejectionReasonInvalidDoctypeThirdPartyMask)
     {
         [messages addObject:NSLocalizedStringWithDefaultValue(@"AddressStatus ...", nil, [NSBundle mainBundle],
-                                                              @"Document type not accepted - Document must be issued by a third party",
+                                                              @"Document must be issued by a third party",
                                                               @"...")];
     }
 
     if (mask & RejectionReasonInvalidDoctypeNoAddressMask)
     {
         [messages addObject:NSLocalizedStringWithDefaultValue(@"AddressStatus ...", nil, [NSBundle mainBundle],
-                                                              @"Document type not accepted - Document does not provide address information",
+                                                              @"Document does not provide address information",
                                                               @"...")];
     }
 
     if (mask & RejectionReasonInvalidDoctypeRequiredIdMask)
     {
         [messages addObject:NSLocalizedStringWithDefaultValue(@"AddressStatus ...", nil, [NSBundle mainBundle],
-                                                              @"Document type not accepted - Proof of ID required instead of proof of address",
+                                                              @"Proof of identity required, instead of proof of address",
                                                               @"...")];
     }
 
     if (mask & RejectionReasonNotRecentEnoughMask)
     {
         [messages addObject:NSLocalizedStringWithDefaultValue(@"AddressStatus ...", nil, [NSBundle mainBundle],
-                                                              @"Not recent enough",
+                                                              @"Document is not recent enough",
                                                               @"...")];
     }
 
     if (mask & RejectionReasonDocIllegibleMask)
     {
         [messages addObject:NSLocalizedStringWithDefaultValue(@"AddressStatus ...", nil, [NSBundle mainBundle],
-                                                              @"Document Illegible/Document incomplete (please submit full copy)",
+                                                              @"Document illegible or incomplete",
                                                               @"...")];
     }
 
     if (mask & RejectionReasonInfoMismatchMask)
     {
         [messages addObject:NSLocalizedStringWithDefaultValue(@"AddressStatus ...", nil, [NSBundle mainBundle],
-                                                              @"Information does not match information in the web portal",
+                                                              @"Document does not match entered information",
                                                               @"...")];
     }
 
     if (mask & RejectionReasonInfoMismatchWithProofMask)
     {
         [messages addObject:NSLocalizedStringWithDefaultValue(@"AddressStatus ...", nil, [NSBundle mainBundle],
-                                                              @"Information does not match information in web portal - Company name/End user name differs in portal from information on proo",
+                                                              @"Name (of company) does not match",
                                                               @"...")];
     }
 
     if (mask & RejectionReasonInfoMismatchAddressMask)
     {
         [messages addObject:NSLocalizedStringWithDefaultValue(@"AddressStatus ...", nil, [NSBundle mainBundle],
-                                                              @"Information does not match information in web portal - Address Information differs (street name, street number, etc.)",
+                                                              @"Street information does not match",
                                                               @"...")];
     }
 
     if (mask & RejectionReasonInfoMismatchLocationMask)
     {
         [messages addObject:NSLocalizedStringWithDefaultValue(@"AddressStatus ...", nil, [NSBundle mainBundle],
-                                                              @"Information does not match information in web portal - Address Information differs (city or postcode)",
+                                                              @"City or postcode don't match",
                                                               @"...")];
     }
 
@@ -225,21 +229,21 @@
     if (mask & RejectionReasonInfoIncompleteDateMask)
     {
         [messages addObject:NSLocalizedStringWithDefaultValue(@"AddressStatus ...", nil, [NSBundle mainBundle],
-                                                              @"Incomplete Information (date missing)",
+                                                              @"Date information is missing",
                                                               @"...")];
     }
 
     if (mask & RejectionReasonInfoIncompleteAddressMask)
     {
         [messages addObject:NSLocalizedStringWithDefaultValue(@"AddressStatus ...", nil, [NSBundle mainBundle],
-                                                              @"Incomplete Information (address information missing)",
+                                                              @"Address information is missing",
                                                               @"...")];
     }
 
     if (mask & RejectionReasonOtherMask)
     {
         [messages addObject:NSLocalizedStringWithDefaultValue(@"AddressStatus ...", nil, [NSBundle mainBundle],
-                                                              @"Other (please contact us at regulations@numberbay.com",
+                                                              @"Other issue",
                                                               @"...")];
     }
 
@@ -256,62 +260,109 @@
         case AddressStatusVerificationRequestedMask: return NSLocalizedString(@"Verification In Progress", @"");
         case AddressStatusNotVerifiedMask:
         case AddressStatusVerifiedMask:              return NSLocalizedString(@"Verified",                 @"");
+        case AddressStatusStagedRejectedMask:
         case AddressStatusRejectedMask:              return NSLocalizedString(@"Rejected",                 @"");
         case AddressStatusDisabledMask:              return NSLocalizedString(@"Disabled",                 @"");
     }
 }
 
 
-+ (NSString*)localizedMessageForAddressStatusMask:(AddressStatusMask)mask
++ (NSString*)localizedMessageForAddress:(AddressData*)address
 {
-    switch (mask)
+    NSString* message;
+
+    switch (address.addressStatus)
     {
         case AddressStatusUnknown:
         {
-            return NSLocalizedString(@"The verification status of this Address is unknown\n\nPlease check again later.",
-                                     @"");
+            message = NSLocalizedString(@"The verification status of this Address is unknown\n\nPlease check again later.",
+                                        @"");
+
+            break;
         }
         case AddressStatusStagedMask:
         {
-            NSString* message;
             message = NSLocalizedString(@"We will soon start verifying your Address. %@\n\nYou can still make changes, "
                                         @"but only via Numbers > [Number] > Address > Edit.",
                                         @"");
-            return [NSString stringWithFormat:message, [Strings addressVerificationPhraseString]];
+            message = [NSString stringWithFormat:message, [Strings addressVerificationPhraseString]];
+
+            break;
         }
         case AddressStatusVerificationRequestedMask:
         {
-            NSString* message;
             message = NSLocalizedString(@"Your Address is in the process of being verified. %@\n\nYou can no longer make "
                                         @"changes.", @"");
-            return [NSString stringWithFormat:message, [Strings addressVerificationPhraseString]];
+            message = [NSString stringWithFormat:message, [Strings addressVerificationPhraseString]];
+
+            break;
         }
         case AddressStatusNotVerifiedMask:
         case AddressStatusVerifiedMask:
         {
-            return NSLocalizedString(@"Your Address has been successfully verified. Numbers that are purchased using "
-                                     @"this Address will be immediately activated.", @"");
+            message = NSLocalizedString(@"Your Address has been successfully verified. Numbers that are purchased using "
+                                        @"this Address will be immediately activated.", @"");
+
+            break;
+        }
+        case AddressStatusStagedRejectedMask:
+        {
+            message = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal Verified", nil, [NSBundle mainBundle],
+                                                        @"Your Address plus the proof image(s) have been "
+                                                        @"checked, but something is not correct yet: \n%@.\n\n"
+                                                        @"Please add a new image or correct the fields and we'll check "
+                                                        @"again; you can also create a new Address.",
+                                                        @"...");
+            NSMutableString* rejections = [NSMutableString string];
+            for (NSString* rejection in [self rejectionReasonMessagesForMask:address.rejectionReasons])
+            {
+                [rejections appendFormat:@"• %@,\n", rejection];
+            }
+
+            message = [NSString stringWithFormat:message, [rejections substringToIndex:(rejections.length - 2)]];
+
+            break;
         }
         case AddressStatusRejectedMask:
         {
-            return NSLocalizedString(@"Verification of your Address was not successful.", @"");
+            message = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal Verified", nil, [NSBundle mainBundle],
+                                                        @"Your Address plus the proof image(s) have been "
+                                                        @"checked, but something is not correct yet: \n%@.\n\n"
+                                                        @"Please add a new image and we'll check again; you can also "
+                                                        @"create a new Address and select that for this Number.",
+                                                        @"...");
+            NSMutableString* rejections = [NSMutableString string];
+            for (NSString* rejection in [self rejectionReasonMessagesForMask:address.rejectionReasons])
+            {
+                [rejections appendFormat:@"• %@,\n", rejection];
+            }
+
+            message = [NSString stringWithFormat:message, [rejections substringToIndex:(rejections.length - 2)]];
+
+            break;
         }
         case AddressStatusDisabledMask:
         {
-            return NSLocalizedString(@"This Address has been disabled. Your Numbers that were using this Address have "
-                                     @"probably been disconnected.\n\nIf we have not contacted you, please get in touch "
-                                     @"via Help > Contact Us so we can resolve this issue as soon as possible.",
-                                     @"");
+            message = NSLocalizedString(@"This Address has been disabled. Your Numbers that are using this Address have "
+                                        @"probably been temporarily disconnected.\n\nIf we have not contacted you, "
+                                        @"please get in touch via Help > Contact Us so we can resolve this issue as "
+                                        @"soon as possible.",
+                                        @"");
+
+            break;
         }
     }
+
+    return message;
 }
 
 
 + (BOOL)isAvailableAddressStatusMask:(AddressStatusMask)mask
 {
-    return ((mask & AddressStatusStagedMask)      > 0) ||   // Not yet verified by NumberBay yet.
-           ((mask & AddressStatusNotVerifiedMask) > 0) ||   // Verified by NumberBay and not needing Voxbone check.
-           ((mask & AddressStatusVerifiedMask)    > 0);     // Verified by both NumberBay and Voxbone.
+    return ((mask & AddressStatusStagedMask)         > 0) ||   // Not yet verified by NumberBay yet.
+           ((mask & AddressStatusStagedRejectedMask) > 0) ||   // Rejected by NumberBay and still editable.
+           ((mask & AddressStatusNotVerifiedMask)    > 0) ||   // Verified by NumberBay and not needing Voxbone check.
+           ((mask & AddressStatusVerifiedMask)       > 0);     // Verified by both NumberBay and Voxbone.
 }
 
 

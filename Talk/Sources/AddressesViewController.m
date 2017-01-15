@@ -644,7 +644,8 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
 
-    if (self.completion != nil && address.addressStatus == AddressStatusStagedMask)
+    if (self.completion != nil &&
+        (address.addressStatus == AddressStatusStagedMask || address.addressStatus == AddressStatusStagedRejectedMask))
     {
         UIButton* button = [self addEditButtonWToCell:cell];
         objc_setAssociatedObject(button, @"AddressKey", address, OBJC_ASSOCIATION_RETAIN);

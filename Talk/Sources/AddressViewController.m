@@ -162,7 +162,9 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     if (self = [super initWithManagedObjectContext:managedObjectContext])
     {
         self.isNew                = (address == nil);
-        self.isUpdatable          = (address != nil && isoCountryCode != nil && address.addressStatus == AddressStatusStagedMask);
+        self.isUpdatable          = (address != nil && isoCountryCode != nil &&
+                                     (address.addressStatus == AddressStatusStagedMask ||
+                                      address.addressStatus == AddressStatusStagedRejectedMask));
         self.address              = address;
         self.title                = self.isNew ? [Strings newAddressString] : [Strings addressString];
 
@@ -375,24 +377,25 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             {
                 break;
             }
-            case AddressStatusNotVerifiedMask:
+            case AddressStatusStagedRejectedMask:
             {
+                title   = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal Verified", nil, [NSBundle mainBundle],
+                                                            @"Address Is Rejected",
+                                                            @"...");
+                message = [AddressStatus localizedMessageForAddress:self.address];
                 break;
             }
             case AddressStatusVerificationRequestedMask:
             {
                 break;
             }
+            case AddressStatusNotVerifiedMask:
             case AddressStatusVerifiedMask:
             {
                 title   = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal Verified", nil, [NSBundle mainBundle],
                                                             @"Address Is Verified",
                                                             @"...");
-                message = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal Verified", nil, [NSBundle mainBundle],
-                                                            @"Your address plus the proof image have been "
-                                                            @"checked and all is okay.\n\nYou can now "
-                                                            @"buy Numbers that require an address in this area.",
-                                                            @"...");
+                message = [AddressStatus localizedMessageForAddress:self.address];
                 break;
             }
             case AddressStatusRejectedMask:
@@ -400,12 +403,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                 title   = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal Verified", nil, [NSBundle mainBundle],
                                                             @"Address Is Rejected",
                                                             @"...");
-                message = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal Verified", nil, [NSBundle mainBundle],
-                                                            @"Your address plus the proof image have been "
-                                                            @"checked, but something is not correct yet: %@.\n\n"
-                                                            @"Please add a new image or create a new Address.",
-                                                            @"...");
-                message = [NSString stringWithFormat:message, [self rejectionReasonMessageForAddressUpdate:addressUpdate]];
+                message = [AddressStatus localizedMessageForAddress:self.address];
                 break;
             }
             case AddressStatusDisabledMask:
@@ -413,11 +411,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                 title   = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal Verified", nil, [NSBundle mainBundle],
                                                             @"Address Is Disabled",
                                                             @"...");
-                message = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal Verified", nil, [NSBundle mainBundle],
-                                                            @"Your address has been disabled.\n\n"
-                                                            @"Please contact us, via Help > Contact Us, "
-                                                            @"to receive more details.",
-                                                            @"...");
+                message = [AddressStatus localizedMessageForAddress:self.address];
                 break;
             }
         }
@@ -1191,6 +1185,13 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                                       @"...");
             break;
         }
+        case TableSectionProof:
+        {
+            title = NSLocalizedStringWithDefaultValue(@"...", nil,
+                                                      [NSBundle mainBundle], @"Proof Image(s)",
+                                                      @"...");
+            break;
+        }
         case TableSectionDetails:
         {
             title = NSLocalizedStringWithDefaultValue(@"Address:Name SectionHeader", nil,
@@ -1284,27 +1285,63 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
             break;
         }
-        case TableSectionProof:
+        case TableSectionStatus:
         {
-#warning Texts below NEED UPDATE
-            if ((self.proofTypes.requiresAddressProof  && self.address.hasAddressProof == NO) ||
-                (self.proofTypes.requiresIdentityProof && self.address.hasIdentityProof == NO))
+            if (!self.isUpdatable && (self.address.addressStatus == AddressStatusStagedRejectedMask ||
+                                      self.address.addressStatus == AddressStatusRejectedMask))
             {
-                title = NSLocalizedStringWithDefaultValue(@"Address:Action SectionFooterTakePicture", nil,
-                                                          [NSBundle mainBundle],
-                                                          @"###### NEEDS DYNAMIC TEXT ... For this area a proof of address is (legally) required.\n\n"
-                                                          @"Take a picture of a recent utility bill, or bank statement. "
-                                                          @"Make sure the date, your name & address, and the name of "
-                                                          @"the company/bank are clearly visible.",
-                                                          @"Telephone area (or city).");
+                title = NSLocalizedString(@"Your Address plus the proof image(s) have been checked, but something is "
+                                          @"not correct yet. You can make changes and resubmit this Address, but only "
+                                          @"via Numbers > [Number] > Address > Edit.",
+                                          @"");
             }
             else
             {
-                title = NSLocalizedStringWithDefaultValue(@"Address:Action SectionFooterBuy", nil,
-                                                          [NSBundle mainBundle],
-                                                          @"######## NEEDS UPDATE: You can always buy extra months to use "
-                                                          @"this phone number.",
-                                                          @"Explaining that user can buy more months.");
+                title = [AddressStatus localizedMessageForAddress:self.address];
+            }
+
+            break;
+        }
+        case TableSectionProof:
+        {
+            if (self.isNew || self.isUpdatable)
+            {
+                if (self.proofTypes.requiresAddressProof && !self.proofTypes.requiresIdentityProof)
+                {
+                    title = NSLocalizedString(@"To use the current Number, a proof of your (company's) address is "
+                                              @"legally required.",
+                                              @"");
+                }
+
+                if (!self.proofTypes.requiresAddressProof && self.proofTypes.requiresIdentityProof)
+                {
+                    title = NSLocalizedString(@"To use the current Number, a proof of your (company's) identity is "
+                                              @"legally required.",
+                                              @"");
+                }
+
+                if (self.proofTypes.requiresAddressProof && self.proofTypes.requiresIdentityProof)
+                {
+                    title = NSLocalizedString(@"To use the current Number, a proof of your (company's) address and "
+                                              @"identity are legally required.",
+                                              @"");
+                }
+
+                if (self.proofTypes.requiresAddressProof)
+                {
+                    title = [NSString stringWithFormat:@"%@\n%@", title,
+                             @"• Address: Make sure that the document date, your (company's) name and address, "
+                             @"plus the details of the organisation that issued the document, are all present and clearly "
+                             @"visible on the image."];
+                }
+
+                if (self.proofTypes.requiresIdentityProof)
+                {
+                    title = [NSString stringWithFormat:@"%@\n%@", title,
+                             @"• Identity: Make sure that the document date, your (company's) name, "
+                             @"date & place of birth (or company creation), and registration number, plus the details "
+                             @"of organisation that issued the document, are all clearly visible on the image."];
+                }
             }
 
             break;
@@ -1318,6 +1355,8 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                                           @"complete/valid yet.",
                                                           @".....");
             }
+
+            break;
         }
     }
 
@@ -1345,21 +1384,6 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     {
         switch ([Common nthBitSet:indexPath.section inValue:self.sections])
         {
-            case TableSectionStatus:
-            {
-                NSString* title   = [AddressStatus localizedStringForAddressStatusMask:self.address.addressStatus];
-                NSString* message = [AddressStatus localizedMessageForAddressStatusMask:self.address.addressStatus];
-
-                [BlockAlertView showAlertViewWithTitle:title
-                                               message:message
-                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
-                 {
-                     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-                 }
-                                     cancelButtonTitle:[Strings closeString]
-                                     otherButtonTitles:nil];
-                break;
-            }
             case TableSectionProof:
             {
                 switch ([Common nthBitSet:indexPath.row inValue:self.rowsProof])
@@ -1637,11 +1661,10 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
         cell.accessoryType  = UITableViewCellAccessoryNone;
         cell.textLabel.text = NSLocalizedString(@"Status", @"");
-        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
 
-    cell.detailTextLabel.text      = [AddressStatus localizedStringForAddressStatusMask:self.address.addressStatus];
-    cell.detailTextLabel.textColor = [Skinning tintColor];
+    cell.detailTextLabel.text = [AddressStatus localizedStringForAddressStatusMask:self.address.addressStatus];
 
     return cell;
 }
@@ -2317,16 +2340,9 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
 - (BOOL)textFieldShouldReturn:(UITextField*)textField
 {
-    if (self.isUpdatable == YES && [self isAddressComplete] == YES)
-    {
-        return [super textFieldShouldReturn:textField];
-    }
-    
     if ([self isAddressComplete] == YES)
     {
-        [textField resignFirstResponder];
-        
-        return YES;
+        return [super textFieldShouldReturn:textField];
     }
     else
     {

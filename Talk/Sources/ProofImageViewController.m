@@ -232,6 +232,14 @@
         {
             break;
         }
+        case AddressStatusStagedMask:
+        {
+            break;
+        }
+        case AddressStatusStagedRejectedMask:
+        {
+            break;
+        }
         case AddressStatusNotVerifiedMask:
         {
             break;
