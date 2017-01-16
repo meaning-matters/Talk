@@ -380,7 +380,6 @@ typedef enum
                                                             @"[iOS alert message size]");
                 break;
             }
-            case AddressStatusStagedRejectedMask:
             case AddressStatusRejectedMask:
             {
                 title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],

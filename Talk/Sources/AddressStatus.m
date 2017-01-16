@@ -19,10 +19,6 @@
     {
         mask = AddressStatusStagedMask;
     }
-    else if ([string isEqualToString:@"STAGED_REJECTED"])
-    {
-        mask = AddressStatusStagedRejectedMask;
-    }
     else if ([string isEqualToString:@"NOT_VERIFIED"])
     {
         mask = AddressStatusNotVerifiedMask;
@@ -260,7 +256,6 @@
         case AddressStatusVerificationRequestedMask: return NSLocalizedString(@"Verification In Progress", @"");
         case AddressStatusNotVerifiedMask:
         case AddressStatusVerifiedMask:              return NSLocalizedString(@"Verified",                 @"");
-        case AddressStatusStagedRejectedMask:
         case AddressStatusRejectedMask:              return NSLocalizedString(@"Rejected",                 @"");
         case AddressStatusDisabledMask:              return NSLocalizedString(@"Disabled",                 @"");
     }
@@ -305,31 +300,13 @@
 
             break;
         }
-        case AddressStatusStagedRejectedMask:
+        case AddressStatusRejectedMask:
         {
             message = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal Verified", nil, [NSBundle mainBundle],
                                                         @"Your Address plus the proof image(s) have been "
                                                         @"checked, but something is not correct yet: \n%@.\n\n"
                                                         @"Please add a new image or correct the fields and we'll check "
                                                         @"again; you can also create a new Address.",
-                                                        @"...");
-            NSMutableString* rejections = [NSMutableString string];
-            for (NSString* rejection in [self rejectionReasonMessagesForMask:address.rejectionReasons])
-            {
-                [rejections appendFormat:@"• %@,\n", rejection];
-            }
-
-            message = [NSString stringWithFormat:message, [rejections substringToIndex:(rejections.length - 2)]];
-
-            break;
-        }
-        case AddressStatusRejectedMask:
-        {
-            message = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal Verified", nil, [NSBundle mainBundle],
-                                                        @"Your Address plus the proof image(s) have been "
-                                                        @"checked, but something is not correct yet: \n%@.\n\n"
-                                                        @"Please add a new image and we'll check again; you can also "
-                                                        @"create a new Address and select that for this Number.",
                                                         @"...");
             NSMutableString* rejections = [NSMutableString string];
             for (NSString* rejection in [self rejectionReasonMessagesForMask:address.rejectionReasons])
@@ -359,10 +336,10 @@
 
 + (BOOL)isAvailableAddressStatusMask:(AddressStatusMask)mask
 {
-    return ((mask & AddressStatusStagedMask)         > 0) ||   // Not yet verified by NumberBay yet.
-           ((mask & AddressStatusStagedRejectedMask) > 0) ||   // Rejected by NumberBay and still editable.
-           ((mask & AddressStatusNotVerifiedMask)    > 0) ||   // Verified by NumberBay and not needing Voxbone check.
-           ((mask & AddressStatusVerifiedMask)       > 0);     // Verified by both NumberBay and Voxbone.
+    return ((mask & AddressStatusStagedMask)      > 0) ||   // Not yet verified by NumberBay yet.
+           ((mask & AddressStatusRejectedMask)    > 0) ||   // Rejected by NumberBay and still editable.
+           ((mask & AddressStatusNotVerifiedMask) > 0) ||   // Verified by NumberBay and not needing Voxbone check.
+           ((mask & AddressStatusVerifiedMask)    > 0);     // Verified by both NumberBay and Voxbone.
 }
 
 

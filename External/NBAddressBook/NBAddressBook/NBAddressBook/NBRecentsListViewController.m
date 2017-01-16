@@ -180,6 +180,9 @@
 {
     NSDate* date = [Settings sharedSettings].recentsCheckDate;
 
+    //####### TEMP
+    date = [[NSDate date] dateByAddingTimeInterval:-20000];
+
     [[WebClient sharedClient] retrieveInboundCallRecordsFromDate:date reply:^(NSError *error, NSArray* records)
     {
         if (error == nil)
@@ -367,7 +370,7 @@
 
 - (BOOL)isCallthruRecord:(NSDictionary*)record
 {
-    return [record[@"type"] isEqualToString:@"callthur"];
+    return [record[@"type"] isEqualToString:@"callthru"];
 }
 
 

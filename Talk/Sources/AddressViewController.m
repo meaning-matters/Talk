@@ -164,7 +164,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         self.isNew                = (address == nil);
         self.isUpdatable          = (address != nil && isoCountryCode != nil &&
                                      (address.addressStatus == AddressStatusStagedMask ||
-                                      address.addressStatus == AddressStatusStagedRejectedMask));
+                                      address.addressStatus == AddressStatusRejectedMask));
         self.address              = address;
         self.title                = self.isNew ? [Strings newAddressString] : [Strings addressString];
 
@@ -375,14 +375,6 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             }
             case AddressStatusStagedMask:
             {
-                break;
-            }
-            case AddressStatusStagedRejectedMask:
-            {
-                title   = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal Verified", nil, [NSBundle mainBundle],
-                                                            @"Address Is Rejected",
-                                                            @"...");
-                message = [AddressStatus localizedMessageForAddress:self.address];
                 break;
             }
             case AddressStatusVerificationRequestedMask:
@@ -1287,8 +1279,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         }
         case TableSectionStatus:
         {
-            if (!self.isUpdatable && (self.address.addressStatus == AddressStatusStagedRejectedMask ||
-                                      self.address.addressStatus == AddressStatusRejectedMask))
+            if (!self.isUpdatable && self.address.addressStatus == AddressStatusRejectedMask)
             {
                 title = NSLocalizedString(@"Your Address plus the proof image(s) have been checked, but something is "
                                           @"not correct yet. You can make changes and resubmit this Address, but only "

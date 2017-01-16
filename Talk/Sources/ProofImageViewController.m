@@ -236,10 +236,6 @@
         {
             break;
         }
-        case AddressStatusStagedRejectedMask:
-        {
-            break;
-        }
         case AddressStatusNotVerifiedMask:
         {
             break;

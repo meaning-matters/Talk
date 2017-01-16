@@ -645,7 +645,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     }
 
     if (self.completion != nil &&
-        (address.addressStatus == AddressStatusStagedMask || address.addressStatus == AddressStatusStagedRejectedMask))
+        (address.addressStatus == AddressStatusStagedMask || address.addressStatus == AddressStatusRejectedMask))
     {
         UIButton* button = [self addEditButtonWToCell:cell];
         objc_setAssociatedObject(button, @"AddressKey", address, OBJC_ASSOCIATION_RETAIN);

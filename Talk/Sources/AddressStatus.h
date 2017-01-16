@@ -14,12 +14,11 @@ typedef NS_ENUM(NSUInteger, AddressStatusMask)
 {
     AddressStatusUnknown                   = 0,
     AddressStatusStagedMask                = 1UL << 0,
-    AddressStatusStagedRejectedMask        = 1UL << 1,
-    AddressStatusNotVerifiedMask           = 1UL << 2,  // Default status for Numbers without Voxbone Address requirement.
-    AddressStatusVerificationRequestedMask = 1UL << 3,
-    AddressStatusVerifiedMask              = 1UL << 4,
-    AddressStatusRejectedMask              = 1UL << 5,
-    AddressStatusDisabledMask              = 1UL << 6,
+    AddressStatusNotVerifiedMask           = 1UL << 1,  // Default status for Numbers without Voxbone Address requirement.
+    AddressStatusVerificationRequestedMask = 1UL << 2,
+    AddressStatusVerifiedMask              = 1UL << 3,
+    AddressStatusRejectedMask              = 1UL << 4,
+    AddressStatusDisabledMask              = 1UL << 5,
 };
 
 typedef NS_ENUM(NSUInteger, RejectionReasonMask)
