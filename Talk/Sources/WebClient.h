@@ -131,7 +131,7 @@
                                      reply:(void (^)(NSError* error, NSArray* uuids))reply;
 
 // 10B. GET REGULATION ADDRESS
-- (void)retrieveAddressWithUuid:(NSString*)uuid
+- (void)retrieveAddressWithUuid:(NSString*)uuid imageless:(BOOL)imageless
                           reply:(void (^)(NSError*            error,
                                           NSString*           name,
                                           NSString*           salutation,
@@ -148,6 +148,8 @@
                                           NSString*           areaCode,
                                           BOOL                hasAddressProof,
                                           BOOL                hasIdentityProof,
+                                          NSData*             addressProof,
+                                          NSData*             identityProof,
                                           NSString*           idType,
                                           NSString*           idNumber,
                                           NSString*           fiscalIdCode,
@@ -189,16 +191,6 @@
 - (void)deleteAddressWithUuid:(NSString*)uuid
                         reply:(void (^)(NSError* error))reply;
 
-// 10E. GET ADDRESS PROOF IMAGES
-- (void)retrieveProofImagesForAddressWithUuid:(NSString*)uuid
-                                        reply:(void (^)(NSError* error, NSData* addressProof, NSData* identityProof))reply;
-
-// 10F. UPDATE ADDRESS PROOF IMAGE(S)
-- (void)updateProofImagesForAddressWithUuid:(NSString*)uuid
-                               addressProof:(NSData*)addressProof
-                              identityProof:(NSData*)identityProof
-                                      reply:(void (^)(NSError* error))reply;
-
 // 10G. UPDATE ADDRESS' NAME
 - (void)updateAddressWithUuid:(NSString*)uuid
                          name:(NSString*)name
@@ -213,6 +205,8 @@
                          city:(NSString*)city
                      postcode:(NSString*)postcode
                isoCountryCode:(NSString*)isoCountryCode
+                 addressProof:(NSData*)addressProof
+                identityProof:(NSData*)identityProof
                        idType:(NSString*)idType
                      idNumber:(NSString*)idNumber
                  fiscalIdCode:(NSString*)fiscalIdCode
@@ -417,12 +411,6 @@
 
 // 10D.
 - (void)cancelAllDeleteAddressWithUuid:(NSString*)uuid;
-
-// 10E.
-- (void)cancelAllRetrieveProofImagesForAddressWithUuid:(NSString*)uuid;
-
-// 10F.
-- (void)cancelAllUpdateProofImagesForAddressWithUuid:(NSString*)uuid;
 
 // 11A.
 - (void)cancelAllPurchaseNumber;

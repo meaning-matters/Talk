@@ -566,6 +566,7 @@
             for (NSString* uuid in uuids)
             {
                 [[WebClient sharedClient] retrieveAddressWithUuid:uuid
+                                                        imageless:YES
                                                             reply:^(NSError*            error,
                                                                     NSString*           name,
                                                                     NSString*           salutation,
@@ -582,6 +583,8 @@
                                                                     NSString*           areaCode,
                                                                     BOOL                hasAddressProof,
                                                                     BOOL                hasIdentityProof,
+                                                                    NSData*             addressProof,
+                                                                    NSData*             identityProof,
                                                                     NSString*           idType,
                                                                     NSString*           idNumber,
                                                                     NSString*           fiscalIdCode,

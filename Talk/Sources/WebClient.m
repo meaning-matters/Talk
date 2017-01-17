@@ -637,7 +637,7 @@
     (isoCountryCode.length > 0) ? parameters[@"isoCountryCode"] = isoCountryCode : 0;
     (areaCode.length       > 0) ? parameters[@"areaCode"]       = areaCode       : 0;
     (numberTypeMask        > 0) ? parameters[@"numberType"]     = numberType     : 0;
-    (isExtranational    == YES) ? parameters[@"extranational"]  = @(YES)         : 0;
+    parameters[@"extranational"] = (isExtranational ? @YES : @NO);
 
     [self getPath:[NSString stringWithFormat:@"/users/%@/addresses", username]
        parameters:parameters
@@ -647,6 +647,7 @@
 
 // 10B. GET REGULATION ADDRESS
 - (void)retrieveAddressWithUuid:(NSString*)uuid
+                      imageless:(BOOL)imageless
                           reply:(void (^)(NSError*            error,
                                           NSString*           name,
                                           NSString*           salutation,
@@ -663,6 +664,8 @@
                                           NSString*           areaCode,
                                           BOOL                hasAddressProof,
                                           BOOL                hasIdentityProof,
+                                          NSData*             addressProof,
+                                          NSData*             identityProof,
                                           NSString*           idType,
                                           NSString*           idNumber,
                                           NSString*           fiscalIdCode,
@@ -671,10 +674,11 @@
                                           AddressStatusMask   addressStatus,
                                           RejectionReasonMask rejectionReasons))reply;
 {
-    NSString* username = [Settings sharedSettings].webUsername;
+    NSString*     username   = [Settings sharedSettings].webUsername;
+    NSDictionary* parameters = @{@"imageless" : (imageless ? @YES : @NO)};
 
     [self getPath:[NSString stringWithFormat:@"/users/%@/addresses/%@", username, uuid]
-                                  parameters:nil
+                                  parameters:parameters
                                        reply:^(NSError *error, id content)
     {
         if (error == nil)
@@ -693,8 +697,10 @@
                   content[@"postcode"],
                   content[@"isoCountryCode"],
                   content[@"areaCode"],
-                  [content[@"hasAddressProof"] boolValue],
-                  [content[@"hasIdentityProof"] boolValue],
+                  [content[@"addressProofMd5"]  length] > 0,
+                  [content[@"identityProofMd5"] length] > 0,
+                  [Base64 decode:content[@"addressProof"]],
+                  [Base64 decode:content[@"identityProof"]],
                   content[@"idType"],
                   content[@"idNumber"],
                   content[@"fiscalIdCode"],
@@ -705,7 +711,8 @@
         }
         else
         {
-            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, NO, NO, nil, nil, nil, nil, nil, 0, 0);
+            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, NO, NO,
+                  nil, nil, nil, nil, nil, nil, nil, 0, 0);
         }
     }];
 }
@@ -797,49 +804,6 @@
 }
 
 
-// 10E. GET ADDRESS PROOF IMAGES
-- (void)retrieveProofImagesForAddressWithUuid:(NSString*)uuid
-                                        reply:(void (^)(NSError* error, NSData* addressProof, NSData* identityProof))reply
-{
-    NSString* username = [Settings sharedSettings].webUsername;
-
-    [self getPath:[NSString stringWithFormat:@"/users/%@/addresses/%@/images", username, uuid]
-       parameters:nil
-            reply:^(NSError *error, id content)
-    {
-        if (error == nil)
-        {
-            reply(nil, [Base64 decode:content[@"addressProof"]], [Base64 decode:content[@"identityProof"]]);
-        }
-        else
-        {
-            reply(error, nil, nil);
-        }
-    }];
-}
-
-
-// 10F. UPDATE ADDRESS PROOF IMAGE(s)
-- (void)updateProofImagesForAddressWithUuid:(NSString*)uuid
-                               addressProof:(NSData*)addressProof
-                              identityProof:(NSData*)identityProof
-                                      reply:(void (^)(NSError* error))reply
-{
-    NSString* username = [Settings sharedSettings].webUsername;
-
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
-    (addressProof.length  > 0) ? parameters[@"addressProof"]  = [Base64 encode:addressProof]  : 0;
-    (identityProof.length > 0) ? parameters[@"identityProof"] = [Base64 encode:identityProof] : 0;
-
-    [self putPath:[NSString stringWithFormat:@"/users/%@/addresses/%@/images", username, uuid]
-       parameters:parameters
-            reply:^(NSError *error, id content)
-    {
-        reply(error);
-    }];
-}
-
-
 // 10G. UPDATE ADDRESS' NAME
 - (void)updateAddressWithUuid:(NSString*)uuid
                          name:(NSString*)name
@@ -854,6 +818,8 @@
                          city:(NSString*)city
                      postcode:(NSString*)postcode
                isoCountryCode:(NSString*)isoCountryCode
+                 addressProof:(NSData*)addressProof
+                identityProof:(NSData*)identityProof
                        idType:(NSString*)idType
                      idNumber:(NSString*)idNumber
                  fiscalIdCode:(NSString*)fiscalIdCode
@@ -876,6 +842,8 @@
     (city.length               > 0) ? parameters[@"city"]               = city                          : 0;
     (postcode.length           > 0) ? parameters[@"postcode"]           = postcode                      : 0;
     (isoCountryCode.length     > 0) ? parameters[@"isoCountryCode"]     = isoCountryCode                : 0;
+    (addressProof.length       > 0) ? parameters[@"addressProof"]       = [Base64 encode:addressProof]  : 0;
+    (identityProof.length      > 0) ? parameters[@"identityProof"]      = [Base64 encode:identityProof] : 0;
     (idType.length             > 0) ? parameters[@"idType"]             = idType                        : 0;
     (idNumber.length           > 0) ? parameters[@"idNumber"]           = idNumber                      : 0;
     (fiscalIdCode.length       > 0) ? parameters[@"fiscalIdCode"]       = fiscalIdCode                  : 0;
@@ -911,9 +879,9 @@
                                          @"name"           : name,
                                          @"isoCountryCode" : isoCountryCode,
                                          @"areaId"         : areaId,
-                                         @"autoRenew"      : @(autoRenew)} mutableCopy];
+                                         @"autoRenew"      : (autoRenew ? @YES : @NO)} mutableCopy];
     (addressUuid != nil) ? parameters[@"addressUuid"] = addressUuid : 0;
-    // parameters[@"debug"] = @(false);
+    // parameters[@"debug"] = @NO;
 
     [self postPath:[NSString stringWithFormat:@"/users/%@/numbers", username]
         parameters:parameters
@@ -948,7 +916,7 @@
     NSString*            username   = [Settings sharedSettings].webUsername;
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
 
-    parameters[@"autoRenew"]                                      = @(autoRenew);
+    parameters[@"autoRenew"]                                      = (autoRenew ? @YES : @NO);
     (name.length            > 0) ? parameters[@"name"]            = name            : 0;
     (destinationUuid     != nil) ? parameters[@"destinationUuid"] = destinationUuid : 0;
     (addressUuid.length     > 0) ? parameters[@"addressUuid"]     = addressUuid     : 0;
@@ -1404,7 +1372,7 @@
     NSDictionary* parameters = @{@"callbackE164" : [callbackE164 substringFromIndex:1],
                                  @"callthruE164" : [callthruE164 substringFromIndex:1],
                                  @"identityE164" : [identityE164 substringFromIndex:1],
-                                 @"privacy"      : privacy ? @YES : @NO};
+                                 @"privacy"      : (privacy ? @YES : @NO)};
     
     [self postPath:[NSString stringWithFormat:@"/users/%@/callback", username]
         parameters:parameters
@@ -1744,28 +1712,6 @@
     
     [self.webInterface cancelAllHttpOperationsWithMethod:@"DELETE"
                                                     path:[NSString stringWithFormat:@"/users/%@/addresses/%@",
-                                                          username, uuid]];
-}
-
-
-// 10E.
-- (void)cancelAllRetrieveProofImagesForAddressWithUuid:(NSString*)uuid
-{
-    NSString* username = [Settings sharedSettings].webUsername;
-    
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
-                                                    path:[NSString stringWithFormat:@"/users/%@/addresses/%@/images",
-                                                          username, uuid]];
-}
-
-
-// 10F.
-- (void)cancelAllUpdateProofImagesForAddressWithUuid:(NSString*)uuid
-{
-    NSString* username = [Settings sharedSettings].webUsername;
-    
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"PUT"
-                                                    path:[NSString stringWithFormat:@"/users/%@/addresses/%@/images",
                                                           username, uuid]];
 }
 

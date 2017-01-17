@@ -80,7 +80,7 @@
     }
     else
     {
-        [[WebClient sharedClient] deleteAddressWithUuid:self.uuid reply:^(NSError *error)
+        [[WebClient sharedClient] deleteAddressWithUuid:self.uuid reply:^(NSError* error)
         {
             if (error == nil || error.code == WebStatusFailAddressUnknown)
             {
@@ -150,10 +150,33 @@
 
 - (void)loadProofImagesWithCompletion:(void (^)(NSError* error))completion
 {
-    [[WebClient sharedClient] retrieveProofImagesForAddressWithUuid:self.uuid
-                                                              reply:^(NSError* error,
-                                                                      NSData*  addressProof,
-                                                                      NSData*  identityProof)
+    [[WebClient sharedClient] retrieveAddressWithUuid:self.uuid
+                                            imageless:NO
+                                                reply:^(NSError*            error,
+                                                        NSString*           name,
+                                                        NSString*           salutation,
+                                                        NSString*           firstName,
+                                                        NSString*           lastName,
+                                                        NSString*           companyName,
+                                                        NSString*           companyDescription,
+                                                        NSString*           street,
+                                                        NSString*           buildingNumber,
+                                                        NSString*           buildingLetter,
+                                                        NSString*           city,
+                                                        NSString*           postcode,
+                                                        NSString*           isoCountryCode,
+                                                        NSString*           areaCode,
+                                                        BOOL                hasAddressProof,
+                                                        BOOL                hasIdentityProof,
+                                                        NSData*             addressProof,
+                                                        NSData*             identityProof,
+                                                        NSString*           idType,
+                                                        NSString*           idNumber,
+                                                        NSString*           fiscalIdCode,
+                                                        NSString*           streetCode,
+                                                        NSString*           municipalityCode,
+                                                        AddressStatusMask   addressStatus,
+                                                        RejectionReasonMask rejectionReasons)
     {
         if (error == nil)
         {
@@ -172,7 +195,7 @@
 
 - (void)cancelLoadProofImages
 {
-    [[WebClient sharedClient] cancelAllRetrieveProofImagesForAddressWithUuid:self.uuid];
+    [[WebClient sharedClient] cancelAllRetrieveAddressWithUuid:self.uuid];
 }
 
 @end

@@ -1039,10 +1039,27 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     {
         case ProofImageTypeAddress:
         {
-            [[WebClient sharedClient] updateProofImagesForAddressWithUuid:self.address.uuid
-                                                             addressProof:self.address.addressProof
-                                                            identityProof:nil
-                                                                    reply:^(NSError *error)
+            [[WebClient sharedClient] updateAddressWithUuid:self.address.uuid
+                                                       name:nil
+                                                 salutation:nil
+                                                  firstName:nil
+                                                   lastName:nil
+                                                companyName:nil
+                                         companyDescription:nil
+                                                     street:nil
+                                             buildingNumber:nil
+                                             buildingLetter:nil
+                                                       city:nil
+                                                   postcode:nil
+                                             isoCountryCode:nil
+                                               addressProof:self.address.addressProof
+                                              identityProof:nil
+                                                     idType:nil
+                                                   idNumber:nil
+                                               fiscalIdCode:nil
+                                                 streetCode:nil
+                                           municipalityCode:nil
+                                                      reply:^(NSError *error)
             {
                 [self handleUploadProofImageError:error];
             }];
@@ -1051,10 +1068,27 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         }
         case ProofImageTypeIdentity:
         {
-            [[WebClient sharedClient] updateProofImagesForAddressWithUuid:self.address.uuid
-                                                             addressProof:self.address.addressProof
-                                                            identityProof:nil
-                                                                    reply:^(NSError *error)
+            [[WebClient sharedClient] updateAddressWithUuid:self.address.uuid
+                                                       name:nil
+                                                 salutation:nil
+                                                  firstName:nil
+                                                   lastName:nil
+                                                companyName:nil
+                                         companyDescription:nil
+                                                     street:nil
+                                             buildingNumber:nil
+                                             buildingLetter:nil
+                                                       city:nil
+                                                   postcode:nil
+                                             isoCountryCode:nil
+                                               addressProof:nil
+                                              identityProof:self.address.identityProof
+                                                     idType:nil
+                                                   idNumber:nil
+                                               fiscalIdCode:nil
+                                                 streetCode:nil
+                                           municipalityCode:nil
+                                                      reply:^(NSError *error)
             {
                 [self handleUploadProofImageError:error];
             }];
@@ -2492,6 +2526,8 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                                city:self.address.city
                                            postcode:self.address.postcode
                                      isoCountryCode:self.address.isoCountryCode
+                                       addressProof:nil // This image is saved separately.
+                                      identityProof:nil // This image is saved separately.
                                              idType:self.address.idType
                                            idNumber:self.address.idNumber
                                        fiscalIdCode:self.address.fiscalIdCode
