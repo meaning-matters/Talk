@@ -29,10 +29,16 @@
 "LBL_UNKNOWN"       = "unknown";
 "LBL_NO_CALLER_ID"  = "No Caller ID";
 "CNT_CLEAR"         = "Clear";
+"CNT_CLEAR_ALL_TITLE" = "Clear Outgoing, Incoming and Missed Calls";
+"CNT_CLEAR_OUT_TITLE" = "Clear Outgoing Calls";
+"CNT_CLEAR_IN_TITLE" = "Clear Incoming Calls";
+"CNT_CLEAR_MISSED_TITLE" = "Clear Missed Calls";
 "CNT_CLEAR_ALL"     = "Clear All";
 "CNT_CLEAR_WEEK"    = "Clear Older Than a Week";
 "CNT_CLEAR_MONTH"   = "Clear Older Than a Month";
 "CNT_ALL"           = "All";
+"CNT_IN"            = "In";
+"CNT_OUT"           = "Out";
 "CNT_MISSED"        = "Missed";
 "CNT_TODAY"         = "Today";
 "CNT_YESTERDAY"     = "Yesterday";

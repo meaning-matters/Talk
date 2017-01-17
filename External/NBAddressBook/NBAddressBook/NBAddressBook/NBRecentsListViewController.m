@@ -18,21 +18,39 @@
 #import "BadgeHandler.h"
 #import "BlockAlertView.h"
 
+
+// These value precisly match the segment control indexes!
+typedef enum
+{
+    CallSelectionAll      = 0,
+    CallSelectionOutgoing = 1,
+    CallSelectionIncoming = 2,
+    CallSelectionMissed   = 3,
+} CallSelection;
+
+
 @interface NBRecentsListViewController ()
 {
     NSManagedObjectContext*               managedObjectContext;
     NSFetchedResultsController*           fetchedResultsController;
 
+    UISegmentedControl*                   segmentedControl;
+
     NBRecentUnknownContactViewController* recentUnknownViewController;
     NBRecentContactViewController*        recentViewController;
 
     //The missed-calls only predicate
-    NSPredicate*                          missedCallsOnlyPredicate;
+    NSPredicate*                          incomingCallsPredicate;
+    NSPredicate*                          outgoingCallsPredicate;
+    NSPredicate*                          missedCallsPredicate;
     
     NSDate*                               reloadDate;
 
     //The recent contacts-datasource with grouping (date-sorted array with arrays (1..*) of recent entries)
-    NSMutableArray* dataSource;
+    NSMutableArray*                       dataSource;
+
+    //Flag to indicate we're displaying missed calls only
+    CallSelection                         callSelection;
 }
 
 @end
@@ -105,41 +123,34 @@
 {
     [super viewDidLoad];
 
-    //Set the segmented control
-    UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:@[NSLocalizedString(@"CNT_ALL", @""), NSLocalizedString(@"CNT_MISSED", @"")]];
+    segmentedControl = [[UISegmentedControl alloc] initWithItems:@[NSLocalizedString(@"CNT_ALL",    @""),
+                                                                   NSLocalizedString(@"CNT_OUT",    @""),
+                                                                   NSLocalizedString(@"CNT_IN",     @""),
+                                                                   NSLocalizedString(@"CNT_MISSED", @"")]];
     [segmentedControl setSelectedSegmentIndex:0];
     [segmentedControl setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
     segmentedControl.frame = CGRectMake(0, 0, 150, 30);
     [segmentedControl addTarget:self action:@selector(segmentedControlSwitched:) forControlEvents:UIControlEventValueChanged];
     self.navigationItem.titleView = segmentedControl;
 
-    //Set the modify-button
+    // Set the modify-button
     editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(modifyListPressed)];
     doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed)];
     clearButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"CNT_CLEAR", @"")
                                                    style:UIBarButtonItemStylePlain
                                                   target:self
-                                                  action:@selector(clearAllPressed)];
+                                                  action:@selector(clearAction)];
     
-    //Create the action sheet
-    clearActionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                   delegate:self
-                                          cancelButtonTitle:NSLocalizedString(@"NCT_CANCEL", @"")
-                                     destructiveButtonTitle:nil
-                                          otherButtonTitles:NSLocalizedString(@"CNT_CLEAR_WEEK",  @""),
-                                                            NSLocalizedString(@"CNT_CLEAR_MONTH", @""),
-                                                            NSLocalizedString(@"CNT_CLEAR_ALL",   @""), nil];
-
-    [clearActionSheet setActionSheetStyle:UIActionSheetStyleBlackTranslucent];
-
-    //The datasource
+    // The datasource
     dataSource = [NSMutableArray array];
     
-    //Create the missed calls only predicate
-    missedCallsOnlyPredicate = [NSPredicate predicateWithFormat:@"(status == %d)", CallStatusMissed];
-    
-    //Load in the initial content
-    [self performFetch];
+    // Create the missed calls only predicate
+    missedCallsPredicate   = [NSPredicate predicateWithFormat:@"(status    == %d)", CallStatusMissed];
+    incomingCallsPredicate = [NSPredicate predicateWithFormat:@"(direction == %d)", CallDirectionIncoming];
+    outgoingCallsPredicate = [NSPredicate predicateWithFormat:@"(direction == %d)", CallDirectionOutgoing];
+
+    // Load in the initial content
+    [self performFetchWithForce:NO];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reload)
@@ -294,7 +305,7 @@
 
         if (firstDate == nil)
         {
-            // We're expecting 'callback', 'inbound' or ' verification'.
+            // We're expecting 'callback', 'inbound' or 'verification'.
             if ([self isCallbackRecord:record] || [self isInboundRecord:record] || [self isVerificationRecord:record])
             {
                 firstDate = [Common dateWithString:record[@"startDateTime"]];
@@ -425,7 +436,25 @@
     }
     else if ([self isInboundRecord:fromRecord])
     {
+        recent.direction  = @(CallDirectionIncoming);
+        dialedPhoneNumber = [[PhoneNumber alloc] initWithNumber:[self addE164Plus:fromRecord[@"toE164"]]];
+        recent.date       = [Common dateWithString:fromRecord[@"startDateTime"]]; // When we started calling.
+        recent.callerIdE164 = nil;
 
+        recent.fromE164 = [self addE164Plus:fromRecord[@"fromE164"]];
+        recent.toE164   = [self addE164Plus:fromRecord[@"toE164"]];
+        recent.fromCost = fromRecord[@"cost"];
+        recent.toCost   = @(0.0);
+
+        if ([fromRecord[@"hangupCause"] isEqualToString:@"NORMAL_CLEARING"])
+        {
+            recent.status = @(CallStatusCancelled);
+        }
+        else
+        {
+            //#### TODO: Elaborate with actual status string values.
+            recent.status = @(CallStatusFailed);
+        }
     }
     else
     {
@@ -494,7 +523,7 @@
      hangupCause = "NORMAL_CLEARING";
      startDateTime = "2016-11-14 16:36:48";
      toE164 = 3215666666;
-     type = callthur;
+     type = callthru;
      uuid = "81bb6c72-aa88-11e6-bb44-8ddf088a4149";
      */
 
@@ -600,9 +629,27 @@
 
 #pragma mark - Clear all recents
 
-- (void)clearAllPressed
+- (void)clearAction
 {
-    //Present the actionsheet
+    UIActionSheet* clearActionSheet;
+    NSString*      title;
+
+    switch ((CallSelection)segmentedControl.selectedSegmentIndex)
+    {
+        case CallSelectionAll:      title = NSLocalizedString(@"CNT_CLEAR_ALL_TITLE",    @""); break;
+        case CallSelectionOutgoing: title = NSLocalizedString(@"CNT_CLEAR_OUT_TITLE",    @""); break;
+        case CallSelectionIncoming: title = NSLocalizedString(@"CNT_CLEAR_IN_TITLE",     @""); break;
+        case CallSelectionMissed:   title = NSLocalizedString(@"CNT_CLEAR_MISSED_TITLE", @""); break;
+    }
+
+    clearActionSheet = [[UIActionSheet alloc] initWithTitle:title
+                                                   delegate:self
+                                          cancelButtonTitle:NSLocalizedString(@"NCT_CANCEL", @"")
+                                     destructiveButtonTitle:nil
+                                          otherButtonTitles:NSLocalizedString(@"CNT_CLEAR_WEEK",  @""),
+                        NSLocalizedString(@"CNT_CLEAR_MONTH", @""),
+                        NSLocalizedString(@"CNT_CLEAR_ALL",   @""), nil];
+
     [clearActionSheet showFromTabBar:[[self.navigationController tabBarController] tabBar]];
 }
 
@@ -615,8 +662,6 @@
     NSDate*           weekAgoDate = [calendar dateByAddingComponents:components toDate:[NSDate date] options:0];
 
     // Clear all the old objects
-    missedCallsOnly = NO;
-    [self performFetch];
     for (CallRecordData* entry in [fetchedResultsController fetchedObjects])
     {
         if ([entry.date compare:weekAgoDate] == NSOrderedAscending)
@@ -636,9 +681,6 @@
     components.month              = -1; // This also works for first month of the year.
     NSDate*          monthAgoDate = [calendar dateByAddingComponents:components toDate:[NSDate date] options:0];
 
-    // Clear all the old objects
-    missedCallsOnly = NO;
-    [self performFetch];
     for (CallRecordData* entry in [fetchedResultsController fetchedObjects])
     {
         if ([entry.date compare:monthAgoDate] == NSOrderedAscending)
@@ -650,11 +692,9 @@
     [managedObjectContext save:nil];
 }
 
+
 - (void)clearAllRecents
 {
-    // Clear all the old objects
-    missedCallsOnly = NO;
-    [self performFetch];
     for (CallRecordData* entry in [fetchedResultsController fetchedObjects])
     {
         [managedObjectContext deleteObject:entry];
@@ -782,11 +822,17 @@
             //Remember for the next check
             lastEntry = entry;
         }
-        
-        // If we have more than one contact, show the edit button
-        if ([allRecentContacts count] > 0 && !self.tableView.editing)
+
+        if (!self.tableView.editing)
         {
-            [self.navigationItem setRightBarButtonItem:editButton];
+            if ([allRecentContacts count] > 0)
+            {
+                [self.navigationItem setRightBarButtonItem:editButton];
+            }
+            else
+            {
+                [self.navigationItem setRightBarButtonItem:nil];
+            }
         }
         
         // Animate in/out the rows
@@ -799,12 +845,12 @@
 
 - (void)segmentedControlSwitched:(UISegmentedControl*)control
 {
-    //End editing
+    // End editing
     [self donePressed];
     
-    //Check to see what to display
-    missedCallsOnly = control.selectedSegmentIndex == 1;
-    [self performFetch];
+    callSelection = (CallSelection)control.selectedSegmentIndex;
+
+    [self performFetchWithForce:YES];
 }
 
 
@@ -818,7 +864,7 @@
     NSArray* visiblePaths = [self.tableView indexPathsForVisibleRows];
     for (NSIndexPath *indexPath in visiblePaths)
     {
-        NBRecentCallCell * missedCallCell = (NBRecentCallCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+        NBRecentCallCell* missedCallCell = (NBRecentCallCell *)[self.tableView cellForRowAtIndexPath:indexPath];
         [missedCallCell shiftLabels:YES];
     }
 
@@ -888,13 +934,6 @@
         [numberLabel setFont:[UIFont boldSystemFontOfSize:16]];
         [cell setNumberLabel:numberLabel];
         [cell addSubview:numberLabel];
-
-        // Add an outgoing-call imageview
-        UIImageView* outgoingImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"outgoingCall"]];
-        [outgoingImageView setFrame:CGRectMake(0, 0, 10, 10)];
-        [outgoingImageView setHidden:YES];
-        [cell setOutgoingCallImageView:outgoingImageView];
-        [cell addSubview:outgoingImageView];
 
         // Add a number type label
         UILabel* typeLabel = [[UILabel alloc] initWithFrame:CGRectMake(POSITION_NUMBER_LABEL,
@@ -989,30 +1028,44 @@
     }
 
     //Set the outgoing call icon
-    UIImageView * outgoingImageView = cell.outgoingCallImageView;
-    if ([latestEntry.direction intValue] == CallDirectionOutgoing)
+    switch ([latestEntry.direction intValue])
     {
-        //Show the view
-        [outgoingImageView setHidden:NO];
-        
-        //Position the icon
-        CGPoint imageCenter = numberType.center;
-        CGSize labelSize = [numberType.text sizeWithFont:numberType.font
-                                       constrainedToSize:numberType.frame.size
-                                           lineBreakMode:NSLineBreakByWordWrapping];
-        
-        imageCenter.x = labelSize.width + 20;
-        [cell setOutgoingCallImageViewCenter:imageCenter];
+        case CallDirectionIncoming:
+        {
+            cell.imageView.image = [UIImage imageNamed:@"CallIncoming"];
+
+            break;
+        }
+        case CallDirectionOutgoing:
+        {
+            cell.imageView.image = [UIImage imageNamed:@"CallOutgoing"];
+
+            break;
+        }
+        case CallDirectionVerification:
+        {
+            cell.imageView.image = [UIImage imageNamed:@"CallVerification"];
+
+            break;
+        }
+    }
+
+    cell.imageView.image = [cell.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    if ([latestEntry.status intValue] == CallStatusMissed)
+    {
+        [cell.imageView setTintColor:[[NBAddressBookManager sharedManager].delegate deleteTintColor]];
     }
     else
     {
-        [outgoingImageView setHidden:YES];
+        [cell.imageView setTintColor:[[NBAddressBookManager sharedManager].delegate valueColor]];
     }
+
+
 
     // Set the time and (yesterday/day name in case of less than a week ago/date)
     NSString*         dayOrDate;
     NSCalendar*       cal         = [NSCalendar currentCalendar];
-    NSDateComponents* components  = [cal components:(NSCalendarUnitYear      | NSCalendarUnitMonth |
+    NSDateComponents* components  = [cal components:(NSCalendarUnitYear       | NSCalendarUnitMonth |
                                                      NSCalendarUnitWeekOfYear | NSCalendarUnitDay)
                                            fromDate:latestEntry.date];
     NSDate*           entryDate   = [cal dateFromComponents:components];
@@ -1065,7 +1118,7 @@
     [cell.detailTextLabel setAttributedText:attributedText];
     [cell.detailTextLabel setTextAlignment:NSTextAlignmentRight];
     [cell.detailTextLabel setNumberOfLines:2];
-    [cell.detailTextLabel setTextColor:[[NBAddressBookManager sharedManager].delegate tintColor]];
+    [cell.detailTextLabel setTextColor:[[NBAddressBookManager sharedManager].delegate valueColor]];
     [cell setAccessoryType:UITableViewCellAccessoryDetailButton];
     
     return cell;
@@ -1226,17 +1279,24 @@
     }
     
     //Optionally set the predicate
-    NSFetchRequest * fetchRequest = fetchedResultsController.fetchRequest;
-    [fetchRequest setPredicate:missedCallsOnly ? missedCallsOnlyPredicate : nil];
+    NSFetchRequest* fetchRequest = fetchedResultsController.fetchRequest;
+
+    switch (callSelection)
+    {
+        case CallSelectionAll:      [fetchRequest setPredicate:nil];                    break;
+        case CallSelectionOutgoing: [fetchRequest setPredicate:outgoingCallsPredicate]; break;
+        case CallSelectionIncoming: [fetchRequest setPredicate:incomingCallsPredicate]; break;
+        case CallSelectionMissed:   [fetchRequest setPredicate:missedCallsPredicate];   break;
+    }
 
     return fetchedResultsController;
 }
 
 
-- (void)performFetch
+- (void)performFetchWithForce:(BOOL)force
 {
-    NSFetchedResultsController * fetchedController = [self fetchedResultsController];
-    NSError * error;
+    NSFetchedResultsController* fetchedController = [self fetchedResultsController];
+    NSError* error;
     [fetchedController performFetch:&error];
     if (error)
     {
@@ -1244,7 +1304,7 @@
     }
     else
     {
-        [self reloadForce:NO];
+        [self reloadForce:force];
     }
 }
 

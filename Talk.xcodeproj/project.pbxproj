@@ -155,8 +155,6 @@
 		4842D9FE1AADFB53008F35C9 /* editPhotoRightButtonHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 4842D9F21AADFB53008F35C9 /* editPhotoRightButtonHighlighted.png */; };
 		4842D9FF1AADFB53008F35C9 /* noPictureCompanyImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 4842D9F31AADFB53008F35C9 /* noPictureCompanyImage.png */; };
 		4842DA001AADFB53008F35C9 /* noPictureImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 4842D9F41AADFB53008F35C9 /* noPictureImage.png */; };
-		4842DA011AADFB53008F35C9 /* outgoingCall.png in Resources */ = {isa = PBXBuildFile; fileRef = 4842D9F51AADFB53008F35C9 /* outgoingCall.png */; };
-		4842DA021AADFB53008F35C9 /* outgoingCallInverted.png in Resources */ = {isa = PBXBuildFile; fileRef = 4842D9F61AADFB53008F35C9 /* outgoingCallInverted.png */; };
 		4842DA031AADFB53008F35C9 /* portraitBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 4842D9F71AADFB53008F35C9 /* portraitBackground.png */; };
 		4842DA041AADFB53008F35C9 /* portraitLine.png in Resources */ = {isa = PBXBuildFile; fileRef = 4842D9F81AADFB53008F35C9 /* portraitLine.png */; };
 		4846D8A5174170CF00C40713 /* Branding@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4846D8A2174170CF00C40713 /* Branding@2x.png */; };
@@ -672,6 +670,10 @@
 		48F3CE991D27B070000925EE /* IncomingChargesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F3CE981D27B070000925EE /* IncomingChargesViewController.m */; };
 		48F3CEA01D295D04000925EE /* NumberTermsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F3CE9F1D295D04000925EE /* NumberTermsViewController.m */; };
 		48F47BBF18BE9C01006A6436 /* ItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F47BBE18BE9C01006A6436 /* ItemViewController.m */; };
+		48F552611E2E39C7009A054E /* CallIncoming@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48F5525D1E2E39C7009A054E /* CallIncoming@2x.png */; };
+		48F552621E2E39C7009A054E /* CallIncoming@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48F5525E1E2E39C7009A054E /* CallIncoming@3x.png */; };
+		48F552631E2E39C7009A054E /* CallOutgoing@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48F5525F1E2E39C7009A054E /* CallOutgoing@2x.png */; };
+		48F552641E2E39C7009A054E /* CallOutgoing@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48F552601E2E39C7009A054E /* CallOutgoing@3x.png */; };
 		48F5D2ED16B9A380001576E1 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F5D2EC16B9A380001576E1 /* Base64.m */; };
 		48F5D2EE16B9A380001576E1 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F5D2EC16B9A380001576E1 /* Base64.m */; };
 		48FC30BD1C220E300032387E /* AddressType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FC30BC1C220E300032387E /* AddressType.m */; };
@@ -1488,6 +1490,10 @@
 		48F3CE9F1D295D04000925EE /* NumberTermsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberTermsViewController.m; sourceTree = "<group>"; };
 		48F47BBD18BE9C01006A6436 /* ItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemViewController.h; sourceTree = "<group>"; };
 		48F47BBE18BE9C01006A6436 /* ItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemViewController.m; sourceTree = "<group>"; };
+		48F5525D1E2E39C7009A054E /* CallIncoming@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CallIncoming@2x.png"; sourceTree = "<group>"; };
+		48F5525E1E2E39C7009A054E /* CallIncoming@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CallIncoming@3x.png"; sourceTree = "<group>"; };
+		48F5525F1E2E39C7009A054E /* CallOutgoing@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CallOutgoing@2x.png"; sourceTree = "<group>"; };
+		48F552601E2E39C7009A054E /* CallOutgoing@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CallOutgoing@3x.png"; sourceTree = "<group>"; };
 		48F5D2EB16B9A380001576E1 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
 		48F5D2EC16B9A380001576E1 /* Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
 		48FC30BB1C220E300032387E /* AddressType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressType.h; sourceTree = "<group>"; };
@@ -1882,6 +1888,10 @@
 		483679ED1722F2CF001A02AF /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				48F5525D1E2E39C7009A054E /* CallIncoming@2x.png */,
+				48F5525E1E2E39C7009A054E /* CallIncoming@3x.png */,
+				48F5525F1E2E39C7009A054E /* CallOutgoing@2x.png */,
+				48F552601E2E39C7009A054E /* CallOutgoing@3x.png */,
 				483F23AE1D8F1969009AFA98 /* Checkmark@2x.png */,
 				483F23B71D8F2AD7009AFA98 /* Checkmark@3x.png */,
 				483679FE17247B2B001A02AF /* CueForwardBlack@2x.png */,
@@ -2876,7 +2886,6 @@
 				485F6A761637270100D61365 /* BR@2x.png in Resources */,
 				485F6A781637270100D61365 /* BS@2x.png in Resources */,
 				485F6A7A1637270100D61365 /* BT@2x.png in Resources */,
-				4842DA011AADFB53008F35C9 /* outgoingCall.png in Resources */,
 				485F6A7E1637270100D61365 /* BW@2x.png in Resources */,
 				4837AF8818E24BF100D3AEBC /* Icon-80.png in Resources */,
 				485F6A801637270100D61365 /* BY@2x.png in Resources */,
@@ -2888,7 +2897,6 @@
 				480E7A2E1BFDCA7800F655E8 /* AddressesTab@2x.png in Resources */,
 				485F6A8A1637270100D61365 /* CF@2x.png in Resources */,
 				4837AF8518E24BF100D3AEBC /* Icon-40.png in Resources */,
-				4842DA021AADFB53008F35C9 /* outgoingCallInverted.png in Resources */,
 				485F6A8C1637270100D61365 /* CG@2x.png in Resources */,
 				485F6A8E1637270100D61365 /* CH@2x.png in Resources */,
 				485F6A901637270100D61365 /* CI@2x.png in Resources */,
@@ -2927,10 +2935,12 @@
 				485F6AC61637270100D61365 /* FJ@2x.png in Resources */,
 				4864CAE61D0C765E009B3D9C /* DenmarkMunicipalities.json in Resources */,
 				485F6AC81637270100D61365 /* FK@2x.png in Resources */,
+				48F552621E2E39C7009A054E /* CallIncoming@3x.png in Resources */,
 				485F6ACA1637270100D61365 /* FM@2x.png in Resources */,
 				485F6ACC1637270100D61365 /* FO@2x.png in Resources */,
 				485F6ACE1637270100D61365 /* FR@2x.png in Resources */,
 				485F6AD01637270100D61365 /* GA@2x.png in Resources */,
+				48F552641E2E39C7009A054E /* CallOutgoing@3x.png in Resources */,
 				485F6AD21637270100D61365 /* GB@2x.png in Resources */,
 				485F6AD41637270100D61365 /* GD@2x.png in Resources */,
 				485F6AD61637270100D61365 /* GE@2x.png in Resources */,
@@ -2964,6 +2974,7 @@
 				485F6B0C1637270100D61365 /* IO@2x.png in Resources */,
 				4842DA031AADFB53008F35C9 /* portraitBackground.png in Resources */,
 				485F6B0E1637270100D61365 /* IQ@2x.png in Resources */,
+				48F552631E2E39C7009A054E /* CallOutgoing@2x.png in Resources */,
 				4818DB611CAB0D380044AFE6 /* CountryRegions.json in Resources */,
 				485F6B101637270100D61365 /* IR@2x.png in Resources */,
 				4842DA041AADFB53008F35C9 /* portraitLine.png in Resources */,
@@ -3147,6 +3158,7 @@
 				48AF45471649788A00DFE3D8 /* NumbersTab@2x.png in Resources */,
 				48AF454B1649788A00DFE3D8 /* NBRecentsListTab@2x.png in Resources */,
 				48AF454F1649788A00DFE3D8 /* SettingsTab@2x.png in Resources */,
+				48F552611E2E39C7009A054E /* CallIncoming@2x.png in Resources */,
 				48CB2C4417E6539000E19C3D /* Target.png in Resources */,
 				48AF455B1649794B00DFE3D8 /* ShareView.xib in Resources */,
 				485ECBDA1651C3B700364F08 /* BQ@2x.png in Resources */,

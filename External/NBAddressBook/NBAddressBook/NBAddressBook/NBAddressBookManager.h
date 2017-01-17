@@ -25,6 +25,8 @@
 
 - (UIColor*)tintColor;
 
+- (UIColor*)valueColor;
+
 - (UIColor*)deleteTintColor;
 
 - (void)saveContext;

@@ -25,12 +25,6 @@
     UIBarButtonItem* doneButton;
     UIBarButtonItem* clearButton;
     
-    //The action sheet to clear the contacts
-    UIActionSheet* clearActionSheet;
-        
-    //Flag to indicate we're displaying missed calls only
-    BOOL missedCallsOnly;
-    
     //Indicate to only do this the first time
     BOOL firstLoad;
     

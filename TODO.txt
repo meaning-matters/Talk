@@ -261,3 +261,5 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 * Method scaledImageWithImage result in square images becoming too big: 1440x1440. Would be best to fix the number of pixels of the result image, not just the largest border as it's now.
 
 * Eliminate addressType from API 8 (and 13 perhaps by calling 9 instead and passing result onwards).
+
+* Check recent changes to server's Regulation values of Croatia, Austria, Denmark, France, Hungary, Norway, Peru.

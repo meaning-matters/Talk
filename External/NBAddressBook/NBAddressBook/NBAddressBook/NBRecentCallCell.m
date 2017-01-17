@@ -10,14 +10,13 @@
 
 @implementation NBRecentCallCell
 
-@synthesize numberLabel, numberTypeLabel, outgoingCallImageView;
+@synthesize numberLabel;
+@synthesize numberTypeLabel;
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])
     {
-        outgoingCallImage = [UIImage imageNamed:@"outgoingCall"];
-        outgoingCallImageInverted = [UIImage imageNamed:@"outgoingCall"];
     }
     return self;
 }
@@ -74,30 +73,25 @@
     numberTypeLabel.frame = numberTypeFrame;
 }
 
-- (void)setOutgoingCallImageViewCenter:(CGPoint)center
-{
-    outgoingCallImageViewCenter = center;
-    outgoingCallImageView.center= outgoingCallImageViewCenter;
-}
 
 //Support-method to shift the labels to the right when editing
 - (void)shiftLabels:(BOOL)shift
 {
-    CGRect numberFrame = numberLabel.frame;
+    CGRect numberFrame     = numberLabel.frame;
     CGRect numberTypeFrame = numberTypeLabel.frame;
     
     //Determine how to mutate the frame
     if (shift)
     {
-        numberFrame.origin.x            = POSITION_NUMBER_LABEL_EDITING;
-        numberTypeFrame.origin.x        = POSITION_NUMBER_LABEL_EDITING;
-        outgoingCallImageView.center    = CGPointMake( outgoingCallImageViewCenter.x + 30, outgoingCallImageViewCenter.y);
+        numberFrame.origin.x     = POSITION_NUMBER_LABEL_EDITING;
+        numberTypeFrame.origin.x = POSITION_NUMBER_LABEL_EDITING;
+        self.imageView.alpha = 0.0;
     }
     else
     {
-        numberFrame.origin.x            = POSITION_NUMBER_LABEL;
-        numberTypeFrame.origin.x        = POSITION_NUMBER_LABEL;
-        outgoingCallImageView.center    = outgoingCallImageViewCenter;
+        numberFrame.origin.x     = POSITION_NUMBER_LABEL;
+        numberTypeFrame.origin.x = POSITION_NUMBER_LABEL;
+        self.imageView.alpha = 1.0;
     }
     
     numberLabel.frame           = numberFrame;

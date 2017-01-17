@@ -1037,6 +1037,12 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 }
 
 
+- (UIColor*)valueColor
+{
+    return [Skinning valueColor];
+}
+
+
 - (void)saveContext
 {
     [[DataManager sharedManager] saveManagedObjectContext:nil];
