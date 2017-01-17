@@ -18,6 +18,8 @@
 #import "PurchaseManager.h"
 #import "Base64.h"
 
+#define BOOLEAN(value) (value) ? @"true" : @"false"
+
 
 @interface WebClient ()
 
@@ -637,7 +639,7 @@
     (isoCountryCode.length > 0) ? parameters[@"isoCountryCode"] = isoCountryCode : 0;
     (areaCode.length       > 0) ? parameters[@"areaCode"]       = areaCode       : 0;
     (numberTypeMask        > 0) ? parameters[@"numberType"]     = numberType     : 0;
-    parameters[@"extranational"] = (isExtranational ? @YES : @NO);
+    parameters[@"extranational"] = BOOLEAN(isExtranational);
 
     [self getPath:[NSString stringWithFormat:@"/users/%@/addresses", username]
        parameters:parameters
@@ -675,7 +677,7 @@
                                           RejectionReasonMask rejectionReasons))reply;
 {
     NSString*     username   = [Settings sharedSettings].webUsername;
-    NSDictionary* parameters = @{@"imageless" : (imageless ? @YES : @NO)};
+    NSDictionary* parameters = @{@"imageless" : BOOLEAN(imageless)};
 
     [self getPath:[NSString stringWithFormat:@"/users/%@/addresses/%@", username, uuid]
                                   parameters:parameters
@@ -879,7 +881,7 @@
                                          @"name"           : name,
                                          @"isoCountryCode" : isoCountryCode,
                                          @"areaId"         : areaId,
-                                         @"autoRenew"      : (autoRenew ? @YES : @NO)} mutableCopy];
+                                         @"autoRenew"      : BOOLEAN(autoRenew)} mutableCopy];
     (addressUuid != nil) ? parameters[@"addressUuid"] = addressUuid : 0;
     // parameters[@"debug"] = @NO;
 
@@ -916,7 +918,7 @@
     NSString*            username   = [Settings sharedSettings].webUsername;
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
 
-    parameters[@"autoRenew"]                                      = (autoRenew ? @YES : @NO);
+    parameters[@"autoRenew"]                                      = BOOLEAN(autoRenew);
     (name.length            > 0) ? parameters[@"name"]            = name            : 0;
     (destinationUuid     != nil) ? parameters[@"destinationUuid"] = destinationUuid : 0;
     (addressUuid.length     > 0) ? parameters[@"addressUuid"]     = addressUuid     : 0;
@@ -1372,7 +1374,7 @@
     NSDictionary* parameters = @{@"callbackE164" : [callbackE164 substringFromIndex:1],
                                  @"callthruE164" : [callthruE164 substringFromIndex:1],
                                  @"identityE164" : [identityE164 substringFromIndex:1],
-                                 @"privacy"      : (privacy ? @YES : @NO)};
+                                 @"privacy"      : BOOLEAN(privacy)};
     
     [self postPath:[NSString stringWithFormat:@"/users/%@/callback", username]
         parameters:parameters
