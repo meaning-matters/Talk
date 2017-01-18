@@ -586,9 +586,11 @@
 
 + (void)makePhoneCall:(NSString*)phoneNumber
         withContactID:(NSString*)contactId
+             callerId:(NSString*)callerId
 {
     [[CallManager sharedManager] callPhoneNumber:[[PhoneNumber alloc] initWithNumber:phoneNumber]
                                        contactId:contactId
+                                        callerId:callerId
                                       completion:nil];
 }
 

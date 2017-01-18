@@ -17,6 +17,8 @@
 #import "Common.h"
 #import "BadgeHandler.h"
 #import "BlockAlertView.h"
+#import "PhoneData.h"
+#import "NumberData.h"
 
 
 // These value precisly match the segment control indexes!
@@ -886,7 +888,6 @@ typedef enum
     for (NSIndexPath *indexPath in visiblePaths)
     {
         NBRecentCallCell * missedCallCell = (NBRecentCallCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-        [missedCallCell halfLabelFrames:NO];
         [missedCallCell shiftLabels:NO];
     }
 
@@ -926,7 +927,7 @@ typedef enum
         [cell setSelectionStyle:UITableViewCellSelectionStyleDefault];
         
         //Add a number label
-        UILabel * numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(POSITION_NUMBER_LABEL,
+        UILabel* numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(POSITION_NUMBER_LABEL,
                                                                          4,
                                                                          SIZE_NUMBER_LABEL,
                                                                          20)];
@@ -942,15 +943,22 @@ typedef enum
                                                                       20)];
         [typeLabel setBackgroundColor:[UIColor clearColor]];
         [typeLabel setFont:[UIFont systemFontOfSize:13]];
-        [typeLabel setTextColor:[UIColor grayColor]];
-        [cell setNumberTypeLabel:typeLabel];
+        cell.numberTypeLabel= typeLabel;
         [cell addSubview:typeLabel];
+
+        // Add Caller ID label
+        UILabel* idLabel = [[UILabel alloc] initWithFrame:CGRectMake(POSITION_NUMBER_LABEL,
+                                                                     40,
+                                                                     SIZE_NUMBER_LABEL,
+                                                                     20)];
+        [idLabel setBackgroundColor:[UIColor clearColor]];
+        [idLabel setFont:[UIFont systemFontOfSize:13]];
+        [idLabel setTextColor:[[NBAddressBookManager sharedManager].delegate valueColor]];
+        cell.callerIdLabel= idLabel;
+        [cell addSubview:idLabel];
     }
 
     // Set the number and description
-    UILabel* numberLabel = cell.numberLabel;
-    UILabel* numberType  = cell.numberTypeLabel;
-
     CallRecordData* latestEntry = [entryRowArray objectAtIndex:0];
     ABRecordRef     contact;
     if (latestEntry.contactId != nil)
@@ -970,9 +978,9 @@ typedef enum
     {
         // Set the name
         NSString* representation = [[NBContact getListRepresentation:contact] string];
-        [numberLabel setText:representation];
+        [cell.numberLabel setText:representation];
 
-        numberType.text = nil;
+        cell.numberTypeLabel.text = nil;
 
         // Determine and set the label
         ABMultiValueRef* datasource = (ABMultiValueRef*)ABRecordCopyValue(contact, kABPersonPhoneProperty);
@@ -982,7 +990,7 @@ typedef enum
 
             if ([[NBAddressBookManager sharedManager].delegate matchRecent:latestEntry withNumber:number])
             {
-                [numberType setText:(__bridge NSString*)ABAddressBookCopyLocalizedLabel((ABMultiValueCopyLabelAtIndex(datasource, i)))];
+                [cell.numberTypeLabel setText:(__bridge NSString*)ABAddressBookCopyLocalizedLabel((ABMultiValueCopyLabelAtIndex(datasource, i)))];
 
                 break;
             }
@@ -990,41 +998,104 @@ typedef enum
     }
     else if (latestEntry.dialedNumber == nil)
     {
-        [numberLabel setText:NSLocalizedString(@"LBL_NO_CALLER_ID", @"")];
-        [numberType setText:NSLocalizedString(@"LBL_UNKNOWN", @"")];
+        [cell.numberLabel     setText:NSLocalizedString(@"LBL_NO_CALLER_ID", @"")];
+        [cell.numberTypeLabel setText:NSLocalizedString(@"LBL_UNKNOWN", @"")];
     }
     else
     {
-        NSString* number = latestEntry.dialedNumber;
-        number = [[NBAddressBookManager sharedManager].delegate formatNumber:latestEntry.dialedNumber];
-        [numberLabel setText:number];
-        [numberType setText:NSLocalizedString(@"LBL_UNKNOWN", @"")];
+        NSString* number = [[NBAddressBookManager sharedManager].delegate formatNumber:latestEntry.dialedNumber];
+        [cell.numberLabel     setText:number];
+        [cell.numberTypeLabel setText:NSLocalizedString(@"LBL_UNKNOWN", @"")];
     }
     
     if ([latestEntry.status intValue] == CallStatusMissed)
     {
-        numberLabel.textColor = [[NBAddressBookManager sharedManager].delegate deleteTintColor];
+        cell.numberLabel.textColor     = [[NBAddressBookManager sharedManager].delegate deleteTintColor];
+        cell.numberTypeLabel.textColor = [[NBAddressBookManager sharedManager].delegate deleteTintColor];
     }
     else
     {
-        numberLabel.textColor = [UIColor blackColor];
+        cell.numberLabel.textColor     = [UIColor blackColor];
+        cell.numberTypeLabel.textColor = [UIColor blackColor];
     }
-    
+
+    // Set the Caller ID.
+    switch ([latestEntry.direction intValue])
+    {
+        case CallDirectionIncoming:
+        {
+            PhoneData*  phone  = [[DataManager sharedManager] lookupPhoneForE164:latestEntry.toE164];
+            NumberData* number = [[DataManager sharedManager] lookupNumberForE164:latestEntry.toE164];
+
+            if (phone != nil)
+            {
+                cell.callerIdLabel.text = phone.name;
+            }
+            else if (number != nil)
+            {
+                cell.callerIdLabel.text = number.name;
+            }
+            else
+            {
+                // Strange situation because a Caller ID was used that's no longer there.
+                cell.callerIdLabel.text = [[[PhoneNumber alloc] initWithNumber:latestEntry.callerIdE164] internationalFormat];
+            }
+
+            break;
+        }
+        case CallDirectionOutgoing:
+        {
+            if ([latestEntry.privacy boolValue])
+            {
+                cell.callerIdLabel.text = @"anonymous";
+            }
+            else
+            {
+                PhoneData*  phone  = [[DataManager sharedManager] lookupPhoneForE164:latestEntry.callerIdE164];
+                NumberData* number = [[DataManager sharedManager] lookupNumberForE164:latestEntry.callerIdE164];
+
+                if (phone != nil)
+                {
+                    cell.callerIdLabel.text = phone.name;
+                }
+                else if (number != nil)
+                {
+                    cell.callerIdLabel.text = number.name;
+                }
+                else
+                {
+                    // Strange situation because a Caller ID was used that's no longer there.
+                    cell.callerIdLabel.text = [[[PhoneNumber alloc] initWithNumber:latestEntry.callerIdE164] internationalFormat];
+                }
+            }
+            break;
+        }
+        case CallDirectionVerification:
+        {
+            cell.callerIdLabel.text = @"verif";
+
+            break;
+        }
+    }
+
     // Set the amount of calls made (incoming + outgoing)
     if ([entryRowArray count] > 1)
     {
         //Set the last part as greyed out regular
-        NSMutableAttributedString* attributedName = [[NSMutableAttributedString alloc]
-                                                     initWithString:[NSString stringWithFormat:@"%@ (%lu)", numberLabel.text, (unsigned long)[entryRowArray count]]
-                                                     attributes:[NSDictionary dictionaryWithObjectsAndKeys:numberLabel.font, NSFontAttributeName, nil]];
+        NSMutableAttributedString* attributedName;
+        attributedName = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ (%lu)",
+                                                                            cell.numberLabel.text,
+                                                                            (unsigned long)[entryRowArray count]]
+                                                                attributes:[NSDictionary dictionaryWithObjectsAndKeys:cell.numberLabel.font,
+                                                                            NSFontAttributeName, nil]];
 
         [attributedName setAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
                                        [UIFont systemFontOfSize:16],
                                        NSFontAttributeName,
                                        [UIColor grayColor],
                                        NSForegroundColorAttributeName,nil]
-                                range:NSMakeRange([numberLabel.text length], [attributedName length] - [numberLabel.text length])];
-        [numberLabel setAttributedText:attributedName];
+                                range:NSMakeRange([cell.numberLabel.text length], [attributedName length] - [cell.numberLabel.text length])];
+        [cell.numberLabel setAttributedText:attributedName];
     }
 
     //Set the outgoing call icon
@@ -1161,12 +1232,37 @@ typedef enum
 
 #pragma mark - Table View Delegate
 
+- (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    return 64;
+}
+
+
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
     NSArray*        recents     = [dataSource objectAtIndex:indexPath.row];
     CallRecordData* firstRecent = [recents objectAtIndex:0];
 
-    [NBContact makePhoneCall:firstRecent.dialedNumber withContactID:firstRecent.contactId];
+    switch ([firstRecent.direction intValue])
+    {
+        case CallDirectionIncoming:
+        {
+            [NBContact makePhoneCall:firstRecent.dialedNumber withContactID:firstRecent.contactId callerId:firstRecent.toE164];
+
+            break;
+        }
+        case CallDirectionOutgoing:
+        {
+            [NBContact makePhoneCall:firstRecent.dialedNumber withContactID:firstRecent.contactId callerId:firstRecent.callerIdE164];
+
+            break;
+        }
+        case CallDirectionVerification:
+        {
+            // Ignore.
+            break;
+        }
+    }
 
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];    
 }

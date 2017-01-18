@@ -1735,7 +1735,7 @@ static Common* sharedCommon;
 {
     NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
     formatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
-    [formatter setDateFormat:@"yyyy-M-d H:m:s"];
+    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
 
     return [formatter stringFromDate:date];
 }

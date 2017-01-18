@@ -368,6 +368,7 @@
 {
     [[CallManager sharedManager] callPhoneNumber:phoneNumber
                                        contactId:aContactId
+                                        callerId:nil    // Determine the caller ID based on user preferences.
                                       completion:^(Call *call)
     {
         if (call != nil)

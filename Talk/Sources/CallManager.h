@@ -21,6 +21,7 @@
 
 - (void)callPhoneNumber:(PhoneNumber*)phoneNumber
               contactId:(NSString*)contactId
+               callerId:(NSString*)callerId
              completion:(void (^)(Call* call))completion;
 
 - (void)endCall:(Call*)call;

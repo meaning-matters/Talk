@@ -263,6 +263,7 @@
     recent.direction    = [NSNumber numberWithInt:CallDirectionOutgoing];
     recent.uuid         = call.uuid;
     recent.privacy      = @(!call.showCallerId);
+    recent.callerIdE164 = call.identityNumber;
 
     //### It's hacky that we have two updates; needs cleanup.
     [self updateRecent:recent withCall:call];
@@ -429,9 +430,12 @@
 
 - (void)callPhoneNumber:(PhoneNumber*)phoneNumber
               contactId:(NSString*)contactId
+               callerId:(NSString*)callerId
              completion:(void (^)(Call* call))completion
 {
     __block Call* call = nil;
+
+    callerId = (callerId.length > 0) ? callerId : nil;
 
     if (phoneNumber.isEmergency)
     {
@@ -464,8 +468,15 @@
                     }
                 }
 
-                call = [self callPhoneNumber:phoneNumber fromIdentity:identity showCallerId:showCallerId contactId:contactId];
-                
+                if (callerId != nil)
+                {
+                    call = [self callPhoneNumber:phoneNumber fromIdentity:callerId showCallerId:YES contactId:contactId];
+                }
+                else
+                {
+                    call = [self callPhoneNumber:phoneNumber fromIdentity:identity showCallerId:showCallerId contactId:contactId];
+                }
+
                 completion ? completion(call) : 0;
             }];
         }];

@@ -274,7 +274,7 @@
             {
                 if (indexPath.row == 0)
                 {
-                    [NBContact makePhoneCall:number withContactID:nil];
+                    [NBContact makePhoneCall:number withContactID:nil callerId:nil];
                 }
                 break;
             }

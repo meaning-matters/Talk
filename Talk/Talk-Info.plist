@@ -29,7 +29,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>2.0.96</string>
+	<string>2.0.98</string>
 	<key>LSRequiresIPhoneOS</key>
 	<false/>
 	<key>NSAppTransportSecurity</key>

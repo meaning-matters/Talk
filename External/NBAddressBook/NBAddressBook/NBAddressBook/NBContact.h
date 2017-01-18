@@ -50,6 +50,7 @@
 
 //Call support
 + (void)makePhoneCall:(NSString*)phoneNumber
-        withContactID:(NSString*)contactId;
+        withContactID:(NSString*)contactId
+             callerId:(NSString*)callerId;
 
 @end

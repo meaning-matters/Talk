@@ -23,7 +23,6 @@ typedef enum
     CallStatusCancelled = 4,
     CallStatusCallback  = 5,    // Only callback leg was connected.
     CallStatusSuccess   = 6,
-
     CallStatusNull      = 7,
 } CallStatus;
 

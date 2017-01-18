@@ -357,6 +357,18 @@
 }
 
 
+- (NumberData*)lookupNumberForE164:(NSString*)e164
+{
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"e164 == %@", e164];
+    NSArray*     numbers   = [self fetchEntitiesWithName:@"Number"
+                                                sortKeys:@[@"name"]
+                                               predicate:predicate
+                                    managedObjectContext:nil];
+
+    return [numbers firstObject];
+}
+
+
 - (AddressData*)lookupAddressWithUuid:(NSString*)uuid
 {
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"uuid == %@", uuid];

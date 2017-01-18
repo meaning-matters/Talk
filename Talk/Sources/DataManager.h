@@ -11,6 +11,7 @@
 
 @class CallableData;
 @class PhoneData;
+@class NumberData;
 @class AddressData;
 @class DestinationData;
 
@@ -48,6 +49,8 @@
 - (CallableData*)lookupCallableForE164:(NSString*)e164;
 
 - (PhoneData*)lookupPhoneForE164:(NSString*)e164;
+
+- (NumberData*)lookupNumberForE164:(NSString*)e164;
 
 - (AddressData*)lookupAddressWithUuid:(NSString*)uuid;
 

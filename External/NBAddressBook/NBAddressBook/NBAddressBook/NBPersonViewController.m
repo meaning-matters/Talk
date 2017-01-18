@@ -1497,7 +1497,7 @@
             case CC_NUMBER:
             {
                 NSString * phoneNumber = [((NBPersonCellInfo*)[[personStructureManager.tableStructure objectAtIndex:CC_NUMBER] objectAtIndex:indexPath.row]) textValue];
-                [NBContact makePhoneCall:phoneNumber withContactID:[self contactId]];
+                [NBContact makePhoneCall:phoneNumber withContactID:[self contactId] callerId:nil];
                 break;
             }
             case CC_EMAIL:
