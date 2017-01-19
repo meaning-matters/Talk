@@ -145,6 +145,8 @@ static const NSInteger CommonUseButton1Tag    = 30469;
 
 + (UITextField*)addTextFieldToCell:(UITableViewCell*)cell delegate:(id<UITextFieldDelegate>)delegate;
 
++ (UIActivityIndicatorView*)addSpinnerAtDetailTextOfCell:(UITableViewCell*)cell;
+
 + (void)getCostForCallbackE164:(NSString*)callbackE164
                   callthruE164:(NSString*)callthruE164
                     completion:(void (^)(NSString* costString))completion;

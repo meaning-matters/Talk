@@ -59,6 +59,8 @@
                                 forKeyPath:@"sortSegment"
                                    options:NSKeyValueObservingOptionNew
                                    context:nil];
+
+    [self setupFootnotesHandlingOnTableView:self.tableView];
 }
 
 
@@ -144,6 +146,23 @@
             }];
         }
     }];
+}
+
+
+- (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return NSLocalizedString(@"Forwarded to this Destination", @"");
+}
+
+
+- (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
+{
+    if (self.showFootnotes == NO)
+    {
+        return nil;
+    }
+
+    return NSLocalizedString(@"Select or deselect the Numbers whose calls you want to forward to this Destination.", @"");
 }
 
 @end

@@ -610,9 +610,9 @@
 {
     //Find the Nth visible row
     int nthVisibleCell = 0;
-    NBPersonCellInfo * visibleCellInfo = nil;
-    NSMutableArray * tableSection = [tableStructure objectAtIndex:indexPath.section];
-    for (NBPersonCellInfo * personCellInfo in tableSection)
+    NBPersonCellInfo* visibleCellInfo = nil;
+    NSMutableArray*   tableSection    = [tableStructure objectAtIndex:indexPath.section];
+    for (NBPersonCellInfo* personCellInfo in tableSection)
     {
         //Count down for each encountered visible cell
         if (personCellInfo.visible && nthVisibleCell == indexPath.row)

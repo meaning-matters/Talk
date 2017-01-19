@@ -15,6 +15,8 @@
 #import "DestinationData.h"
 #import "Strings.h"
 #import "PhoneData.h"
+#import "WebClient.h"
+#import "PurchaseManager.h"
 
 
 typedef NS_ENUM(NSUInteger, TableSections)
@@ -28,6 +30,8 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 @property (nonatomic, strong) NSFetchedResultsController* fetchedDestinationsController;
 @property (nonatomic, assign) TableSections               sections;
+
+@property (nonatomic, strong) NSMutableDictionary*        ratesDictionary;
 
 @end
 
@@ -51,6 +55,8 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
         self.sections |= TableSectionDestinations;
         //### self.sections |= TableSectionRecordings;
+
+        self.ratesDictionary = [NSMutableDictionary dictionary];
     }
 
     return self;
@@ -205,12 +211,49 @@ typedef NS_ENUM(NSUInteger, TableSections)
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"DefaultCell"];
     }
 
     DestinationData* destination = [self.fetchedDestinationsController objectAtIndexPath:indexPath];
     cell.textLabel.text          = [destination defaultName];
     cell.accessoryType           = UITableViewCellAccessoryDisclosureIndicator;
+
+    NSNumber* rate = self.ratesDictionary[destination.objectID];
+    if (rate == nil)
+    {
+        UIActivityIndicatorView* spinner = [Common addSpinnerAtDetailTextOfCell:cell];
+
+        __weak typeof(cell) weakCell = cell;
+        __weak typeof(self) weakSelf = self;
+        NSDictionary* action = [Common objectWithJsonString:destination.action];
+        [[WebClient sharedClient] retrieveCallRateForE164:action[@"call"][@"e164s"][0] reply:^(NSError* error, float ratePerMinute)
+        {
+            [spinner removeFromSuperview];
+
+            if (error == nil)
+            {
+                NSString* costString = [[PurchaseManager sharedManager] localizedFormattedPrice1ExtraDigit:ratePerMinute];
+                costString = [costString stringByAppendingFormat:@"/%@", [Strings shortMinuteString]];
+
+                weakCell.detailTextLabel.textColor = [Skinning priceColor];
+                weakCell.detailTextLabel.text      = costString;
+
+                weakSelf.ratesDictionary[destination.objectID] = @(ratePerMinute);
+            }
+            else
+            {
+                weakCell.detailTextLabel.text = nil;
+            }
+        }];
+    }
+    else
+    {
+        NSString* costString = [[PurchaseManager sharedManager] localizedFormattedPrice1ExtraDigit:[rate floatValue]];
+        costString = [costString stringByAppendingFormat:@"/%@", [Strings shortMinuteString]];
+
+        cell.detailTextLabel.textColor = [Skinning priceColor];
+        cell.detailTextLabel.text      = costString;
+    }
 
     return cell;
 }

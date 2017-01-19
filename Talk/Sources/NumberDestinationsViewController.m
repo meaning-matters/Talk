@@ -16,6 +16,7 @@
 #import "Settings.h"
 #import "Common.h"
 #import "PhoneData.h"
+#import "PurchaseManager.h"
 
 
 @interface NumberDestinationsViewController ()
@@ -24,6 +25,8 @@
     NSFetchedResultsController* fetchedResultsController;
     UITableViewCell*            selectedCell;
 }
+
+@property (nonatomic, strong) NSMutableDictionary* ratesDictionary;
 
 @end
 
@@ -37,6 +40,8 @@
         self.title = [Strings destinationString];
 
         number = theNumber;
+
+        self.ratesDictionary = [NSMutableDictionary dictionary];
     }
 
     return self;
@@ -96,7 +101,7 @@
     cell = [tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"DefaultCell"];
     }
 
     DestinationData* destination = [fetchedResultsController objectAtIndexPath:indexPath];
@@ -112,6 +117,43 @@
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
 
+    NSNumber* rate = self.ratesDictionary[destination.objectID];
+    if (rate == nil)
+    {
+        UIActivityIndicatorView* spinner = [Common addSpinnerAtDetailTextOfCell:cell];
+
+        __weak typeof(cell) weakCell = cell;
+        __weak typeof(self) weakSelf = self;
+        NSDictionary* action = [Common objectWithJsonString:destination.action];
+        [[WebClient sharedClient] retrieveCallRateForE164:action[@"call"][@"e164s"][0] reply:^(NSError* error, float ratePerMinute)
+         {
+             [spinner removeFromSuperview];
+
+             if (error == nil)
+             {
+                 NSString* costString = [[PurchaseManager sharedManager] localizedFormattedPrice1ExtraDigit:ratePerMinute];
+                 costString = [costString stringByAppendingFormat:@"/%@", [Strings shortMinuteString]];
+
+                 weakCell.detailTextLabel.textColor = [Skinning priceColor];
+                 weakCell.detailTextLabel.text      = costString;
+
+                 weakSelf.ratesDictionary[destination.objectID] = @(ratePerMinute);
+             }
+             else
+             {
+                 weakCell.detailTextLabel.text = nil;
+             }
+         }];
+    }
+    else
+    {
+        NSString* costString = [[PurchaseManager sharedManager] localizedFormattedPrice1ExtraDigit:[rate floatValue]];
+        costString = [costString stringByAppendingFormat:@"/%@", [Strings shortMinuteString]];
+
+        cell.detailTextLabel.textColor = [Skinning priceColor];
+        cell.detailTextLabel.text      = costString;
+    }
+
     return cell;
 }
 
@@ -123,7 +165,7 @@
     if ([self tableView:tableView numberOfRowsInSection:section] > 0)
     {
         title = NSLocalizedStringWithDefaultValue(@"Destinations Destinations List Title", nil, [NSBundle mainBundle],
-                                                  @"Select Phone to forward calls",
+                                                  @"Where to forward your calls",
                                                   @"\n"
                                                   @"[1/4 line larger font].");
     }

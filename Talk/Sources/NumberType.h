@@ -10,8 +10,8 @@
 
 typedef NS_ENUM(NSUInteger, NumberTypeMask)
 {
-    NumberTypeGeographicMask    = 1UL << 0,
-    NumberTypeNationalMask      = 1UL << 1,
+    NumberTypeGeographicMask    = 1UL << 0, // Includes Special numbers (usually from remote areas).
+    NumberTypeNationalMask      = 1UL << 1, // Includes Shared Cost numbers.
     NumberTypeMobileMask        = 1UL << 2,
     NumberTypeTollFreeMask      = 1UL << 3,
     NumberTypeInternationalMask = 1UL << 4,

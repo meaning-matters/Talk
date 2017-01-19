@@ -1269,6 +1269,28 @@ static Common* sharedCommon;
 }
 
 
++ (UIActivityIndicatorView*)addSpinnerAtDetailTextOfCell:(UITableViewCell*)cell
+{
+    UIActivityIndicatorView* spinner;
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [spinner startAnimating];
+    [cell.contentView addSubview:spinner];
+
+    cell.detailTextLabel.text = @" ";
+    [cell layoutIfNeeded];
+
+    CGRect frame      = cell.detailTextLabel.frame;
+    frame.origin.y   -= 1.5;
+    frame.size.width  = spinner.frame.size.width;
+    frame.size.height = spinner.frame.size.height;
+    spinner.frame     = frame;
+
+    spinner.transform = CGAffineTransformMakeScale(0.8, 0.8);
+
+    return spinner;
+}
+
+
 + (void)getCostForCallbackE164:(NSString*)callbackE164
                   callthruE164:(NSString*)callthruE164
                     completion:(void (^)(NSString* costString))completion
