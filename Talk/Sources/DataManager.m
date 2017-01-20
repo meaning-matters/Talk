@@ -381,6 +381,18 @@
 }
 
 
+- (DestinationData*)lookupDestinationWithUuid:(NSString*)uuid
+{
+    NSPredicate* predicate    = [NSPredicate predicateWithFormat:@"uuid == %@", uuid];
+    NSArray*     destinations = [self fetchEntitiesWithName:@"Destination"
+                                                   sortKeys:@[@"name"]
+                                                  predicate:predicate
+                                       managedObjectContext:nil];
+
+    return [destinations firstObject];
+}
+
+
 - (DestinationData*)lookupDestinationWithName:(NSString*)name
 {
     NSPredicate* predicate    = [NSPredicate predicateWithFormat:@"name == %@", name];
@@ -466,11 +478,11 @@
             {
                 if (error == nil)
                 {
-                    [self synchronizeNumbers:^(NSError* error, NSArray* expiredNumbers)
+                    [self synchronizeDestinations:^(NSError* error)
                     {
                         if (error == nil)
                         {
-                            [self synchronizeDestinations:^(NSError* error)
+                            [self synchronizeNumbers:^(NSError* error, NSArray* expiredNumbers)
                             {
                                 if (error == nil)
                                 {
@@ -732,6 +744,7 @@
                                                                    NSDate*         purchaseDate,
                                                                    NSDate*         expiryDate,
                                                                    BOOL            autoRenew,
+                                                                   NSString*       destinationUuid,
                                                                    float           fixedRate,
                                                                    float           fixedSetup,
                                                                    float           mobileRate,
@@ -777,6 +790,7 @@
                         number.purchaseDate   = purchaseDate;
                         number.expiryDate     = expiryDate;
                         number.autoRenew      = autoRenew;
+                        number.destination    = [self lookupDestinationWithUuid:destinationUuid];
                         number.fixedRate      = fixedRate;
                         number.fixedSetup     = fixedSetup;
                         number.mobileRate     = mobileRate;

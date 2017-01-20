@@ -264,6 +264,7 @@
                                          NSDate*         purchaseDate,
                                          NSDate*         expiryDate,
                                          BOOL            autoRenew,
+                                         NSString*       destinationUuid,
                                          float           fixedRate,
                                          float           fixedSetup,
                                          float           mobileRate,

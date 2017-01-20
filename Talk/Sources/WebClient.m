@@ -990,6 +990,7 @@
                                          NSDate*         purchaseDate,
                                          NSDate*         expiryDate,
                                          BOOL            autoRenew,
+                                         NSString*       destinationUuid,
                                          float           fixedRate,
                                          float           fixedSetup,
                                          float           mobileRate,
@@ -1025,6 +1026,7 @@
                   [Common dateWithString:content[@"purchaseDateTime"]],
                   [Common dateWithString:content[@"expiryDateTime"]],
                   [content[@"autoRenew"] boolValue],
+                  content[@"destinationUuid"],
                   [content[@"fixedRate"] floatValue],
                   [content[@"fixedSetup"] floatValue],
                   [content[@"mobileRate"] floatValue],
@@ -1036,7 +1038,7 @@
         }
         else
         {
-            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, 0, nil, nil, NO,
+            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, 0, nil, nil, NO, nil,
                   0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
         }
     }];
