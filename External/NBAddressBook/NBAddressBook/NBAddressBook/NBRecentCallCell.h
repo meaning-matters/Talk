@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-#define SIZE_NUMBER_LABEL               170
+#define SIZE_NUMBER_LABEL               200
 #define POSITION_NUMBER_LABEL           (40 + 6)
 #define POSITION_NUMBER_LABEL_EDITING   (53 + 6)
 

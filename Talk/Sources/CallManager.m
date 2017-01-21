@@ -251,6 +251,7 @@
 }
 
 
+// Used for outgoing calls only.
 - (void)addCallToRecents:(Call*)call
 {
     NSManagedObjectContext* context = [DataManager sharedManager].managedObjectContext;
@@ -264,6 +265,8 @@
     recent.uuid         = call.uuid;
     recent.privacy      = @(!call.showCallerId);
     recent.callerIdE164 = call.identityNumber;
+    recent.toE164       = [call.phoneNumber e164Format];
+    recent.fromE164     = call.identityNumber;
 
     //### It's hacky that we have two updates; needs cleanup.
     [self updateRecent:recent withCall:call];
@@ -379,7 +382,6 @@
     recent.toDuration   = @(call.callthruDuration);
     recent.fromCost     = @(call.callbackCost);
     recent.toCost       = @(call.callthruCost);
-    recent.toE164       = [call.phoneNumber e164Format];
 
     [[DataManager sharedManager].managedObjectContext save:nil];
 }

@@ -194,9 +194,13 @@ typedef enum
     NSDate* date = [Settings sharedSettings].recentsCheckDate;
 
     //####### TEMP
-    date = [[NSDate date] dateByAddingTimeInterval:-20000];
+    //date = [[NSDate date] dateByAddingTimeInterval:-13000];
 
-    [[WebClient sharedClient] retrieveInboundCallRecordsFromDate:date reply:^(NSError *error, NSArray* records)
+    [[WebClient sharedClient] retrieveCallRecordsFromDate:date
+                                                  inbound:YES
+                                                 outbound:NO
+                                             verification:YES
+                                                    reply:^(NSError *error, NSArray* records)
     {
         if (error == nil)
         {
@@ -276,7 +280,7 @@ typedef enum
                               ivr          269  // To-leg of an incoming call (towards a Phone).
                               verification 108  // Phone verification To call.
                               subscriber    68  // ??
-                              outbound      57  // ??
+                              outbound      57  // To-leg of incoming call, but towards a SIP phone.
                               textback       6  // SMS call.
 
      - uuid:              The UUID of this call.
@@ -284,10 +288,26 @@ typedef enum
  The records are ordered by creation date, with the newest records on top (i.e. at lower indices). Matching legs (having
  the same UUID) can normally be found next to eachother. Only on a busy system where multiple calls are initiated around
  the same time, both legs can be a little further apart.
+ 
+               Leg Type                         fromE164                     toE164
+    --------------------------------------------------------------+-----------------------------
+         (A) fromRecord "inbound"         originator Caller ID or |  Voxbone Number that caller
+                                          "anonymous"             |  dialed
+    INCOMING                                                      |
+                                                                  |
+         (B) toRecord "ivr" or "outbound" ON:  Voxbone Number     |  Phone call is forwarded to
+          Depends on "Show Called Number" OFF: Caller             |
+    --------------------------------------------------------------+-----------------------------
+         (A) fromRecord "callback"        NumberBay Ltd. main     |  Phone where callback is
+                                          Number, always          |  received.
+    OUTGOING                                                      |
+                                                                  |
+         (B) toRecord "callthru"          Chosen Caller ID        |  Callee, the person that's
+                                                                  |  being called.
+     -------------------------------------------------------------+-----------------------------
  */
 - (void)processCallRecords:(NSArray*)records
 {
-    NSDate*   firstDate = nil;
     NSString* uuid;
 
     for (int index = (int)(records.count - 1); index >= 0; index--)
@@ -305,47 +325,38 @@ typedef enum
             continue;
         }
 
-        if (firstDate == nil)
+        // We're expecting 'callback', 'inbound' or 'verification'.
+        if ([self isCallbackRecord:record] || [self isInboundRecord:record] || [self isVerificationRecord:record])
         {
-            // We're expecting 'callback', 'inbound' or 'verification'.
-            if ([self isCallbackRecord:record] || [self isInboundRecord:record] || [self isVerificationRecord:record])
+            if ([self isVerificationRecord:record])
             {
-                firstDate = [Common dateWithString:record[@"startDateTime"]];
-
-                if ([self isVerificationRecord:record])
-                {
-                    //TODO: Add as new Recent
-                }
-                else
-                {
-                    NSInteger secondIndex = [self secondCallRecordIndexWithFirst:index callRecords:records];
-                    if (secondIndex != NSNotFound)
-                    {
-                        [self addRecentWithFromRecord:record toRecord:records[secondIndex]];
-
-                        firstDate = nil;
-
-                        // If records are adjacent.
-                        if ((index - secondIndex) == 1)
-                        {
-                            index--;
-                        }
-                    }
-                    else
-                    {
-                        [self addRecentWithFromRecord:record];
-
-                        firstDate = nil;
-                    }
-                }
+                [self addVerificationRecord:record];
             }
             else
             {
-                // Discard this record. Could be index 0 record (in which case we just missed loading the first leg
-                // record), or a second leg (non-adjacent to its first) we found earlier (when on a busy system with
-                // many calls).
-                NBLog(@"Discarding CDR leg record.");
+                NSInteger secondIndex = [self secondCallRecordIndexWithFirst:index callRecords:records];
+                if (secondIndex != NSNotFound)
+                {
+                    [self addRecentWithFromRecord:record toRecord:records[secondIndex]];
+
+                    // If records are adjacent.
+                    if ((index - secondIndex) == 1)
+                    {
+                        index--;
+                    }
+                }
+                else
+                {
+                    [self addRecentWithFromRecord:record];
+                }
             }
+        }
+        else
+        {
+            // Discard this record. Could be index 0 record (in which case we just missed loading the first leg
+            // record), or a second leg (non-adjacent to its first) we found earlier (when on a busy system with
+            // many calls).
+            NBLog(@"Discarding CDR leg record.");
         }
     }
 }
@@ -399,12 +410,6 @@ typedef enum
 }
 
 
-- (void)addVerificationRecord:(NSDictionary*)record
-{
-
-}
-
-
 - (void)addRecentWithFromRecord:(NSDictionary*)fromRecord
 {
     NSManagedObjectContext* context = [DataManager sharedManager].managedObjectContext;
@@ -412,23 +417,25 @@ typedef enum
                                                                     inManagedObjectContext:context];
     recent.isUpToDate = @(YES);
 
-    PhoneNumber* dialedPhoneNumber;
+    PhoneNumber* contactPhoneNumber;
     if ([self isCallbackRecord:fromRecord])
     {
         // Cancelled outbound call (callback).
         recent.direction    = @(CallDirectionOutgoing);
-        dialedPhoneNumber   = [[PhoneNumber alloc] initWithNumber:[self addE164Plus:fromRecord[@"toE164"]]]; // The NB number, the called number is lost.
+        contactPhoneNumber  = [[PhoneNumber alloc] initWithNumber:[self addE164Plus:fromRecord[@"toE164"]]]; // The NB number, the called number is lost.
         recent.date         = [Common dateWithString:fromRecord[@"startDateTime"]]; // When we started calling.
         recent.callerIdE164 = nil;
 
-        recent.fromE164 = [self addE164Plus:fromRecord[@"fromE164"]];
-        recent.toE164   = [self addE164Plus:fromRecord[@"toE164"]];
-        recent.fromCost = fromRecord[@"cost"];
-        recent.toCost   = @(0.0);
+        recent.fromE164     = [self addE164Plus:fromRecord[@"fromE164"]];
+        recent.toE164       = [self addE164Plus:fromRecord[@"toE164"]];
+        recent.fromCost     = fromRecord[@"cost"];
+        recent.toCost       = @(0.0);
 
         if ([fromRecord[@"hangupCause"] isEqualToString:@"NORMAL_CLEARING"])
         {
-            recent.status = @(CallStatusCancelled);
+            // When an inbound caller hangs up before and outbound leg was created, we want to show this
+            // as a missed called, otherwise it's a regular cancelled call.
+            recent.status = [self isInboundRecord:fromRecord] ? @(CallStatusMissed) : @(CallStatusCancelled);
         }
         else
         {
@@ -438,15 +445,15 @@ typedef enum
     }
     else if ([self isInboundRecord:fromRecord])
     {
-        recent.direction  = @(CallDirectionIncoming);
-        dialedPhoneNumber = [[PhoneNumber alloc] initWithNumber:[self addE164Plus:fromRecord[@"toE164"]]];
-        recent.date       = [Common dateWithString:fromRecord[@"startDateTime"]]; // When we started calling.
-        recent.callerIdE164 = nil;
+        recent.direction    = @(CallDirectionIncoming);
+        contactPhoneNumber  = [[PhoneNumber alloc] initWithNumber:[self addE164Plus:fromRecord[@"fromE164"]]];
+        recent.date         = [Common dateWithString:fromRecord[@"startDateTime"]]; // When we started calling.
+        recent.callerIdE164 = [self addE164Plus:fromRecord[@"fromE164"]];
 
-        recent.fromE164 = [self addE164Plus:fromRecord[@"fromE164"]];
-        recent.toE164   = [self addE164Plus:fromRecord[@"toE164"]];
-        recent.fromCost = fromRecord[@"cost"];
-        recent.toCost   = @(0.0);
+        recent.fromE164     = [self addE164Plus:fromRecord[@"fromE164"]];
+        recent.toE164       = [self addE164Plus:fromRecord[@"toE164"]];
+        recent.fromCost     = fromRecord[@"cost"];
+        recent.toCost       = @(0.0);
 
         if ([fromRecord[@"hangupCause"] isEqualToString:@"NORMAL_CLEARING"])
         {
@@ -463,15 +470,25 @@ typedef enum
         NBLog(@"Unexpected CDR leg record: %@", fromRecord[@"type"]);
     }
 
-    recent.timeZone     = [[NSTimeZone defaultTimeZone] abbreviation];
-    recent.uuid         = fromRecord[@"uuid"];
+    recent.timeZone             = [[NSTimeZone defaultTimeZone] abbreviation];
+    recent.uuid                 = fromRecord[@"uuid"];
 
-    recent.fromDuration = fromRecord[@"duration"];
-    recent.toDuration   = @(0);
+    recent.fromDuration         = fromRecord[@"duration"];
+    recent.toDuration           = @(0);
     recent.billableFromDuration = fromRecord[@"billableDuration"];
     recent.billableToDuration   = @(0.0);
 
-    recent.dialedNumber = [dialedPhoneNumber internationalFormat];
+    recent.dialedNumber = [contactPhoneNumber internationalFormat];
+    [[AppDelegate appDelegate] findContactsHavingNumber:[contactPhoneNumber nationalDigits]
+                                             completion:^(NSArray* contactIds)
+    {
+        if (contactIds.count > 0)
+        {
+            recent.contactId = [contactIds firstObject];
+
+            [self reloadForce:YES];
+        }
+    }];
 }
 
 
@@ -527,21 +544,46 @@ typedef enum
      toE164 = 3215666666;
      type = callthru;
      uuid = "81bb6c72-aa88-11e6-bb44-8ddf088a4149";
+     
+     ===========
+     
+     VERIFICATION OK:
+     billableDuration = 9;
+     cost = "0.0107125248668";
+     duration = 15;
+     fromE164 = 442038083855;
+     hangupCause = "NORMAL_CLEARING";
+     startDateTime = "2017-01-21 09:05:41";
+     toE164 = 34630535344;
+     type = verification;
+     uuid = "c8a33c72-dfb8-11e6-83b2-2bb2e8aa3c64";
+
+     VERIFICATION CANCELLED:
+     billableDuration = 0;
+     cost = 0;
+     duration = 19;
+     fromE164 = 442038083855;
+     hangupCause = "NO_USER_RESPONSE";
+     startDateTime = "2017-01-21 09:04:01";
+     toE164 = 34630535344;
+     type = verification;
+     uuid = "8ce8aa00-dfb8-11e6-95e4-add0451aea3e";
      */
 
-    PhoneNumber* dialedPhoneNumber;
+    PhoneNumber* contactPhoneNumber;
     if ([self isCallbackRecord:fromRecord])
     {
+        //##### OUTDATED AS WE DON'T LOAD OUTGOING CALLS YET.
         // Outbound call (callback).
         recent.direction    = @(CallDirectionOutgoing);
-        dialedPhoneNumber   = [[PhoneNumber alloc] initWithNumber:[self addE164Plus:toRecord[@"toE164"]]];
+        contactPhoneNumber  = [[PhoneNumber alloc] initWithNumber:[self addE164Plus:toRecord[@"toE164"]]];
         recent.date         = [Common dateWithString:fromRecord[@"startDateTime"]]; // When we started calling.
         recent.callerIdE164 = [self addE164Plus:toRecord[@"fromE164"]];
 
-        recent.fromE164 = [self addE164Plus:fromRecord[@"toE164"]];
-        recent.toE164   = [self addE164Plus:toRecord[@"toE164"]];
-        recent.fromCost = fromRecord[@"cost"];
-        recent.toCost   = toRecord[@"cost"];
+        recent.fromE164     = [self addE164Plus:fromRecord[@"toE164"]];
+        recent.toE164       = [self addE164Plus:toRecord[@"toE164"]];
+        recent.fromCost     = fromRecord[@"cost"];
+        recent.toCost       = toRecord[@"cost"];
 
         if ([toRecord[@"hangupCause"] isEqualToString:@"NORMAL_CLEARING"])
         {
@@ -559,14 +601,14 @@ typedef enum
     {
         // Inbound call (Voxbone).
         recent.direction    = @(CallDirectionIncoming);
-        dialedPhoneNumber   = [[PhoneNumber alloc] initWithNumber:[self addE164Plus:fromRecord[@"fromE164"]]];
+        contactPhoneNumber  = [[PhoneNumber alloc] initWithNumber:[self addE164Plus:fromRecord[@"fromE164"]]];
         recent.date         = [Common dateWithString:toRecord[@"startDateTime"]];   // When our Phone was called.
         recent.callerIdE164 = [self addE164Plus:fromRecord[@"fromE164"]];
 
-        recent.fromE164 = [self addE164Plus:fromRecord[@"fromE164"]];  // Depends on Setting: either NumberBay main number, or caller number.
-        recent.toE164   = [self addE164Plus:fromRecord[@"toE164"]];
-        recent.fromCost = fromRecord[@"cost"];
-        recent.toCost   = toRecord[@"cost"];
+        recent.fromE164     = [self addE164Plus:fromRecord[@"fromE164"]];  // Depends on Setting: either NumberBay main number, or caller number.
+        recent.toE164       = [self addE164Plus:fromRecord[@"toE164"]];
+        recent.fromCost     = fromRecord[@"cost"];
+        recent.toCost       = toRecord[@"cost"];
 
         if ([toRecord[@"hangupCause"] isEqualToString:@"NORMAL_CLEARING"])
         {
@@ -582,16 +624,103 @@ typedef enum
         }
     }
 
-    recent.timeZone     = [[NSTimeZone defaultTimeZone] abbreviation];
-    recent.uuid         = fromRecord[@"uuid"];
+    recent.timeZone             = [[NSTimeZone defaultTimeZone] abbreviation];
+    recent.uuid                 = fromRecord[@"uuid"];
 
-    recent.fromDuration = fromRecord[@"duration"];
-    recent.toDuration   = toRecord[@"duration"];
+    recent.fromDuration         = fromRecord[@"duration"];
+    recent.toDuration           = toRecord[@"duration"];
     recent.billableFromDuration = fromRecord[@"billableDuration"];
     recent.billableToDuration   = toRecord[@"billableDuration"];
 
-    recent.dialedNumber = [dialedPhoneNumber internationalFormat];
-    [[AppDelegate appDelegate] findContactsHavingNumber:[dialedPhoneNumber nationalDigits]
+    recent.dialedNumber = [contactPhoneNumber internationalFormat];
+    [[AppDelegate appDelegate] findContactsHavingNumber:[contactPhoneNumber nationalDigits]
+                                             completion:^(NSArray* contactIds)
+    {
+        if (contactIds.count > 0)
+        {
+            recent.contactId = [contactIds firstObject];
+
+            [self reloadForce:YES];
+        }
+    }];
+}
+
+
+/*
+ VERIFICATION OK:
+ billableDuration = 9;
+ cost = "0.0107125248668";
+ duration = 15;
+ fromE164 = 442038083855;
+ hangupCause = "NORMAL_CLEARING";
+ startDateTime = "2017-01-21 09:05:41";
+ toE164 = 34630535344;
+ type = verification;
+ uuid = "c8a33c72-dfb8-11e6-83b2-2bb2e8aa3c64";
+
+ VERIFICATION CANCELLED:
+ billableDuration = 0;
+ cost = 0;
+ duration = 19;
+ fromE164 = 442038083855;
+ hangupCause = "NO_USER_RESPONSE";
+ startDateTime = "2017-01-21 09:04:01";
+ toE164 = 34630535344;
+ type = verification;
+ uuid = "8ce8aa00-dfb8-11e6-95e4-add0451aea3e";
+ */
+- (void)addVerificationRecord:(NSDictionary*)record
+{
+    NSManagedObjectContext* context            = [DataManager sharedManager].managedObjectContext;
+    CallRecordData*         recent             = [NSEntityDescription insertNewObjectForEntityForName:@"CallRecord"
+                                                                               inManagedObjectContext:context];
+    PhoneNumber*            contactPhoneNumber = [[PhoneNumber alloc] initWithNumber:[self addE164Plus:record[@"fromE164"]]];
+
+    recent.isUpToDate           = @(YES);
+
+    recent.direction            = @(CallDirectionVerification);
+    recent.date                 = [Common dateWithString:record[@"startDateTime"]]; // When we started calling.
+
+    recent.fromE164             = [self addE164Plus:record[@"fromE164"]];
+    recent.toE164               = [self addE164Plus:record[@"toE164"]];
+    recent.fromCost             = record[@"cost"];
+    recent.toCost               = @(0.0);
+
+    recent.timeZone             = [[NSTimeZone defaultTimeZone] abbreviation];
+    recent.uuid                 = record[@"uuid"];
+
+    recent.fromDuration         = record[@"duration"];
+    recent.toDuration           = @(0);
+    recent.billableFromDuration = record[@"billableDuration"];
+    recent.billableToDuration   = @(0.0);
+
+    if ([record[@"hangupCause"] isEqualToString:@"NORMAL_CLEARING"])
+    {
+        recent.status = @(CallStatusSuccess);
+    }
+    else if ([record[@"hangupCause"] isEqualToString:@"ORIGINATOR_CANCEL"])
+    {
+        recent.status = @(CallStatusCancelled);
+    }
+    else if ([record[@"hangupCause"] isEqualToString:@"USER_BUSY"])
+    {
+        recent.status = @(CallStatusBusy);
+    }
+    else if ([record[@"hangupCause"] isEqualToString:@"NO_USER_RESPONSE"])
+    {
+        recent.status = @(CallStatusMissed);
+    }
+    else if ([record[@"hangupCause"] isEqualToString:@"CALL_REJECTED"])
+    {
+        recent.status = @(CallStatusDeclined);
+    }
+    else
+    {
+        recent.status = @(CallStatusFailed);
+    }
+
+    recent.dialedNumber = [contactPhoneNumber internationalFormat];
+    [[AppDelegate appDelegate] findContactsHavingNumber:[contactPhoneNumber nationalDigits]
                                              completion:^(NSArray* contactIds)
     {
         if (contactIds.count > 0)
@@ -974,108 +1103,11 @@ typedef enum
         }
     }
 
-    if (latestEntry.contactId != nil)
-    {
-        // Set the name
-        NSString* representation = [[NBContact getListRepresentation:contact] string];
-        [cell.numberLabel setText:representation];
-
-        cell.numberTypeLabel.text = nil;
-
-        // Determine and set the label
-        ABMultiValueRef* datasource = (ABMultiValueRef*)ABRecordCopyValue(contact, kABPersonPhoneProperty);
-        for (CFIndex i = 0; i < ABMultiValueGetCount(datasource); i++)
-        {
-            NSString* number = (__bridge NSString*)(ABMultiValueCopyValueAtIndex(datasource, i));
-
-            if ([[NBAddressBookManager sharedManager].delegate matchRecent:latestEntry withNumber:number])
-            {
-                [cell.numberTypeLabel setText:(__bridge NSString*)ABAddressBookCopyLocalizedLabel((ABMultiValueCopyLabelAtIndex(datasource, i)))];
-
-                break;
-            }
-        }
-    }
-    else if (latestEntry.dialedNumber == nil)
-    {
-        [cell.numberLabel     setText:NSLocalizedString(@"LBL_NO_CALLER_ID", @"")];
-        [cell.numberTypeLabel setText:NSLocalizedString(@"LBL_UNKNOWN", @"")];
-    }
-    else
-    {
-        NSString* number = [[NBAddressBookManager sharedManager].delegate formatNumber:latestEntry.dialedNumber];
-        [cell.numberLabel     setText:number];
-        [cell.numberTypeLabel setText:NSLocalizedString(@"LBL_UNKNOWN", @"")];
-    }
-    
-    if ([latestEntry.status intValue] == CallStatusMissed)
-    {
-        cell.numberLabel.textColor     = [[NBAddressBookManager sharedManager].delegate deleteTintColor];
-        cell.numberTypeLabel.textColor = [[NBAddressBookManager sharedManager].delegate deleteTintColor];
-    }
-    else
-    {
-        cell.numberLabel.textColor     = [UIColor blackColor];
-        cell.numberTypeLabel.textColor = [UIColor blackColor];
-    }
-
-    // Set the Caller ID.
     switch ([latestEntry.direction intValue])
     {
-        case CallDirectionIncoming:
-        {
-            PhoneData*  phone  = [[DataManager sharedManager] lookupPhoneForE164:latestEntry.toE164];
-            NumberData* number = [[DataManager sharedManager] lookupNumberForE164:latestEntry.toE164];
-
-            if (phone != nil)
-            {
-                cell.callerIdLabel.text = phone.name;
-            }
-            else if (number != nil)
-            {
-                cell.callerIdLabel.text = number.name;
-            }
-            else
-            {
-                // Strange situation because a Caller ID was used that's no longer there.
-                cell.callerIdLabel.text = [[[PhoneNumber alloc] initWithNumber:latestEntry.callerIdE164] internationalFormat];
-            }
-
-            break;
-        }
-        case CallDirectionOutgoing:
-        {
-            if ([latestEntry.privacy boolValue])
-            {
-                cell.callerIdLabel.text = @"anonymous";
-            }
-            else
-            {
-                PhoneData*  phone  = [[DataManager sharedManager] lookupPhoneForE164:latestEntry.callerIdE164];
-                NumberData* number = [[DataManager sharedManager] lookupNumberForE164:latestEntry.callerIdE164];
-
-                if (phone != nil)
-                {
-                    cell.callerIdLabel.text = phone.name;
-                }
-                else if (number != nil)
-                {
-                    cell.callerIdLabel.text = number.name;
-                }
-                else
-                {
-                    // Strange situation because a Caller ID was used that's no longer there.
-                    cell.callerIdLabel.text = [[[PhoneNumber alloc] initWithNumber:latestEntry.callerIdE164] internationalFormat];
-                }
-            }
-            break;
-        }
-        case CallDirectionVerification:
-        {
-            cell.callerIdLabel.text = @"verif";
-
-            break;
-        }
+        case CallDirectionIncoming:     [self configureInboundCell:cell      callRecord:latestEntry]; break;
+        case CallDirectionOutgoing:     [self configureOutboundCell:cell     callRecord:latestEntry]; break;
+        case CallDirectionVerification: [self configureVerificationCell:cell callRecord:latestEntry]; break;
     }
 
     // Set the amount of calls made (incoming + outgoing)
@@ -1098,29 +1130,6 @@ typedef enum
         [cell.numberLabel setAttributedText:attributedName];
     }
 
-    //Set the outgoing call icon
-    switch ([latestEntry.direction intValue])
-    {
-        case CallDirectionIncoming:
-        {
-            cell.imageView.image = [UIImage imageNamed:@"CallIncoming"];
-
-            break;
-        }
-        case CallDirectionOutgoing:
-        {
-            cell.imageView.image = [UIImage imageNamed:@"CallOutgoing"];
-
-            break;
-        }
-        case CallDirectionVerification:
-        {
-            cell.imageView.image = [UIImage imageNamed:@"CallVerification"];
-
-            break;
-        }
-    }
-
     cell.imageView.image = [cell.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     if ([latestEntry.status intValue] == CallStatusMissed)
     {
@@ -1130,8 +1139,6 @@ typedef enum
     {
         [cell.imageView setTintColor:[[NBAddressBookManager sharedManager].delegate valueColor]];
     }
-
-
 
     // Set the time and (yesterday/day name in case of less than a week ago/date)
     NSString*         dayOrDate;
@@ -1196,11 +1203,219 @@ typedef enum
 }
 
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell*)aCell forRowAtIndexPath:(NSIndexPath*)indexPath
+- (void)tableView:(UITableView*)tableView willDisplayCell:(UITableViewCell*)aCell forRowAtIndexPath:(NSIndexPath*)indexPath
 {        
     // Set the approriate cell spacing and frame for the labels
     NBRecentCallCell* cell = (NBRecentCallCell*)aCell;
     [cell shiftLabels:self.navigationItem.rightBarButtonItem == doneButton];
+}
+
+
+- (void)configureInboundCell:(NBRecentCallCell*)cell callRecord:(CallRecordData*)callRecord
+{
+    if (callRecord.contactId != nil)
+    {
+        ABRecordRef contact = [self getContactForID:callRecord.contactId];
+
+        // Set the name
+        NSString* representation = [[NBContact getListRepresentation:contact] string];
+        [cell.numberLabel setText:representation];
+
+        cell.numberTypeLabel.text = nil;
+
+        // Determine and set the label
+        ABMultiValueRef* datasource = (ABMultiValueRef*)ABRecordCopyValue(contact, kABPersonPhoneProperty);
+        for (CFIndex i = 0; i < ABMultiValueGetCount(datasource); i++)
+        {
+            NSString* number = (__bridge NSString*)(ABMultiValueCopyValueAtIndex(datasource, i));
+
+            if ([[NBAddressBookManager sharedManager].delegate matchRecent:callRecord withNumber:number])
+            {
+                [cell.numberTypeLabel setText:(__bridge NSString*)ABAddressBookCopyLocalizedLabel((ABMultiValueCopyLabelAtIndex(datasource, i)))];
+
+                break;
+            }
+        }
+    }
+    else if (callRecord.dialedNumber == nil)
+    {
+        [cell.numberLabel     setText:NSLocalizedString(@"LBL_NO_CALLER_ID", @"")];
+        [cell.numberTypeLabel setText:NSLocalizedString(@"LBL_UNKNOWN", @"")];
+    }
+    else
+    {
+        NSString* number = [[NBAddressBookManager sharedManager].delegate formatNumber:callRecord.dialedNumber];
+        [cell.numberLabel     setText:number];
+        [cell.numberTypeLabel setText:NSLocalizedString(@"LBL_UNKNOWN", @"")];
+    }
+
+    if ([callRecord.status intValue] == CallStatusMissed)
+    {
+        cell.numberLabel.textColor     = [[NBAddressBookManager sharedManager].delegate deleteTintColor];
+        cell.numberTypeLabel.textColor = [[NBAddressBookManager sharedManager].delegate deleteTintColor];
+    }
+    else
+    {
+        cell.numberLabel.textColor     = [UIColor blackColor];
+        cell.numberTypeLabel.textColor = [UIColor blackColor];
+    }
+
+    // Set the Caller ID.
+    PhoneData*  phone  = [[DataManager sharedManager] lookupPhoneForE164:callRecord.toE164];
+    NumberData* number = [[DataManager sharedManager] lookupNumberForE164:callRecord.toE164];
+
+    if (phone != nil)
+    {
+        cell.callerIdLabel.text = phone.name;
+    }
+    else if (number != nil)
+    {
+        cell.callerIdLabel.text = number.name;
+    }
+    else
+    {
+        // Strange situation because a Caller ID was used that's no longer there.
+        cell.callerIdLabel.text = [[[PhoneNumber alloc] initWithNumber:callRecord.callerIdE164] internationalFormat];
+    }
+
+    cell.imageView.image = [UIImage imageNamed:@"CallIncoming"];
+}
+
+
+- (void)configureOutboundCell:(NBRecentCallCell*)cell callRecord:(CallRecordData*)callRecord
+{
+    if (callRecord.contactId != nil)
+    {
+        ABRecordRef contact = [self getContactForID:callRecord.contactId];
+
+        // Set the name
+        NSString* representation = [[NBContact getListRepresentation:contact] string];
+        [cell.numberLabel setText:representation];
+
+        cell.numberTypeLabel.text = nil;
+
+        // Determine and set the label
+        ABMultiValueRef* datasource = (ABMultiValueRef*)ABRecordCopyValue(contact, kABPersonPhoneProperty);
+        for (CFIndex i = 0; i < ABMultiValueGetCount(datasource); i++)
+        {
+            NSString* number = (__bridge NSString*)(ABMultiValueCopyValueAtIndex(datasource, i));
+
+            if ([[NBAddressBookManager sharedManager].delegate matchRecent:callRecord withNumber:number])
+            {
+                [cell.numberTypeLabel setText:(__bridge NSString*)ABAddressBookCopyLocalizedLabel((ABMultiValueCopyLabelAtIndex(datasource, i)))];
+
+                break;
+            }
+        }
+    }
+    else if (callRecord.dialedNumber == nil)
+    {
+        [cell.numberLabel     setText:NSLocalizedString(@"LBL_NO_CALLER_ID", @"")];
+        [cell.numberTypeLabel setText:NSLocalizedString(@"LBL_UNKNOWN", @"")];
+    }
+    else
+    {
+        NSString* number = [[NBAddressBookManager sharedManager].delegate formatNumber:callRecord.dialedNumber];
+        [cell.numberLabel     setText:number];
+        [cell.numberTypeLabel setText:NSLocalizedString(@"LBL_UNKNOWN", @"")];
+    }
+
+    if ([callRecord.status intValue] == CallStatusMissed)
+    {
+        cell.numberLabel.textColor     = [[NBAddressBookManager sharedManager].delegate deleteTintColor];
+        cell.numberTypeLabel.textColor = [[NBAddressBookManager sharedManager].delegate deleteTintColor];
+    }
+    else
+    {
+        cell.numberLabel.textColor     = [UIColor blackColor];
+        cell.numberTypeLabel.textColor = [UIColor blackColor];
+    }
+
+    // Set the Caller ID.
+    if ([callRecord.privacy boolValue])
+    {
+        cell.callerIdLabel.text = @"anonymous";
+    }
+    else
+    {
+        PhoneData*  phone  = [[DataManager sharedManager] lookupPhoneForE164:callRecord.callerIdE164];
+        NumberData* number = [[DataManager sharedManager] lookupNumberForE164:callRecord.callerIdE164];
+
+        if (phone != nil)
+        {
+            cell.callerIdLabel.text = phone.name;
+        }
+        else if (number != nil)
+        {
+            cell.callerIdLabel.text = number.name;
+        }
+        else
+        {
+            // Strange situation because a Caller ID was used that's no longer there.
+            cell.callerIdLabel.text = [[[PhoneNumber alloc] initWithNumber:callRecord.callerIdE164] internationalFormat];
+        }
+    }
+
+    cell.imageView.image = [UIImage imageNamed:@"CallOutgoing"];
+}
+
+
+- (void)configureVerificationCell:(NBRecentCallCell*)cell callRecord:(CallRecordData*)callRecord
+{
+    if (callRecord.contactId != nil)
+    {
+        ABRecordRef contact = [self getContactForID:callRecord.contactId];
+
+        // Set the name
+        NSString* representation = [[NBContact getListRepresentation:contact] string];
+        [cell.numberLabel setText:representation];
+
+        cell.numberTypeLabel.text = nil;
+
+        // Determine and set the label
+        ABMultiValueRef* datasource = (ABMultiValueRef*)ABRecordCopyValue(contact, kABPersonPhoneProperty);
+        for (CFIndex i = 0; i < ABMultiValueGetCount(datasource); i++)
+        {
+            NSString* number = (__bridge NSString*)(ABMultiValueCopyValueAtIndex(datasource, i));
+
+            if ([[NBAddressBookManager sharedManager].delegate matchRecent:callRecord withNumber:number])
+            {
+                [cell.numberTypeLabel setText:(__bridge NSString*)ABAddressBookCopyLocalizedLabel((ABMultiValueCopyLabelAtIndex(datasource, i)))];
+
+                break;
+            }
+        }
+    }
+    else
+    {
+        NSString* number = [[NBAddressBookManager sharedManager].delegate formatNumber:callRecord.dialedNumber];
+        [cell.numberLabel     setText:number];
+        [cell.numberTypeLabel setText:@"verification"];
+    }
+
+    if ([callRecord.status intValue] == CallStatusMissed)
+    {
+        cell.numberLabel.textColor     = [[NBAddressBookManager sharedManager].delegate deleteTintColor];
+        cell.numberTypeLabel.textColor = [[NBAddressBookManager sharedManager].delegate deleteTintColor];
+    }
+    else
+    {
+        cell.numberLabel.textColor     = [UIColor blackColor];
+        cell.numberTypeLabel.textColor = [UIColor blackColor];
+    }
+
+    // Set the Caller ID.
+    PhoneData* phone = [[DataManager sharedManager] lookupPhoneForE164:callRecord.toE164];
+    if (phone != nil)
+    {
+        cell.callerIdLabel.text = phone.name;
+    }
+    else
+    {
+        cell.callerIdLabel.text = [[[PhoneNumber alloc] initWithNumber:callRecord.toE164] internationalFormat];
+    }
+
+    cell.imageView.image = [UIImage imageNamed:@"CallVerification"];
 }
 
 

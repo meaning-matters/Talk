@@ -68,8 +68,8 @@
     self.infoLabel.text   = [self.call.phoneNumber infoString];
     self.calleeLabel.text = self.call.contactId ? self.call.contactName : [self.call.phoneNumber asYouTypeFormat];
 
-    self.statusLabel.text               = [self statusString];
-    graphicStateView.phoneLabel.text    = [NSString stringWithFormat:@"%@: %@", [Strings phoneString],
+    self.statusLabel.text            = [self statusString];
+    graphicStateView.phoneLabel.text = [NSString stringWithFormat:@"%@: %@", [Strings phoneString],
                                                                                 self.phone.name];
     if (self.call.showCallerId)
     {

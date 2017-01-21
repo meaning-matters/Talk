@@ -59,6 +59,7 @@
 @property (nonatomic) UIView*                     tableHeader;
 @property (nonatomic) UILabel*                    myNumberLabel;
 @property (nonatomic, weak) IBOutlet UITableView* tableView;
+@property (nonatomic, assign) BOOL                contactsAreLoaded;
 
 //Variables used to merge a contact with a new one
 @property (strong, nonatomic) NBContact * contactToMergeWith;

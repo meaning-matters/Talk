@@ -284,7 +284,11 @@
 - (void)retrieveCallRateForE164:(NSString*)e164 reply:(void (^)(NSError* error, float ratePerMinute))reply;
 
 // 17. GET CDRS
-- (void)retrieveInboundCallRecordsFromDate:(NSDate*)date reply:(void (^)(NSError* error, NSArray* records))reply;
+- (void)retrieveCallRecordsFromDate:(NSDate*)date
+                            inbound:(BOOL)inbound
+                           outbound:(BOOL)outbound
+                       verification:(BOOL)verification
+                              reply:(void (^)(NSError* error, NSArray* records))reply;
 
 // 19A. CREATE DESTINATION
 - (void)createDestinationWithName:(NSString*)name

@@ -31,6 +31,9 @@
 
         self.edgesForExtendedLayout = UIRectEdgeNone;
 
+        //The contacts datasource
+        contactsDatasource = [NSMutableArray arrayWithCapacity:[SECTION_TITLES count]];
+
         searchQueue = dispatch_queue_create("Contact Search", DISPATCH_QUEUE_SERIAL);
     }
 
@@ -74,9 +77,6 @@
 
     // Create add button
     [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)]];
-    
-    //The contacts datasource
-    contactsDatasource = [NSMutableArray arrayWithCapacity:[SECTION_TITLES count]];
     
     //The groups in the system
     groupsManager = [[NBGroupsManager alloc] init];
@@ -126,6 +126,8 @@
 
         dispatch_async(dispatch_get_main_queue(), ^
         {
+            self.contactsAreLoaded = YES;
+
             [self.tableView reloadData];
         });
     });

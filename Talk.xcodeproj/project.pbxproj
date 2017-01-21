@@ -483,6 +483,8 @@
 		488D7759178078CC00099470 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 488D7758178078CC00099470 /* QuartzCore.framework */; };
 		488FBBE21700852F000ECC71 /* NumberData.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBE11700852F000ECC71 /* NumberData.m */; };
 		488FBBE31700852F000ECC71 /* NumberData.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBE11700852F000ECC71 /* NumberData.m */; };
+		4890CB991E33CCB5001ED2D2 /* CallVerification@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4890CB971E33CCB5001ED2D2 /* CallVerification@2x.png */; };
+		4890CB9A1E33CCB5001ED2D2 /* CallVerification@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4890CB981E33CCB5001ED2D2 /* CallVerification@3x.png */; };
 		48931FF51D3CB0FF00A93456 /* NumberPayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48931FF41D3CB0FF00A93456 /* NumberPayViewController.m */; };
 		489387FB17039158005CC795 /* DestinationData.m in Sources */ = {isa = PBXBuildFile; fileRef = 489387FA17039158005CC795 /* DestinationData.m */; };
 		489387FC17039158005CC795 /* DestinationData.m in Sources */ = {isa = PBXBuildFile; fileRef = 489387FA17039158005CC795 /* DestinationData.m */; };
@@ -1240,6 +1242,8 @@
 		488FBBD917007CC6000ECC71 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DataManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		488FBBE01700852F000ECC71 /* NumberData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberData.h; sourceTree = "<group>"; };
 		488FBBE11700852F000ECC71 /* NumberData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberData.m; sourceTree = "<group>"; };
+		4890CB971E33CCB5001ED2D2 /* CallVerification@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CallVerification@2x.png"; sourceTree = "<group>"; };
+		4890CB981E33CCB5001ED2D2 /* CallVerification@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CallVerification@3x.png"; sourceTree = "<group>"; };
 		48931FF31D3CB0FF00A93456 /* NumberPayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberPayViewController.h; sourceTree = "<group>"; };
 		48931FF41D3CB0FF00A93456 /* NumberPayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberPayViewController.m; sourceTree = "<group>"; };
 		489387F917039158005CC795 /* DestinationData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinationData.h; sourceTree = "<group>"; };
@@ -1892,6 +1896,8 @@
 				48F5525E1E2E39C7009A054E /* CallIncoming@3x.png */,
 				48F5525F1E2E39C7009A054E /* CallOutgoing@2x.png */,
 				48F552601E2E39C7009A054E /* CallOutgoing@3x.png */,
+				4890CB971E33CCB5001ED2D2 /* CallVerification@2x.png */,
+				4890CB981E33CCB5001ED2D2 /* CallVerification@3x.png */,
 				483F23AE1D8F1969009AFA98 /* Checkmark@2x.png */,
 				483F23B71D8F2AD7009AFA98 /* Checkmark@3x.png */,
 				483679FE17247B2B001A02AF /* CueForwardBlack@2x.png */,
@@ -2870,6 +2876,7 @@
 				4842D9FF1AADFB53008F35C9 /* noPictureCompanyImage.png in Resources */,
 				485F6A601637270100D61365 /* BD@2x.png in Resources */,
 				485F6A621637270100D61365 /* BE@2x.png in Resources */,
+				4890CB991E33CCB5001ED2D2 /* CallVerification@2x.png in Resources */,
 				485F6A641637270100D61365 /* BF@2x.png in Resources */,
 				485F6A661637270100D61365 /* BG@2x.png in Resources */,
 				485F6A681637270100D61365 /* BH@2x.png in Resources */,
@@ -2907,6 +2914,7 @@
 				485F6A981637270100D61365 /* CN@2x.png in Resources */,
 				485F6A9A1637270100D61365 /* CO@2x.png in Resources */,
 				485F6A9C1637270100D61365 /* CR@2x.png in Resources */,
+				4890CB9A1E33CCB5001ED2D2 /* CallVerification@3x.png in Resources */,
 				485F6A9E1637270100D61365 /* CU@2x.png in Resources */,
 				485F6AA01637270100D61365 /* CV@2x.png in Resources */,
 				485F6AA21637270100D61365 /* CW@2x.png in Resources */,

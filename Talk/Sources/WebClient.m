@@ -1127,7 +1127,11 @@
 
 
 // 17. GET CDRS
-- (void)retrieveInboundCallRecordsFromDate:(NSDate*)date reply:(void (^)(NSError* error, NSArray* records))reply
+- (void)retrieveCallRecordsFromDate:(NSDate*)date
+                            inbound:(BOOL)inbound
+                           outbound:(BOOL)outbound
+                       verification:(BOOL)verification
+                              reply:(void (^)(NSError* error, NSArray* records))reply
 {
     NSString* username       = [Settings sharedSettings].webUsername;
     NSString* currencyCode   = [Settings sharedSettings].storeCurrencyCode;
@@ -1137,8 +1141,14 @@
     fromDateString = [fromDateString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
     fromDateString = [fromDateString stringByReplacingOccurrencesOfString:@":" withString:@"%3A"];
 
-    [self getPath:[NSString stringWithFormat:@"/users/%@/cdrs?inbound=%@&fromDateTime=%@&currencyCode=%@&countryCode=%@",
-                   username, @"true", fromDateString, currencyCode, countryCode]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/cdrs?inbound=%@&outbound=%@&verification=%@&fromDateTime=%@&currencyCode=%@&countryCode=%@",
+                   username,
+                   inbound      ? @"true" : @"false",
+                   outbound     ? @"true" : @"false",
+                   verification ? @"true" : @"false",
+                   fromDateString,
+                   currencyCode,
+                   countryCode]
        parameters:nil
             reply:^(NSError* error, id content)
     {

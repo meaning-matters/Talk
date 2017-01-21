@@ -263,3 +263,5 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 * Eliminate addressType from API 8 (and 13 perhaps by calling 9 instead and passing result onwards).
 
 * Check recent changes to server's Regulation values of Croatia, Austria, Denmark, France, Hungary, Norway, Peru.
+
+* There's a dirty delay of 3 seconds in applicationDidBecomeActive to make sure contacts are loaded before we get recents. Otherwise Recents can't find contactIds and the calls shows are number instead of contact names. Make this cleaner!

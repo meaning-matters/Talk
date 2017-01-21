@@ -119,6 +119,9 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
         // Welcome stuff.
         [self showDefaultImage];
+
+        // Trigger loading contacts.
+        self.nBPeopleListViewController.view.hidden = NO;
     });
 }
 
@@ -384,7 +387,17 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
     [self showMissedNotifications];
     [self checkCreditWithCompletion:nil];
-    [self.nBRecentsListViewController refresh:nil];
+    if (self.nBPeopleListViewController.contactsAreLoaded)
+    {
+        [self.nBRecentsListViewController refresh:nil];
+    }
+    else
+    {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+        {
+            [self.nBRecentsListViewController refresh:nil];
+        });
+    }
 }
 
 
@@ -1064,8 +1077,8 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 - (BOOL)matchRecent:(CallRecordData*)recent withNumber:(NSString*)number
 {
     // No numbers that are invalid will end up in Recents (because earlier there will be
-    // an alert). So we'll always have a E164 form available, and also the ISO country code.
-    // We assume here that Home Country won't be changed, and that all local number (the ones
+    // an alert). So we'll always have an E164 form available, and also the ISO country code.
+    // We assume here that Home Country won't be changed, and that all local numbers (the ones
     // that will use latestEntry's ISO to get their E164 format), will be of the same country
     // as the Recent number.  If Home Country was wrongly set when a local number is added to
     // Recent, then following calls won't match this one.  (I was tired when writing this ;-)
