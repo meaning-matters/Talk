@@ -194,7 +194,7 @@ typedef enum
     NSDate* date = [Settings sharedSettings].recentsCheckDate;
 
     //####### TEMP
-    //date = [[NSDate date] dateByAddingTimeInterval:-13000];
+    date = [[NSDate date] dateByAddingTimeInterval:-100000];
 
     [[WebClient sharedClient] retrieveCallRecordsFromDate:date
                                                   inbound:YES
@@ -314,6 +314,7 @@ typedef enum
     {
         NSDictionary* record = records[index];
 
+        /*
         // Skip the calls that we already have.
         uuid = record[@"uuid"];
         NSPredicate* predicate = [NSPredicate predicateWithFormat:@"uuid == %@", uuid];
@@ -324,7 +325,7 @@ typedef enum
         {
             continue;
         }
-
+*/
         // We're expecting 'callback', 'inbound' or 'verification'.
         if ([self isCallbackRecord:record] || [self isInboundRecord:record] || [self isVerificationRecord:record])
         {
@@ -694,6 +695,8 @@ typedef enum
     recent.billableFromDuration = record[@"billableDuration"];
     recent.billableToDuration   = @(0.0);
 
+    recent.dialedNumber = @"+442035083588";
+
     if ([record[@"hangupCause"] isEqualToString:@"NORMAL_CLEARING"])
     {
         recent.status = @(CallStatusSuccess);
@@ -777,7 +780,7 @@ typedef enum
                                                    delegate:self
                                           cancelButtonTitle:NSLocalizedString(@"NCT_CANCEL", @"")
                                      destructiveButtonTitle:nil
-                                          otherButtonTitles:NSLocalizedString(@"CNT_CLEAR_WEEK",  @""),
+                                          otherButtonTitles:NSLocalizedString(@"CNT_CLEAR_WEEK", @""),
                         NSLocalizedString(@"CNT_CLEAR_MONTH", @""),
                         NSLocalizedString(@"CNT_CLEAR_ALL",   @""), nil];
 
@@ -1261,21 +1264,16 @@ typedef enum
     }
 
     // Set the Caller ID.
-    PhoneData*  phone  = [[DataManager sharedManager] lookupPhoneForE164:callRecord.toE164];
     NumberData* number = [[DataManager sharedManager] lookupNumberForE164:callRecord.toE164];
 
-    if (phone != nil)
-    {
-        cell.callerIdLabel.text = phone.name;
-    }
-    else if (number != nil)
+    if (number != nil)
     {
         cell.callerIdLabel.text = number.name;
     }
     else
     {
-        // Strange situation because a Caller ID was used that's no longer there.
-        cell.callerIdLabel.text = [[[PhoneNumber alloc] initWithNumber:callRecord.callerIdE164] internationalFormat];
+        // Strange situation because a Number was called that's not there.
+        cell.callerIdLabel.text = [[[PhoneNumber alloc] initWithNumber:callRecord.toE164] internationalFormat];
     }
 
     cell.imageView.image = [UIImage imageNamed:@"CallIncoming"];
