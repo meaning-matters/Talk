@@ -193,13 +193,14 @@ typedef enum
 {
     NSDate* date = [Settings sharedSettings].recentsCheckDate;
 
+
     //####### TEMP
-    date = [[NSDate date] dateByAddingTimeInterval:-100000];
+    //date = [[NSDate date] dateByAddingTimeInterval:-100000];
 
     [[WebClient sharedClient] retrieveCallRecordsFromDate:date
                                                   inbound:YES
                                                  outbound:NO
-                                             verification:YES
+                                             verification:NO
                                                     reply:^(NSError *error, NSArray* records)
     {
         if (error == nil)
@@ -314,7 +315,6 @@ typedef enum
     {
         NSDictionary* record = records[index];
 
-        /*
         // Skip the calls that we already have.
         uuid = record[@"uuid"];
         NSPredicate* predicate = [NSPredicate predicateWithFormat:@"uuid == %@", uuid];
@@ -325,7 +325,7 @@ typedef enum
         {
             continue;
         }
-*/
+
         // We're expecting 'callback', 'inbound' or 'verification'.
         if ([self isCallbackRecord:record] || [self isInboundRecord:record] || [self isVerificationRecord:record])
         {
