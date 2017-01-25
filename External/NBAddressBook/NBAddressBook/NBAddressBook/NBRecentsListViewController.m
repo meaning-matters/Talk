@@ -1060,7 +1060,7 @@ typedef enum
         
         //Add a number label
         UILabel* numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(POSITION_NUMBER_LABEL,
-                                                                         4,
+                                                                         7,
                                                                          SIZE_NUMBER_LABEL,
                                                                          20)];
         [numberLabel setBackgroundColor:[UIColor clearColor]];
@@ -1070,7 +1070,7 @@ typedef enum
 
         // Add a number type label
         UILabel* typeLabel = [[UILabel alloc] initWithFrame:CGRectMake(POSITION_NUMBER_LABEL,
-                                                                      22,
+                                                                      25,
                                                                       SIZE_NUMBER_LABEL,
                                                                       20)];
         [typeLabel setBackgroundColor:[UIColor clearColor]];
@@ -1080,7 +1080,7 @@ typedef enum
 
         // Add Caller ID label
         UILabel* idLabel = [[UILabel alloc] initWithFrame:CGRectMake(POSITION_NUMBER_LABEL,
-                                                                     40,
+                                                                     43,
                                                                      SIZE_NUMBER_LABEL,
                                                                      20)];
         [idLabel setBackgroundColor:[UIColor clearColor]];
@@ -1447,7 +1447,7 @@ typedef enum
 
 - (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    return 64;
+    return 69;
 }
 
 
