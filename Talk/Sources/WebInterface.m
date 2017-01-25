@@ -87,6 +87,7 @@ const uint32_t       kFallbackServerTtl            = 600;  // Retry to load DNS-
         [sharedInstance.requestSerializer setTimeoutInterval:kApiRequestTimeout];
         [sharedInstance.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
         [sharedInstance.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [sharedInstance.requestSerializer setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
 
         sharedInstance.responseSerializer = [AFJSONResponseSerializer serializer];
 
