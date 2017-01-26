@@ -371,11 +371,12 @@ static void processDnsReply(DNSServiceRef       sdRef,
                                                          [Settings sharedSettings].serverTestUrlPath];
 
         NSDate* startDate = [NSDate date];
-        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
-        [NSURLConnection sendAsynchronousRequest:request
-                                           queue:[NSOperationQueue mainQueue]
-                               completionHandler:^(NSURLResponse* response, NSData* data, NSError* error)
+         NSURLSession *session = [NSURLSession sharedSession];
+         [[session dataTaskWithURL:[NSURL URLWithString:urlString]
+                 completionHandler:^(NSData* data, NSURLResponse* response, NSError* error)
         {
+            // This code is NOT run on main thread!!!
+
             NSDictionary* reply = [Common objectWithJsonData:data];
 
 // Got this error here at GENEVA airport (also did not select the fallback api.numberbay.com): Error Domain=NSURLErrorDomain Code=-1202 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “api3.numberbay.com” which could put your confidential information at risk." UserInfo=0x1703a3aa0 {NSURLErrorFailingURLPeerTrustErrorKey=<SecTrustRef: 0x1742c4910>, NSLocalizedRecoverySuggestion=Would you like to connect to the server anyway?, _kCFStreamErrorCodeKey=-9843
@@ -407,7 +408,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
                 failCount++;
                 [self.condition signal];
             }
-        }];
+        }] resume];
     }
 
     NSUInteger count;
