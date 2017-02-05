@@ -888,6 +888,12 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
                                  cancelButtonTitle:[Strings cancelString]
                                  otherButtonTitles:@"Change", @"Reset", nil];
     }];
+
+    number = [NSString stringWithFormat:@"%d%d%c%d%d", 33, 5, '#', 3, 2];
+    [self.keypadViewController registerSpecialNumber:number action:^(NSString *number)
+    {
+        [[DataManager sharedManager] handleError:nil];
+    }];
 }
 
 

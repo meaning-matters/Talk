@@ -56,4 +56,6 @@
 
 - (DestinationData*)lookupDestinationWithName:(NSString*)name;
 
+- (void)handleError:(NSError*)error;
+
 @end
