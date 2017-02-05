@@ -463,7 +463,7 @@
 {
     AnalysticsTrace(@"API_3");
 
-    [self getPath:[NSString stringWithFormat:@"/users/%@/phones/*", [Settings sharedSettings].webUsername]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/phones", [Settings sharedSettings].webUsername]
        parameters:nil
             reply:^(NSError* error, id content)
     {
@@ -642,7 +642,7 @@
     parameters[@"extranational"] = BOOLEAN(isExtranational);
     parameters[@"imageless"]     = BOOLEAN(YES);
 
-    [self getPath:[NSString stringWithFormat:@"/users/%@/addresses/*", username]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/addresses", username]
        parameters:parameters
             reply:reply];
 }
@@ -958,7 +958,7 @@
 // 12. GET LIST OF NUMBERS
 - (void)retrieveNumbers:(void (^)(NSError* error, NSArray* numbers))reply
 {
-    [self getPath:[NSString stringWithFormat:@"/users/%@/numbers/*", [Settings sharedSettings].webUsername]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/numbers", [Settings sharedSettings].webUsername]
        parameters:nil
             reply:^(NSError* error, id content)
     {
@@ -1240,7 +1240,7 @@
 
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self getPath:[NSString stringWithFormat:@"/users/%@/destinations/*", username]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/destinations", username]
        parameters:nil
             reply:reply];
 }
@@ -1337,7 +1337,7 @@
 
 
 // 28. GET LIST OF AUDIO UUID'S
-- (void)retrieveAudioList:(void (^)(NSError* error, NSArray* uuids))reply
+- (void)retrieveAudios:(void (^)(NSError* error, NSArray* audios))reply
 {
     AnalysticsTrace(@"API_28");
 

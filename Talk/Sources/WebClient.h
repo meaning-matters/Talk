@@ -329,7 +329,7 @@
 - (void)deleteAudioForUuid:(NSString*)uuid reply:(void (^)(NSError* error))reply;
 
 // 28. GET LIST OF AUDIO UUID'S
-- (void)retrieveAudioList:(void (^)(NSError* error, NSArray* uuids))reply;
+- (void)retrieveAudios:(void (^)(NSError* error, NSArray* audios))reply;
 
 // 29. CREATE AUDIO
 - (void)createAudioWithData:(NSData*)data name:(NSString*)name reply:(void (^)(NSError* error, NSString* uuid))reply;
