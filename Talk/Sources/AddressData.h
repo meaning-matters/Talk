@@ -31,8 +31,8 @@
 @property (nonatomic, retain) NSString* postcode;
 @property (nonatomic, retain) NSString* isoCountryCode;
 @property (nonatomic, retain) NSString* areaCode;         // Area code without country code nor leading 0.
-@property (nonatomic, assign) BOOL      hasAddressProof;  // Indicates there's an image available on server.
-@property (nonatomic, assign) BOOL      hasIdentityProof; // Indicates there's an image available on server.
+@property (nonatomic, assign) NSString* addressProofMd5;  // If not nil, indicates there's an image available on server.
+@property (nonatomic, assign) NSString* identityProofMd5; // If not not, indicates there's an image available on server.
 @property (nonatomic, retain) NSData*   addressProof;     // Image data.
 @property (nonatomic, retain) NSData*   identityProof;    // Image data.
 @property (nonatomic, retain) NSString* idType;
@@ -46,6 +46,10 @@
 
 // Relationship.
 @property (nonatomic, retain) NSSet<NumberData*>* numbers;
+
+// Calculated Properties.
+@property (nonatomic, readonly) BOOL hasAddressProof;
+@property (nonatomic, readonly) BOOL hasIdentityProof;
 
 
 - (void)deleteWithCompletion:(void (^)(BOOL succeeded))completion;

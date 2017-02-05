@@ -459,11 +459,11 @@
 
 
 // 3. GET VERIFIED NUMBER LIST
-- (void)retrievePhonesList:(void (^)(NSError* error, NSArray* uuids))reply;
+- (void)retrievePhones:(void (^)(NSError* error, NSArray* phones))reply;
 {
     AnalysticsTrace(@"API_3");
 
-    [self getPath:[NSString stringWithFormat:@"/users/%@/phones", [Settings sharedSettings].webUsername]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/phones/*", [Settings sharedSettings].webUsername]
        parameters:nil
             reply:^(NSError* error, id content)
     {
@@ -630,7 +630,7 @@
                                   areaCode:(NSString*)areaCode
                                 numberType:(NumberTypeMask)numberTypeMask
                            isExtranational:(BOOL)isExtranational
-                                     reply:(void (^)(NSError* error, NSArray* uuids))reply
+                                     reply:(void (^)(NSError* error, NSArray* addresses))reply
 {
     NSString*            username   = [Settings sharedSettings].webUsername;
     NSString*            numberType = [NumberType stringForNumberTypeMask:numberTypeMask];
@@ -640,8 +640,9 @@
     (areaCode.length       > 0) ? parameters[@"areaCode"]       = areaCode       : 0;
     (numberTypeMask        > 0) ? parameters[@"numberType"]     = numberType     : 0;
     parameters[@"extranational"] = BOOLEAN(isExtranational);
+    parameters[@"imageless"]     = BOOLEAN(YES);
 
-    [self getPath:[NSString stringWithFormat:@"/users/%@/addresses", username]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/addresses/*", username]
        parameters:parameters
             reply:reply];
 }
@@ -664,8 +665,8 @@
                                           NSString*           postcode,
                                           NSString*           isoCountryCode,
                                           NSString*           areaCode,
-                                          BOOL                hasAddressProof,
-                                          BOOL                hasIdentityProof,
+                                          NSString*           addressProofMd5,
+                                          NSString*           identityProofMd5,
                                           NSData*             addressProof,
                                           NSData*             identityProof,
                                           NSString*           idType,
@@ -699,8 +700,8 @@
                   content[@"postcode"],
                   content[@"isoCountryCode"],
                   content[@"areaCode"],
-                  [content[@"addressProofMd5"]  length] > 0,
-                  [content[@"identityProofMd5"] length] > 0,
+                  content[@"addressProofMd5"],
+                  content[@"identityProofMd5"],
                   [Base64 decode:content[@"addressProof"]],
                   [Base64 decode:content[@"identityProof"]],
                   content[@"idType"],
@@ -713,7 +714,7 @@
         }
         else
         {
-            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, NO, NO,
+            reply(error, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil,
                   nil, nil, nil, nil, nil, nil, nil, 0, 0);
         }
     }];
@@ -955,9 +956,9 @@
 
 
 // 12. GET LIST OF NUMBERS
-- (void)retrieveNumbersList:(void (^)(NSError* error, NSArray* uuids))reply
+- (void)retrieveNumbers:(void (^)(NSError* error, NSArray* numbers))reply
 {
-    [self getPath:[NSString stringWithFormat:@"/users/%@/numbers", [Settings sharedSettings].webUsername]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/numbers/*", [Settings sharedSettings].webUsername]
        parameters:nil
             reply:^(NSError* error, id content)
     {
@@ -1233,13 +1234,13 @@
 
 
 // 21. GET LIST OF DESTINATIONS
-- (void)retrieveDestinationsList:(void (^)(NSError* error, NSArray* uuids))reply
+- (void)retrieveDestinations:(void (^)(NSError* error, NSArray* destinations))reply
 {
     AnalysticsTrace(@"API_21");
 
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self getPath:[NSString stringWithFormat:@"/users/%@/destinations", username]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/destinations/*", username]
        parameters:nil
             reply:reply];
 }

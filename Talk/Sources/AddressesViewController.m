@@ -204,8 +204,9 @@
                                                         areaCode:areaCode
                                                       numberType:numberTypeMask
                                                  isExtranational:(addressTypeMask == AddressTypeExtranational)
-                                                           reply:^(NSError *error, NSArray *uuids)
+                                                           reply:^(NSError *error, NSArray *addresses)
     {
+        NSArray* uuids = [addresses valueForKey:@"uuid"];
         if (areAvailable)
         {
             NSMutableArray* availableUuids = [NSMutableArray array];

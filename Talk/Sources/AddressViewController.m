@@ -1427,7 +1427,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                 if (imageData != nil)
                                 {
                                     strongSelf.address.addressProof    = imageData;
-                                    strongSelf.address.hasAddressProof = YES;
+                                    strongSelf.address.addressProofMd5 = [Common md5ForData:imageData];
                                     [Common reloadSections:TableSectionProof
                                                allSections:strongSelf.sections
                                                  tableView:strongSelf.tableView];
@@ -1471,7 +1471,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                 if (imageData != nil)
                                 {
                                     strongSelf.address.identityProof    = imageData;
-                                    strongSelf.address.hasIdentityProof = YES;
+                                    strongSelf.address.identityProofMd5 = [Common md5ForData:imageData];
                                     [Common reloadSections:TableSectionProof
                                                allSections:strongSelf.sections
                                                  tableView:strongSelf.tableView];

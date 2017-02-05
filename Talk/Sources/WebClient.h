@@ -20,6 +20,11 @@
 + (WebClient*)sharedClient;
 
 
+#pragma mark - Utility Method
+
+- (NSDictionary*)restoreE164InAction:(NSDictionary*)action;
+
+
 #pragma mark - Request Methods
 
 // 0A. GET CALL RATES
@@ -78,7 +83,7 @@
 - (void)updatePhoneVerificationForUuid:(NSString*)uuid name:(NSString*)name reply:(void (^)(NSError* error))reply;
 
 // 3. GET VERIFIED NUMBER LIST
-- (void)retrievePhonesList:(void (^)(NSError* error, NSArray* uuids))reply;
+- (void)retrievePhones:(void (^)(NSError* error, NSArray* phones))reply;
 
 // 4. GET VERIFIED NUMBER INFO
 - (void)retrievePhoneWithUuid:(NSString*)uuid reply:(void (^)(NSError* error, NSString* e164, NSString* name))reply;
@@ -128,7 +133,7 @@
                                   areaCode:(NSString*)areaCode              // Optional (i.e. can be nil).
                                 numberType:(NumberTypeMask)numberTypeMask   // Mandatory.
                            isExtranational:(BOOL)isExtranational
-                                     reply:(void (^)(NSError* error, NSArray* uuids))reply;
+                                     reply:(void (^)(NSError* error, NSArray* addresses))reply;
 
 // 10B. GET REGULATION ADDRESS
 - (void)retrieveAddressWithUuid:(NSString*)uuid imageless:(BOOL)imageless
@@ -146,8 +151,8 @@
                                           NSString*           postcode,
                                           NSString*           isoCountryCode,
                                           NSString*           areaCode,
-                                          BOOL                hasAddressProof,
-                                          BOOL                hasIdentityProof,
+                                          NSString*           addressProofMd5,
+                                          NSString*           identityProofMd5,
                                           NSData*             addressProof,
                                           NSData*             identityProof,
                                           NSString*           idType,
@@ -245,7 +250,7 @@
                                        NSDate*  expiryDate))reply;
 
 // 12. GET LIST OF NUMBERS
-- (void)retrieveNumbersList:(void (^)(NSError* error, NSArray* uuids))reply;
+- (void)retrieveNumbers:(void (^)(NSError* error, NSArray* numbers))reply;
 
 // 13. GET NUMBER INFO
 - (void)retrieveNumberWithUuid:(NSString*)uuid
@@ -305,7 +310,7 @@
 - (void)deleteDestinationForUuid:(NSString*)uuid reply:(void (^)(NSError* error))reply;
 
 // 21. GET LIST OF DESTINATIONS
-- (void)retrieveDestinationsList:(void (^)(NSError* error, NSArray* uuids))reply;
+- (void)retrieveDestinations:(void (^)(NSError* error, NSArray* destinations))reply;
 
 // 22. DOWNLOAD DESTINATION
 - (void)retrieveDestinationForUuid:(NSString*)uuid

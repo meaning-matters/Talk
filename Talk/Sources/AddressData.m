@@ -166,8 +166,8 @@
                                                         NSString*           postcode,
                                                         NSString*           isoCountryCode,
                                                         NSString*           areaCode,
-                                                        BOOL                hasAddressProof,
-                                                        BOOL                hasIdentityProof,
+                                                        NSString*           addressProofMd5,
+                                                        NSString*           identityProofMd5,
                                                         NSData*             addressProof,
                                                         NSData*             identityProof,
                                                         NSString*           idType,
@@ -180,8 +180,11 @@
     {
         if (error == nil)
         {
-            self.addressProof  = addressProof;
-            self.identityProof = identityProof;
+            self.addressProof     = addressProof;
+            self.identityProof    = identityProof;
+
+            self.addressProofMd5  = addressProofMd5;
+            self.identityProofMd5 = identityProofMd5;
             
             completion ? completion(nil) : 0;
         }
@@ -196,6 +199,20 @@
 - (void)cancelLoadProofImages
 {
     [[WebClient sharedClient] cancelAllRetrieveAddressWithUuid:self.uuid];
+}
+
+
+#pragma mark - Calculated Properties
+
+- (BOOL)hasAddressProof
+{
+    return self.addressProofMd5.length > 0;
+}
+
+
+- (BOOL)hasIdentityProof
+{
+    return self.identityProofMd5.length > 0;
 }
 
 @end

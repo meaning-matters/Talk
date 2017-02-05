@@ -94,7 +94,7 @@
         return _managedObjectContext;
     }
 
-    NSPersistentStoreCoordinator *coordinator = self.persistentStoreCoordinator;
+    NSPersistentStoreCoordinator* coordinator = self.persistentStoreCoordinator;
     if (coordinator != nil)
     {
         _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
@@ -114,7 +114,7 @@
         return _managedObjectModel;
     }
 
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Data2.2"
+    NSURL* modelURL = [[NSBundle mainBundle] URLForResource:@"Data2.2"
                                               withExtension:@"mom"
                                                subdirectory:@"Data.momd"];
 
@@ -470,7 +470,7 @@
 
 - (void)synchronizeAll:(void (^)(NSError* error))completion
 {
-    [self synchronizeAddresses:^(NSError *error)
+    [self synchronizeAddresses:^(NSError* error)
     {
         if (error == nil)
         {
@@ -486,7 +486,7 @@
                             {
                                 if (error == nil)
                                 {
-                                    [self synchronizeRecordings:^(NSError *error)
+                                    [self synchronizeRecordings:^(NSError* error)
                                     {
                                         if (error == nil)
                                         {
@@ -497,7 +497,10 @@
 
                                                 [self saveManagedObjectContext:nil];
 
-                                                completion ? completion(nil) : 0;
+                                                dispatch_async(dispatch_get_main_queue(), ^
+                                                {
+                                                    completion ? completion(nil) : 0;
+                                                });
                                             }
                                             else
                                             {
@@ -549,11 +552,12 @@
                                                         areaCode:nil
                                                       numberType:0
                                                  isExtranational:NO
-                                                           reply:^(NSError *error, NSArray *uuids)
+                                                           reply:^(NSError* error, NSArray* addresses)
     {
         if (error == nil)
         {
             // Delete Addresses that are no longer on the server.
+            NSArray*        uuids       = [addresses valueForKey:@"uuid"];
             NSFetchRequest* request     = [NSFetchRequest fetchRequestWithEntityName:@"Address"];
             [request setPredicate:[NSPredicate predicateWithFormat:@"(NOT (uuid IN %@)) OR (uuid == nil)", uuids]];
             NSArray*        deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
@@ -579,101 +583,101 @@
                 [[AddressUpdatesHandler sharedHandler] removeAddressUpdateWithUuid:uuid];
             }
 
-            __block NSUInteger count = uuids.count;
-            if (count == 0)
+            if (addresses.count == 0)
             {
-                completion ? completion(nil) : 0;
-                
+                dispatch_async(dispatch_get_main_queue(), ^
+                {
+                    completion ? completion(nil) : 0;
+                });
+
                 return;
             }
-            
-            for (NSString* uuid in uuids)
-            {
-                [[WebClient sharedClient] retrieveAddressWithUuid:uuid
-                                                        imageless:YES
-                                                            reply:^(NSError*            error,
-                                                                    NSString*           name,
-                                                                    NSString*           salutation,
-                                                                    NSString*           firstName,
-                                                                    NSString*           lastName,
-                                                                    NSString*           companyName,
-                                                                    NSString*           companyDescription,
-                                                                    NSString*           street,
-                                                                    NSString*           buildingNumber,
-                                                                    NSString*           buildingLetter,
-                                                                    NSString*           city,
-                                                                    NSString*           postcode,
-                                                                    NSString*           isoCountryCode,
-                                                                    NSString*           areaCode,
-                                                                    BOOL                hasAddressProof,
-                                                                    BOOL                hasIdentityProof,
-                                                                    NSData*             addressProof,
-                                                                    NSData*             identityProof,
-                                                                    NSString*           idType,
-                                                                    NSString*           idNumber,
-                                                                    NSString*           fiscalIdCode,
-                                                                    NSString*           streetCode,
-                                                                    NSString*           municipalityCode,
-                                                                    AddressStatusMask   addressStatus,
-                                                                    RejectionReasonMask rejectionReasons)
-                {
-                    if (error == nil)
-                    {
-                        NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Address"];
-                        [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", uuid]];
 
-                        AddressData* address = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
+            __block int loadImagesCount = 0;
+            for (NSDictionary* dictionary in addresses)
+            {
+                BOOL            loadImages = NO;
+                NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Address"];
+                [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", dictionary[@"uuid"]]];
+
+                AddressData* object = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
+                if (error == nil)
+                {
+                    if (object == nil)
+                    {
+                        object = [NSEntityDescription insertNewObjectForEntityForName:@"Address"
+                                                               inManagedObjectContext:self.managedObjectContext];
+                    }
+                    else if (dictionary[@"addressProofMd5"] != nil || dictionary[@"identityProofMd5"] != nil)
+                    {
+                        loadImages = ![object.addressProofMd5  isEqualToString:dictionary[@"addressProofMd5"]] ||
+                                     ![object.identityProofMd5 isEqualToString:dictionary[@"identityProofMd5"]];
+                    }
+                }
+                else
+                {
+                    [self handleError:error];
+
+                    return;
+                }
+
+                object.uuid               = dictionary[@"uuid"];
+                object.name               = dictionary[@"name"];
+                object.salutation         = dictionary[@"salutation"];
+                object.firstName          = dictionary[@"firstName"];
+                object.lastName           = dictionary[@"lastName"];
+                object.companyName        = dictionary[@"companyName"];
+                object.companyDescription = dictionary[@"companyDescription"];
+                object.street             = dictionary[@"street"];
+                object.buildingNumber     = dictionary[@"buildingNumber"];
+                object.buildingLetter     = dictionary[@"buildingLetter"];
+                object.city               = dictionary[@"city"];
+                object.postcode           = dictionary[@"postcode"];
+                object.isoCountryCode     = dictionary[@"isoCountryCode"];
+                object.areaCode           = dictionary[@"areaCode"];
+                object.addressProofMd5    = dictionary[@"addressProofMd5"];
+                object.identityProofMd5   = dictionary[@"identityProofMd5"];
+                object.idType             = dictionary[@"idType"];
+                object.idNumber           = dictionary[@"idNumber"];
+                object.fiscalIdCode       = dictionary[@"fiscalIdCode"];
+                object.streetCode         = dictionary[@"streetCode"];
+                object.municipalityCode   = dictionary[@"municipalityCode"];
+                object.addressStatus      = [AddressStatus addressStatusMaskForString:dictionary[@"addressStatus"]];
+                object.rejectionReasons   = [AddressStatus rejectionReasonsMaskForArray:dictionary[@"rejectionReasons"]];
+
+                if (loadImages)
+                {
+                    loadImagesCount++;
+
+                    [object loadProofImagesWithCompletion:^(NSError* error)
+                    {
                         if (error == nil)
                         {
-                            if (address == nil)
+                            if (--loadImagesCount == 0)
                             {
-                                address = [NSEntityDescription insertNewObjectForEntityForName:@"Address"
-                                                                        inManagedObjectContext:self.managedObjectContext];
+                                dispatch_async(dispatch_get_main_queue(), ^
+                                {
+                                    completion ? completion(nil) : 0;
+                                });
                             }
                         }
                         else
                         {
-                            [self handleError:error];
-
-                            return;
+                            if (--loadImagesCount == 0)
+                            {
+                                completion ? completion(error) : 0;
+                            }
                         }
+                    }];
+                }
+            }
 
-                        address.uuid               = uuid;
-                        address.name               = name;
-                        address.salutation         = salutation;
-                        address.firstName          = firstName;
-                        address.lastName           = lastName;
-                        address.companyName        = companyName;
-                        address.companyDescription = companyDescription;
-                        address.street             = street;
-                        address.buildingNumber     = buildingNumber;
-                        address.buildingLetter     = buildingLetter;
-                        address.city               = city;
-                        address.postcode           = postcode;
-                        address.isoCountryCode     = isoCountryCode;
-                        address.areaCode           = areaCode;
-                        address.hasAddressProof    = hasAddressProof;
-                        address.hasIdentityProof   = hasIdentityProof;
-                        address.idType             = idType;
-                        address.idNumber           = idNumber;
-                        address.fiscalIdCode       = fiscalIdCode;
-                        address.streetCode         = streetCode;
-                        address.municipalityCode   = municipalityCode;
-                        address.addressStatus      = addressStatus;
-                        address.rejectionReasons   = rejectionReasons;
-                    }
-                    else
-                    {
-                        completion ? completion(error) : 0;
-
-                        return;
-                    }
-
-                    if (--count == 0)
-                    {
-                        completion ? completion(nil) : 0;
-                    }
-                }];
+            if (loadImagesCount == 0)
+            {
+                dispatch_async(dispatch_get_main_queue(), ^
+                {
+                    completion ? completion(nil) : 0;
+                });
             }
         }
         else
@@ -688,12 +692,13 @@
 {
     NSMutableArray* expiredNumbers = [NSMutableArray array];
 
-    [[WebClient sharedClient] retrieveNumbersList:^(NSError* error, NSArray* uuids)
+    [[WebClient sharedClient] retrieveNumbers:^(NSError* error, NSArray* numbers)
     {
         if (error == nil)
         {
             // Delete Numbers that are no longer on the server, except expired Numbers to allow
             // an alert to appear; these will be deleted when the user sees the alert.
+            NSArray*         uuids       = [numbers valueForKey:@"uuid"];
             NSFetchRequest*  request     = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
             [request setPredicate:[NSPredicate predicateWithFormat:@"(NOT (uuid IN %@)) OR (uuid == nil)", uuids]];
             NSArray*         deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
@@ -718,111 +723,78 @@
                 return;
             }
 
-            __block NSUInteger count = uuids.count;
-            if (count == 0)
+            if (numbers.count == 0)
             {
-                completion ? completion(nil, expiredNumbers) : 0;
+                dispatch_async(dispatch_get_main_queue(), ^
+                {
+                    completion ? completion(nil, expiredNumbers) : 0;
+                });
 
                 return;
             }
 
-            for (NSString* uuid in uuids)
+            for (NSDictionary* dictionary in numbers)
             {
-                [[WebClient sharedClient] retrieveNumberWithUuid:uuid
-                                                           reply:^(NSError*        error,
-                                                                   NSString*       e164,
-                                                                   NSString*       name,
-                                                                   NSString*       numberType,
-                                                                   NSString*       areaCode,
-                                                                   NSString*       areaName,
-                                                                   NSString*       areaId,
-                                                                   NSString*       stateCode,
-                                                                   NSString*       stateName,
-                                                                   NSString*       isoCountryCode,
-                                                                   NSString*       addressUuid,
-                                                                   AddressTypeMask addressType,
-                                                                   NSDate*         purchaseDate,
-                                                                   NSDate*         expiryDate,
-                                                                   BOOL            autoRenew,
-                                                                   NSString*       destinationUuid,
-                                                                   float           fixedRate,
-                                                                   float           fixedSetup,
-                                                                   float           mobileRate,
-                                                                   float           mobileSetup,
-                                                                   float           payphoneRate,
-                                                                   float           payphoneSetup,
-                                                                   float           monthFee,
-                                                                   float           renewFee)
+                NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
+                [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", dictionary[@"uuid"]]];
+
+                NumberData* object = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
+                if (error == nil)
                 {
-                    if (error == nil)
+                    if (object == nil)
                     {
-                        NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Number"];
-                        [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", uuid]];
-
-                        NumberData* number = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
-                        if (error == nil)
-                        {
-                            if (number == nil)
-                            {
-                                number = [NSEntityDescription insertNewObjectForEntityForName:@"Number"
-                                                                       inManagedObjectContext:self.managedObjectContext];
-                                number.notifiedExpiryDays = INT16_MAX;  // Not notified yet.
-                            }
-                        }
-                        else
-                        {
-                            [self handleError:error];
-
-                            return;
-                        }
-
-                        number.uuid           = uuid;
-                        number.name           = name;
-                        number.e164           = e164;
-                        number.numberType     = numberType;
-                        number.areaCode       = areaCode;
-                        number.areaId         = areaId;
-                        number.stateCode      = stateCode;
-                        number.stateName      = stateName;
-                        number.isoCountryCode = isoCountryCode;
-                        number.address        = [self lookupAddressWithUuid:addressUuid]; // May return nil.
-                        number.addressType    = [AddressType stringForAddressTypeMask:addressType];
-                        number.purchaseDate   = purchaseDate;
-                        number.expiryDate     = expiryDate;
-                        number.autoRenew      = autoRenew;
-                        number.destination    = [self lookupDestinationWithUuid:destinationUuid];
-                        number.fixedRate      = fixedRate;
-                        number.fixedSetup     = fixedSetup;
-                        number.mobileRate     = mobileRate;
-                        number.mobileSetup    = mobileSetup;
-                        number.payphoneRate   = payphoneRate;
-                        number.payphoneSetup  = payphoneSetup;
-                        number.monthFee       = monthFee;
-                        number.renewFee       = renewFee;
-
-                        // For non-geograpic numbers, areaName is <null>.
-                        if ([areaName isEqual:[NSNull null]] || areaName.length == 0)
-                        {
-                            number.areaName = nil;
-                        }
-                        else
-                        {
-                            number.areaName = [Common capitalizedString:areaName];
-                        }
+                        object = [NSEntityDescription insertNewObjectForEntityForName:@"Number"
+                                                               inManagedObjectContext:self.managedObjectContext];
+                        object.notifiedExpiryDays = INT16_MAX;  // Not notified yet.
                     }
-                    else
-                    {
-                        completion ? completion(error, nil) : 0;
+                }
+                else
+                {
+                    [self handleError:error];
 
-                        return;
-                    }
+                    return;
+                }
 
-                    if (--count == 0)
-                    {
-                        completion ? completion(nil, expiredNumbers) : 0;
-                    }
-                }];
+                object.uuid           = dictionary[@"uuid"];
+                object.name           = dictionary[@"name"];
+                object.e164           = dictionary[@"e164"] ? [@"+" stringByAppendingString:dictionary[@"e164"]] : nil;
+                object.numberType     = dictionary[@"numberType"];
+                object.areaCode       = dictionary[@"areaCode"];
+                object.areaId         = dictionary[@"areaId"];
+                object.stateCode      = dictionary[@"stateCode"];
+                object.stateName      = dictionary[@"stateName"];
+                object.isoCountryCode = dictionary[@"isoCountryCode"];
+                object.address        = [self lookupAddressWithUuid:dictionary[@"addressUuid"]]; // May return nil.
+                object.addressType    = dictionary[@"addressType"];
+                object.purchaseDate   = [Common dateWithString:dictionary[@"purchaseDateTime"]];
+                object.expiryDate     = [Common dateWithString:dictionary[@"expiryDateTime"]];
+                object.autoRenew      = [dictionary[@"autoRenew"] boolValue];
+                object.destination    = [self lookupDestinationWithUuid:dictionary[@"destinationUuid"]];
+                object.fixedRate      = [dictionary[@"fixedRate"] floatValue];
+                object.fixedSetup     = [dictionary[@"fixedSetup"] floatValue];
+                object.mobileRate     = [dictionary[@"mobileRate"] floatValue];
+                object.mobileSetup    = [dictionary[@"mobileSetup"] floatValue];
+                object.payphoneRate   = [dictionary[@"payphoneRate"] floatValue];
+                object.payphoneSetup  = [dictionary[@"payphoneSetup"] floatValue];
+                object.monthFee       = [dictionary[@"monthFee"] floatValue];
+                object.renewFee       = [dictionary[@"renewFee"] floatValue];
+
+                // For non-geograpic numbers, areaName is <null>.
+                NSString* areaName = dictionary[@"areaName"];
+                if ([areaName isEqual:[NSNull null]] || areaName.length == 0)
+                {
+                    object.areaName = nil;
+                }
+                else
+                {
+                    object.areaName = [Common capitalizedString:areaName];
+                }
             }
+
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                completion ? completion(nil, expiredNumbers) : 0;
+            });
         }
         else
         {
@@ -834,11 +806,12 @@
 
 - (void)synchronizeDestinations:(void (^)(NSError* error))completion
 {
-    [[WebClient sharedClient] retrieveDestinationsList:^(NSError* error, NSArray* uuids)
+    [[WebClient sharedClient] retrieveDestinations:^(NSError* error, NSArray* destinations)
     {
         if (error == nil)
         {
             // Delete Destinations that are no longer on the server.
+            NSArray*        uuids       = [destinations valueForKey:@"uuid"];
             NSFetchRequest* request     = [NSFetchRequest fetchRequestWithEntityName:@"Destination"];
             [request setPredicate:[NSPredicate predicateWithFormat:@"(NOT (uuid IN %@)) OR (uuid == nil)", uuids]];
             NSArray*        deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
@@ -856,58 +829,50 @@
                 return;
             }
 
-            __block NSUInteger count = uuids.count;
-            if (count == 0)
+            if (destinations.count == 0)
             {
-                completion ? completion(nil) : 0;
+                dispatch_async(dispatch_get_main_queue(), ^
+                {
+                    completion ? completion(nil) : 0;
+                });
 
                 return;
             }
 
-            for (NSString* uuid in uuids)
+            for (NSDictionary* dictionary in destinations)
             {
-                [[WebClient sharedClient] retrieveDestinationForUuid:uuid
-                                                               reply:^(NSError* error, NSString* name, NSDictionary* action)
+                NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Destination"];
+                [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", dictionary[@"uuid"]]];
+
+                DestinationData* object;
+                object = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
+                if (error == nil)
                 {
-                    if (error == nil)
+                    if (object == nil)
                     {
-                        NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Destination"];
-                        [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", uuid]];
-
-                        DestinationData* destination;
-                        destination = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
-                        if (error == nil)
-                        {
-                            if (destination == nil)
-                            {
-                                destination = [NSEntityDescription insertNewObjectForEntityForName:@"Destination"
-                                                                            inManagedObjectContext:self.managedObjectContext];
-                            }
-                        }
-                        else
-                        {
-                            [self handleError:error];
-
-                            return;
-                        }
-
-                        destination.uuid   = uuid;
-                        destination.name   = name;
-                        destination.action = [Common jsonStringWithObject:action];
+                        object = [NSEntityDescription insertNewObjectForEntityForName:@"Destination"
+                                                                    inManagedObjectContext:self.managedObjectContext];
                     }
-                    else
-                    {
-                        completion ? completion(error) : 0;
+                }
+                else
+                {
+                    [self handleError:error];
 
-                        return;
-                    }
+                    return;
+                }
 
-                    if (--count == 0)
-                    {
-                        completion ? completion(nil) : 0;
-                    }
-                }];
+                object.uuid   = dictionary[@"uuid"];
+                object.name   = dictionary[@"name"];
+
+                NSDictionary* action = dictionary[@"action"];
+                action = [[WebClient sharedClient] restoreE164InAction:action];
+                object.action = [Common jsonStringWithObject:action];
             }
+
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                completion ? completion(nil) : 0;
+            });
         }
         else
         {
@@ -944,7 +909,10 @@
             __block NSUInteger count = uuids.count;
             if (count == 0)
             {
-                completion ? completion(nil) : 0;
+                dispatch_async(dispatch_get_main_queue(), ^
+                {
+                    completion ? completion(nil) : 0;
+                });
 
                 return;
             }
@@ -953,7 +921,7 @@
             {
                 /*
                 [[WebClient sharedClient] retrieveAudioForUuid:uuid
-                                                         reply:^(NSError *error, NSString *name, NSData *data)
+                                                         reply:^(NSError* error, NSString* name, NSData* data)
                 {
                     if (error == nil)
                     {
@@ -990,12 +958,20 @@
 
                     if (--count == 0)
                     {
-                        completion ? completion(nil) : 0;
+                        dispatch_async(dispatch_get_main_queue(), ^
+                        {
+                            completion ? completion(nil) : 0;
+                        });
                     }
                 }];
                  *///### temp
             }
-            completion ? completion(nil) : 0;//#### temp
+
+            //#### temp
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                completion ? completion(nil) : 0;
+            });
 
         }
         else
@@ -1008,11 +984,12 @@
 
 - (void)synchronizePhones:(void (^)(NSError* error))completion
 {
-    [[WebClient sharedClient] retrievePhonesList:^(NSError* error, NSArray* uuids)
+    [[WebClient sharedClient] retrievePhones:^(NSError* error, NSArray* phones)
     {
         if (error == nil)
         {
             // Delete Phones that are no longer on the server.
+            NSArray* uuids = [phones valueForKey:@"uuid"];
             NSFetchRequest*  request     = [NSFetchRequest fetchRequestWithEntityName:@"Phone"];
             [request setPredicate:[NSPredicate predicateWithFormat:@"(NOT (uuid IN %@)) OR (uuid == nil)", uuids]];
             NSArray*         deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
@@ -1031,57 +1008,47 @@
                 return;
             }
 
-            __block NSUInteger count = uuids.count;
-            if (count == 0)
+            if (phones.count == 0)
             {
-                completion ? completion(nil) : 0;
+                dispatch_async(dispatch_get_main_queue(), ^
+                {
+                    completion ? completion(nil) : 0;
+                });
 
                 return;
             }
 
-            for (NSString* uuid in uuids)
+            for (NSDictionary* dictionary in phones)
             {
-                [[WebClient sharedClient] retrievePhoneWithUuid:uuid reply:^(NSError* error, NSString* e164, NSString* name)
+                NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Phone"];
+                [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", dictionary[@"uuid"]]];
+
+                PhoneData* object;
+                object = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
+                if (error == nil)
                 {
-                    if (error == nil)
+                    if (object == nil)
                     {
-                        NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Phone"];
-                        [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", uuid]];
-
-                        PhoneData* phone;
-                        phone = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
-                        if (error == nil)
-                        {
-                            if (phone == nil)
-                            {
-                                phone = [NSEntityDescription insertNewObjectForEntityForName:@"Phone"
-                                                                      inManagedObjectContext:self.managedObjectContext];
-                            }
-                        }
-                        else
-                        {
-                            [self handleError:error];
-
-                            return;
-                        }
-
-                        phone.uuid = uuid;
-                        phone.e164 = e164;
-                        phone.name = name;
+                        object = [NSEntityDescription insertNewObjectForEntityForName:@"Phone"
+                                                               inManagedObjectContext:self.managedObjectContext];
                     }
-                    else
-                    {
-                        completion ? completion(error) : 0;
+                }
+                else
+                {
+                    [self handleError:error];
 
-                        return;
-                    }
+                    return;
+                }
 
-                    if (--count == 0)
-                    {
-                        completion ? completion(nil) : 0;
-                    }
-                }];
+                object.uuid = dictionary[@"uuid"];
+                object.e164 = dictionary[@"e164"] ? [@"+" stringByAppendingString:dictionary[@"e164"]] : nil;
+                object.name = dictionary[@"name"];
             }
+
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                completion ? completion(nil) : 0;
+            });
         }
         else
         {

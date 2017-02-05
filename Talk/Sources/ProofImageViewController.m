@@ -14,6 +14,7 @@
 #import "Strings.h"
 #import "AddressStatus.h"
 #import "DataManager.h"
+#import "Common.h"
 
 
 @interface ProofImageViewController ()
@@ -195,14 +196,14 @@
                     case ProofImageTypeAddress:
                     {
                         self.address.addressProof    = imageData;
-                        self.address.hasAddressProof = YES;
+                        self.address.addressProofMd5 = [Common md5ForData:imageData];
 
                         break;
                     }
                     case ProofImageTypeIdentity:
                     {
                         self.address.identityProof    = imageData;
-                        self.address.hasIdentityProof = YES;
+                        self.address.identityProofMd5 = [Common md5ForData:imageData];
 
                         break;
                     }

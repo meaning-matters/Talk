@@ -194,4 +194,6 @@ static const NSInteger CommonUseButton1Tag    = 30469;
  */
 + (NSString*)stringWithDate:(NSDate*)date;
 
++ (NSString*)md5ForData:(NSData*)data;
+
 @end
