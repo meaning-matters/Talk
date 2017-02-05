@@ -158,7 +158,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
 
     // Tell iOS we would like to get a background fetch.
-    [application setMinimumBackgroundFetchInterval:(1 * 3600)];
+    [application setMinimumBackgroundFetchInterval:(20 * 60)];
 
     [self refreshLocalNotifications];
 
@@ -536,7 +536,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
 #pragma mark - Background Fetch
 
-- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+- (void)application:(UIApplication*)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
     if ([Settings sharedSettings].haveAccount == NO)
     {
@@ -958,7 +958,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
 - (void)resetAll
 {
-    [[WebInterface sharedInterface] cancelAllHttpOperations];
+    [[WebInterface sharedInterface] cancelAllHttpRequests];
 
     [self.numbersViewController.navigationController      popToRootViewControllerAnimated:NO];
     //[self.destinationsViewController.navigationController popToRootViewControllerAnimated:NO];

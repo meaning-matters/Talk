@@ -7,10 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AFHTTPRequestOperationManager.h"
+#import "AFHTTPSessionManager.h"
+
+typedef NS_ENUM(NSUInteger, RequestMethod)
+{
+    RequestMethodGet    = 1,
+    RequestMethodPost   = 2,
+    RequestMethodPut    = 3,
+    RequestMethodDelete = 4,
+};
 
 
-@interface WebInterface : AFHTTPRequestOperationManager
+@interface WebInterface : AFHTTPSessionManager
 
 @property (atomic, assign) BOOL forceServerUpdate;
 
@@ -33,8 +41,8 @@
         parameters:(NSDictionary*)parameters
              reply:(void (^)(NSError* error, id content))reply;
 
-- (void)cancelAllHttpOperationsWithMethod:(NSString*)method path:(NSString*)path;
+- (void)cancelAllHttpRequestsWithMethod:(RequestMethod)method path:(NSString*)path;
 
-- (void)cancelAllHttpOperations;
+- (void)cancelAllHttpRequests;
 
 @end

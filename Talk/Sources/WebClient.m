@@ -1519,7 +1519,7 @@
 // 0A.
 - (void)cancelAllRetrieveCallRates
 {
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodGet
                                                     path:@"/rates/calls"];
 }
 
@@ -1527,7 +1527,7 @@
 // 0B.
 - (void)cancelAllRetrieveNumberRates
 {
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodGet
                                                     path:@"/rates/numbers"];
 }
 
@@ -1535,7 +1535,7 @@
 // 1.
 - (void)cancelAllRetrieveWebAccount
 {
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"POST"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodPost
                                                     path:@"/users"];
 }
 
@@ -1545,7 +1545,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"POST"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodPost
                                                     path:[NSString stringWithFormat:@"/users/%@/phones",
                                                           username]];
 }
@@ -1556,7 +1556,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"PUT"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodPut
                                                     path:[NSString stringWithFormat:@"/users/%@/phones/%@/verification",
                                                           username, uuid]];
 }
@@ -1567,7 +1567,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodGet
                                                     path:[NSString stringWithFormat:@"/users/%@/phones/%@/verification",
                                                           username, uuid]];
 }
@@ -1578,7 +1578,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"DELETE"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodDelete
                                                     path:[NSString stringWithFormat:@"/users/%@/phones/%@/verification",
                                                           username, uuid]];
 }
@@ -1589,7 +1589,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"PUT"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodPut
                                                     path:[NSString stringWithFormat:@"/users/%@/phones/%@",
                                                           username, uuid]];
 }
@@ -1600,7 +1600,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodGet
                                                     path:[NSString stringWithFormat:@"/users/%@/phones",
                                                           username]];
 }
@@ -1611,7 +1611,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodGet
                                                     path:[NSString stringWithFormat:@"/users/%@/phones/%@",
                                                           username, uuid]];
 }
@@ -1622,7 +1622,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"DELETE"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodDelete
                                                     path:[NSString stringWithFormat:@"/users/%@/phones/%@",
                                                           username, uuid]];
 }
@@ -1631,7 +1631,7 @@
 // 6A.
 - (void)cancelAllRetrieveNumberCountries
 {
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodGet
                                                     path:@"/numbers/countries"];
 }
 
@@ -1639,7 +1639,7 @@
 // 6B.
 - (void)cancelAllRetrieveNumberCountryWithIsoCountryCode:(NSString*)isoCountryCode
 {
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodGet
                                                     path:[NSString stringWithFormat:@"/numbers/countries/%@", isoCountryCode]];
 }
 
@@ -1647,7 +1647,7 @@
 // 7.
 - (void)cancelAllRetrieveNumberStatesForIsoCountryCode:(NSString*)isoCountryCode
 {
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodGet
                                                     path:[NSString stringWithFormat:@"/numbers/countries/%@/states",
                                                           isoCountryCode]];
 }
@@ -1656,7 +1656,7 @@
 // 8A.
 - (void)cancelAllRetrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode stateCode:(NSString*)stateCode
 {
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodGet
                                                     path:[NSString stringWithFormat:@"/numbers/countries/%@/states/%@/areas",
                                                           isoCountryCode, stateCode]];
 }
@@ -1665,7 +1665,7 @@
 // 8B.
 - (void)cancelAllRetrieveNumberAreasForIsoCountryCode:(NSString*)isoCountryCode
 {
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodGet
                                                     path:[NSString stringWithFormat:@"/numbers/countries/%@/areas",
                                                           isoCountryCode]];
 }
@@ -1674,7 +1674,7 @@
 // 9.
 - (void)cancelAllRetrieveAreaInfoForIsoCountryCode:(NSString*)isoCountryCode areaId:(NSString*)areaId
 {
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodGet
                                                     path:[NSString stringWithFormat:@"/numbers/countries/%@/areas/%@",
                                                           isoCountryCode, areaId]];
 }
@@ -1683,7 +1683,7 @@
 // 10.
 - (void)cancelAllCheckPurchaseInfo
 {
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"POST"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodPost
                                                     path:@"/numbers/check"];
 }
 
@@ -1693,7 +1693,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodGet
                                                     path:[NSString stringWithFormat:@"/users/%@/addresses", username]];
 }
 
@@ -1703,7 +1703,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
     
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodGet
                                                     path:[NSString stringWithFormat:@"/users/%@/addresses/%@",
                                                           username, uuid]];
 }
@@ -1714,7 +1714,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
     
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"POST"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodPost
                                                     path:[NSString stringWithFormat:@"/users/%@/addresses", username]];
 }
 
@@ -1724,7 +1724,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
     
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"DELETE"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodDelete
                                                     path:[NSString stringWithFormat:@"/users/%@/addresses/%@",
                                                           username, uuid]];
 }
@@ -1735,7 +1735,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"POST"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodPost
                                                     path:[NSString stringWithFormat:@"/users/%@/numbers",
                                                           username]];
 }
@@ -1746,7 +1746,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"POST"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodPost
                                                     path:[NSString stringWithFormat:@"/users/%@/numbers/%@",
                                                           username, uuid]];
 }
@@ -1757,7 +1757,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"PUT"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodPut
                                                     path:[NSString stringWithFormat:@"/users/%@/numbers/%@",
                                                           username, uuid]];
 }
@@ -1766,7 +1766,7 @@
 // 12.
 - (void)cancelAllRetrieveNumbersList
 {
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodGet
                                                     path:[NSString stringWithFormat:@"/users/%@/numbers",
                                                           [Settings sharedSettings].webUsername]];
 }
@@ -1777,7 +1777,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodGet
                                                     path:[NSString stringWithFormat:@"/users/%@/numbers/%@",
                                                           username, uuid]];
 }
@@ -1786,7 +1786,7 @@
 // 14.
 - (void)cancelAllPurchaseCredit
 {
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"POST"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodPost
                                                     path:[NSString stringWithFormat:@"/users/%@/credit",
                                                           [Settings sharedSettings].webUsername]];
 }
@@ -1797,7 +1797,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodGet
                                                     path:[NSString stringWithFormat:@"/users/%@/credit",
                                                           username]];
 }
@@ -1806,7 +1806,7 @@
 // 16.
 - (void)cancelAllRetrieveCallRateForE164:(NSString*)e164
 {
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodGet
                                                     path:[NSString stringWithFormat:@"/rate/%@",
                                                           [e164 substringFromIndex:1]]];
 }
@@ -1817,7 +1817,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"PUT"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodPut
                                                     path:[NSString stringWithFormat:@"/users/%@/destinations/%@",
                                                           username, uuid]];
 }
@@ -1828,7 +1828,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"DELETE"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodDelete
                                                     path:[NSString stringWithFormat:@"/users/%@/destinations/%@",
                                                           username, uuid]];
 }
@@ -1839,7 +1839,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodGet
                                                     path:[NSString stringWithFormat:@"/users/%@/destinations",
                                                           username]];
 }
@@ -1850,7 +1850,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodGet
                                                     path:[NSString stringWithFormat:@"/users/%@/destinations/%@",
                                                           username, uuid]];
 }
@@ -1861,7 +1861,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"PUT"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodPut
                                                     path:[NSString stringWithFormat:@"/users/%@/audios/%@",
                                                           username, uuid]];
 }
@@ -1872,7 +1872,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodGet
                                                     path:[NSString stringWithFormat:@"/users/%@/audios/%@",
                                                           username, uuid]];
 }
@@ -1883,7 +1883,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"DELETE"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodDelete
                                                     path:[NSString stringWithFormat:@"/users/%@/audios/%@",
                                                           username, uuid]];}
 
@@ -1893,7 +1893,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodGet
                                                     path:[NSString stringWithFormat:@"/users/%@/audios",
                                                           username]];
 }
@@ -1904,7 +1904,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"POST"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodPost
                                                     path:[NSString stringWithFormat:@"/users/%@/audios",
                                                           username]];
 }
@@ -1915,7 +1915,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"POST"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodPost
                                                     path:[NSString stringWithFormat:@"/users/%@/callback",
                                                           username]];
 }
@@ -1926,7 +1926,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"DELETE"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodDelete
                                                     path:[NSString stringWithFormat:@"/users/%@/callback/%@",
                                                           username, uuid]];
 }
@@ -1937,7 +1937,7 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
 
-    [self.webInterface cancelAllHttpOperationsWithMethod:@"GET"
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodGet
                                                     path:[NSString stringWithFormat:@"/users/%@/callback/%@",
                                                           username, uuid]];
 }

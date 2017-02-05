@@ -120,7 +120,6 @@
         [self.view addSubview:self.activityIndicator];
         self.view.userInteractionEnabled = NO;
         self.navigationItem.leftBarButtonItem.enabled = NO;
-        self.navigationController.view.userInteractionEnabled = NO;
     }
     else if (self.isLoading == NO && self.activityIndicator != nil)
     {

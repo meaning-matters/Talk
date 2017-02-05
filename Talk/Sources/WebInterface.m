@@ -49,6 +49,7 @@
 #import "NetworkStatus.h"
 #import "AnalyticsTransmitter.h"
 
+
 const NSTimeInterval kDnsUpdateTimeoutReachable    =   4;  // Keep this low to switch to fallback server soon.
 const NSTimeInterval kDnsUpdateTimeoutNotReachable =   2;  // Limit timeout because of hard `select()` timeout.
 const NSTimeInterval kApiRequestTimeout            =  20;
@@ -87,11 +88,10 @@ const uint32_t       kFallbackServerTtl            = 600;  // Retry to load DNS-
         [sharedInstance.requestSerializer setTimeoutInterval:kApiRequestTimeout];
         [sharedInstance.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
         [sharedInstance.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-        [sharedInstance.requestSerializer setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
+        // Switch off local caching.
+       // [sharedInstance.requestSerializer setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
 
         sharedInstance.responseSerializer = [AFJSONResponseSerializer serializer];
-
-        [sharedInstance.operationQueue setMaxConcurrentOperationCount:10];
 
         sharedInstance.securityPolicy.allowInvalidCertificates = NO;
         
@@ -535,32 +535,12 @@ static void processDnsReply(DNSServiceRef       sdRef,
 
 #pragma mark WebClient mapping methods
 
-- (AFHTTPRequestOperation*)RequestOperationWithRequest:(NSURLRequest*)request
-                                               success:(void (^)(AFHTTPRequestOperation* operation, id responseObject))success
-                                               failure:(void (^)(AFHTTPRequestOperation* operation, NSError* error))failure
-{
-    AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-
-    operation.responseSerializer         = self.responseSerializer;
-    [operation setResponseSerializer:[AFJSONResponseSerializer serializer]]; // force json response serializer
-    operation.shouldUseCredentialStorage = self.shouldUseCredentialStorage;
-    operation.credential                 = self.credential;
-    operation.securityPolicy             = self.securityPolicy;
-
-    [operation setCompletionBlockWithSuccess:success failure:failure];
-    operation.completionQueue            = self.completionQueue;
-    operation.completionGroup            = self.completionGroup;
-    
-    return operation;
-}
-
-
-- (void)requestWithMethod:(NSString*)method
+- (void)requestWithMethod:(RequestMethod)method
                      path:(NSString*)path
                parameters:(id)parameters
                  retrying:(BOOL)retrying
-                  success:(void (^)(AFHTTPRequestOperation* operation, id responseObject))success
-                  failure:(void (^)(AFHTTPRequestOperation* operation, NSError* error))failure
+                  success:(void (^)(NSURLSessionTask* task, id responseObject))success
+                  failure:(void (^)(NSURLSessionTask* task, NSError* error))failure
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
     {
@@ -574,15 +554,10 @@ static void processDnsReply(DNSServiceRef       sdRef,
                                                              server[@"target"],
                                                              [server[@"port"] intValue],
                                                              path];
-            NSMutableURLRequest* request = [self.requestSerializer requestWithMethod:method
-                                                                           URLString:urlString
-                                                                          parameters:parameters
-                                                                               error:nil];    //### Is 'nil' okay?
-            
-            AFHTTPRequestOperation* operation = [self RequestOperationWithRequest:request
-                                                                          success:success
-                                                                          failure:^(AFHTTPRequestOperation* operation,
-                                                                                    NSError*                error)
+
+            void (^failureBlock)(NSURLSessionTask* task,
+                                 NSError*          error) = ^void(NSURLSessionTask* task,
+                                                                  NSError*          error)
             {
                 if (error.code == NSURLErrorNotConnectedToInternet          ||
                     error.code == NSURLErrorCannotFindHost                  ||
@@ -596,7 +571,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
                     error.code == NSURLErrorUserCancelledAuthentication     ||
                     error.code == NSURLErrorUserAuthenticationRequired)
                 {
-                    failure ? failure(operation, error) : 0;
+                    failure ? failure(task, error) : 0;
                 }
                 else if (error.code != NSURLErrorCancelled)
                 {
@@ -619,12 +594,38 @@ static void processDnsReply(DNSServiceRef       sdRef,
                     }
                     else
                     {
-                        failure(operation, error);
+                        failure(task, error);
                     }
                 }
-            }];
-            
-            [self.operationQueue addOperation:operation];
+            };
+
+            switch (method)
+            {
+                case RequestMethodGet:
+                {
+                    [self GET:urlString parameters:parameters progress:nil success:success failure:failureBlock];
+
+                    break;
+                }
+                case RequestMethodPost:
+                {
+                    [self POST:urlString parameters:parameters progress:nil success:success failure:failureBlock];
+
+                    break;
+                }
+                case RequestMethodPut:
+                {
+                    [self PUT:urlString parameters:parameters success:success failure:failureBlock];
+
+                    break;
+                }
+                case RequestMethodDelete:
+                {
+                    [self DELETE:urlString parameters:parameters success:success failure:failureBlock];
+
+                    break;
+                }
+            }
         }
         else
         {
@@ -641,64 +642,73 @@ static void processDnsReply(DNSServiceRef       sdRef,
 
 - (void)getPath:(NSString*)path
      parameters:(id)parameters
-        success:(void (^)(AFHTTPRequestOperation* operation, id responseObject))success
-        failure:(void (^)(AFHTTPRequestOperation* operation, NSError* error))failure
+        success:(void (^)(NSURLSessionTask* task, id responseObject))success
+        failure:(void (^)(NSURLSessionTask* task, NSError* error))failure
 {
-    [self requestWithMethod:@"GET" path:path parameters:parameters retrying:NO success:success failure:failure];
+    [self requestWithMethod:RequestMethodGet path:path parameters:parameters retrying:NO success:success failure:failure];
 }
 
 
 - (void)postPath:(NSString*)path
       parameters:(id)parameters
-         success:(void (^)(AFHTTPRequestOperation* operation, id responseObject))success
-         failure:(void (^)(AFHTTPRequestOperation* operation, NSError* error))failure
+         success:(void (^)(NSURLSessionTask* task, id responseObject))success
+         failure:(void (^)(NSURLSessionTask* task, NSError* error))failure
 {
-    [self requestWithMethod:@"POST" path:path parameters:parameters retrying:NO success:success failure:failure];
+    [self requestWithMethod:RequestMethodPost path:path parameters:parameters retrying:NO success:success failure:failure];
 }
 
 
 - (void)putPath:(NSString*)path
      parameters:(id)parameters
-        success:(void (^)(AFHTTPRequestOperation* operation, id responseObject))success
-        failure:(void (^)(AFHTTPRequestOperation* operation, NSError* error))failure
+        success:(void (^)(NSURLSessionTask* task, id responseObject))success
+        failure:(void (^)(NSURLSessionTask* task, NSError* error))failure
 {
-    [self requestWithMethod:@"PUT" path:path parameters:parameters retrying:NO success:success failure:failure];
+    [self requestWithMethod:RequestMethodPut path:path parameters:parameters retrying:NO success:success failure:failure];
 }
 
 
 - (void)deletePath:(NSString*)path
         parameters:(id)parameters
-           success:(void (^)(AFHTTPRequestOperation* operation, id responseObject))success
-           failure:(void (^)(AFHTTPRequestOperation* operation, NSError* error))failure
+           success:(void (^)(NSURLSessionTask* task, id responseObject))success
+           failure:(void (^)(NSURLSessionTask* task, NSError* error))failure
 {
-    [self requestWithMethod:@"DELETE" path:path parameters:parameters retrying:NO success:success failure:failure];
+    [self requestWithMethod:RequestMethodDelete path:path parameters:parameters retrying:NO success:success failure:failure];
 }
 
 
-- (void)cancelAllHttpOperationsWithMethod:(NSString*)method path:(NSString*)path
+- (void)cancelAllHttpRequestsWithMethod:(RequestMethod)method path:(NSString*)path
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
     {
-        for (AFHTTPRequestOperation* operation in self.operationQueue.operations)
+        for (NSURLSessionTask* task in self.tasks)
         {
-            if ([operation.request.HTTPMethod isEqualToString:method] &&
-                [operation.request.URL.path   isEqualToString:path])
+            NSString* methodString;
+            switch (method)
             {
-                NBLog(@"Cancelling HTTP %@ %@", method, path);
-                [operation cancel];
+                case RequestMethodGet:    methodString = @"GET";    break;
+                case RequestMethodPost:   methodString = @"POST";   break;
+                case RequestMethodPut:    methodString = @"PUT";    break;
+                case RequestMethodDelete: methodString = @"DELETE"; break;
+            }
+
+            if ([task.originalRequest.HTTPMethod isEqualToString:methodString] &&
+                [task.originalRequest.URL.path   isEqualToString:path])
+            {
+                NBLog(@"Cancelling HTTP %@ %@", methodString, path);
+                [task cancel];
             }
         }
     });
 }
 
 
-- (void)cancelAllHttpOperations
+- (void)cancelAllHttpRequests
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
     {
-        for (AFHTTPRequestOperation* operation in self.operationQueue.operations)
+        for (NSURLSessionTask* task in self.tasks)
         {
-            [operation cancel];
+            [task cancel];
         }
     });
 }
@@ -740,7 +750,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
     {
         if (error.code == NSURLErrorCancelled)
         {
-            // Ignore cancellation.
+            // Ignore cancellation. We should never get here as `requestWithMethod` already ignores a cancellation.
         }
         else if (error.code == NSURLErrorNotConnectedToInternet)
         {
@@ -786,18 +796,20 @@ static void processDnsReply(DNSServiceRef       sdRef,
 }
 
 
+#pragma mark - Public Methods
+
 - (void)postPath:(NSString*)path
       parameters:(NSDictionary*)parameters
            reply:(void (^)(NSError* error, id content))reply
 {
     [self postPath:path
         parameters:parameters
-           success:^(AFHTTPRequestOperation* operation, id responseObject)
+           success:^(NSURLSessionTask* task, id responseObject)
     {
         NBLog(@"POST %@ : %@\n==> %@", path, parameters ? parameters : @"", responseObject);
         [self handleSuccess:responseObject reply:reply];
     }
-           failure:^(AFHTTPRequestOperation* operation, NSError* error)
+           failure:^(NSURLSessionTask* task, NSError* error)
     {
         NBLog(@"POST %@ failure: %@", path, error);
         [self handleFailure:error reply:reply];
@@ -811,12 +823,12 @@ static void processDnsReply(DNSServiceRef       sdRef,
 {
     [self putPath:path
        parameters:parameters
-          success:^(AFHTTPRequestOperation* operation, id responseObject)
+          success:^(NSURLSessionTask* task, id responseObject)
     {
         NBLog(@"PUT %@ : %@\n==> %@", path, parameters ? parameters : @"", responseObject);
         [self handleSuccess:responseObject reply:reply];
     }
-          failure:^(AFHTTPRequestOperation* operation, NSError* error)
+          failure:^(NSURLSessionTask* task, NSError* error)
     {
         NBLog(@"PUT %@ failure: %@", path, error);
         [self handleFailure:error reply:reply];
@@ -830,12 +842,12 @@ static void processDnsReply(DNSServiceRef       sdRef,
 {
     [self getPath:path
        parameters:parameters
-          success:^(AFHTTPRequestOperation* operation, id responseObject)
+          success:^(NSURLSessionTask* task, id responseObject)
     {
         NBLog(@"GET %@ : %@\n==> %@", path, parameters ? parameters : @"", responseObject);
         [self handleSuccess:responseObject reply:reply];
     }
-          failure:^(AFHTTPRequestOperation* operation, NSError* error)
+          failure:^(NSURLSessionTask* task, NSError* error)
     {
         NBLog(@"GET %@ failure: %@", path, error);
         [self handleFailure:error reply:reply];
@@ -849,12 +861,12 @@ static void processDnsReply(DNSServiceRef       sdRef,
 {
     [self deletePath:path
           parameters:parameters
-             success:^(AFHTTPRequestOperation* operation, id responseObject)
+             success:^(NSURLSessionTask* task, id responseObject)
     {
         NBLog(@"DELETE %@ : %@\n==> %@", path, parameters ? parameters : @"", responseObject);
         [self handleSuccess:responseObject reply:reply];
     }
-             failure:^(AFHTTPRequestOperation* operation, NSError* error)
+             failure:^(NSURLSessionTask* task, NSError* error)
     {
         NBLog(@"DELETE %@ failure: %@", path, error);
         [self handleFailure:error reply:reply];
