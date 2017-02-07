@@ -608,10 +608,17 @@
                         object = [NSEntityDescription insertNewObjectForEntityForName:@"Address"
                                                                inManagedObjectContext:self.managedObjectContext];
                     }
-                    else if (dictionary[@"addressProofMd5"] != nil || dictionary[@"identityProofMd5"] != nil)
+
+                    if (dictionary[@"addressProofMd5"] != nil && loadImages == NO)
                     {
                         loadImages = ![object.addressProofMd5  isEqualToString:dictionary[@"addressProofMd5"]] ||
-                                     ![object.identityProofMd5 isEqualToString:dictionary[@"identityProofMd5"]];
+                        object.addressProof == nil;
+                    }
+
+                    if (dictionary[@"identityProofMd5"] != nil && loadImages == NO)
+                    {
+                        loadImages = ![object.identityProofMd5 isEqualToString:dictionary[@"identityProofMd5"]] ||
+                        object.identityProof == nil;
                     }
                 }
                 else
