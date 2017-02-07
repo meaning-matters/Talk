@@ -98,7 +98,7 @@ typedef enum
 
         self.setupFee        = [area[@"setupFee"] floatValue];
         self.monthFee        = [area[@"monthFee"] floatValue];
-        self.areaName        = (area[@"areaName"] != [NSNull null]) ? area[@"areaName"] : nil;
+        self.areaName        = area[@"areaName"];
 
         // Mandatory sections.
         sections |= TableSectionArea;
