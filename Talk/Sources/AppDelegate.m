@@ -157,9 +157,6 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     [[BITHockeyManager sharedHockeyManager] startManager];
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
 
-    // Tell iOS we would like to get a background fetch.
-    [application setMinimumBackgroundFetchInterval:(20 * 60)];
-
     [self refreshLocalNotifications];
 
     [[NSNotificationCenter defaultCenter] addObserverForName:NetworkStatusReachableNotification
@@ -349,6 +346,17 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     //
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates.
     // Games should use this method to pause the game.
+
+    if ([Settings sharedSettings].haveAccount == YES)
+    {
+        // Tell iOS we would like to get a background fetch.
+        [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+    }
+    else
+    {
+        // Tell iOS we don't need a background fetch.
+        [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalNever];
+    }
 }
 
 
@@ -538,20 +546,13 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
 - (void)application:(UIApplication*)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
-    if ([Settings sharedSettings].haveAccount == NO)
-    {
-        completionHandler(UIBackgroundFetchResultNoData);
-
-        return;
-    }
-
     [self.nBRecentsListViewController refresh:nil];
 
     [self checkCreditWithCompletion:^(BOOL success, NSError* error)
     {
         if (success)
         {
-            [[DataManager sharedManager] synchronizeAll:^(NSError *error)
+            [[DataManager sharedManager] synchronizeAll:^(NSError* error)
             {
                 if (error == nil)
                 {

@@ -23,8 +23,8 @@
 
 + (DtmfPlayer*)sharedPlayer
 {
-    static DtmfPlayer*      sharedInstance;
-    static dispatch_once_t  onceToken;
+    static DtmfPlayer*     sharedInstance;
+    static dispatch_once_t onceToken;
 
     dispatch_once(&onceToken, ^
     {
@@ -41,8 +41,8 @@
             }
         }
 
-        if ([sharedInstance initializeSound:'*' name:@"star"] == NO ||
-            [sharedInstance initializeSound:'#' name:@"pound"]== NO)
+        if ([sharedInstance initializeSound:'*' name:@"star"]  == NO ||
+            [sharedInstance initializeSound:'#' name:@"pound"] == NO)
         {
             NBLog(@"Error loading DTMF sound.");
         }
