@@ -191,8 +191,13 @@ typedef enum
 
 - (void)refresh:(id)sender
 {
-    NSDate* date = [Settings sharedSettings].recentsCheckDate;
+    [self retrieveCallRecordsWithSender:sender completion:nil];
+}
 
+
+- (void)retrieveCallRecordsWithSender:(id)sender completion:(void(^)(NSError* error))completion
+{
+    NSDate* date = [Settings sharedSettings].recentsCheckDate;
 
     //####### TEMP
     //date = [[NSDate date] dateByAddingTimeInterval:-100000];
@@ -217,12 +222,14 @@ typedef enum
             [BlockAlertView showAlertViewWithTitle:NSLocalizedString(@"Check Failed", @"")
                                            message:[NSString stringWithFormat:message, [error localizedDescription]]
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
-             {
-                 [sender endRefreshing];
-             }
+            {
+                [sender endRefreshing];
+            }
                                  cancelButtonTitle:[Strings closeString]
                                  otherButtonTitles:nil];
         }
+
+        completion ? completion(error) : 0;
     }];
 }
 

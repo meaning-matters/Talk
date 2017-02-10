@@ -140,6 +140,10 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     UIUserNotificationSettings* settings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
     [application registerUserNotificationSettings:settings];
 
+    // Currently the app does not have overall data protection enabled,
+    // so `protectedDataAvailable` should always be true.  We're leaving
+    // it as a reminder. Check the `NumberBay.entitlements` for the current
+    // data protection.
     if ([UIApplication sharedApplication].protectedDataAvailable)
     {
         AnalysticsTrace(@"protectedDataAvailable");
@@ -169,7 +173,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
         if (reachable == NetworkStatusReachableWifi || reachable == NetworkStatusReachableCellular)
         {
             [self checkCreditWithCompletion:nil];
-            [self.nBRecentsListViewController refresh:nil];
+            [self.nBRecentsListViewController retrieveCallRecordsWithSender:nil completion:nil];
         }
     }];
 
@@ -397,13 +401,13 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     [self checkCreditWithCompletion:nil];
     if (self.nBPeopleListViewController.contactsAreLoaded)
     {
-        [self.nBRecentsListViewController refresh:nil];
+        [self.nBRecentsListViewController retrieveCallRecordsWithSender:nil completion:nil];
     }
     else
     {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
         {
-            [self.nBRecentsListViewController refresh:nil];
+            [self.nBRecentsListViewController retrieveCallRecordsWithSender:nil completion:nil];
         });
     }
 }
@@ -546,28 +550,49 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
 - (void)application:(UIApplication*)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
-    [self.nBRecentsListViewController refresh:nil];
-
-    [self checkCreditWithCompletion:^(BOOL success, NSError* error)
+    // The account credentials are saved with kSecAttrAccessibleAfterFirstUnlock, which means
+    // that before the device is unlocked once after a reboot, `haveAccount` will return `NO`.
+    // We need the account to access the server, so in this very sporadic case, we don't start
+    // the fetch.
+    //
+    // Of course `haveAccount` will also return `NO` when there's no account at all.
+    if ([Settings sharedSettings].haveAccount)
     {
-        if (success)
+        [self.nBRecentsListViewController retrieveCallRecordsWithSender:nil completion:^(NSError* error)
         {
-            [[DataManager sharedManager] synchronizeAll:^(NSError* error)
+            if (error == nil)
             {
-                if (error == nil)
+                [self checkCreditWithCompletion:^(BOOL success, NSError* error)
                 {
-                    [self updateNumbersBadgeValue];
-                    [self refreshLocalNotifications];
-                }
+                    if (success)
+                    {
+                        [[DataManager sharedManager] synchronizeAll:^(NSError* error)
+                        {
+                            if (error == nil)
+                            {
+                                [self updateNumbersBadgeValue];
+                                [self refreshLocalNotifications];
+                            }
 
-                completionHandler((error == nil) ? UIBackgroundFetchResultNewData : UIBackgroundFetchResultFailed);
-            }];
-        }
-        else
-        {
-            completionHandler(UIBackgroundFetchResultFailed);
-        }
-    }];
+                            completionHandler((error == nil) ? UIBackgroundFetchResultNewData : UIBackgroundFetchResultFailed);
+                        }];
+                    }
+                    else
+                    {
+                        completionHandler(UIBackgroundFetchResultFailed);
+                    }
+                }];
+            }
+            else
+            {
+                completionHandler(UIBackgroundFetchResultFailed);
+            }
+        }];
+    }
+    else
+    {
+        completionHandler(UIBackgroundFetchResultNoData);
+    }
 }
 
 

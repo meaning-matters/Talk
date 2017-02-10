@@ -35,6 +35,6 @@
 - (instancetype)init;
 
 // Gets missed call from server.
-- (void)refresh:(id)sender;
+- (void)retrieveCallRecordsWithSender:(id)sender completion:(void(^)(NSError* error))completion;
 
 @end

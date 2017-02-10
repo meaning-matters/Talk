@@ -57,7 +57,7 @@
 
         [query setObject:(__bridge id)kSecClassGenericPassword forKey:(__bridge id)kSecClass];
         [query setObject:account forKey:(__bridge id)kSecAttrAccount];
-        [query setObject:(__bridge id)kSecAttrAccessibleAlways forKey:(__bridge id)kSecAttrAccessible];
+        [query setObject:(__bridge id)kSecAttrAccessibleAfterFirstUnlock forKey:(__bridge id)kSecAttrAccessible];
 
         OSStatus error = SecItemCopyMatching((__bridge CFDictionaryRef)query, NULL);
         if (error == errSecSuccess)

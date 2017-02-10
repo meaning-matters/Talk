@@ -138,7 +138,8 @@
     // "Core Data Model Versioning and Data Migration Programming Guide" for details.
     // See also: https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CoreDataVersioning/Articles/Introduction.html#//apple_ref/doc/uid/TP40004399-CH1-SW1
     NSDictionary* options = @{NSMigratePersistentStoresAutomaticallyOption: @YES,
-                              NSInferMappingModelAutomaticallyOption      : @YES};
+                              NSInferMappingModelAutomaticallyOption      : @YES,
+                              NSPersistentStoreFileProtectionKey          : NSFileProtectionCompleteUntilFirstUserAuthentication}; // The default, but want to make it explicit.
     NSError*      error   = nil;
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
     if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
