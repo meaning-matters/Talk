@@ -10,6 +10,8 @@
 
 #import <objc/runtime.h>
 #import <MediaPlayer/MediaPlayer.h>
+#import <Fabric/Fabric.h>
+#import <Answers/Answers.h>
 #import "AnalyticsTransmitter.h"
 #import "HockeySDK.h"
 #import "AppDelegate.h"
@@ -160,6 +162,8 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"6abff73fa5eb64771ac8a5124ebc33f5" delegate:self];
     [[BITHockeyManager sharedHockeyManager] startManager];
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
+
+    [Fabric with:@[[Answers class]]];
 
     [self refreshLocalNotifications];
 

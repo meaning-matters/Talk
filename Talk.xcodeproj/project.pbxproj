@@ -623,6 +623,8 @@
 		48CB2C4C17E6DB7700E19C3D /* NBPeopleListTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4917E6DB7700E19C3D /* NBPeopleListTab@2x.png */; };
 		48CBE0941DEF833D00B1D4FC /* NBPeopleListTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CBE0931DEF833D00B1D4FC /* NBPeopleListTab.png */; };
 		48CBE0961DEF834C00B1D4FC /* KeypadTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CBE0951DEF834C00B1D4FC /* KeypadTab.png */; };
+		48CECFC31E4EFE7300FE9040 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48CECFC11E4EFE7300FE9040 /* Fabric.framework */; };
+		48CECFC41E4EFE7300FE9040 /* Answers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48CECFC21E4EFE7300FE9040 /* Answers.framework */; };
 		48D0A6E61654D65200FA2D98 /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E51654D65200FA2D98 /* SipConfig.cfg */; };
 		48D0A6E71654D65200FA2D98 /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E51654D65200FA2D98 /* SipConfig.cfg */; };
 		48D0A6EA1654D66200FA2D98 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E81654D66200FA2D98 /* InfoPlist.strings */; };
@@ -1417,6 +1419,8 @@
 		48CB2C4917E6DB7700E19C3D /* NBPeopleListTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NBPeopleListTab@2x.png"; sourceTree = "<group>"; };
 		48CBE0931DEF833D00B1D4FC /* NBPeopleListTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NBPeopleListTab.png; sourceTree = "<group>"; };
 		48CBE0951DEF834C00B1D4FC /* KeypadTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = KeypadTab.png; sourceTree = "<group>"; };
+		48CECFC11E4EFE7300FE9040 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = SOURCE_ROOT; };
+		48CECFC21E4EFE7300FE9040 /* Answers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Answers.framework; sourceTree = SOURCE_ROOT; };
 		48D0A6E51654D65200FA2D98 /* SipConfig.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SipConfig.cfg; path = Resources/SipConfig.cfg; sourceTree = "<group>"; };
 		48D0A6E91654D66200FA2D98 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Resources/en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		48D0A6F31654D6D700FA2D98 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
@@ -1531,6 +1535,7 @@
 				48ADD0FA170C12C2001515EB /* AddressBookUI.framework in Frameworks */,
 				4895D19A16B1BE9200BCA581 /* StoreKit.framework in Frameworks */,
 				484F7C3E164C15EA0059A5A6 /* SystemConfiguration.framework in Frameworks */,
+				48CECFC41E4EFE7300FE9040 /* Answers.framework in Frameworks */,
 				48DD72AC169F55C400CD7080 /* MobileCoreServices.framework in Frameworks */,
 				48DD727D169CCF1C00CD7080 /* CoreData.framework in Frameworks */,
 				487A7C9A16978DBE007693EE /* MediaPlayer.framework in Frameworks */,
@@ -1545,6 +1550,7 @@
 				48884A791615CE920005AA79 /* CoreGraphics.framework in Frameworks */,
 				48338F8E161628BA0033F4C1 /* libcrypto.a in Frameworks */,
 				48338F90161628BA0033F4C1 /* libssl.a in Frameworks */,
+				48CECFC31E4EFE7300FE9040 /* Fabric.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2611,6 +2617,8 @@
 		48DD7284169F548600CD7080 /* External */ = {
 			isa = PBXGroup;
 			children = (
+				48CECFC11E4EFE7300FE9040 /* Fabric.framework */,
+				48CECFC21E4EFE7300FE9040 /* Answers.framework */,
 				48E54B2B1DDD00BC0043E1EC /* HockeySDK.xcodeproj */,
 				4814D55319E9660200958E33 /* AFNetworking-3.1.0 */,
 			);
@@ -2714,6 +2722,7 @@
 				48884A6C1615CE920005AA79 /* Sources */,
 				48884A6D1615CE920005AA79 /* Frameworks */,
 				48884A6E1615CE920005AA79 /* Resources */,
+				48CECFBA1E4EFE1E00FE9040 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -3294,6 +3303,19 @@
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
+		48CECFBA1E4EFE1E00FE9040 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Fabric.framework/run 5fb3614971ba27ca200e71898201a7ad0cba951a 04966da138a850dc253a037348b7111b5c3ce6492d4dad87cd55eb3dff3f7181";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -3664,6 +3686,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/External/HockeySDK-iOS-4.1.2/Vendor",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
@@ -3705,6 +3728,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/External/HockeySDK-iOS-4.1.2/Vendor",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
@@ -3832,6 +3856,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/External/HockeySDK-iOS-4.1.2/Vendor",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";

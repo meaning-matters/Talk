@@ -30,6 +30,20 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>2.0.112</string>
+	<key>Fabric</key>
+	<dict>
+		<key>APIKey</key>
+		<string>5fb3614971ba27ca200e71898201a7ad0cba951a</string>
+		<key>Kits</key>
+		<array>
+			<dict>
+				<key>KitInfo</key>
+				<dict/>
+				<key>KitName</key>
+				<string>Answers</string>
+			</dict>
+		</array>
+	</dict>
 	<key>LSRequiresIPhoneOS</key>
 	<false/>
 	<key>NSAppTransportSecurity</key>
@@ -52,6 +66,12 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Used to capture proof of address or ID, when you buy a Number.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Used to make calls and see who called. Contacts are not uploaded to our server!</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Used to capture proof of address or ID, when you buy a Number.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -87,11 +107,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSCameraUsageDescription</key>
-	<string>Used to capture proof of address or ID, when you buy a Number.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Used to capture proof of address or ID, when you buy a Number.</string>
-	<key>NSContactsUsageDescription</key>
-	<string>Used to make calls and see who called. Contacts are not uploaded to our server!</string>
 </dict>
 </plist>
