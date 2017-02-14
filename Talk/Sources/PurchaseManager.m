@@ -145,9 +145,9 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
                                                         @"[iOS alert title size - abbreviated: 'Can't Pay'].");
             message = NSLocalizedStringWithDefaultValue(@"Purchase:Retry CreditMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"Your pending credit purchase (%@) was fully processed. "
-                                                        @"(Notice that the current credit may already have been "
-                                                        @"increased earlier for this purchase.)\n\n"
+                                                        @"Your earlier pending or failed credit purchase (%@) has now been "
+                                                        @"processed. (You may need to refresh your Credit to see the "
+                                                        @"change.)\n\n"
                                                         @"You can now continue buying other credit amounts.",
                                                         @".\n"
                                                         @"[iOS alert title size - abbreviated: 'Can't Pay'].");
@@ -312,7 +312,7 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
 
 #pragma mark - Transaction Processing
 
-- (void)processAccountTransaction:(SKPaymentTransaction*)transaction
+- (void)processAccountTransaction:(SKPaymentTransaction*)transaction completion:(void (^)(BOOL success))completion
 {
     NSString* deviceToken;
     
@@ -349,8 +349,6 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
     {
         if (error == nil)
         {
-            AnalysticsTrace(@"processAccountTransaction_OK");
-
             [Settings sharedSettings].webUsername = webUsername;
             [Settings sharedSettings].webPassword = webPassword;
 
@@ -359,8 +357,6 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
         }
         else
         {
-            AnalysticsTrace(@"processAccountTransaction_ERROR");
-
             NBLog(@"Retrieve account error: %@.", error);
             
             // If this was a restored transaction, it already been 'finished' in updatedTransactions:.
@@ -370,14 +366,14 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
                                                                       @"[...].");
             [self completeBuyWithSuccess:NO object:[Common errorWithCode:error.code description:description]];
         }
+
+        completion ? completion(error == nil) : 0;
     }];
 }
 
 
 - (void)processCreditTransaction:(SKPaymentTransaction*)transaction
 {
-    AnalysticsTrace(@"processCreditTransaction");
-
     // Return when products are not yet loaded.  This method might namely be
     // called early when a transaction was pending.
     if (_products == nil)
@@ -406,6 +402,16 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
                                                                       @"[...].");
             [self completeBuyWithSuccess:NO object:[Common errorWithCode:error.code description:description]];
         }
+
+        SKProduct* product  = [self productForProductIdentifier:transaction.payment.productIdentifier];
+        NSString*  itemName = [NSString stringWithFormat:@"Credit%d", [self amountOfProductIdentifier:product.productIdentifier]];
+        [Answers logPurchaseWithPrice:product.price
+                             currency:[product.priceLocale objectForKey:NSLocaleCurrencyCode]
+                              success:@(error == nil)
+                             itemName:itemName
+                             itemType:@"Credit"
+                               itemId:product.productIdentifier
+                     customAttributes:@{}];
     }];
 }
 
@@ -497,7 +503,12 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
 
         if ([self isAccountProductIdentifier:self.restoredAccountTransaction.payment.productIdentifier])
         {
-            [self processAccountTransaction:self.restoredAccountTransaction];
+            [self processAccountTransaction:self.restoredAccountTransaction completion:^(BOOL success)
+            {
+                [Answers logLoginWithMethod:@"Account Restore"
+                                    success:@(success)
+                           customAttributes:@{}];
+            }];
         }
         else
         {
@@ -565,7 +576,30 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
                 [Common enableNetworkActivityIndicator:NO];
                 if ([self isAccountProductIdentifier:transaction.payment.productIdentifier])
                 {
-                    [self processAccountTransaction:transaction];
+                    [self processAccountTransaction:transaction completion:^(BOOL success)
+                    {
+                        if (transaction.originalTransaction == nil)
+                        {
+                            [Answers logSignUpWithMethod:@"Account Purchase"
+                                                 success:@(success)
+                                        customAttributes:@{}];
+
+                            SKProduct* product = [self productForProductIdentifier:transaction.payment.productIdentifier];
+                            [Answers logPurchaseWithPrice:product.price
+                                                 currency:[product.priceLocale objectForKey:NSLocaleCurrencyCode]
+                                                  success:@(success)
+                                                 itemName:@"Account1"
+                                                 itemType:@"Account"
+                                                   itemId:product.productIdentifier
+                                         customAttributes:@{}];
+                        }
+                        else
+                        {
+                            [Answers logLoginWithMethod:@"Account Restore"
+                                                success:@(success)
+                                       customAttributes:@{}];
+                        }
+                    }];
                 }
                 else if ([self isCreditProductIdentifier:transaction.payment.productIdentifier])
                 {

@@ -198,8 +198,6 @@
 // 0A. GET CALL RATES
 - (void)retrieveCallRates:(void (^)(NSError* error, NSArray* rates))reply
 {
-    AnalysticsTrace(@"API_0A");
-
     NSString* currencyCode = [Settings sharedSettings].storeCurrencyCode;
     NSString* countryCode  = [Settings sharedSettings].storeCountryCode;
     
@@ -215,8 +213,6 @@
 // 0B. GET NUMBER RATES
 - (void)retrieveNumberRates:(void (^)(NSError* error, NSArray* rates))reply
 {
-    AnalysticsTrace(@"API_0B");
-
     NSString* currencyCode = [Settings sharedSettings].storeCurrencyCode;
     NSString* countryCode  = [Settings sharedSettings].storeCountryCode;
     
@@ -244,8 +240,6 @@
                                             NSString* webUsername,
                                             NSString* webPassword))reply;
 {
-    AnalysticsTrace(@"API_1A");
-
     NSDictionary* parameters;
     NSString*     buildType;
 
@@ -311,8 +305,6 @@
                                            NSString* webUsername,
                                            NSString* webPassword))reply
 {
-    AnalysticsTrace(@"API_1B");
-
     NSString*     username = [Settings sharedSettings].webUsername;
     NSDictionary* parameters;
     NSString*     buildType;
@@ -364,8 +356,6 @@
                                                        BOOL      verified,
                                                        NSString* code))reply
 {
-    AnalysticsTrace(@"API_2A");
-
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSDictionary* parameters = @{@"e164" : [e164 substringFromIndex:1]};
 
@@ -388,8 +378,6 @@
 // 2B. REQUEST PHONE VERIFICATION CALL
 - (void)requestPhoneVerificationCallForUuid:(NSString*)uuid reply:(void (^)(NSError* error))reply
 {
-    AnalysticsTrace(@"API_2B");
-
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self putPath:[NSString stringWithFormat:@"/users/%@/phones/%@/verification", username, uuid]
@@ -405,8 +393,6 @@
 - (void)retrievePhoneVerificationStatusForUuid:(NSString*)uuid
                                          reply:(void (^)(NSError* error, BOOL calling, BOOL verified))reply
 {
-    AnalysticsTrace(@"API_2C");
-
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self getPath:[NSString stringWithFormat:@"/users/%@/phones/%@/verification", username, uuid]
@@ -428,8 +414,6 @@
 // 2D. STOP VERIFICATION
 - (void)stopPhoneVerificationForUuid:(NSString*)uuid reply:(void (^)(NSError* error))reply
 {
-    AnalysticsTrace(@"API_2D");
-
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self deletePath:[NSString stringWithFormat:@"/users/%@/phones/%@/verification", username, uuid]
@@ -444,8 +428,6 @@
 // 2E. UPDATE VERIFIED NUMBER
 - (void)updatePhoneVerificationForUuid:(NSString*)uuid name:(NSString*)name reply:(void (^)(NSError* error))reply
 {
-    AnalysticsTrace(@"API_2E");
-    
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSDictionary* parameters = @{@"name" : name};
 
@@ -461,8 +443,6 @@
 // 3. GET VERIFIED NUMBER LIST
 - (void)retrievePhones:(void (^)(NSError* error, NSArray* phones))reply;
 {
-    AnalysticsTrace(@"API_3");
-
     [self getPath:[NSString stringWithFormat:@"/users/%@/phones", [Settings sharedSettings].webUsername]
        parameters:nil
             reply:^(NSError* error, id content)
@@ -482,8 +462,6 @@
 // 4. GET VERIFIED NUMBER INFO
 - (void)retrievePhoneWithUuid:(NSString*)uuid reply:(void (^)(NSError* error, NSString* e164, NSString* name))reply
 {
-    AnalysticsTrace(@"API_3");
-
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self getPath:[NSString stringWithFormat:@"/users/%@/phones/%@", username, uuid]
@@ -506,8 +484,6 @@
 // 5. DELETE VERIFIED NUMBER
 - (void)deletePhoneWithUuid:(NSString*)uuid reply:(void (^)(NSError*))reply;
 {
-    AnalysticsTrace(@"API_5");
-    
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self deletePath:[NSString stringWithFormat:@"/users/%@/phones/%@", username, uuid]
@@ -1049,8 +1025,6 @@
 // 14. BUY CREDIT
 - (void)purchaseCreditForReceipt:(NSString*)receipt reply:(void (^)(NSError* error, float credit))reply
 {
-    AnalysticsTrace(@"API_14");
-    
     NSString*     username     = [Settings sharedSettings].webUsername;
     NSString*     currencyCode = [Settings sharedSettings].storeCurrencyCode;
     NSString*     countryCode  = [Settings sharedSettings].storeCountryCode;
@@ -1076,8 +1050,6 @@
 // 15. GET CURRENT CALLING CREDIT
 - (void)retrieveCreditWithReply:(void (^)(NSError* error, float credit))reply
 {
-    AnalysticsTrace(@"API_15");
-    
     NSString*     username     = [Settings sharedSettings].webUsername;
     NSString*     currencyCode = [Settings sharedSettings].storeCurrencyCode;
     NSString*     countyCode   = [Settings sharedSettings].storeCountryCode;
@@ -1102,8 +1074,6 @@
 // 16. GET CALL RATE (PER MINUTE)
 - (void)retrieveCallRateForE164:(NSString*)e164 reply:(void (^)(NSError* error, float ratePerMinute))reply
 {
-    AnalysticsTrace(@"API_16");
-    
     NSString* e164x        = [e164 substringFromIndex:1];
     NSString* currencyCode = [Settings sharedSettings].storeCurrencyCode;
     NSString* countryCode  = [Settings sharedSettings].storeCountryCode;
@@ -1174,8 +1144,6 @@
                    action:(NSDictionary*)action
                     reply:(void (^)(NSError* error, NSString* uuid))reply
 {
-    AnalysticsTrace(@"API_19A");
-
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSDictionary* parameters = @{@"name"   : name,
                                  @"action" : [self stripE164InAction:action]};
@@ -1202,8 +1170,6 @@
                   action:(NSDictionary*)action
                    reply:(void (^)(NSError* error))reply
 {
-    AnalysticsTrace(@"API_19B");
-
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSDictionary* parameters = @{@"name"   : name,
                                  @"action" : [self stripE164InAction:action]};
@@ -1220,8 +1186,6 @@
 // 20. DELETE DESTINATION
 - (void)deleteDestinationForUuid:(NSString*)uuid reply:(void (^)(NSError* error))reply
 {
-    AnalysticsTrace(@"API_20");
-
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self deletePath:[NSString stringWithFormat:@"/users/%@/destinations/%@", username, uuid]
@@ -1236,8 +1200,6 @@
 // 21. GET LIST OF DESTINATIONS
 - (void)retrieveDestinations:(void (^)(NSError* error, NSArray* destinations))reply
 {
-    AnalysticsTrace(@"API_21");
-
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self getPath:[NSString stringWithFormat:@"/users/%@/destinations", username]
@@ -1250,8 +1212,6 @@
 - (void)retrieveDestinationForUuid:(NSString*)uuid
                              reply:(void (^)(NSError* error, NSString* name, NSDictionary* action))reply
 {
-    AnalysticsTrace(@"API_22");
-
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self getPath:[NSString stringWithFormat:@"/users/%@/destinations/%@", username, uuid]
@@ -1278,8 +1238,6 @@
                       name:(NSString*)name
                      reply:(void (^)(NSError* error))reply
 {
-    AnalysticsTrace(@"API_25");
-
     NSString*            username   = [Settings sharedSettings].webUsername;
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
 
@@ -1298,8 +1256,6 @@
 // 26. DOWNLOAD AUDIO
 - (void)retrieveAudioForUuid:(NSString*)uuid reply:(void (^)(NSError* error, NSString* name, NSData* data))reply
 {
-    AnalysticsTrace(@"API_26");
-
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self getPath:[NSString stringWithFormat:@"/users/%@/audios/%@", username, uuid]
@@ -1323,8 +1279,6 @@
 // 27. DELETE AUDIO
 - (void)deleteAudioForUuid:(NSString*)uuid reply:(void (^)(NSError* error))reply
 {
-    AnalysticsTrace(@"API_27");
-
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self deletePath:[NSString stringWithFormat:@"/users/%@/audios/%@", username, uuid]
@@ -1339,8 +1293,6 @@
 // 28. GET LIST OF AUDIO UUID'S
 - (void)retrieveAudios:(void (^)(NSError* error, NSArray* audios))reply
 {
-    AnalysticsTrace(@"API_28");
-
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self getPath:[NSString stringWithFormat:@"/users/%@/audios", username]
@@ -1352,8 +1304,6 @@
 // 29. CREATE AUDIO
 - (void)createAudioWithData:(NSData*)data name:(NSString*)name reply:(void (^)(NSError* error, NSString* uuid))reply
 {
-    AnalysticsTrace(@"API_29");
-
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSDictionary* parameters = @{@"data"     : [Base64 encode:data],
                                  @"name"     : name};
@@ -1381,8 +1331,6 @@
                                 privacy:(BOOL)privacy
                                   reply:(void (^)(NSError* error, NSString* uuid))reply;
 {
-    AnalysticsTrace(@"API_32");
-    
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSDictionary* parameters = @{@"callbackE164" : [callbackE164 substringFromIndex:1],
                                  @"callthruE164" : [callthruE164 substringFromIndex:1],
@@ -1408,8 +1356,6 @@
 // 33. STOP CALLBACK
 - (void)stopCallbackForUuid:(NSString*)uuid reply:(void (^)(NSError* error))reply
 {
-    AnalysticsTrace(@"API_33");
-    
     NSString* username = [Settings sharedSettings].webUsername;
 
     [self deletePath:[NSString stringWithFormat:@"/users/%@/callback/%@", username, uuid]
@@ -1430,9 +1376,7 @@
                                                int       callthruDuration,
                                                float     callbackCost,
                                                float     callthruCost))reply
-{
-    AnalysticsTrace(@"API_34");
-    
+{    
     NSString* username     = [Settings sharedSettings].webUsername;
     NSString* currencyCode = [Settings sharedSettings].storeCurrencyCode;
     NSString* countryCode  = [Settings sharedSettings].storeCountryCode;

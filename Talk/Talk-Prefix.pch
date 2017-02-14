@@ -12,6 +12,9 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
     #import <CoreData/CoreData.h>
+    #import <Fabric/Fabric.h>
+    #import <Answers/Answers.h>
+
 
 #ifdef DEBUG
 #define NBLog(fmt, ...) NSLog(fmt, ##__VA_ARGS__)

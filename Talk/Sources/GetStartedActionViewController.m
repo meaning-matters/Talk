@@ -43,8 +43,6 @@
 
 - (void)viewDidLoad
 {
-    AnalysticsTrace(@"viewDidLoad");
-
     [super viewDidLoad];
 
     CGFloat topInset    = 12.0f;

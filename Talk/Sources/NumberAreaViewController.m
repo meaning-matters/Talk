@@ -150,6 +150,11 @@ typedef enum
                 break;
             }
         }
+
+        [Answers logContentViewWithName:@"NumberArea"
+                            contentType:@"View"
+                              contentId:@"NumberArea"
+                       customAttributes:@{}];
     }
 
     return self;

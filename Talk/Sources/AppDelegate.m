@@ -10,9 +10,6 @@
 
 #import <objc/runtime.h>
 #import <MediaPlayer/MediaPlayer.h>
-#import <Fabric/Fabric.h>
-#import <Answers/Answers.h>
-#import "AnalyticsTransmitter.h"
 #import "HockeySDK.h"
 #import "AppDelegate.h"
 #import "Settings.h"
@@ -148,14 +145,13 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     // data protection.
     if ([UIApplication sharedApplication].protectedDataAvailable)
     {
-        AnalysticsTrace(@"protectedDataAvailable");
-        
         [self setUp];
     }
     else
     {
-        AnalysticsTrace(@"abort");
-        
+        [Answers logCustomEventWithName:@"Abort"
+                       customAttributes:@{}];
+
         abort();
     }
 
@@ -163,6 +159,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     [[BITHockeyManager sharedHockeyManager] startManager];
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
 
+    [[Fabric sharedSDK] setDebug: YES];
     [Fabric with:@[[Answers class]]];
 
     [self refreshLocalNotifications];
@@ -324,8 +321,6 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
 - (void)application:(UIApplication*)application didRegisterUserNotificationSettings:(UIUserNotificationSettings*)notificationSettings
 {
-    AnalysticsTrace(@"didRegisterUserNotificationSettings");
-
     [application registerForRemoteNotifications];
 }
 
@@ -333,8 +328,6 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 - (void)application:(UIApplication*)application handleActionWithIdentifier:(NSString*)identifier
     forRemoteNotification:(NSDictionary*)userInfo completionHandler:(void(^)())completionHandler
 {
-    AnalysticsTrace(@"handleActionWithIdentifier");
-    
     if ([identifier isEqualToString:@"declineAction"])
     {
     }
@@ -346,8 +339,6 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
 - (void)applicationWillResignActive:(UIApplication*)application
 {
-    AnalysticsTrace(@"applicationWillResignActive");
-    
     // Sent when the application is about to move from active to inactive state. This can occur for
     // certain types of temporary interruptions (such as an incoming phone call or SMS message) or
     // when the user quits the application and it begins the transition to the background state.
@@ -370,8 +361,6 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
 - (void)applicationDidEnterBackground:(UIApplication*)application
 {
-    AnalysticsTrace(@"applicationDidEnterBackground");
-
     // Generate viewWillDisappear and viewDidDisappear to top view controller.
     [self.window.rootViewController beginAppearanceTransition:NO animated:NO];
     [self.window.rootViewController endAppearanceTransition];
@@ -383,8 +372,6 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
 - (void)applicationWillEnterForeground:(UIApplication*)application
 {
-    AnalysticsTrace(@"applicationWillEnterForeground");
-
     // Generate viewWillAppear and viewDidAppear to top view controller.
     [self.window.rootViewController beginAppearanceTransition:YES animated:NO];
     [self.window.rootViewController endAppearanceTransition];
@@ -399,8 +386,6 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 // alerts can't occur. But it's good to be aware what's happening where/when.)
 - (void)applicationDidBecomeActive:(UIApplication*)application
 {
-    AnalysticsTrace(@"applicationDidBecomeActive");
-
     [self showMissedNotifications];
     [self checkCreditWithCompletion:nil];
     if (self.nBPeopleListViewController.contactsAreLoaded)
@@ -419,8 +404,6 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
 - (void)applicationWillTerminate:(UIApplication*)application
 {
-    AnalysticsTrace(@"applicationWillTerminate");
-
     // Generate viewWillDisappear and viewDidDisappear to top view controller.
     [self.window.rootViewController beginAppearanceTransition:NO animated:NO];
     [self.window.rootViewController endAppearanceTransition];
@@ -437,8 +420,6 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)token
 {
-    AnalysticsTrace(@"didRegisterForRemoteNotificationsWithDeviceToken");
-    
     NSString* string = [[token description] stringByReplacingOccurrencesOfString:@" " withString:@""];
     self.deviceToken = [string substringWithRange:NSMakeRange(1, [string length] - 2)];   // Strip off '<' and '>'.
         
@@ -456,8 +437,6 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {
-    AnalysticsTrace(@"didFailToRegisterForRemoteNotificationsWithError");
-
     self.deviceToken = nil;
 
     // When account purchase transaction has not been finished, the PurchaseManager receives
@@ -469,8 +448,6 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
 - (void)application:(UIApplication*)application didReceiveLocalNotification:(UILocalNotification*)notification
 {
-    AnalysticsTrace(@"didReceiveLocalNotification");
-
     if (notification.userInfo != nil)
     {
         NSString* source = notification.userInfo[@"source"];
@@ -539,8 +516,6 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
 {
-    AnalysticsTrace(@"didReceiveRemoteNotification");
-
     [[NSNotificationCenter defaultCenter] postNotificationName:AppDelegateRemoteNotification
                                                         object:nil
                                                       userInfo:userInfo];
@@ -746,7 +721,10 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
 - (void)tabBarController:(UITabBarController*)tabBarController willBeginCustomizingViewControllers:(NSArray*)viewControllers
 {
-    AnalysticsTrace(@"willBeginCustomizingViewControllers");
+    [Answers logContentViewWithName:@"Customize"
+                        contentType:@"Main"
+                          contentId:@"Customize"
+                   customAttributes:@{}];
 
     [[BadgeHandler sharedHandler] hideBadges];
 
@@ -766,8 +744,6 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 - (void)tabBarController:(UITabBarController*)tabBarController willEndCustomizingViewControllers:(NSArray*)viewControllers
                  changed:(BOOL)changed
 {
-    AnalysticsTrace(@"willEndCustomizingViewControllers");
-
     tabBarCustomizeDoneItem = nil;
 
     [[BadgeHandler sharedHandler] showBadges];
@@ -801,13 +777,26 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     {
         // More tab.
         [Settings sharedSettings].tabBarSelectedIndex = NSNotFound;
+
+        [Answers logContentViewWithName:@"More"
+                            contentType:@"Main"
+                              contentId:@"More"
+                       customAttributes:@{}];
     }
     else
     {
+        // One of the 4 main tabs, or when user tapped the More tab.
         [Settings sharedSettings].tabBarSelectedIndex = [self.tabBarController.viewControllers indexOfObject:viewController];
+
+        if ([Settings sharedSettings].tabBarSelectedIndex <= 3)
+        {
+            UINavigationController* navigationController = (UINavigationController*)viewController;
+            [Answers logContentViewWithName:[self answersNameWithNavigationController:navigationController]
+                                contentType:[self answersTypeWithNavigationController:navigationController]
+                                  contentId:[self answersIdWithNavigationController:navigationController]
+                           customAttributes:@{}];
+        }
     }
-    
-    AnalysticsTrace([@([Settings sharedSettings].tabBarSelectedIndex) description]);
 }
 
 
@@ -821,6 +810,11 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
         // Without this, badges' left side is invisible when badge set with More tab not shown.
         [(UITableView*)viewController.view reloadData];
+
+        [Answers logContentViewWithName:@"More"
+                            contentType:@"Main"
+                              contentId:@"More"
+                       customAttributes:@{}];
     }
     else
     {
@@ -830,8 +824,14 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
         // When NSNotFound or when count != 2, we are a level deeper; but we only remember top level choice.
         if (index != NSNotFound && viewController.navigationController.viewControllers.count == 2)
         {
+            // A cell on the More tab.
             [Settings sharedSettings].tabBarSelectedIndex = index;
         }
+
+        [Answers logContentViewWithName:[self answersNameWithNavigationController:viewController.navigationController]
+                            contentType:[self answersTypeWithNavigationController:viewController.navigationController]
+                              contentId:[self answersIdWithNavigationController:viewController.navigationController]
+                       customAttributes:@{}];
     }
 }
 
@@ -944,15 +944,11 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
         {
             if (error == nil)
             {
-                AnalysticsTrace(@"updateAccount");
-
                 [Settings sharedSettings].webUsername = webUsername;
                 [Settings sharedSettings].webPassword = webPassword;
             }
             else
             {
-                AnalysticsTrace(@"ERROR_updateAccount");
-
                 NBLog(@"Update account error: %@.", error);
             }
         }];
@@ -981,6 +977,41 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
             }
         }];
     }
+}
+
+
+- (NSString*)answersNameWithNavigationController:(UINavigationController*)navigationController
+{
+    return navigationController.viewControllers.lastObject.title;
+}
+
+
+- (NSString*)answersTypeWithNavigationController:(UINavigationController*)navigationController
+{
+    if ([navigationController.viewControllers[0] isKindOfClass:NSClassFromString(@"UIMoreListController")])
+    {
+        return navigationController.viewControllers[1].title;
+    }
+    else
+    {
+        return navigationController.viewControllers[0].title;
+    }
+}
+
+
+- (NSString*)answersIdWithNavigationController:(UINavigationController*)navigationController
+{
+    NSString* identifier = @"";
+
+    for (UIViewController* controller in navigationController.viewControllers)
+    {
+        if (![controller isKindOfClass:NSClassFromString(@"UIMoreListController")])
+        {
+            identifier = [identifier stringByAppendingFormat:@"%@.", controller.title];
+        }
+    }
+
+    return [identifier substringToIndex:(identifier.length - 1)];
 }
 
 
@@ -1426,7 +1457,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
             NSDictionary* street = muni[streetCode];
             if (street != nil)
             {
-                NSLog(@"Duplicate");
+                NBLog(@"Duplicate");
             }
             else
             {
@@ -1437,7 +1468,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
 
 #endif
-    NSLog(@"done:");
+    NBLog(@"done:");
 }
 
 @end
