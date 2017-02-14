@@ -10,6 +10,7 @@
 
 #import <objc/runtime.h>
 #import <MediaPlayer/MediaPlayer.h>
+#import <Appsee/Appsee.h>
 #import "HockeySDK.h"
 #import "AppDelegate.h"
 #import "Settings.h"
@@ -161,6 +162,8 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
     [[Fabric sharedSDK] setDebug: YES];
     [Fabric with:@[[Answers class]]];
+
+    [Appsee start:@"bcfabbdf11d84ffb90989c7713a03267"];
 
     [self refreshLocalNotifications];
 

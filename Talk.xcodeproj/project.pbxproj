@@ -433,6 +433,9 @@
 		4864CAEE1D0C7F25009B3D9C /* AddressMunicipalitiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4864CAED1D0C7F25009B3D9C /* AddressMunicipalitiesViewController.m */; };
 		4865A9DF1792C8B70028785F /* NumberPayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* NumberPayCell.m */; };
 		4865A9E01792C8B70028785F /* NumberPayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* NumberPayCell.m */; };
+		486803D41E5368D700ECFEF3 /* Answers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 486803D21E5368D700ECFEF3 /* Answers.framework */; };
+		486803D51E5368D700ECFEF3 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 486803D31E5368D700ECFEF3 /* Fabric.framework */; };
+		486803D81E53694B00ECFEF3 /* Appsee.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 486803D71E53694B00ECFEF3 /* Appsee.framework */; };
 		486B95261CDE80F2004CFD8A /* DenmarkCityPostcodes.json in Resources */ = {isa = PBXBuildFile; fileRef = 486B95251CDE80F2004CFD8A /* DenmarkCityPostcodes.json */; };
 		486CEF971DEDFCFD00D1E088 /* SignalDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 486CEF961DEDFCFD00D1E088 /* SignalDotView.m */; };
 		486D4A2318F06BC8004699C9 /* CallRatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 486D4A2218F06BC8004699C9 /* CallRatesViewController.m */; };
@@ -623,8 +626,6 @@
 		48CB2C4C17E6DB7700E19C3D /* NBPeopleListTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4917E6DB7700E19C3D /* NBPeopleListTab@2x.png */; };
 		48CBE0941DEF833D00B1D4FC /* NBPeopleListTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CBE0931DEF833D00B1D4FC /* NBPeopleListTab.png */; };
 		48CBE0961DEF834C00B1D4FC /* KeypadTab.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CBE0951DEF834C00B1D4FC /* KeypadTab.png */; };
-		48CECFC31E4EFE7300FE9040 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48CECFC11E4EFE7300FE9040 /* Fabric.framework */; };
-		48CECFC41E4EFE7300FE9040 /* Answers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48CECFC21E4EFE7300FE9040 /* Answers.framework */; };
 		48D0A6E61654D65200FA2D98 /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E51654D65200FA2D98 /* SipConfig.cfg */; };
 		48D0A6E71654D65200FA2D98 /* SipConfig.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E51654D65200FA2D98 /* SipConfig.cfg */; };
 		48D0A6EA1654D66200FA2D98 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 48D0A6E81654D66200FA2D98 /* InfoPlist.strings */; };
@@ -1167,6 +1168,9 @@
 		4864CAED1D0C7F25009B3D9C /* AddressMunicipalitiesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressMunicipalitiesViewController.m; sourceTree = "<group>"; };
 		4865A9DD1792C8B70028785F /* NumberPayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberPayCell.h; sourceTree = "<group>"; };
 		4865A9DE1792C8B70028785F /* NumberPayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberPayCell.m; sourceTree = "<group>"; };
+		486803D21E5368D700ECFEF3 /* Answers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Answers.framework; path = External/Fabric/Answers.framework; sourceTree = SOURCE_ROOT; };
+		486803D31E5368D700ECFEF3 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = External/Fabric/Fabric.framework; sourceTree = SOURCE_ROOT; };
+		486803D71E53694B00ECFEF3 /* Appsee.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Appsee.framework; path = External/Appsee/Appsee.framework; sourceTree = SOURCE_ROOT; };
 		486B95171CDE413A004CFD8A /* Muni-StrCode-Str.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Muni-StrCode-Str.json"; path = "Resources/Muni-StrCode-Str.json"; sourceTree = "<group>"; };
 		486B951E1CDE44E4004CFD8A /* Muni-Post-City.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Muni-Post-City.json"; path = "Resources/Muni-Post-City.json"; sourceTree = "<group>"; };
 		486B951F1CDE44E4004CFD8A /* StrCode-Post-City.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "StrCode-Post-City.json"; path = "Resources/StrCode-Post-City.json"; sourceTree = "<group>"; };
@@ -1419,8 +1423,6 @@
 		48CB2C4917E6DB7700E19C3D /* NBPeopleListTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NBPeopleListTab@2x.png"; sourceTree = "<group>"; };
 		48CBE0931DEF833D00B1D4FC /* NBPeopleListTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NBPeopleListTab.png; sourceTree = "<group>"; };
 		48CBE0951DEF834C00B1D4FC /* KeypadTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = KeypadTab.png; sourceTree = "<group>"; };
-		48CECFC11E4EFE7300FE9040 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = SOURCE_ROOT; };
-		48CECFC21E4EFE7300FE9040 /* Answers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Answers.framework; sourceTree = SOURCE_ROOT; };
 		48D0A6E51654D65200FA2D98 /* SipConfig.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SipConfig.cfg; path = Resources/SipConfig.cfg; sourceTree = "<group>"; };
 		48D0A6E91654D66200FA2D98 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Resources/en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		48D0A6F31654D6D700FA2D98 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
@@ -1525,6 +1527,7 @@
 				48E54B411DDD013B0043E1EC /* CrashReporter.framework in Frameworks */,
 				48E54B3F1DDD00E70043E1EC /* libHockeySDK.a in Frameworks */,
 				4805E5191C5EA7FD00BA1924 /* Photos.framework in Frameworks */,
+				486803D81E53694B00ECFEF3 /* Appsee.framework in Frameworks */,
 				4814D54D19DCCD7C00958E33 /* libresolv.dylib in Frameworks */,
 				488D7759178078CC00099470 /* QuartzCore.framework in Frameworks */,
 				488D77561780773800099470 /* CoreText.framework in Frameworks */,
@@ -1534,10 +1537,11 @@
 				48ADD0FC170C12CD001515EB /* AddressBook.framework in Frameworks */,
 				48ADD0FA170C12C2001515EB /* AddressBookUI.framework in Frameworks */,
 				4895D19A16B1BE9200BCA581 /* StoreKit.framework in Frameworks */,
+				486803D41E5368D700ECFEF3 /* Answers.framework in Frameworks */,
 				484F7C3E164C15EA0059A5A6 /* SystemConfiguration.framework in Frameworks */,
-				48CECFC41E4EFE7300FE9040 /* Answers.framework in Frameworks */,
 				48DD72AC169F55C400CD7080 /* MobileCoreServices.framework in Frameworks */,
 				48DD727D169CCF1C00CD7080 /* CoreData.framework in Frameworks */,
+				486803D51E5368D700ECFEF3 /* Fabric.framework in Frameworks */,
 				487A7C9A16978DBE007693EE /* MediaPlayer.framework in Frameworks */,
 				4888D28F16724FCD00B55B22 /* Security.framework in Frameworks */,
 				484F7C3B164C15770059A5A6 /* CoreTelephony.framework in Frameworks */,
@@ -1550,7 +1554,6 @@
 				48884A791615CE920005AA79 /* CoreGraphics.framework in Frameworks */,
 				48338F8E161628BA0033F4C1 /* libcrypto.a in Frameworks */,
 				48338F90161628BA0033F4C1 /* libssl.a in Frameworks */,
-				48CECFC31E4EFE7300FE9040 /* Fabric.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2281,6 +2284,23 @@
 			name = Callstate;
 			sourceTree = "<group>";
 		};
+		486803CB1E53684000ECFEF3 /* Fabric */ = {
+			isa = PBXGroup;
+			children = (
+				486803D21E5368D700ECFEF3 /* Answers.framework */,
+				486803D31E5368D700ECFEF3 /* Fabric.framework */,
+			);
+			name = Fabric;
+			sourceTree = "<group>";
+		};
+		486803D61E53691100ECFEF3 /* Appsee */ = {
+			isa = PBXGroup;
+			children = (
+				486803D71E53694B00ECFEF3 /* Appsee.framework */,
+			);
+			name = Appsee;
+			sourceTree = "<group>";
+		};
 		488268D1164BCF6300EA58AE /* Networking */ = {
 			isa = PBXGroup;
 			children = (
@@ -2617,8 +2637,8 @@
 		48DD7284169F548600CD7080 /* External */ = {
 			isa = PBXGroup;
 			children = (
-				48CECFC11E4EFE7300FE9040 /* Fabric.framework */,
-				48CECFC21E4EFE7300FE9040 /* Answers.framework */,
+				486803D61E53691100ECFEF3 /* Appsee */,
+				486803CB1E53684000ECFEF3 /* Fabric */,
 				48E54B2B1DDD00BC0043E1EC /* HockeySDK.xcodeproj */,
 				4814D55319E9660200958E33 /* AFNetworking-3.1.0 */,
 			);
@@ -3687,6 +3707,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/External/HockeySDK-iOS-4.1.2/Vendor",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/External/Fabric",
+					"$(PROJECT_DIR)/External/Appsee",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
@@ -3729,6 +3751,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/External/HockeySDK-iOS-4.1.2/Vendor",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/External/Fabric",
+					"$(PROJECT_DIR)/External/Appsee",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
@@ -3857,6 +3881,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/External/HockeySDK-iOS-4.1.2/Vendor",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/External/Fabric",
+					"$(PROJECT_DIR)/External/Appsee",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
