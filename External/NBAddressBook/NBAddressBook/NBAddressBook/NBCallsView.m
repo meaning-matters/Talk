@@ -104,13 +104,14 @@
         int duration = [recent.toDuration intValue];
         switch ([recent.status intValue])
         {
-            case CallStatusMissed:    statusString = NSLocalizedString(@"RCD_MISSED",    @"");  break;
-            case CallStatusFailed:    statusString = NSLocalizedString(@"RCD_FAILED",    @"");  break;
-            case CallStatusDeclined:  statusString = NSLocalizedString(@"RCD_DECLINED",  @"");  break;
-            case CallStatusBusy:      statusString = NSLocalizedString(@"RCD_BUSY",      @"");  break;
-            case CallStatusCancelled: statusString = NSLocalizedString(@"RCD_CANCELLED", @"");  break;
-            case CallStatusCallback:  statusString = NSLocalizedString(@"RCD_CALLBACK",  @"");  break;
-            case CallStatusSuccess:   statusString = [self durationStringForDuration:duration]; break;
+            case CallStatusMissed:       statusString = NSLocalizedString(@"RCD_MISSED",       @""); break;
+            case CallStatusDisconnected: statusString = NSLocalizedString(@"RCD_DISCONNECTED", @""); break;
+            case CallStatusFailed:       statusString = NSLocalizedString(@"RCD_FAILED",       @""); break;
+            case CallStatusDeclined:     statusString = NSLocalizedString(@"RCD_DECLINED",     @""); break;
+            case CallStatusBusy:         statusString = NSLocalizedString(@"RCD_BUSY",         @""); break;
+            case CallStatusCancelled:    statusString = NSLocalizedString(@"RCD_CANCELLED",    @""); break;
+            case CallStatusCallback:     statusString = NSLocalizedString(@"RCD_CALLBACK",     @""); break;
+            case CallStatusSuccess:      statusString = [self durationStringForDuration:duration];   break;
         }
 
         NBAddressBookManager* manager = [NBAddressBookManager sharedManager];

@@ -16,14 +16,15 @@
 
 typedef enum
 {
-    CallStatusMissed    = 0,
-    CallStatusFailed    = 1,
-    CallStatusDeclined  = 2,
-    CallStatusBusy      = 3,
-    CallStatusCancelled = 4,
-    CallStatusCallback  = 5,    // Only callback leg was connected.
-    CallStatusSuccess   = 6,
-    CallStatusNull      = 7,
+    CallStatusMissed       = 0,
+    CallStatusDisconnected = 1, // Also missed!
+    CallStatusFailed       = 2,
+    CallStatusDeclined     = 3,
+    CallStatusBusy         = 4,
+    CallStatusCancelled    = 5,
+    CallStatusCallback     = 6,    // Only callback leg was connected.
+    CallStatusSuccess      = 7,
+    CallStatusNull         = 8,
 } CallStatus;
 
 @interface CallRecordData : NSManagedObject

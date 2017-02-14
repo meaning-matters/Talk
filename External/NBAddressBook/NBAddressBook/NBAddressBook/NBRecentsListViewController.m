@@ -147,7 +147,7 @@ typedef enum
     dataSource = [NSMutableArray array];
     
     // Create the missed calls only predicate
-    missedCallsPredicate   = [NSPredicate predicateWithFormat:@"(status    == %d)", CallStatusMissed];
+    missedCallsPredicate   = [NSPredicate predicateWithFormat:@"(status == %d) OR (status == %d)", CallStatusMissed, CallStatusDisconnected];
     incomingCallsPredicate = [NSPredicate predicateWithFormat:@"(direction == %d)", CallDirectionIncoming];
     outgoingCallsPredicate = [NSPredicate predicateWithFormat:@"(direction == %d)", CallDirectionOutgoing];
 
@@ -466,6 +466,10 @@ typedef enum
         if ([fromRecord[@"hangupCause"] isEqualToString:@"NORMAL_CLEARING"])
         {
             recent.status = @(CallStatusCancelled);
+        }
+        else if ([fromRecord[@"hangupCause"] isEqualToString:@"NO_ROUTE_DESTINATION"])
+        {
+            recent.status = @(CallStatusDisconnected);
         }
         else
         {
@@ -938,10 +942,10 @@ typedef enum
                 // If we have the same contact,
                 // the same unknown number,
                 // or are a missed call same as the last entry
-                if (( [lastEntry.contactId isEqualToString:entry.contactId] ||
-                    ( lastEntry.contactId == nil && entry.contactId == nil && [lastEntry.dialedNumber isEqualToString:entry.dialedNumber])) &&
-                    ( ( [lastEntry.status intValue] == CallStatusMissed && [entry.status intValue] == CallStatusMissed) ||
-                    ( [lastEntry.status intValue] != CallStatusMissed && [entry.status intValue] != CallStatusMissed)))
+                if (([lastEntry.contactId isEqualToString:entry.contactId] ||
+                     (lastEntry.contactId == nil && entry.contactId == nil && [lastEntry.dialedNumber isEqualToString:entry.dialedNumber])) &&
+                    (([self entryIsMissed:lastEntry] && [self entryIsMissed:entry]) ||
+                     (![self entryIsMissed:lastEntry] && ![self entryIsMissed:entry])))
                 {
                     // If the last entry's day is equal to this day
                     if ([calendar isDate:lastEntry.date inSameDayAsDate:entry.date])
@@ -981,6 +985,11 @@ typedef enum
     }
 }
 
+
+- (BOOL)entryIsMissed:(CallRecordData*)entry
+{
+    return ([entry.status intValue] == CallStatusMissed) || ([entry.status intValue] == CallStatusDisconnected);
+}
 
 #pragma mark - Segmented control change
 
@@ -1141,7 +1150,7 @@ typedef enum
     }
 
     cell.imageView.image = [cell.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    if ([latestEntry.status intValue] == CallStatusMissed)
+    if ([self entryIsMissed:latestEntry])
     {
         [cell.imageView setTintColor:[[NBAddressBookManager sharedManager].delegate deleteTintColor]];
     }
@@ -1259,7 +1268,7 @@ typedef enum
         [cell.numberTypeLabel setText:NSLocalizedString(@"LBL_UNKNOWN", @"")];
     }
 
-    if ([callRecord.status intValue] == CallStatusMissed)
+    if ([self entryIsMissed:callRecord])
     {
         cell.numberLabel.textColor     = [[NBAddressBookManager sharedManager].delegate deleteTintColor];
         cell.numberTypeLabel.textColor = [[NBAddressBookManager sharedManager].delegate deleteTintColor];
@@ -1325,7 +1334,7 @@ typedef enum
         [cell.numberTypeLabel setText:NSLocalizedString(@"LBL_UNKNOWN", @"")];
     }
 
-    if ([callRecord.status intValue] == CallStatusMissed)
+    if ([self entryIsMissed:callRecord])
     {
         cell.numberLabel.textColor     = [[NBAddressBookManager sharedManager].delegate deleteTintColor];
         cell.numberTypeLabel.textColor = [[NBAddressBookManager sharedManager].delegate deleteTintColor];
@@ -1398,7 +1407,7 @@ typedef enum
         [cell.numberTypeLabel setText:@"verification"];
     }
 
-    if ([callRecord.status intValue] == CallStatusMissed)
+    if ([self entryIsMissed:callRecord])
     {
         cell.numberLabel.textColor     = [[NBAddressBookManager sharedManager].delegate deleteTintColor];
         cell.numberTypeLabel.textColor = [[NBAddressBookManager sharedManager].delegate deleteTintColor];

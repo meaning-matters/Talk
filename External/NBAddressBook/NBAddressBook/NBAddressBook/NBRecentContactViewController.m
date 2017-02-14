@@ -140,7 +140,7 @@
         if ([PhoneNumber number:recent.dialedNumber isEqualToNumber:cell.cellTextfield.text])
         {
             // If the call was missed, color it dark red
-            if ([recent.status intValue] == CallStatusMissed)
+            if ([recent.status intValue] == CallStatusMissed || [recent.status intValue] == CallStatusDisconnected)
             {
                 [cell.cellTextfield setTextColor:[[NBAddressBookManager sharedManager].delegate deleteTintColor]];
             }

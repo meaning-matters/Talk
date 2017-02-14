@@ -57,6 +57,7 @@
 "RCD_CANCELLED"     = "cancelled";
 "RCD_FAILED"        = "failed";
 "RCD_MISSED"        = "missed";
+"RCD_DISCONNECTED"  = "disconnected";
 "RCD_CALLBACK"      = "callback only";
 "RCD_BUSY"          = "busy";
 "RCD_DECLINED"      = "declined";

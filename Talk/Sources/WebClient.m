@@ -1112,7 +1112,7 @@
     fromDateString = [fromDateString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
     fromDateString = [fromDateString stringByReplacingOccurrencesOfString:@":" withString:@"%3A"];
 
-    [self getPath:[NSString stringWithFormat:@"/users/%@/cdrs?inbound=%@&outbound=%@&verification=%@&fromDateTime=%@&currencyCode=%@&countryCode=%@",
+    [self getPath:[NSString stringWithFormat:@"/users/%@/cdrs?inbound=%@&outbound=%@&verification=%@&fromDateTime=%@&currencyCode=%@&countryCode=%@&hideRetryMs=12000",
                    username,
                    inbound      ? @"true" : @"false",
                    outbound     ? @"true" : @"false",
