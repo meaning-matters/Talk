@@ -435,7 +435,6 @@
 		4865A9E01792C8B70028785F /* NumberPayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* NumberPayCell.m */; };
 		486803D41E5368D700ECFEF3 /* Answers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 486803D21E5368D700ECFEF3 /* Answers.framework */; };
 		486803D51E5368D700ECFEF3 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 486803D31E5368D700ECFEF3 /* Fabric.framework */; };
-		486803D81E53694B00ECFEF3 /* Appsee.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 486803D71E53694B00ECFEF3 /* Appsee.framework */; };
 		486B95261CDE80F2004CFD8A /* DenmarkCityPostcodes.json in Resources */ = {isa = PBXBuildFile; fileRef = 486B95251CDE80F2004CFD8A /* DenmarkCityPostcodes.json */; };
 		486CEF971DEDFCFD00D1E088 /* SignalDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 486CEF961DEDFCFD00D1E088 /* SignalDotView.m */; };
 		486D4A2318F06BC8004699C9 /* CallRatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 486D4A2218F06BC8004699C9 /* CallRatesViewController.m */; };
@@ -1170,7 +1169,6 @@
 		4865A9DE1792C8B70028785F /* NumberPayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberPayCell.m; sourceTree = "<group>"; };
 		486803D21E5368D700ECFEF3 /* Answers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Answers.framework; path = External/Fabric/Answers.framework; sourceTree = SOURCE_ROOT; };
 		486803D31E5368D700ECFEF3 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = External/Fabric/Fabric.framework; sourceTree = SOURCE_ROOT; };
-		486803D71E53694B00ECFEF3 /* Appsee.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Appsee.framework; path = External/Appsee/Appsee.framework; sourceTree = SOURCE_ROOT; };
 		486B95171CDE413A004CFD8A /* Muni-StrCode-Str.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Muni-StrCode-Str.json"; path = "Resources/Muni-StrCode-Str.json"; sourceTree = "<group>"; };
 		486B951E1CDE44E4004CFD8A /* Muni-Post-City.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Muni-Post-City.json"; path = "Resources/Muni-Post-City.json"; sourceTree = "<group>"; };
 		486B951F1CDE44E4004CFD8A /* StrCode-Post-City.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "StrCode-Post-City.json"; path = "Resources/StrCode-Post-City.json"; sourceTree = "<group>"; };
@@ -1527,7 +1525,6 @@
 				48E54B411DDD013B0043E1EC /* CrashReporter.framework in Frameworks */,
 				48E54B3F1DDD00E70043E1EC /* libHockeySDK.a in Frameworks */,
 				4805E5191C5EA7FD00BA1924 /* Photos.framework in Frameworks */,
-				486803D81E53694B00ECFEF3 /* Appsee.framework in Frameworks */,
 				4814D54D19DCCD7C00958E33 /* libresolv.dylib in Frameworks */,
 				488D7759178078CC00099470 /* QuartzCore.framework in Frameworks */,
 				488D77561780773800099470 /* CoreText.framework in Frameworks */,
@@ -2293,14 +2290,6 @@
 			name = Fabric;
 			sourceTree = "<group>";
 		};
-		486803D61E53691100ECFEF3 /* Appsee */ = {
-			isa = PBXGroup;
-			children = (
-				486803D71E53694B00ECFEF3 /* Appsee.framework */,
-			);
-			name = Appsee;
-			sourceTree = "<group>";
-		};
 		488268D1164BCF6300EA58AE /* Networking */ = {
 			isa = PBXGroup;
 			children = (
@@ -2637,7 +2626,6 @@
 		48DD7284169F548600CD7080 /* External */ = {
 			isa = PBXGroup;
 			children = (
-				486803D61E53691100ECFEF3 /* Appsee */,
 				486803CB1E53684000ECFEF3 /* Fabric */,
 				48E54B2B1DDD00BC0043E1EC /* HockeySDK.xcodeproj */,
 				4814D55319E9660200958E33 /* AFNetworking-3.1.0 */,
@@ -3708,7 +3696,6 @@
 					"$(PROJECT_DIR)/External/HockeySDK-iOS-4.1.2/Vendor",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/External/Fabric",
-					"$(PROJECT_DIR)/External/Appsee",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
@@ -3752,7 +3739,6 @@
 					"$(PROJECT_DIR)/External/HockeySDK-iOS-4.1.2/Vendor",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/External/Fabric",
-					"$(PROJECT_DIR)/External/Appsee",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
@@ -3882,7 +3868,6 @@
 					"$(PROJECT_DIR)/External/HockeySDK-iOS-4.1.2/Vendor",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/External/Fabric",
-					"$(PROJECT_DIR)/External/Appsee",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";

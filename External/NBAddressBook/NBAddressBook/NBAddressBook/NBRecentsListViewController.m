@@ -200,7 +200,7 @@ typedef enum
     NSDate* date = [Settings sharedSettings].recentsCheckDate;
 
     //####### TEMP
-    //date = [[NSDate date] dateByAddingTimeInterval:-100000];
+    date = [[NSDate date] dateByAddingTimeInterval:-100000];
 
     [[WebClient sharedClient] retrieveCallRecordsFromDate:date
                                                   inbound:YES
