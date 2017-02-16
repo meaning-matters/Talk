@@ -302,6 +302,9 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
     self.clearsSelectionOnViewWillAppear = YES;
 
+    // This is needed or else UITableViewAutomaticDimension in heightForRowAtIndexPath won't work.
+    self.tableView.estimatedRowHeight = 44.0;
+
     UIBarButtonItem* buttonItem;
     if (self.isNew)
     {
@@ -870,13 +873,13 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     // Can't just use indexPath.section and indexPath.row here, like is done in other view controllers.
     switch (section)
     {
-        case TableSectionName:        row = 1;                                                             break;
-        case TableSectionStatus:      row = 1;                                                             break;
-        case TableSectionProof:       row = 1;                                                             break;
+        case TableSectionName:        row = 0;                                                             break;
+        case TableSectionStatus:      row = indexPath.row;                                                 break;
+        case TableSectionProof:       row = 0;                                                             break;
         case TableSectionDetails:     row = [Common nthBitSet:indexPath.row inValue:self.rowsDetails];     break;
         case TableSectionAddress:     row = [Common nthBitSet:indexPath.row inValue:self.rowsAddress];     break;
         case TableSectionExtraFields: row = [Common nthBitSet:indexPath.row inValue:self.rowsExtraFields]; break;
-        case TableSectionNumbers:     row = 1;                                                             break;
+        case TableSectionNumbers:     row = 0;                                                             break;
     }
 
     return [NSString stringWithFormat:@"Cell-%d:%d", (int)section, (int)row];
@@ -1182,11 +1185,12 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSInteger numberOfRows = 0;
+    BOOL      isRejected   = (self.address.addressStatus == AddressStatusRejectedMask);
     
     switch ([Common nthBitSet:section inValue:self.sections])
     {
         case TableSectionName:        numberOfRows = 1;                                          break;
-        case TableSectionStatus:      numberOfRows = 1;                                          break;
+        case TableSectionStatus:      numberOfRows = isRejected ? 2 : 1;                         break;
         case TableSectionProof:       numberOfRows = [Common bitsSetCount:self.rowsProof];       break;
         case TableSectionDetails:     numberOfRows = [Common bitsSetCount:self.rowsDetails];     break;
         case TableSectionAddress:     numberOfRows = [Common bitsSetCount:self.rowsAddress];     break;
@@ -1195,6 +1199,19 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     }
 
     return numberOfRows;
+}
+
+
+// Setting self.tableView.rowHeight to UITableViewAutomaticDimension will make regular cells to height, so we need
+// this method to make sure the regular cells are 44. (Might be because the app is currently stretched on 4.7" nd 5.5"
+// screens and I'm debugging on 5.5".)
+- (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    switch ([Common nthBitSet:indexPath.section inValue:self.sections])
+    {
+        case TableSectionStatus: return (indexPath.row == 0) ? 44 : UITableViewAutomaticDimension;
+        default:                 return 44;
+    }
 }
 
 
@@ -1365,7 +1382,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                     title = [NSString stringWithFormat:@"%@\n%@", title,
                              @"• Identity: Make sure that the document date, your (company's) name, "
                              @"date & place of birth (or company creation), and registration number, plus the details "
-                             @"of organisation that issued the document, are all clearly visible on the image."];
+                             @"of the organisation that issued the document, are all clearly visible on the image."];
                 }
             }
 
@@ -1680,16 +1697,40 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     NSString*        identifier = [self cellIdentifierForIndexPath:indexPath];
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
-    if (cell == nil)
+
+    if (indexPath.row == 0)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
+        if (cell == nil)
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
 
-        cell.accessoryType  = UITableViewCellAccessoryNone;
-        cell.textLabel.text = NSLocalizedString(@"Status", @"");
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.accessoryType  = UITableViewCellAccessoryNone;
+            cell.textLabel.text = NSLocalizedString(@"Status", @"");
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+
+        cell.detailTextLabel.text = [AddressStatus localizedStringForAddressStatusMask:self.address.addressStatus];
+
+        if (self.address.addressStatus == AddressStatusDisabledMask || self.address.addressStatus == AddressStatusRejectedMask)
+        {
+            cell.detailTextLabel.textColor = [Skinning deleteTintColor];
+        }
     }
+    else
+    {
+        if (cell == nil)
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
 
-    cell.detailTextLabel.text = [AddressStatus localizedStringForAddressStatusMask:self.address.addressStatus];
+            cell.selectionStyle          = UITableViewCellAccessoryNone;
+            cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+            cell.textLabel.numberOfLines = 0;
+            cell.textLabel.font          = [cell.textLabel.font fontWithSize:15];
+            cell.textLabel.textColor     = [Skinning deleteTintColor];
+        }
+
+        cell.textLabel.attributedText = [AddressStatus localizedAttributedRejectionsForAddress:self.address];
+    }
 
     return cell;
 }

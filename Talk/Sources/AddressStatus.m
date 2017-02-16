@@ -272,7 +272,6 @@
         {
             message = NSLocalizedString(@"The verification status of this Address is unknown\n\nPlease check again later.",
                                         @"");
-
             break;
         }
         case AddressStatusStagedMask:
@@ -297,25 +296,16 @@
         {
             message = NSLocalizedString(@"Your Address has been successfully verified. Numbers that are purchased using "
                                         @"this Address will be immediately activated.", @"");
-
             break;
         }
         case AddressStatusRejectedMask:
         {
             message = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal Verified", nil, [NSBundle mainBundle],
                                                         @"Your Address plus the proof image(s) have been "
-                                                        @"checked, but something is not correct yet: \n%@.\n\n"
+                                                        @"checked, but something is not correct yet.\n\n"
                                                         @"Please add a new image or correct the fields and we'll check "
                                                         @"again; you can also create a new Address.",
                                                         @"...");
-            NSMutableString* rejections = [NSMutableString string];
-            for (NSString* rejection in [self rejectionReasonMessagesForMask:address.rejectionReasons])
-            {
-                [rejections appendFormat:@"• %@,\n", rejection];
-            }
-
-            message = [NSString stringWithFormat:message, [rejections substringToIndex:(rejections.length - 2)]];
-
             break;
         }
         case AddressStatusDisabledMask:
@@ -325,12 +315,28 @@
                                         @"please get in touch via Help > Contact Us so we can resolve this issue as "
                                         @"soon as possible.",
                                         @"");
-
             break;
         }
     }
 
     return message;
+}
+
+
++ (NSAttributedString*)localizedAttributedRejectionsForAddress:(AddressData*)address
+{
+    NSMutableString* rejections = [NSMutableString string];
+    for (NSString* rejection in [self rejectionReasonMessagesForMask:address.rejectionReasons])
+    {
+        [rejections appendFormat:@"•\t%@.\n", rejection];
+    }
+
+    NSString*                string = [rejections substringToIndex:(rejections.length - 1)];
+
+    NSMutableParagraphStyle* style  = [[NSMutableParagraphStyle alloc] init];
+    style.headIndent = 29;
+
+    return [[NSAttributedString alloc] initWithString:string attributes:@{NSParagraphStyleAttributeName : style}];
 }
 
 
