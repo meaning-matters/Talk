@@ -596,19 +596,16 @@ typedef enum
 {
     if (number.destination == nil)
     {
-        cell.textLabel.text            = nil;
-        cell.textLabel.attributedText  = [Common strikethroughAttributedString:[Strings destinationString]];
         cell.detailTextLabel.text      = [Strings noneString];
         cell.detailTextLabel.textColor = [Skinning deleteTintColor];
     }
     else
     {
-        cell.textLabel.attributedText  = nil;
-        cell.textLabel.text            = [Strings destinationString];
         cell.detailTextLabel.text      = [number.destination defaultName];
         cell.detailTextLabel.textColor = [Skinning valueColor];
     }
 
+    cell.textLabel.text      = [Strings destinationString];
     cell.textLabel.textColor = [UIColor blackColor];
     cell.selectionStyle      = UITableViewCellSelectionStyleDefault;
     cell.accessoryType       = UITableViewCellAccessoryDisclosureIndicator;
