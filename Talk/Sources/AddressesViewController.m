@@ -479,10 +479,48 @@ static const int EditButtonCellTag = 341152; // Some random value.
         {
             if (address != self.selectedAddress)
             {
-                self.completion(address);
+                if (address.addressStatus == AddressStatusRejectedMask)
+                {
+                    NSString* title;
+                    NSString* message;
+
+                    title   = NSLocalizedStringWithDefaultValue(@"...", nil,
+                                                                [NSBundle mainBundle], @"Address Rejected",
+                                                                @"....\n"
+                                                                @"[iOS alert title size].");
+                    message = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
+                                                                @"This Address was rejected. Make sure you resolve the "
+                                                                @"rejection reasons so we will check it again. Each "
+                                                                @"Number requires a validated Address."
+                                                                @"\n\n%@",
+                                                                @"....\n"
+                                                                @"[iOS alert message size]");
+                    message = [NSString stringWithFormat:message, [Strings addressVerificationPhraseString]];
+                    [BlockAlertView showAlertViewWithTitle:title
+                                                   message:message
+                                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+                    {
+                        self.completion(address);
+
+                        [self.navigationController popViewControllerAnimated:YES];
+                        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                    }
+                                         cancelButtonTitle:[Strings closeString]
+                                         otherButtonTitles:nil];
+                }
+                else
+                {
+                    self.completion(address);
+
+                    [self.navigationController popViewControllerAnimated:YES];
+                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                }
             }
-        
-            [self.navigationController popViewControllerAnimated:YES];
+            else
+            {
+                [self.navigationController popViewControllerAnimated:YES];
+                [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+            }
         }
         else if (address.addressStatus == AddressStatusRejectedMask)
         {
