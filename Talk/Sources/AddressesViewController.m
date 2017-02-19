@@ -483,6 +483,32 @@
         
             [self.navigationController popViewControllerAnimated:YES];
         }
+        else if (address.addressStatus == AddressStatusRejectedMask)
+        {
+            NSString* title;
+            NSString* message;
+
+            title   = NSLocalizedStringWithDefaultValue(@"...", nil,
+                                                        [NSBundle mainBundle], @"Address Rejected",
+                                                        @"....\n"
+                                                        @"[iOS alert title size].");
+            message = NSLocalizedStringWithDefaultValue(@"...", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"This Address was rejected. After you resolve the rejection "
+                                                        @"reasons we will check it again. Then, once verified, "
+                                                        @"you can use it for this Number.\n\n%@",
+                                                        @"....\n"
+                                                        @"[iOS alert message size]");
+            message = [NSString stringWithFormat:message, [Strings addressVerificationPhraseString]];
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+            {
+                [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+            }
+                                 cancelButtonTitle:[Strings closeString]
+                                 otherButtonTitles:nil];
+        }
         else
         {
             NSString* title;
@@ -660,8 +686,11 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     CellDotView* dotView = [CellDotView getFromCell:cell];
     dotView.hidden = ([[AddressUpdatesHandler sharedHandler] addressUpdateWithUuid:address.uuid] == nil);
 
-    cell.badgeCount = address.addressStatus == AddressStatusRejectedMask ||
-                      address.addressStatus == AddressStatusDisabledMask;
+    if (self.completion == nil)
+    {
+        cell.badgeCount = address.addressStatus == AddressStatusRejectedMask ||
+        address.addressStatus == AddressStatusDisabledMask;
+    }
 }
 
 

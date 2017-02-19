@@ -238,7 +238,7 @@ typedef enum
                                                     isoCountryCode:numberIsoCountryCode
                                                           areaCode:areaCode
                                                         numberType:numberTypeMask
-                                                      areAvailable:NO
+                                                      areAvailable:YES
                                                         completion:^(NSPredicate *predicate, NSError *error)
     {
         self.isLoadingAddress = NO;
