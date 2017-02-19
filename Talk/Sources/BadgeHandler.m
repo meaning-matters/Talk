@@ -121,6 +121,7 @@
 
 - (void)update
 {
+    [self updateTabsBadgeCount];
     [self updateMoreBadgeCount];
     [self updateAppBadgeCount];
 }
@@ -142,6 +143,22 @@
     self.isHidingBadges = NO;
 
     [self update];
+}
+
+
+- (void)updateTabsBadgeCount
+{
+    NSEnumerator*     enumerator = [self.viewControllerCounts keyEnumerator];
+    UIViewController* viewController;
+    while ((viewController = [enumerator nextObject]))
+    {
+        if (![self isOnMoreViewController:viewController])
+        {
+            NSUInteger index = [self.tabBarController.viewControllers indexOfObject:viewController.navigationController];
+
+            [self setBadgeCount:[self badgeCountForViewController:viewController] atIndex:index];
+        }
+    }
 }
 
 
