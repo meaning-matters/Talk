@@ -18,6 +18,10 @@
 #import "CellDotView.h"
 #import "AddressUpdatesHandler.h"
 #import "BlockAlertView.h"
+#import "BadgeHandler.h"
+#import "CellBadgeView.h"
+#import "BadgeCell.h"
+
 
 
 @interface AddressesViewController ()
@@ -515,11 +519,11 @@
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"SubtitleCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"SubtitleCell"];
+        cell = [[BadgeCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"SubtitleCell"];
         CellDotView* dotView = [[CellDotView alloc] init];
         [dotView addToCell:cell];
     }
-    
+
     [self configureCell:cell onResultsController:self.fetchedAddressesController atIndexPath:indexPath];
     
     return cell;
@@ -615,7 +619,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 }
 
 
-- (void)configureCell:(UITableViewCell*)cell
+- (void)configureCell:(BadgeCell*)cell
   onResultsController:(NSFetchedResultsController*)controller
           atIndexPath:(NSIndexPath*)indexPath
 {
@@ -655,6 +659,9 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 
     CellDotView* dotView = [CellDotView getFromCell:cell];
     dotView.hidden = ([[AddressUpdatesHandler sharedHandler] addressUpdateWithUuid:address.uuid] == nil);
+
+    cell.badgeCount = address.addressStatus == AddressStatusRejectedMask ||
+                      address.addressStatus == AddressStatusDisabledMask;
 }
 
 

@@ -217,7 +217,8 @@
                  fiscalIdCode:(NSString*)fiscalIdCode
                    streetCode:(NSString*)streetCode
              municipalityCode:(NSString*)municipalityCode
-                        reply:(void (^)(NSError* error))reply;
+                        reply:(void (^)(NSError*  error,
+                                        NSString* addressStatus))reply;
 
 // 11A. PURCHASE NUMBER
 - (void)purchaseNumberForMonths:(NSUInteger)months

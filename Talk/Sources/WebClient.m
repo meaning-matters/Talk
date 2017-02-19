@@ -804,7 +804,8 @@
                  fiscalIdCode:(NSString*)fiscalIdCode
                    streetCode:(NSString*)streetCode
              municipalityCode:(NSString*)municipalityCode
-                        reply:(void (^)(NSError* error))reply;
+                        reply:(void (^)(NSError*  error,
+                                        NSString* addressStatus))reply;
 {
     NSString*            username   = [Settings sharedSettings].webUsername;
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
@@ -833,7 +834,14 @@
        parameters:parameters
             reply:^(NSError* error, id content)
     {
-        reply(error);
+        if (error == nil)
+        {
+            reply(error, content[@"addressStatus"]);
+        }
+        else
+        {
+            reply(error, nil);
+        }
     }];
 }
 

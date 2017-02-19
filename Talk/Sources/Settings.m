@@ -429,6 +429,11 @@ static NSUserDefaults* userDefaults;
 
 - (NSDictionary*)addressUpdates
 {
+    if ([userDefaults objectForKey:AddressUpdatesKey] == nil)
+    {
+        [self setAddressUpdates:@{}];
+    }
+
     return [userDefaults objectForKey:AddressUpdatesKey];
 }
 
@@ -447,7 +452,7 @@ static NSUserDefaults* userDefaults;
 
 - (NSString*)appVersion
 {
-    NSDictionary*   infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSDictionary* infoDictionary = [[NSBundle mainBundle] infoDictionary];
     
     return [infoDictionary objectForKey:@"CFBundleVersion"];
 }
@@ -455,7 +460,7 @@ static NSUserDefaults* userDefaults;
 
 - (NSString*)appDisplayName
 {
-    NSDictionary*   infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSDictionary* infoDictionary = [[NSBundle mainBundle] infoDictionary];
 
     return [infoDictionary objectForKey:@"CFBundleDisplayName"];
 }

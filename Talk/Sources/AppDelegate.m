@@ -250,7 +250,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
                                                                                     predicate:sevenDaysPredicate
                                                                          managedObjectContext:nil];
 
-    NSUInteger count = [[AddressUpdatesHandler sharedHandler] addressUpdatesCount] +
+    NSUInteger count = [[AddressUpdatesHandler sharedHandler] badgeCount] +
                        unconnectedNumbers.count + sevenDaysNumbers.count;
     [[BadgeHandler sharedHandler] setBadgeCount:count forViewController:self.numbersViewController];
 }

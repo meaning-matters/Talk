@@ -471,6 +471,8 @@
 
 - (void)synchronizeAll:(void (^)(NSError* error))completion
 {
+    [self saveManagedObjectContext:nil];
+
     [self synchronizeAddresses:^(NSError* error)
     {
         if (error == nil)
@@ -650,8 +652,18 @@
                 object.fiscalIdCode       = dictionary[@"fiscalIdCode"];
                 object.streetCode         = dictionary[@"streetCode"];
                 object.municipalityCode   = dictionary[@"municipalityCode"];
-                object.addressStatus      = [AddressStatus addressStatusMaskForString:dictionary[@"addressStatus"]];
                 object.rejectionReasons   = [AddressStatus rejectionReasonsMaskForArray:dictionary[@"rejectionReasons"]];
+                if (object.addressStatus != [AddressStatus addressStatusMaskForString:dictionary[@"addressStatus"]])
+                {
+                    object.addressStatus  = [AddressStatus addressStatusMaskForString:dictionary[@"addressStatus"]];
+
+                    [[AddressUpdatesHandler sharedHandler] processChangedAddress:object];
+                }
+
+                if (object.changedValues.count == 0)
+                {
+                    [object.managedObjectContext refreshObject:object mergeChanges:NO];
+                }
 
                 if (loadImages)
                 {
@@ -797,6 +809,11 @@
                 {
                     object.areaName = [Common capitalizedString:areaName];
                 }
+
+                if (object.changedValues.count == 0)
+                {
+                    [object.managedObjectContext refreshObject:object mergeChanges:NO];
+                }
             }
 
             dispatch_async(dispatch_get_main_queue(), ^
@@ -869,12 +886,17 @@
                     return;
                 }
 
-                object.uuid   = dictionary[@"uuid"];
-                object.name   = dictionary[@"name"];
+                object.uuid = dictionary[@"uuid"];
+                object.name = dictionary[@"name"];
 
                 NSDictionary* action = dictionary[@"action"];
                 action = [[WebClient sharedClient] restoreE164InAction:action];
                 object.action = [Common jsonStringWithObject:action];
+
+                if (object.changedValues.count == 0)
+                {
+                    [object.managedObjectContext refreshObject:object mergeChanges:NO];
+                }
             }
 
             dispatch_async(dispatch_get_main_queue(), ^
@@ -937,14 +959,14 @@
                         NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Recording"];
                         [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", uuid]];
 
-                        RecordingData* recording;
-                        recording = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
+                        RecordingData* object;
+                        object = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
                         if (error == nil)
                         {
-                            if (recording == nil)
+                            if (object == nil)
                             {
-                                recording = [NSEntityDescription insertNewObjectForEntityForName:@"Recording"
-                                                                          inManagedObjectContext:self.managedObjectContext];
+                                object = [NSEntityDescription insertNewObjectForEntityForName:@"Recording"
+                                                                        inManagedObjectContext:self.managedObjectContext];
                             }
                         }
                         else
@@ -954,9 +976,14 @@
                             return;
                         }
 
-                        recording.name = name;
+                        object = name;
                         //#### Save file on disk, or even better in the DB (like the proofImage): Change DB: remove URL
-                        // recording.urlString, and add NSData.
+                        // object.urlString, and add NSData.
+                 
+                        if (object.changedValues.count == 0)
+                        {
+                            [object.managedObjectContext refreshObject:object mergeChanges:NO];
+                        }
                     }
                     else
                     {
@@ -1052,6 +1079,11 @@
                 object.uuid = dictionary[@"uuid"];
                 object.e164 = dictionary[@"e164"] ? [@"+" stringByAppendingString:dictionary[@"e164"]] : nil;
                 object.name = dictionary[@"name"];
+
+                if (object.changedValues.count == 0)
+                {
+                    [object.managedObjectContext refreshObject:object mergeChanges:NO];
+                }
             }
 
             dispatch_async(dispatch_get_main_queue(), ^

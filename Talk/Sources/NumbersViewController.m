@@ -376,7 +376,8 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
             cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.text = [Strings addressesString];
-            [CellBadgeView addToCell:cell count:[AddressUpdatesHandler sharedHandler].addressUpdatesCount];
+
+            [CellBadgeView addToCell:cell count:[[AddressUpdatesHandler sharedHandler] badgeCount]];
 
             [Common setImageNamed:@"AddressesTab" ofCell:cell];
             break;

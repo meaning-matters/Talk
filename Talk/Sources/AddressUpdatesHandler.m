@@ -28,103 +28,9 @@ NSString* const AddressUpdatesNotification = @"AddressUpdatesNotification";
     dispatch_once(&onceToken, ^
     {
         sharedInstance = [[AddressUpdatesHandler alloc] init];
-
-        [[NSNotificationCenter defaultCenter] addObserverForName:AppDelegateRemoteNotification
-                                                          object:nil
-                                                           queue:[NSOperationQueue mainQueue]
-                                                      usingBlock:^(NSNotification* note)
-        {
-            if (note.userInfo[@"addressUpdates"] != nil)
-            {
-                [sharedInstance processAddressUpdatesNotificationDictionary:note.userInfo[@"addressUpdates"]];
-            }
-        }];
-        
-        [[NSNotificationCenter defaultCenter] addObserverForName:NSManagedObjectContextDidSaveNotification
-                                                          object:nil
-                                                           queue:[NSOperationQueue mainQueue]
-                                                      usingBlock:^(NSNotification* note)
-        {
-            [sharedInstance processDataUpdatesNotificationDictionary:note.userInfo];
-        }];
     });
 
     return sharedInstance;
-}
-
-
-- (void)processAddressUpdatesNotificationDictionary:(NSDictionary*)dictionary
-{
-    NSMutableDictionary* addressUpdates = [NSMutableDictionary dictionary];
-    NSArray*             addresses      = [[DataManager sharedManager] fetchEntitiesWithName:@"Address"];
-    NSArray*             uuids          = [addresses valueForKey:@"uuid"];
-
-    // Convert to binaray representation.
-    for (NSString* uuid in dictionary)
-    {
-        if ([uuids containsObject:uuid])
-        {
-            NSDictionary*       addressUpdate = dictionary[uuid];
-            AddressStatusMask   addressStatusMask;
-            RejectionReasonMask rejectionReasonsMask;
-
-            addressStatusMask    = [AddressStatus addressStatusMaskForString:addressUpdate[@"addressStatus"]];
-            rejectionReasonsMask = [AddressStatus rejectionReasonsMaskForArray:addressUpdate[@"rejectionReasons"]];
-
-            addressUpdates[uuid] = @{@"addressStatus"    : @(addressStatusMask),
-                                     @"rejectionReasons" : @(rejectionReasonsMask)};
-        }
-        else
-        {
-            NBLog(@"//### Received notification about address that's unknown to app.");
-        }
-    }
-
-    // Settings contains the up-to-date state of address updates seen by user.
-    // The server however only sends updates once, so the new set of updates
-    // received by a notification must be combined with the local set.
-    for (NSString* uuid in [Settings sharedSettings].addressUpdates)
-    {
-        if (addressUpdates[uuid] == nil)
-        {
-            addressUpdates[uuid] = [Settings sharedSettings].addressUpdates[uuid];
-        }
-    }
-
-    [self saveAddressUpdates:addressUpdates];
-}
-
-
-- (void)processDataUpdatesNotificationDictionary:(NSDictionary*)dictionary
-{
-    NSSet*           insertedObjects = dictionary[NSInsertedObjectsKey];
-    NSSet*           updatedObjects  = dictionary[NSUpdatedObjectsKey];
-    NSSet*           deletedObjects  = dictionary[NSDeletedObjectsKey];
-    NSManagedObject* object;
-
-    for (object in [insertedObjects allObjects])
-    {
-        if ([object.entity.name isEqualToString:@"Address"])
-        {
-            [self processChangedAddress:(AddressData*)object];
-        }
-    }
-
-    for (object in [updatedObjects allObjects])
-    {
-        if ([object.entity.name isEqualToString:@"Address"])
-        {
-            [self processChangedAddress:(AddressData*)object];
-        }
-    }
-
-    for (object in [deletedObjects allObjects])
-    {
-        if ([object.entity.name isEqualToString:@"Address"])
-        {
-            [self removeAddressUpdateWithUuid:((AddressData*)object).uuid];
-        }
-    }
 }
 
 
@@ -143,6 +49,11 @@ NSString* const AddressUpdatesNotification = @"AddressUpdatesNotification";
                                          @"rejectionReasons" : @(address.rejectionReasons)};
     }
 
+    if (address.addressStatus == AddressStatusDisabledMask)
+    {
+        addressUpdates[address.uuid] = @{@"addressStatus"    : @(address.addressStatus)};
+    }
+
     [self saveAddressUpdates:addressUpdates];
 }
 
@@ -159,9 +70,39 @@ NSString* const AddressUpdatesNotification = @"AddressUpdatesNotification";
 
 #pragma Public
 
-- (NSUInteger)addressUpdatesCount
+- (NSUInteger)badgeCount
 {
-    return [[Settings sharedSettings].addressUpdates allKeys].count;
+    NSUInteger badgeCount = 0;
+    NSArray* addresses = [[DataManager sharedManager] fetchEntitiesWithName:@"Address"];
+    for (AddressData* address in addresses)
+    {
+        NSDictionary* addressUpdate = [[AddressUpdatesHandler sharedHandler] addressUpdateWithUuid:address.uuid];
+        switch (address.addressStatus)
+        {
+            case AddressStatusNotVerifiedMask:
+            {
+                badgeCount += (addressUpdate == nil) ? 0 : 1;
+                break;
+            }
+            case AddressStatusVerifiedMask:
+            {
+                badgeCount += (addressUpdate == nil) ? 0 : 1;
+                break;
+            }
+            case AddressStatusRejectedMask:
+            {
+                badgeCount++;
+                break;
+            }
+            case AddressStatusDisabledMask:
+            {
+                badgeCount++;
+                break;
+            }
+        }
+    }
+
+    return badgeCount;
 }
 
 

@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class AddressData;
+
 extern NSString* const AddressUpdatesNotification;
 
 
@@ -15,7 +17,9 @@ extern NSString* const AddressUpdatesNotification;
 
 + (AddressUpdatesHandler*)sharedHandler;
 
-- (NSUInteger)addressUpdatesCount;
+- (void)processChangedAddress:(AddressData*)address;
+
+- (NSUInteger)badgeCount;
 
 - (NSDictionary*)addressUpdateWithUuid:(NSString*)uuid;
 

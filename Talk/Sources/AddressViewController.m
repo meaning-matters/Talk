@@ -395,7 +395,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             }
             case AddressStatusRejectedMask:
             {
-                title   = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal Verified", nil, [NSBundle mainBundle],
+                title   = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal Rejected", nil, [NSBundle mainBundle],
                                                             @"Address Is Rejected",
                                                             @"...");
                 message = [AddressStatus localizedMessageForAddress:self.address];
@@ -403,7 +403,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             }
             case AddressStatusDisabledMask:
             {
-                title   = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal Verified", nil, [NSBundle mainBundle],
+                title   = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal Disabled", nil, [NSBundle mainBundle],
                                                             @"Address Is Disabled",
                                                             @"...");
                 message = [AddressStatus localizedMessageForAddress:self.address];
@@ -1062,7 +1062,8 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                                fiscalIdCode:nil
                                                  streetCode:nil
                                            municipalityCode:nil
-                                                      reply:^(NSError *error)
+                                                      reply:^(NSError*  error,
+                                                              NSString* addressStatus)
             {
                 [self handleUploadProofImageError:error];
             }];
@@ -1091,7 +1092,8 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                                fiscalIdCode:nil
                                                  streetCode:nil
                                            municipalityCode:nil
-                                                      reply:^(NSError *error)
+                                                      reply:^(NSError*  error,
+                                                              NSString* addressStatus)
             {
                 [self handleUploadProofImageError:error];
             }];
@@ -2574,12 +2576,20 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                        fiscalIdCode:self.address.fiscalIdCode
                                          streetCode:self.address.streetCode
                                    municipalityCode:self.address.municipalityCode
-                                              reply:^(NSError *error)
+                                              reply:^(NSError*  error,
+                                                      NSString* addressStatus)
     {
         self.isLoading = NO;
 
         if (error == nil)
         {
+            if (self.address.addressStatus != [AddressStatus addressStatusMaskForString:addressStatus])
+            {
+                self.address.addressStatus = [AddressStatus addressStatusMaskForString:addressStatus];
+
+                [[AddressUpdatesHandler sharedHandler] processChangedAddress:self.address];
+            }
+
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
 
             [self.view endEditing:YES];
