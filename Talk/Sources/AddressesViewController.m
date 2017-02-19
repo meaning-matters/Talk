@@ -22,6 +22,7 @@
 #import "CellBadgeView.h"
 #import "BadgeCell.h"
 
+static const int EditButtonCellTag = 341152; // Some random value.
 
 
 @interface AddressesViewController ()
@@ -678,9 +679,14 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
     if (self.completion != nil &&
         (address.addressStatus == AddressStatusStagedMask || address.addressStatus == AddressStatusRejectedMask))
     {
-        UIButton* button = [self addEditButtonWToCell:cell];
+        UIButton* button = [self addEditButtonToCell:cell];
         objc_setAssociatedObject(button, @"AddressKey", address, OBJC_ASSOCIATION_RETAIN);
         [button addTarget:self action:@selector(showAddress:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    else
+    {
+        UIButton* button = [cell viewWithTag:EditButtonCellTag];
+        button.hidden = YES;
     }
 
     CellDotView* dotView = [CellDotView getFromCell:cell];
@@ -715,10 +721,8 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 }
 
 
-- (UIButton*)addEditButtonWToCell:(UITableViewCell*)cell
+- (UIButton*)addEditButtonToCell:(UITableViewCell*)cell
 {
-    static const int ButtonCellTag = 341152; // Some random value.
-
     CGFloat width    = 34.0f;
     CGFloat height   = 17.0f;
     CGFloat trailing = 38.0f;   // Space between right most button and right side of cell.
@@ -728,11 +732,12 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 
     x = cell.frame.size.width - trailing - width;
 
-    UIButton* button = [cell viewWithTag:ButtonCellTag];
+    UIButton* button = [cell viewWithTag:EditButtonCellTag];
     button = (button == nil) ? [UIButton buttonWithType:UIButtonTypeCustom] : button;
 
+    button.hidden          = NO;
     button.frame           = CGRectMake(x, y, width, height);
-    button.tag             = ButtonCellTag;
+    button.tag             = EditButtonCellTag;
     button.titleLabel.font = [UIFont systemFontOfSize:fontSize];
     [button setTitle:NSLocalizedString(@"Edit", @"Edit button title.") forState:UIControlStateNormal];
     [Common styleButton:button];
