@@ -206,7 +206,7 @@
 
     index = [self.tabBarController.viewControllers indexOfObject:viewController.parentViewController];
 
-    return (index > 4) || (index == NSNotFound); // NSNotFound occurs if view controller is on More and is visible.
+    return (index >= 4) || (index == NSNotFound); // NSNotFound occurs if view controller is on More and is visible.
 }
 
 
