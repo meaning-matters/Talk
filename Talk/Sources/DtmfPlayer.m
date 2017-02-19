@@ -12,8 +12,8 @@
 
 @interface DtmfPlayer ()
 {
-    NSMutableDictionary*    audioDataObjects;
-    AVAudioPlayer*          audioPlayer;    // Needed; can't use local, otherwise ARC releases it immediately.
+    NSMutableDictionary* audioDataObjects;
+    AVAudioPlayer*       audioPlayer;    // Needed; can't use local, otherwise ARC releases it immediately.
 }
 
 @end
@@ -54,9 +54,9 @@
 
 - (BOOL)initializeSound:(char)character name:(NSString*)name
 {
-    NSError*    error = nil;
-    NSString*   path = [NSString stringWithFormat:@"/System/Library/Audio/UISounds/dtmf-%@.caf", name];
-    NSData*     data = [NSData dataWithContentsOfFile:path options:NSDataReadingUncached error:&error] ;
+    NSError*  error = nil;
+    NSString* path = [NSString stringWithFormat:@"/System/Library/Audio/UISounds/dtmf-%@.caf", name];
+    NSData*   data = [NSData dataWithContentsOfFile:path options:NSDataReadingUncached error:&error] ;
 
     if (error == nil && data != nil)
     {
@@ -75,8 +75,14 @@
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
     {
-        NSData*     data;
-        NSError*    error = nil;
+        NSData*  data;
+        NSError* error = nil;
+
+        if (audioPlayer.isPlaying)
+        {
+            [audioPlayer stop];
+            audioPlayer = nil;
+        }
 
         data = audioDataObjects[[NSString stringWithFormat:@"%c", character]];
         audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:&error];

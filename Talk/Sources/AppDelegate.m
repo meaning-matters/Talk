@@ -35,6 +35,7 @@
 #import "AddressUpdatesHandler.h"
 #import "WebViewController.h"
 #import "NumberData.h"
+#import "DtmfPlayer.h"
 
 NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification";
 
@@ -112,7 +113,10 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
         // Allow mixing audio from other apps.  By default this is not the case.
         [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
-        
+
+        // Make sure DTMF sounds are loaded.
+        [DtmfPlayer sharedPlayer];
+
         // Add special dial codes, for things like DNS-SRV URL setting, and other features.
         [self addSpecialDialCodes];
 
@@ -375,6 +379,8 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     // Generate viewWillAppear and viewDidAppear to top view controller.
     [self.window.rootViewController beginAppearanceTransition:YES animated:NO];
     [self.window.rootViewController endAppearanceTransition];
+
+    [[AVAudioSession sharedInstance] setActive:YES error:nil];
 
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
@@ -1059,7 +1065,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     url                    = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Welcome" ofType:@"mp3"]];
     welcomePlayer          = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
     welcomePlayer.delegate = self;
-    welcomePlayer.volume   = 0.25;
+    welcomePlayer.volume   = 0.40;
 
     [welcomePlayer play];
 }
