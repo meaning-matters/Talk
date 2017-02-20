@@ -441,7 +441,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
         cell.imageView.image      = [UIImage imageNamed:number.isoCountryCode];
         cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
         cell.textLabel.text       = number.name;
-        if ([number isPending])
+        if (number.isPending)
         {
             cell.detailTextLabel.text = [Strings pendingString];
         }
@@ -453,6 +453,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
         cell.badgeCount  = (number.destination == nil) ? 1 : 0;
         cell.badgeCount += [number isExpiryCritical]   ? 1 : 0;
+        cell.badgeCount += [AddressStatus isVerifiedAddressStatusMask:number.address.addressStatus] ? 0 : 1;
 
         [self addUseButtonWithNumber:number toCell:cell];
     }

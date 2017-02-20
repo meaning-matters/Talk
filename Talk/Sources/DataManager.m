@@ -726,7 +726,7 @@
             {
                 for (NumberData* number in deleteArray)
                 {
-                    if (![number hasExpired] || [number isPending])
+                    if (![number hasExpired] || number.isPending)
                     {
                         [self.managedObjectContext deleteObject:number];
                     }

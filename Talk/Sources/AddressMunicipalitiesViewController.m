@@ -57,7 +57,7 @@
 
 - (id)selectedObject
 {
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"code = %@", self.address.municipalityCode];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"code == %@", self.address.municipalityCode];
 
     return [[self.objectsArray filteredArrayUsingPredicate:predicate] firstObject];
 }

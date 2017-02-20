@@ -51,7 +51,7 @@
 
 - (int16_t)expiryDays
 {
-    if ([self isPending])
+    if (self.isPending)
     {
         return INT16_MAX;   // No expiryDate known yet.
     }

@@ -206,7 +206,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     for (NumberData* number in numbers)
     {
         // Skip pending Numbers.
-        if ([number isPending])
+        if (number.isPending)
         {
             continue;
         }
@@ -240,18 +240,26 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
                                                                                     predicate:unconnectedPredicate
                                                                          managedObjectContext:nil];
 
+    // Because `isPending` is a calculated property, it can't be used in a CoreData fetch and would lead to a crash.
+    // That's why we fetch all Numbers below and then filter that regular array.
     NSCalendar*       calendar           = [NSCalendar currentCalendar];
     NSDateComponents* components         = [NSDateComponents new];  // Below adding to `day` also works around New Year.
     components.day                       = 7;
     NSDate*           sevenDaysDate      = [calendar dateByAddingComponents:components toDate:[NSDate date] options:0];
-    NSPredicate*      sevenDaysPredicate = [NSPredicate predicateWithFormat:@"expiryDate < %@", sevenDaysDate];
-    NSArray*          sevenDaysNumbers   = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
-                                                                                     sortKeys:nil
-                                                                                    predicate:sevenDaysPredicate
-                                                                         managedObjectContext:nil];
+    NSPredicate*      sevenDaysPredicate = [NSPredicate predicateWithFormat:@"(isPending == NO) AND (expiryDate < %@)",
+                                            sevenDaysDate];
+    NSArray*          sevenDaysNumbers   = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"];
+    sevenDaysNumbers                     = [sevenDaysNumbers filteredArrayUsingPredicate:sevenDaysPredicate];
+
+    NSUInteger unverifiedCount = 0;
+    NSArray*   numbers         = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"];
+    for (NumberData* number in numbers)
+    {
+        unverifiedCount += [AddressStatus isVerifiedAddressStatusMask:number.address.addressStatus] ? 0 : 1;
+    }
 
     NSUInteger count = [[AddressUpdatesHandler sharedHandler] badgeCount] +
-                       unconnectedNumbers.count + sevenDaysNumbers.count;
+                       unconnectedNumbers.count + sevenDaysNumbers.count + unverifiedCount;
     [[BadgeHandler sharedHandler] setBadgeCount:count forViewController:self.numbersViewController];
 }
 
@@ -268,7 +276,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     for (NumberData* number in numbers)
     {
         // Skip pending Numbers.
-        if ([number isPending])
+        if (number.isPending)
         {
             continue;
         }

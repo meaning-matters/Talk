@@ -84,8 +84,8 @@ typedef enum
         sections |= TableSectionAddress;
 
         // Optional section.
-        sections |= [number isPending] ? 0 : TableSectionUsage;
-        sections |= [number isPending] ? 0 : TableSectionPeriod;
+        sections |= number.isPending ? 0 : TableSectionUsage;
+        sections |= number.isPending ? 0 : TableSectionPeriod;
         sections |= [IncomingChargesViewController hasIncomingChargesWithNumber:number] ? TableSectionCharges : 0;
 
         // Info Rows
@@ -240,7 +240,7 @@ typedef enum
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    if (![number isPending] && [number hasExpired])
+    if (!number.isPending && [number hasExpired])
     {
         [self.navigationController popViewControllerAnimated:YES];
 
@@ -337,7 +337,7 @@ typedef enum
                                                                                 numberType:numberTypeMask
                                                                                addressType:addressTypeMask
                                                                                  predicate:self.addressesPredicate
-                                                                                isVerified:[number isPending] ? NO : YES
+                                                                                isVerified:number.isPending ? NO : YES
                                                                                 completion:^(AddressData *selectedAddress)
             {
                 if (selectedAddress != number.address)
@@ -543,7 +543,7 @@ typedef enum
 
 - (void)updateInfoE164Cell:(UITableViewCell*)cell
 {
-    if ([number isPending])
+    if (number.isPending)
     {
         cell.detailTextLabel.text      = [Strings pendingString];
         cell.detailTextLabel.textColor = [Skinning tintColor];
@@ -685,7 +685,28 @@ typedef enum
 
 - (void)updateAddressCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
 {
-    cell.detailTextLabel.textColor = number.address ? [Skinning valueColor] : [Skinning placeholderColor];
+    if (number.address != nil)
+    {
+        if ([AddressStatus isVerifiedAddressStatusMask:number.address.addressStatus])
+        {
+            cell.detailTextLabel.textColor = [Skinning valueColor];
+        }
+        else
+        {
+            cell.detailTextLabel.textColor = [Skinning deleteTintColor];
+        }
+    }
+    else
+    {
+        if (number.isPending)
+        {
+            cell.detailTextLabel.textColor = [Skinning placeholderColor];
+        }
+        else
+        {
+            cell.detailTextLabel.textColor = [Skinning deleteTintColor];
+        }
+    }
 
     if (isLoadingAddress)
     {
