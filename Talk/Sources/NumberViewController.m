@@ -356,6 +356,8 @@ typedef enum
                             number.address = selectedAddress;
                             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
                             [self reloadAddressCell];
+
+                            [[AppDelegate appDelegate] updateNumbersBadgeValue];
                         }
                         else
                         {
