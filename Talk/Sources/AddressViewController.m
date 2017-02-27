@@ -2595,7 +2595,14 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             [self.view endEditing:YES];
             if (self.isUpdatable == YES)
             {
-                [self dismissViewControllerAnimated:YES completion:nil];
+                if (self.navigationController.viewControllers.count > 1)
+                {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+                else
+                {
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                }
             }
         }
         else
