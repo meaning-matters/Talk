@@ -65,7 +65,7 @@
         case AddressTypeExtranational:
         {
             return NSLocalizedStringWithDefaultValue(@"AddressType Extranational", nil, [NSBundle mainBundle],
-                                                     @"Extranational",
+                                                     @"Foreign",
                                                      @"Terms used for an address has to be outside a certain country"
                                                      @"(not so good, but shorter, alternative is 'Outside')");
         }
