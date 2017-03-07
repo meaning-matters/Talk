@@ -62,11 +62,14 @@
             // ABAddressBook doesn't guarantee execution of this block on main thread, so we'll force it.
             dispatch_async(dispatch_get_main_queue(), ^
             {
-                [[NSNotificationCenter defaultCenter] postNotificationName:NF_RELOAD_CONTACTS object:nil];
-
                 if (granted)
                 {
+                    // Reloading contacts happens on another thread. To prevent conflicts that may lead to a crash,
+                    // we must first add the company address, and after that request a contacts reload.
+
                     [Common addCompanyToAddressBook:addressBook];
+
+                    [[NSNotificationCenter defaultCenter] postNotificationName:NF_RELOAD_CONTACTS object:nil];
                 }
             });
         });

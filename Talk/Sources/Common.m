@@ -213,7 +213,10 @@ static Common* sharedCommon;
 
     CFErrorRef error = NULL;
     ABAddressBookAddRecord(addressBook, person, &error);
-    ABAddressBookSave(addressBook, &error);
+    if (error == NULL)
+    {
+        ABAddressBookSave(addressBook, &error);
+    }
 
     CFRelease(person);
 }
