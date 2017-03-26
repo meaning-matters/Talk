@@ -33,6 +33,9 @@
 // 0B. GET NUMBER RATES
 - (void)retrieveNumberRates:(void (^)(NSError* error, NSArray* rates))reply;
 
+// OC. GET OPTIONS
+- (void)retrieveOptions:(void (^)(NSError* error, BOOL freeAccount))reply;
+
 // 1A. CREATE/UPDATE ACCOUNT
 - (void)retrieveAccountForReceipt:(NSString*)receipt
                          language:(NSString*)language

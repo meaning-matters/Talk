@@ -25,6 +25,7 @@
 #define NUMBER                  @"Number"
 #define LOAD_PRODUCTS_INTERVAL  (24 * 3600)
 #define ACCOUNT_AMOUNT          1
+#define FREE_ACCOUNT_AMOUNT     0
 
 NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerProductsLoadedNotification";
 
@@ -90,6 +91,7 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
 
 - (void)addProductIdentifiers
 {
+    [self.productIdentifiers addObject:[self productIdentifierForAccountAmount:FREE_ACCOUNT_AMOUNT]];
     [self.productIdentifiers addObject:[self productIdentifierForAccountAmount:ACCOUNT_AMOUNT]];
 
     [self.productIdentifiers addObject:[self productIdentifierForCreditAmount:  1]];
@@ -454,7 +456,7 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
                                                 @"[iOS alert title size - abbreviated: 'Can't Pay'].");
     message = NSLocalizedStringWithDefaultValue(@"Purchase:General ProductLoadFailAlertMessage", nil,
                                                 [NSBundle mainBundle],
-                                                @"Loading iTunes Store products failed: %@\n\nPlease try again later.",
+                                                @"Loading App Store products failed: %@\n\nPlease try again later.",
                                                 @"Alert message: Information could not be loaded over internet.\n"
                                                 @"[iOS alert message size]");
     if (error != nil && error.code != 0)
@@ -842,7 +844,7 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
 }
 
 
-- (void)buyAccount:(void (^)(BOOL success, id object))completion
+- (void)buyAccountForFree:(BOOL)freeAccount completion:(void (^)(BOOL success, id object))completion;
 {
     AnalysticsTrace(@"buyAccount");
 
@@ -853,7 +855,8 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
         return;
     }
 
-    [self buyProductIdentifier:[self productIdentifierForAccountAmount:ACCOUNT_AMOUNT] completion:completion];
+    int amount = freeAccount ? FREE_ACCOUNT_AMOUNT : ACCOUNT_AMOUNT;
+    [self buyProductIdentifier:[self productIdentifierForAccountAmount:amount] completion:completion];
 }
 
 

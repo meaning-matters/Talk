@@ -13,15 +13,22 @@
 #import "Strings.h"
 #import "AppDelegate.h"
 
+@interface GetStartedStartViewController ()
+
+@property (nonatomic, assign) BOOL freeAccount;
+
+@end
 
 @implementation GetStartedStartViewController
 
-- (id)init
+- (instancetype)initWithFreeAccount:(BOOL)freeAccount
 {
     AnalysticsTrace(@"init");
 
     if (self = [super init])
     {
+        self.freeAccount = freeAccount;
+
         self.title = NSLocalizedStringWithDefaultValue(@"GetStartedStart ScreenTitle", nil, [NSBundle mainBundle],
                                                        @"Start",
                                                        @"Title of app screen ...\n"
@@ -45,15 +52,34 @@
                                                              @"...\n"
                                                              @"[1 line large font].");
 
-    self.textView.text = NSLocalizedStringWithDefaultValue(@"GetStartedStart Text", nil, [NSBundle mainBundle],
-                                                           @"Get some credit and add your number, "
-                                                           @"that's all you need, to make calls.\n\n"
-                                                           @"With every call, you'll be called back. "
-                                                           @"When you answer, the other person will be called.\n\n"
-                                                           @"You can install NumberBay on all your iOS devices, and "
-                                                           @"share the credit and phone number(s).",
-                                                           @"....\n"
-                                                           @"[iOS alert title size].");
+    if (self.freeAccount)
+    {
+        self.textView.text = NSLocalizedStringWithDefaultValue(@"GetStartedStart Text", nil, [NSBundle mainBundle],
+                                                               @"Get some free credit and add your mobile number; "
+                                                               @"that's all you need to make calls.\n\n"
+                                                               @"You can buy more credit to get phone numbers in "
+                                                               @"60 countries and over 9,000 cities.\n\n"
+                                                               @"NumberBay uses your real phone, not Wi-Fi/mobile "
+                                                               @"internet calls. Means you can always be reached on the "
+                                                               @"numbers you buy. And to call, internet is used for a "
+                                                               @"second, then your real call starts.",
+                                                               @"....\n"
+                                                               @"[iOS alert title size].");
+    }
+    else
+    {
+        self.textView.text = NSLocalizedStringWithDefaultValue(@"GetStartedStart Text", nil, [NSBundle mainBundle],
+                                                               @"Get some credit and add your mobile number; "
+                                                               @"that's all you need to make calls.\n\n"
+                                                               @"You can buy more credit to get phone numbers in "
+                                                               @"60 countries and over 9,000 cities.\n\n"
+                                                               @"NumberBay uses your real phone, not Wi-Fi/mobile "
+                                                               @"internet calls. Means you can always be reached on the "
+                                                               @"numbers you buy. And to call, internet is used for a "
+                                                               @"second, then your real call starts.",
+                                                               @"....\n"
+                                                               @"[iOS alert title size].");
+    }
 
     [self setButtonTitle];
 }
@@ -95,11 +121,23 @@
 
 - (void)setButtonTitle
 {
-    NSString* title = NSLocalizedStringWithDefaultValue(@"GetStartedStart Button", nil, [NSBundle mainBundle],
-                                                        @"Buy %@ Credit",
-                                                        @"...\n"
-                                                        @"[1 line larger font].");
-    title = [NSString stringWithFormat:title, [[PurchaseManager sharedManager] localizedPriceForAccount]];
+    NSString* title;
+    if (self.freeAccount)
+    {
+        title = NSLocalizedStringWithDefaultValue(@"GetStartedStart Button", nil, [NSBundle mainBundle],
+                                                  @"Get Free Credit",
+                                                  @"...\n"
+                                                  @"[1 line larger font].");
+    }
+    else
+    {
+        title = NSLocalizedStringWithDefaultValue(@"GetStartedStart Button", nil, [NSBundle mainBundle],
+                                                  @"Buy %@ Credit",
+                                                  @"...\n"
+                                                  @"[1 line larger font].");
+        title = [NSString stringWithFormat:title, [[PurchaseManager sharedManager] localizedPriceForAccount]];
+    }
+
     [self.button setTitle:title forState:UIControlStateNormal];
 }
 
@@ -110,7 +148,64 @@
 
     [self setBusy:YES];
 
-    [[PurchaseManager sharedManager] buyAccount:^(BOOL success, id object)
+    [[PurchaseManager sharedManager] restoreAccount:^(BOOL success, id object)
+    {
+        [self setBusy:NO];
+
+        if (success == YES && object != nil)    // Transaction is passed, but we don't need/use that.
+        {
+            AnalysticsTrace(@"restoreAccount_A");
+
+            [self restoreUserData];
+        }
+        else if (success == YES && object == nil)
+        {
+            [self buyAccount];
+        }
+        else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
+        {
+            AnalysticsTrace(@"restoreAccount_C");
+
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        else if (object != nil)
+        {
+            AnalysticsTrace(@"restoreAccount_D");
+
+            NSString* title;
+            NSString* message;
+
+            title   = NSLocalizedStringWithDefaultValue(@"GetStartedRestore FailedRestoreTitle", nil,
+                                                        [NSBundle mainBundle], @"Restore Failed",
+                                                        @"Alert title: An account could not be restored.\n"
+                                                        @"[iOS alert title size].");
+            message = NSLocalizedStringWithDefaultValue(@"GetStartedRestore FailedRestoreMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"You've already become a NumberBay insider earlier. "
+                                                        @"Something went wrong while restoring your account: %@.\n\n"
+                                                        @"Please try again later.",
+                                                        @"Message telling that restoring an account failed\n"
+                                                        @"[iOS alert message size]");
+            message = [NSString stringWithFormat:message, [object localizedDescription]];
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+            {
+                [[AppDelegate appDelegate] resetAll];
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+                                 cancelButtonTitle:[Strings closeString]
+                                 otherButtonTitles:nil];
+        }
+    }];
+}
+
+
+- (void)buyAccount
+{
+    [self setBusy:YES];
+
+    [[PurchaseManager sharedManager] buyAccountForFree:self.freeAccount completion:^(BOOL success, id object)
     {
         [self setBusy:NO];
 
@@ -134,12 +229,12 @@
             NSString* message;
 
             title   = NSLocalizedStringWithDefaultValue(@"GetStarted FailedBuyTitle", nil,
-                                                        [NSBundle mainBundle], @"Buying Credit Failed",
+                                                        [NSBundle mainBundle], @"Getting Credit Failed",
                                                         @"Alert title: Calling credit could not be bought.\n"
                                                         @"[iOS alert title size].");
             message = NSLocalizedStringWithDefaultValue(@"GetStarted FailedBuyMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"Something went wrong while buying your initial credit: %@.\n\n"
+                                                        @"Something went wrong while getting your initial credit: %@.\n\n"
                                                         @"Please try again later.",
                                                         @"Message telling that buying credit failed\n"
                                                         @"[iOS alert message size]");

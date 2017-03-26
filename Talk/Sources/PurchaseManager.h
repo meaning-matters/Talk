@@ -39,7 +39,7 @@ extern NSString* const PurchaseManagerProductsLoadedNotification;
 
 - (float)priceForCreditAmount:(int)amount;
 
-- (void)buyAccount:(void (^)(BOOL success, id object))completion;
+- (void)buyAccountForFree:(BOOL)freeAccount completion:(void (^)(BOOL success, id object))completion;
 
 - (void)restoreAccount:(void (^)(BOOL success, id object))completion;
 

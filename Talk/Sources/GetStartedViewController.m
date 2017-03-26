@@ -16,6 +16,8 @@
 #import "GetStartedStartViewController.h"
 #import "GetStartedRestoreViewController.h"
 #import "NSTimer+Blocks.h"
+#import "WebClient.h"
+#import "NetworkStatus.h"
 
 
 @interface GetStartedViewController ()
@@ -27,6 +29,8 @@
 @property (nonatomic, strong) NSTimer*        timer;
 @property (nonatomic, assign) BOOL            jumpingBack;
 @property (nonatomic, assign) BOOL            showAsIntro;
+@property (nonatomic, assign) BOOL            freeAccount;
+@property (nonatomic, assign) id              observer;
 
 @end
 
@@ -157,6 +161,8 @@
         self.jumpingBack   = (nextPage == 0);
         [self gotoPage:nextPage];
     }];
+
+    [self getFreeAccount];
 }
 
 
@@ -176,6 +182,55 @@
     CGSize size = CGSizeMake(self.scrollView.frame.size.width * self.numberOfPages,
                              self.scrollView.frame.size.height - self.restoreButton.frame.size.height - 20.0f);
     self.scrollView.contentSize = size;
+}
+
+
+- (void)getFreeAccount
+{
+    NetworkStatusReachable reachable = [NetworkStatus sharedStatus].reachableStatus;
+    
+    if (reachable == NetworkStatusReachableWifi || reachable == NetworkStatusReachableCellular)
+    {
+        [[WebClient sharedClient] retrieveOptions:^(NSError* error, BOOL freeAccount)
+        {
+            if (error == nil)
+            {
+                self.freeAccount = freeAccount;
+            }
+            else
+            {
+                NBLog(@"Error getting /options: %@", error);
+            }
+        }];
+    }
+    else if (self.observer == nil)
+    {
+        self.observer = [[NSNotificationCenter defaultCenter] addObserverForName:NetworkStatusReachableNotification
+                                                                     object:nil
+                                                                      queue:[NSOperationQueue mainQueue]
+                                                                 usingBlock:^(NSNotification* notification)
+        {
+            NetworkStatusReachable reachable = [notification.userInfo[@"status"] intValue];
+
+            if (reachable == NetworkStatusReachableWifi || reachable == NetworkStatusReachableCellular)
+            {
+                [[WebClient sharedClient] retrieveOptions:^(NSError* error, BOOL freeAccount)
+                {
+                    if (error == nil)
+                    {
+                        self.freeAccount = freeAccount;
+                    }
+                    else
+                    {
+                        NBLog(@"Error getting /options: %@", error);
+                    }
+                }];
+
+                [[NSNotificationCenter defaultCenter] removeObserver:self.observer];
+                self.observer = nil;
+            }
+        }];
+    }
 }
 
 
@@ -358,7 +413,7 @@
 {
     AnalysticsTrace(@"startAction");
 
-    GetStartedStartViewController* viewController = [[GetStartedStartViewController alloc] init];
+    GetStartedStartViewController* viewController = [[GetStartedStartViewController alloc] initWithFreeAccount:self.freeAccount];
 
     [self.navigationController pushViewController:viewController animated:YES];
 }

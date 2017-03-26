@@ -42,19 +42,18 @@
                                                              @"[1 line large font].");
 
     self.textView.text = NSLocalizedStringWithDefaultValue(@"GetStartedRestore Text", nil, [NSBundle mainBundle],
-                                                           @"To retrieve your initial purchase, "
-                                                           @"iTunes Store login is needed.\n\n"
-                                                           @"Restoring only works with "
-                                                           @"the same iTunes Store account.\n\n"
-                                                           @"Recents and Settings are per device, "
-                                                           @"and can't be restored.\n\n"
-                                                           @"If you use the app on multiple devices, you'll simply "
-                                                           @"be sharing the credit and phone number(s).",
+                                                           @"To find your account, iOS may ask you to sign in with your "
+                                                           @"Apple ID.\n\n"
+                                                           @"Restoring only works with the same Apple ID.\n\n"
+                                                           @"Recents and Settings are per device, and can't be restored.\n\n"
+                                                           @"If you use the app on multiple devices, you'll be sharing "
+                                                           @"your Credit, verified Phones, purchased Numbers, incoming "
+                                                           @"call Destinations, and incoming call history.",
                                                            @"....\n"
                                                            @"[iOS alert title size].");
 
     [self.button setTitle:NSLocalizedStringWithDefaultValue(@"GetStartedRestore Button", nil, [NSBundle mainBundle],
-                                                            @"Restore Credit & Phones",
+                                                            @"Restore Your Account",
                                                             @"...\n"
                                                             @"[1 line larger font].")
                  forState:UIControlStateNormal];
@@ -91,8 +90,8 @@
             message = NSLocalizedStringWithDefaultValue(@"GetStartedRestore NothingToRestoreMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"No initial credit was purchased earlier with your "
-                                                        @"current iTunes Store account.\n\nTap the Start "
-                                                        @"button to buy some initial credit and have your "
+                                                        @"current App Store account (i.e. Apple ID).\n\nTap the Start "
+                                                        @"button to get some initial credit and have your "
                                                         @"number verified.",
                                                         @"Alert message telling there is no account that could be restored.\n"
                                                         @"[iOS alert message size]");
@@ -126,8 +125,7 @@
                                                         @"[iOS alert title size].");
             message = NSLocalizedStringWithDefaultValue(@"GetStartedRestore FailedRestoreMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"Something went wrong while restoring your credit "
-                                                        @"and verified numbers: %@.\n\n"
+                                                        @"Something went wrong while restoring your account: %@.\n\n"
                                                         @"Please try again later.",
                                                         @"Message telling that restoring an account failed\n"
                                                         @"[iOS alert message size]");

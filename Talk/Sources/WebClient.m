@@ -225,6 +225,20 @@
 }
 
 
+// OC. GET OPTIONS
+- (void)retrieveOptions:(void (^)(NSError* error, BOOL freeAccount))reply
+{
+    // Don't call `handleAccount` and get data without needing account.
+
+    [self.webInterface getPath:@"/options"
+                    parameters:nil
+                    reply:^(NSError* error, id content)
+    {
+        reply(error, [content[@"freeAccount"] boolValue]);
+    }];
+}
+
+
 // 1A. CREATE/UPDATE ACCOUNT
 - (void)retrieveAccountForReceipt:(NSString*)receipt
                          language:(NSString*)language

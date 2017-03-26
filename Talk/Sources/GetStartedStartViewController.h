@@ -13,4 +13,6 @@
 
 @interface GetStartedStartViewController : GetStartedActionViewController
 
+- (instancetype)initWithFreeAccount:(BOOL)freeAccount;
+
 @end
