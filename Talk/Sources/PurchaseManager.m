@@ -127,8 +127,11 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
     {
         AnalysticsTrace(@"completeBuyWithSuccess_A");
 
-        self.buyCompletion(success, object);
+        // Need copy and nil, to allow calling `buyAccountForFree` from the completion block of `restoreAccount`.
+        void (^buyCompletion)(BOOL success, id object) = self.buyCompletion;
         self.buyCompletion = nil;
+
+        buyCompletion(success, object);
     }
     else if (success == YES)
     {
