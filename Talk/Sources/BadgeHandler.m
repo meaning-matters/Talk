@@ -119,14 +119,6 @@
 }
 
 
-- (void)update
-{
-    [self updateTabsBadgeCount];
-    [self updateMoreBadgeCount];
-    [self updateAppBadgeCount];
-}
-
-
 - (void)hideBadges
 {
     for (NSUInteger index = 0; index <= 4; index++)
@@ -143,6 +135,25 @@
     self.isHidingBadges = NO;
 
     [self update];
+}
+
+
+- (void)update
+{
+    [self updateTabsBadgeCount];
+    [self updateMoreBadgeCount];
+    [self updateAppBadgeCount];
+}
+
+
+- (void)reset
+{
+    [self showBadges];
+
+    for (UIViewController* viewController in [AppDelegate appDelegate].viewControllers)
+    {
+        [self setBadgeCount:0 forViewController:viewController];
+    }
 }
 
 

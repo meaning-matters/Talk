@@ -25,4 +25,6 @@
 
 - (void)update;
 
+- (void)reset;
+
 @end

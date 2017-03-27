@@ -1048,6 +1048,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     [[DataManager     sharedManager]  removeAll];
     [[Settings        sharedSettings] resetAll];
     [[PurchaseManager sharedManager]  reset];
+    [[BadgeHandler    sharedHandler]  reset];
 
     NSError* error;
     [[NSFileManager defaultManager] removeItemAtURL:[Common audioDirectoryUrl] error:&error];

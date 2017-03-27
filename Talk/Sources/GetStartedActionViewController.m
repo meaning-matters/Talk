@@ -208,6 +208,9 @@
             {
                 AnalysticsTrace(@"restoreUserData_readyWithE164");
 
+                [[AppDelegate appDelegate] updateNumbersBadgeValue];
+                [[AppDelegate appDelegate] refreshLocalNotifications];
+
                 [self readyWithE164:((PhoneData*)phones[0]).e164];
             }
         }
