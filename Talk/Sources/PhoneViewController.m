@@ -19,7 +19,7 @@
 #import "CallerIdData.h"
 #import "DestinationData.h"
 #import "DataManager.h"
-#import "VerifyPhoneViewController.h"
+#import "SeeCodeVerifyPhoneViewController.h"
 
 typedef enum
 {
@@ -535,8 +535,8 @@ typedef enum
         {
             if (isNew == YES)
             {
-                VerifyPhoneViewController* viewController;
-                viewController = [[VerifyPhoneViewController alloc] initWithCompletion:^(PhoneNumber* verifiedPhoneNumber,
+                SeeCodeVerifyPhoneViewController* viewController;
+                viewController = [[SeeCodeVerifyPhoneViewController alloc] initWithCompletion:^(PhoneNumber* verifiedPhoneNumber,
                                                                                          NSString*    uuid)
                 {
                     self.phoneNumber      = verifiedPhoneNumber;

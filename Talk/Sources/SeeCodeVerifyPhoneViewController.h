@@ -1,5 +1,5 @@
 //
-//  VerifyPhoneViewController.h
+//  SeeCodeVerifyPhoneViewController.h
 //  Talk
 //
 //  Created by Cornelis van der Bent on 02/02/14.
@@ -12,7 +12,7 @@
 @class PhoneNumber;
 
 
-@interface VerifyPhoneViewController : UIViewController
+@interface SeeCodeVerifyPhoneViewController : UIViewController
 
 - (instancetype)initWithCompletion:(void (^)(PhoneNumber* verifiedPhoneNumber, NSString* uuid))completion;
 
