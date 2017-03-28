@@ -537,7 +537,7 @@ typedef enum
             {
                 CodeVerifyPhoneViewController* viewController;
                 viewController = [[CodeVerifyPhoneViewController alloc] initWithCompletion:^(PhoneNumber* verifiedPhoneNumber,
-                                                                                         NSString*    uuid)
+                                                                                             NSString*    uuid)
                 {
                     self.phoneNumber      = verifiedPhoneNumber;
                     self.phone.uuid       = uuid;

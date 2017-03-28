@@ -166,7 +166,7 @@
 
                 CodeVerifyPhoneViewController* viewController;
                 viewController = [[CodeVerifyPhoneViewController alloc] initWithCompletion:^(PhoneNumber* verifiedPhoneNumber,
-                                                                                         NSString*    uuid)
+                                                                                             NSString*    uuid)
                 {
                     if (verifiedPhoneNumber != nil)
                     {
