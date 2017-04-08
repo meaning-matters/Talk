@@ -10,32 +10,17 @@
 #import "Common.h"
 #import "LibPhoneNumber.h"
 #import "CountryNames.h"
+#import "Settings.h"
+
+
+@interface PhoneNumber ()
+
+@property (nonatomic, strong) NSString* isoCountryCode;
+
+@end
 
 
 @implementation PhoneNumber
-
-@synthesize isoCountryCode = _isoCountryCode;
-
-static NSString* defaultIsoCountryCode = @"";
-
-
-+ (void)setDefaultIsoCountryCode:(NSString*)isoCountryCode
-{
-    defaultIsoCountryCode = isoCountryCode;
-}
-
-
-+ (NSString*)defaultIsoCountryCode
-{
-    return defaultIsoCountryCode;
-}
-
-
-+ (NSString*)defaultCallCountryCode
-{
-    return [Common callingCodeForCountry:defaultIsoCountryCode];
-}
-
 
 + (NSString*)stripNumber:(NSString*)number
 {
@@ -83,11 +68,11 @@ static NSString* defaultIsoCountryCode = @"";
 {
     _number = [PhoneNumber stripNumber:number];
 
-    _isoCountryCode = [[LibPhoneNumber sharedInstance] isoCountryCodeOfNumber:self.number
-                                                               isoCountryCode:defaultIsoCountryCode];
-    if (_isoCountryCode.length == 0)
+    self.isoCountryCode = [[LibPhoneNumber sharedInstance] isoCountryCodeOfNumber:_number
+                                                                   isoCountryCode:self.isoCountryCode];
+    if (self.isoCountryCode.length == 0)
     {
-        _isoCountryCode = defaultIsoCountryCode;
+        self.isoCountryCode = self.defaultIsoCountryCode;
     }
 }
 
@@ -98,8 +83,8 @@ static NSString* defaultIsoCountryCode = @"";
 {
     if (self = [super init])
     {
-        _isoCountryCode = defaultIsoCountryCode;
-        _number = @"";
+        self.isoCountryCode = self.defaultIsoCountryCode;
+        self.number = @"";
     }
     
     return self;
@@ -110,7 +95,8 @@ static NSString* defaultIsoCountryCode = @"";
 {
     if (self = [super init])
     {
-        self.number = number ? number : @"";
+        self.number                = number ? number : @"";
+        self.defaultIsoCountryCode = [Settings sharedSettings].homeIsoCountryCode;
     }
     
     return self;
@@ -119,10 +105,10 @@ static NSString* defaultIsoCountryCode = @"";
 
 - (instancetype)initWithNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode;
 {
-    if (self = [super init])
+    if (self = [self initWithNumber:number])
     {
-        self.number     = number         ? number         : @"";
-        _isoCountryCode = isoCountryCode ? isoCountryCode : defaultIsoCountryCode;
+        self.isoCountryCode        = (isoCountryCode.length > 0) ? isoCountryCode : self.defaultIsoCountryCode;
+        self.defaultIsoCountryCode = (isoCountryCode.length > 0) ? isoCountryCode : self.defaultIsoCountryCode;
     }
     
     return self;
@@ -133,7 +119,7 @@ static NSString* defaultIsoCountryCode = @"";
 
 - (NSString*)isoCountryCode
 {
-    return (_isoCountryCode.length > 0) ? _isoCountryCode : defaultIsoCountryCode;
+    return (_isoCountryCode.length > 0) ? _isoCountryCode : self.defaultIsoCountryCode;
 }
 
 
@@ -433,11 +419,11 @@ static NSString* defaultIsoCountryCode = @"";
 
 - (NSString*)patchFormat:(NSString*)number
 {
-    if ([_isoCountryCode isEqualToString:@"NL"])
+    if ([self.isoCountryCode isEqualToString:@"NL"])
     {
         return [self patchNlFormat:number];
     }
-    else if ([_isoCountryCode isEqualToString:@"ES"])
+    else if ([self.isoCountryCode isEqualToString:@"ES"])
     {
         return [self patchEsFormat:number];
     }
