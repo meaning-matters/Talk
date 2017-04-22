@@ -53,17 +53,18 @@
 
 // 1B. UPDATE DEVICE INFORMATION
 - (void)updateAccountForLanguage:(NSString*)language
-                 notificationToken:(NSString*)notificationToken
-                 mobileCountryCode:(NSString*)mobileCountryCode
-                 mobileNetworkCode:(NSString*)mobileNetworkCode
-                        deviceName:(NSString*)deviceName
-                          deviceOs:(NSString*)deviceOs
-                       deviceModel:(NSString*)deviceModel
-                        appVersion:(NSString*)appVersion
-                          vendorId:(NSString*)vendorId
-                             reply:(void (^)(NSError*  error,
-                                             NSString* webUsername,
-                                             NSString* webPassword))reply;
+               notificationToken:(NSString*)notificationToken
+               mobileCountryCode:(NSString*)mobileCountryCode
+               mobileNetworkCode:(NSString*)mobileNetworkCode
+                      deviceName:(NSString*)deviceName
+                        deviceOs:(NSString*)deviceOs
+                     deviceModel:(NSString*)deviceModel
+                      appVersion:(NSString*)appVersion
+                        vendorId:(NSString*)vendorId
+                           reply:(void (^)(NSError*  error,
+                                           NSString* webUsername,
+                                           NSString* webPassword,
+                                           NSString* accountId))reply;
 
 // 2A. DO NUMBER VERIFICATION
 - (void)retrievePhoneVerificationCodeForE164:(NSString*)e164

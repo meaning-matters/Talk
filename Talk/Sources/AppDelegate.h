@@ -50,6 +50,7 @@ extern NSString* const AppDelegateRemoteNotification;
 @property (nonatomic, strong) AboutViewController*         aboutViewController;
 
 @property (nonatomic, assign) BOOL                         doCodePhoneVerification; // If NO do voice Phone verification.
+@property (nonatomic, copy) NSString*                      accountId;
 
 
 + (AppDelegate*)appDelegate;

@@ -954,12 +954,15 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
         self.doCodePhoneVerification = YES; // Override, use the old code-on-screen based verfication.
     }];
 
-
-    // DTMF# - switch to the code-based Phone verification.
-    number = [NSString stringWithFormat:@"%d%d%d%d%c", 3, 8, 6, 3, '#'];
+    // ACCOUNT# - switch to the code-based Phone verification.
+    number = [NSString stringWithFormat:@"%d%d%d%d%c", 22, 26, 8, 68, '#'];
     [self.keypadViewController registerSpecialNumber:number action:^(NSString* number)
     {
-        self.doCodePhoneVerification = YES; // Override, use the old code-on-screen based verfication.
+        [BlockAlertView showAlertViewWithTitle:@"Account ID"
+                                       message:(self.accountId == nil) ? @"None" : self.accountId
+                                    completion:nil
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:nil];
     }];
 }
 
@@ -977,12 +980,16 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
                                                deviceModel:[Common deviceModel]
                                                 appVersion:[Settings sharedSettings].appVersion
                                                   vendorId:[[[UIDevice currentDevice] identifierForVendor] UUIDString]
-                                                     reply:^(NSError *error, NSString *webUsername, NSString *webPassword)
+                                                     reply:^(NSError*  error,
+                                                             NSString* webUsername,
+                                                             NSString* webPassword,
+                                                             NSString* accountId)
         {
             if (error == nil)
             {
                 [Settings sharedSettings].webUsername = webUsername;
                 [Settings sharedSettings].webPassword = webPassword;
+                self.accountId                        = accountId;
             }
             else
             {
@@ -1072,6 +1079,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     [[Settings        sharedSettings] resetAll];
     [[PurchaseManager sharedManager]  reset];
     [[BadgeHandler    sharedHandler]  reset];
+    self.accountId = nil;
 
     NSError* error;
     [[NSFileManager defaultManager] removeItemAtURL:[Common audioDirectoryUrl] error:&error];
