@@ -14,7 +14,8 @@
 #import "DataManager.h"
 #import "PurchaseManager.h"
 #import "BlockAlertView.h"
-#import "CodeVerifyPhoneViewController.h"
+#import "VerifyPhoneCodeViewController.h"
+#import "VerifyPhoneVoiceEnterViewController.h"
 #import "PhoneData.h"
 #import "Strings.h"
 #import "Skinning.h"
@@ -164,9 +165,19 @@
             {
                 AnalysticsTrace(@"restoreUserData_no_phones");
 
-                CodeVerifyPhoneViewController* viewController;
-                viewController = [[CodeVerifyPhoneViewController alloc] initWithCompletion:^(PhoneNumber* verifiedPhoneNumber,
-                                                                                             NSString*    uuid)
+                Class class;
+                if ([AppDelegate appDelegate].doCodePhoneVerification)
+                {
+                    class = VerifyPhoneCodeViewController.class;
+                }
+                else
+                {
+                    class = VerifyPhoneVoiceEnterViewController.class;
+                }
+
+                UIViewController* viewController;
+                viewController = [[class alloc] initWithCompletion:^(PhoneNumber* verifiedPhoneNumber,
+                                                                     NSString*    uuid)
                 {
                     if (verifiedPhoneNumber != nil)
                     {

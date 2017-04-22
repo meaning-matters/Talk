@@ -58,7 +58,6 @@
         {
             if ([phoneNumber.isoCountryCode isEqualToString:[Settings sharedSettings].homeIsoCountryCode] == NO)
             {
-                [PhoneNumber setDefaultIsoCountryCode:[Settings sharedSettings].homeIsoCountryCode];
                 phoneNumber = [[PhoneNumber alloc] initWithNumber:phoneNumber.number];
                 [self update];
             }

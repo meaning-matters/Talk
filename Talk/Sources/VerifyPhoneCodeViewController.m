@@ -1,12 +1,12 @@
 //
-//  CodeVerifyPhoneViewController.m
+//  VerifyPhoneCodeViewController.m
 //  Talk
 //
 //  Created by Cornelis van der Bent on 02/02/14.
 //  Copyright (c) 2014 NumberBay Ltd. All rights reserved.
 //
 
-#import "CodeVerifyPhoneViewController.h"
+#import "VerifyPhoneCodeViewController.h"
 #import "BlockAlertView.h"
 #import "Common.h"
 #import "Settings.h"
@@ -17,7 +17,7 @@
 #import "NSTimer+Blocks.h"
 
 
-@interface CodeVerifyPhoneViewController ()
+@interface VerifyPhoneCodeViewController ()
 
 @property (nonatomic, weak) IBOutlet UILabel*                 textLabel;
 @property (nonatomic, weak) IBOutlet UIView*                  step1View;
@@ -44,11 +44,11 @@
 @end
 
 
-@implementation CodeVerifyPhoneViewController
+@implementation VerifyPhoneCodeViewController
 
 - (instancetype)initWithCompletion:(void (^)(PhoneNumber* verifiedPhoneNumber, NSString* uuid))completion
 {
-    if (self = [super initWithNibName:@"CodeVerifyPhoneView" bundle:nil])
+    if (self = [super initWithNibName:@"VerifyPhoneCodeView" bundle:nil])
     {
         self.completion = completion;
     }

@@ -13,10 +13,12 @@
 
 @interface PhoneNumberTextFieldDelegate : NSObject <UITextFieldDelegate>
 
-@property (nonatomic, strong) PhoneNumber*  phoneNumber;
-@property (nonatomic, strong) UITextField*  textField;
+@property (nonatomic, strong) PhoneNumber* phoneNumber;
+@property (nonatomic, strong) UITextField* textField;
 
 
 - (instancetype)initWithTextField:(UITextField*)textField;
+
+- (void)update;
 
 @end

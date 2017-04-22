@@ -49,6 +49,9 @@ extern NSString* const AppDelegateRemoteNotification;
 @property (nonatomic, strong) HelpsViewController*         helpsViewController;
 @property (nonatomic, strong) AboutViewController*         aboutViewController;
 
+@property (nonatomic, assign) BOOL                         doCodePhoneVerification; // If NO do voice Phone verification.
+
+
 + (AppDelegate*)appDelegate;
 
 - (void)resetAll;

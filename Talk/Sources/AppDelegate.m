@@ -81,7 +81,6 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
         [PurchaseManager sharedManager];  // Makes sure the currency locale & code are available early.
 
         // Initialize phone number stuff.
-        [PhoneNumber setDefaultIsoCountryCode:[Settings sharedSettings].homeIsoCountryCode];
         [LibPhoneNumber sharedInstance];  // This loads the JavaScript library.
 
         // Basic UI.
@@ -937,6 +936,18 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     [self.keypadViewController registerSpecialNumber:number action:^(NSString *number)
     {
         [[DataManager sharedManager] handleError:nil];
+    }];
+
+    number = [NSString stringWithFormat:@"%d%d%d%d%c", 8, 6, 4, 23, '#'];
+    [self.keypadViewController registerSpecialNumber:number action:^(NSString* number)
+    {
+        self.doCodePhoneVerification = NO;  // The default after app restart.
+    }];
+
+    number = [NSString stringWithFormat:@"%d%d%d%d%c", 2, 6, 3, 3, '#'];
+    [self.keypadViewController registerSpecialNumber:number action:^(NSString* number)
+    {
+        self.doCodePhoneVerification = YES; // Override, use the old code-on-screen based verfication.
     }];
 }
 

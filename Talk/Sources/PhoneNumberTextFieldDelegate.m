@@ -19,6 +19,9 @@
         self.phoneNumber.number = textField.text;
         
         self.textField          = textField;
+        self.textField.autocorrectionType = UITextAutocorrectionTypeNo;
+        [self.textField setKeyboardType:UIKeyboardTypePhonePad];
+
         [textField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     }
 
@@ -60,10 +63,22 @@
 }
 
 
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
+{
+    return YES;
+}
+
+
 // Not a delegate method.
 - (void)textFieldDidChange:(UITextField*)textField
 {
     textField.text = self.phoneNumber.asYouTypeFormat;
+}
+
+
+- (void)update
+{
+    [self textFieldDidChange:self.textField];
 }
 
 @end

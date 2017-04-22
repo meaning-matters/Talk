@@ -161,7 +161,8 @@
     if (![self.call.phoneNumber isValid] && ![callthruE164 hasPrefix:@"+"] && ![callthruE164 hasPrefix:@"00"])
     {
         // Not (common) international number; prefix it with Home Country calling code.
-        callthruE164 = [@"+" stringByAppendingFormat:@"%@%@", [PhoneNumber defaultCallCountryCode], callthruE164];
+        NSString* callingCode = [Common callingCodeForCountry:[Settings sharedSettings].homeIsoCountryCode];
+        callthruE164 = [@"+" stringByAppendingFormat:@"%@%@", callingCode, callthruE164];
     }
     
     [[WebClient sharedClient] initiateCallbackForCallbackE164:[callbackPhoneNumber e164Format]

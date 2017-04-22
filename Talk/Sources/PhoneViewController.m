@@ -19,7 +19,8 @@
 #import "CallerIdData.h"
 #import "DestinationData.h"
 #import "DataManager.h"
-#import "CodeVerifyPhoneViewController.h"
+#import "VerifyPhoneCodeViewController.h"
+#import "VerifyPhoneVoiceEnterViewController.h"
 
 typedef enum
 {
@@ -431,6 +432,7 @@ typedef enum
     cell.imageView.image = nil;
     if (isNew)
     {
+        cell.textLabel.text            = [Strings numberString];
         cell.detailTextLabel.text      = [Strings requiredString];
         cell.detailTextLabel.textColor = [Skinning placeholderColor];
         cell.selectionStyle            = UITableViewCellSelectionStyleDefault;
@@ -535,9 +537,19 @@ typedef enum
         {
             if (isNew == YES)
             {
-                CodeVerifyPhoneViewController* viewController;
-                viewController = [[CodeVerifyPhoneViewController alloc] initWithCompletion:^(PhoneNumber* verifiedPhoneNumber,
-                                                                                             NSString*    uuid)
+                Class class;
+                if ([AppDelegate appDelegate].doCodePhoneVerification)
+                {
+                    class = VerifyPhoneCodeViewController.class;
+                }
+                else
+                {
+                    class = VerifyPhoneVoiceEnterViewController.class;
+                }
+
+                UIViewController* viewController;
+                viewController = [[class alloc] initWithCompletion:^(PhoneNumber* verifiedPhoneNumber,
+                                                                     NSString*    uuid)
                 {
                     self.phoneNumber      = verifiedPhoneNumber;
                     self.phone.uuid       = uuid;

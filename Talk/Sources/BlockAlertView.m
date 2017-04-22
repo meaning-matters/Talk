@@ -78,9 +78,7 @@
     
     UITextField* textField                 = [alertView textFieldAtIndex:0];
     textField.textAlignment                = NSTextAlignmentCenter;
-    textField.autocorrectionType           = UITextAutocorrectionTypeNo;
     textField.text                         = [phoneNumber asYouTypeFormat]; // Note, can't use this to init a string; can be nil.
-    [textField setKeyboardType:UIKeyboardTypePhonePad];
 
     alertView->_phoneNumberCompletion      = [completion copy];
     alertView.phoneNumberTextFieldDelegate = [[PhoneNumberTextFieldDelegate alloc] initWithTextField:textField];
