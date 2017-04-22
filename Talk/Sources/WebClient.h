@@ -67,11 +67,12 @@
                                            NSString* accountId))reply;
 
 // 2A. DO NUMBER VERIFICATION
-- (void)retrievePhoneVerificationCodeForE164:(NSString*)e164
-                                       reply:(void (^)(NSError*  error,
-                                                       NSString* uuid,
-                                                       BOOL      verified,
-                                                       NSString* code))reply;
+- (void)beginPhoneVerificationForE164:(NSString*)e164 mode:(NSString*)mode
+                                reply:(void (^)(NSError*  error,
+                                                NSString* uuid,
+                                                BOOL      verified,
+                                                NSString* code,
+                                                NSArray*  languages))reply;
 
 // 2B. DO NUMBER VERIFICATION
 - (void)requestPhoneVerificationCallForUuid:(NSString*)uuid reply:(void (^)(NSError* error))reply;

@@ -14,7 +14,7 @@
 #import "DataManager.h"
 #import "PurchaseManager.h"
 #import "BlockAlertView.h"
-#import "VerifyPhoneCodeViewController.h"
+#import "VerifyPhoneDtmfViewController.h"
 #import "VerifyPhoneVoiceEnterViewController.h"
 #import "PhoneData.h"
 #import "Strings.h"
@@ -166,9 +166,9 @@
                 AnalysticsTrace(@"restoreUserData_no_phones");
 
                 Class class;
-                if ([AppDelegate appDelegate].doCodePhoneVerification)
+                if ([AppDelegate appDelegate].doDtmfPhoneVerification)
                 {
-                    class = VerifyPhoneCodeViewController.class;
+                    class = VerifyPhoneDtmfViewController.class;
                 }
                 else
                 {

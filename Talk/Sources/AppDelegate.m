@@ -944,14 +944,14 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     number = [NSString stringWithFormat:@"%d%d%d%d%c", 8, 6, 4, 23, '#'];
     [self.keypadViewController registerSpecialNumber:number action:^(NSString* number)
     {
-        self.doCodePhoneVerification = NO;  // The default after app restart.
+        self.doDtmfPhoneVerification = NO;  // The default after app restart.
     }];
 
     // DTMF# - switch to the code-based Phone verification.
     number = [NSString stringWithFormat:@"%d%d%d%d%c", 3, 8, 6, 3, '#'];
     [self.keypadViewController registerSpecialNumber:number action:^(NSString* number)
     {
-        self.doCodePhoneVerification = YES; // Override, use the old code-on-screen based verfication.
+        self.doDtmfPhoneVerification = YES; // Override, use the old code-on-screen based verfication.
     }];
 
     // ACCOUNT# - switch to the code-based Phone verification.

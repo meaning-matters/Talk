@@ -19,7 +19,7 @@
 #import "CallerIdData.h"
 #import "DestinationData.h"
 #import "DataManager.h"
-#import "VerifyPhoneCodeViewController.h"
+#import "VerifyPhoneDtmfViewController.h"
 #import "VerifyPhoneVoiceEnterViewController.h"
 
 typedef enum
@@ -538,9 +538,9 @@ typedef enum
             if (isNew == YES)
             {
                 Class class;
-                if ([AppDelegate appDelegate].doCodePhoneVerification)
+                if ([AppDelegate appDelegate].doDtmfPhoneVerification)
                 {
-                    class = VerifyPhoneCodeViewController.class;
+                    class = VerifyPhoneDtmfViewController.class;
                 }
                 else
                 {

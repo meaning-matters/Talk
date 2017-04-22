@@ -1,12 +1,12 @@
 //
-//  VerifyPhoneCodeViewController.m
+//  VerifyPhoneDtmfViewController.m
 //  Talk
 //
 //  Created by Cornelis van der Bent on 02/02/14.
 //  Copyright (c) 2014 NumberBay Ltd. All rights reserved.
 //
 
-#import "VerifyPhoneCodeViewController.h"
+#import "VerifyPhoneDtmfViewController.h"
 #import "BlockAlertView.h"
 #import "Common.h"
 #import "Settings.h"
@@ -17,7 +17,7 @@
 #import "NSTimer+Blocks.h"
 
 
-@interface VerifyPhoneCodeViewController ()
+@interface VerifyPhoneDtmfViewController ()
 
 @property (nonatomic, weak) IBOutlet UILabel*                 textLabel;
 @property (nonatomic, weak) IBOutlet UIView*                  step1View;
@@ -44,7 +44,7 @@
 @end
 
 
-@implementation VerifyPhoneCodeViewController
+@implementation VerifyPhoneDtmfViewController
 
 - (instancetype)initWithCompletion:(void (^)(PhoneNumber* verifiedPhoneNumber, NSString* uuid))completion
 {
@@ -150,11 +150,13 @@
         if (cancelled == NO && phoneNumber.number.length > 0)
         {
             // Check if this Phone already exists on the user's account.
-            [[WebClient sharedClient] retrievePhoneVerificationCodeForE164:[phoneNumber e164Format]
-                                                                     reply:^(NSError*  error,
-                                                                             NSString* uuid,    // This UUID ignored.
-                                                                             BOOL      verified,
-                                                                             NSString* code)
+            [[WebClient sharedClient] beginPhoneVerificationForE164:[phoneNumber e164Format]
+                                                               mode:@"dtmf"
+                                                              reply:^(NSError*  error,
+                                                                      NSString* uuid,    // This UUID ignored.
+                                                                      BOOL      verified,
+                                                                      NSString* code,
+                                                                      NSArray*  languages)
             {
                 if (error == nil && verified == NO)
                 {
@@ -218,11 +220,13 @@
             self.codeTimer = nil;
             
             [self.codeActivityIndicator startAnimating];
-            [[WebClient sharedClient] retrievePhoneVerificationCodeForE164:[phoneNumber e164Format]
-                                                                     reply:^(NSError*  error,
-                                                                             NSString* uuid,
-                                                                             BOOL      verified,
-                                                                             NSString* code)
+            [[WebClient sharedClient] beginPhoneVerificationForE164:[phoneNumber e164Format]
+                                                               mode:@"dtmf"
+                                                              reply:^(NSError*  error,
+                                                                      NSString* uuid,
+                                                                      BOOL      verified,
+                                                                      NSString* code,
+                                                                      NSArray*  languages)
             {
                 if (self.isCancelled)
                 {

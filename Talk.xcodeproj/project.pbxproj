@@ -602,8 +602,8 @@
 		48BD8BE81663E7A400F2CB45 /* CallBaseView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48BD8BE71663E7A400F2CB45 /* CallBaseView.xib */; };
 		48C1D3C517D31309004F910D /* ProofImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C1D3C417D31309004F910D /* ProofImageViewController.m */; };
 		48C1D3C617D31309004F910D /* ProofImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C1D3C417D31309004F910D /* ProofImageViewController.m */; };
-		48C431A1189EDFB40008FE01 /* VerifyPhoneCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C431A0189EDFB40008FE01 /* VerifyPhoneCodeViewController.m */; };
-		48C431A2189EDFB40008FE01 /* VerifyPhoneCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C431A0189EDFB40008FE01 /* VerifyPhoneCodeViewController.m */; };
+		48C431A1189EDFB40008FE01 /* VerifyPhoneDtmfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C431A0189EDFB40008FE01 /* VerifyPhoneDtmfViewController.m */; };
+		48C431A2189EDFB40008FE01 /* VerifyPhoneDtmfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C431A0189EDFB40008FE01 /* VerifyPhoneDtmfViewController.m */; };
 		48C431A4189EE0310008FE01 /* VerifyPhoneCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48C431A3189EE0310008FE01 /* VerifyPhoneCodeView.xib */; };
 		48C431A5189EE0310008FE01 /* VerifyPhoneCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48C431A3189EE0310008FE01 /* VerifyPhoneCodeView.xib */; };
 		48C97E9F1893F2BA00174DE9 /* BlockActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C97E9E1893F2BA00174DE9 /* BlockActionSheet.m */; };
@@ -1401,8 +1401,8 @@
 		48BD8BE71663E7A400F2CB45 /* CallBaseView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallBaseView.xib; sourceTree = "<group>"; };
 		48C1D3C317D31308004F910D /* ProofImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProofImageViewController.h; sourceTree = "<group>"; };
 		48C1D3C417D31309004F910D /* ProofImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProofImageViewController.m; sourceTree = "<group>"; };
-		48C4319F189EDFB40008FE01 /* VerifyPhoneCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerifyPhoneCodeViewController.h; sourceTree = "<group>"; };
-		48C431A0189EDFB40008FE01 /* VerifyPhoneCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerifyPhoneCodeViewController.m; sourceTree = "<group>"; };
+		48C4319F189EDFB40008FE01 /* VerifyPhoneDtmfViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerifyPhoneDtmfViewController.h; sourceTree = "<group>"; };
+		48C431A0189EDFB40008FE01 /* VerifyPhoneDtmfViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerifyPhoneDtmfViewController.m; sourceTree = "<group>"; };
 		48C431A3189EE0310008FE01 /* VerifyPhoneCodeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VerifyPhoneCodeView.xib; sourceTree = "<group>"; };
 		48C431A618A8405D0008FE01 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		48C97E9D1893F2BA00174DE9 /* BlockActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockActionSheet.h; sourceTree = "<group>"; };
@@ -2596,8 +2596,8 @@
 				48AF4556164978BE00DFE3D8 /* ShareViewController.m */,
 				484943AB1753C00000E1D5C4 /* ThanksViewController.h */,
 				484943AC1753C00000E1D5C4 /* ThanksViewController.m */,
-				48C4319F189EDFB40008FE01 /* VerifyPhoneCodeViewController.h */,
-				48C431A0189EDFB40008FE01 /* VerifyPhoneCodeViewController.m */,
+				48C4319F189EDFB40008FE01 /* VerifyPhoneDtmfViewController.h */,
+				48C431A0189EDFB40008FE01 /* VerifyPhoneDtmfViewController.m */,
 				487BF3301E98DF5F00A37F04 /* VerifyPhoneVoiceCallViewController.h */,
 				487BF3311E98DF5F00A37F04 /* VerifyPhoneVoiceCallViewController.m */,
 				48EEC7361E8ACBAB006759A3 /* VerifyPhoneVoiceEnterViewController.h */,
@@ -3363,7 +3363,7 @@
 				48B813751AADF9F90019AF77 /* NBValueListTableViewController.m in Sources */,
 				48B813701AADF9B20019AF77 /* NBPersonViewController.m in Sources */,
 				488763F61C8893B300527723 /* BadgeHandler.m in Sources */,
-				48C431A1189EDFB40008FE01 /* VerifyPhoneCodeViewController.m in Sources */,
+				48C431A1189EDFB40008FE01 /* VerifyPhoneDtmfViewController.m in Sources */,
 				485ECBE216525D3600364F08 /* KeypadView.m in Sources */,
 				489765C41BCC4F4800D77FD7 /* WebStatus.m in Sources */,
 				485ECBE61652B9BE00364F08 /* KeypadButton.m in Sources */,
@@ -3512,7 +3512,7 @@
 				48AD95E0164AE582006178E6 /* Skinning.m in Sources */,
 				488268DA164BCF8600EA58AE /* NetworkStatus.m in Sources */,
 				48D3F01F164F9284002041A9 /* CountryNames.m in Sources */,
-				48C431A2189EDFB40008FE01 /* VerifyPhoneCodeViewController.m in Sources */,
+				48C431A2189EDFB40008FE01 /* VerifyPhoneDtmfViewController.m in Sources */,
 				485ECBE316525D3600364F08 /* KeypadView.m in Sources */,
 				485ECBE71652B9BE00364F08 /* KeypadButton.m in Sources */,
 				48D0A6F51654D6D700FA2D98 /* main.mm in Sources */,

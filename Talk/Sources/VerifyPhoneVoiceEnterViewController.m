@@ -404,11 +404,13 @@ typedef enum
          if (cancelled == NO && phoneNumber.number.length > 0)
          {
              // Check if this Phone already exists on the user's account.
-             [[WebClient sharedClient] retrievePhoneVerificationCodeForE164:[phoneNumber e164Format]
-                                                                      reply:^(NSError*  error,
-                                                                              NSString* uuid,    // This UUID ignored.
-                                                                              BOOL      verified,
-                                                                              NSString* code)
+             [[WebClient sharedClient] beginPhoneVerificationForE164:[phoneNumber e164Format]
+                                                                mode:@"voice"
+                                                               reply:^(NSError*  error,
+                                                                       NSString* uuid,    // This UUID ignored.
+                                                                       BOOL      verified,
+                                                                       NSString* code,
+                                                                       NSArray*  languages)
               {
                   if (error == nil && verified == NO)
                   {

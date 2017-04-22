@@ -365,14 +365,15 @@
 
 
 // 2A. GET PHONE VERIFICATION CODE
-- (void)retrievePhoneVerificationCodeForE164:(NSString*)e164
-                                       reply:(void (^)(NSError*  error,
-                                                       NSString* uuid,
-                                                       BOOL      verified,
-                                                       NSString* code))reply
+- (void)beginPhoneVerificationForE164:(NSString*)e164 mode:(NSString*)mode
+                                reply:(void (^)(NSError*  error,
+                                                NSString* uuid,
+                                                BOOL      verified,
+                                                NSString* code,
+                                                NSArray*  languages))reply
 {
     NSString*     username   = [Settings sharedSettings].webUsername;
-    NSDictionary* parameters = @{@"e164" : [e164 substringFromIndex:1]};
+    NSDictionary* parameters = @{@"e164" : [e164 substringFromIndex:1], @"mode" : mode};
 
     [self postPath:[NSString stringWithFormat:@"/users/%@/phones", username]
         parameters:parameters
@@ -380,11 +381,11 @@
     {
         if (error == nil)
         {
-            reply(nil, content[@"uuid"], [content[@"verified"] boolValue], content[@"code"]);
+            reply(nil, content[@"uuid"], [content[@"verified"] boolValue], content[@"code"], content[@"languages"]);
         }
         else
         {
-            reply(error, nil, NO, nil);
+            reply(error, nil, NO, nil, nil);
         }
     }];
 }
