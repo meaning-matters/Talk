@@ -901,6 +901,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
 - (void)addSpecialDialCodes
 {
+    // DNS#SRV - the DNS server prefix.
     NSString* number = [NSString stringWithFormat:@"%d%d%c%d%d", 36, 7, '#', 77, 8];
     [self.keypadViewController registerSpecialNumber:number action:^(NSString *number)
     {
@@ -932,19 +933,30 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
                                  otherButtonTitles:@"Change", @"Reset", nil];
     }];
 
+    // DEL#DB - force deletion of database.
     number = [NSString stringWithFormat:@"%d%d%c%d%d", 33, 5, '#', 3, 2];
     [self.keypadViewController registerSpecialNumber:number action:^(NSString *number)
     {
         [[DataManager sharedManager] handleError:nil];
     }];
 
+    // VOICE# - switch back to the default voice-based Phone verification.
     number = [NSString stringWithFormat:@"%d%d%d%d%c", 8, 6, 4, 23, '#'];
     [self.keypadViewController registerSpecialNumber:number action:^(NSString* number)
     {
         self.doCodePhoneVerification = NO;  // The default after app restart.
     }];
 
-    number = [NSString stringWithFormat:@"%d%d%d%d%c", 2, 6, 3, 3, '#'];
+    // DTMF# - switch to the code-based Phone verification.
+    number = [NSString stringWithFormat:@"%d%d%d%d%c", 3, 8, 6, 3, '#'];
+    [self.keypadViewController registerSpecialNumber:number action:^(NSString* number)
+    {
+        self.doCodePhoneVerification = YES; // Override, use the old code-on-screen based verfication.
+    }];
+
+
+    // DTMF# - switch to the code-based Phone verification.
+    number = [NSString stringWithFormat:@"%d%d%d%d%c", 3, 8, 6, 3, '#'];
     [self.keypadViewController registerSpecialNumber:number action:^(NSString* number)
     {
         self.doCodePhoneVerification = YES; // Override, use the old code-on-screen based verfication.
