@@ -14,6 +14,9 @@
 @interface VerifyPhoneVoiceCallViewController : UITableViewController
 
 - (instancetype)initWithPhoneNumber:(PhoneNumber*)phoneNumber
-                         completion:(void (^)(PhoneNumber* verifiedPhoneNumber, NSString* uuid))completion;
+                               uuid:(NSString*)uuid
+                          languages:(NSArray*)languages
+                         codeLength:(NSUInteger)codeLength
+                         completion:(void (^)(BOOL isVerified))completion;
 
 @end

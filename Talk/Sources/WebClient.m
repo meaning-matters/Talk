@@ -456,6 +456,23 @@
 }
 
 
+// 2F. CHECK VOICE VERIFICATION CODE
+- (void)checkVoiceVerificationCode:(NSString*)code
+                           forUuid:(NSString*)uuid
+                             reply:(void (^)(NSError* error, BOOL isVerified))reply
+{
+    NSString*     username   = [Settings sharedSettings].webUsername;
+    NSDictionary* parameters = @{@"code" : code};
+
+    [self postPath:[NSString stringWithFormat:@"/users/%@/phones/%@/verification", username, uuid]
+          parameters:parameters
+               reply:^(NSError* error, id content)
+    {
+        reply ? reply(error, [content[@"verified"] boolValue]) : 0;
+    }];
+}
+
+
 // 3. GET VERIFIED NUMBER LIST
 - (void)retrievePhones:(void (^)(NSError* error, NSArray* phones))reply;
 {

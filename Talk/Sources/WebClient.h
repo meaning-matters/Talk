@@ -66,7 +66,7 @@
                                            NSString* webPassword,
                                            NSString* accountId))reply;
 
-// 2A. DO NUMBER VERIFICATION
+// 2A. BEGIN NUMBER VERIFICATION
 - (void)beginPhoneVerificationForE164:(NSString*)e164 mode:(NSString*)mode
                                 reply:(void (^)(NSError*  error,
                                                 NSString* uuid,
@@ -74,18 +74,23 @@
                                                 NSString* code,
                                                 NSArray*  languages))reply;
 
-// 2B. DO NUMBER VERIFICATION
+// 2B. REQUEST NUMBER VERIFICATION CALL
 - (void)requestPhoneVerificationCallForUuid:(NSString*)uuid reply:(void (^)(NSError* error))reply;
 
-// 2C. DO NUMBER VERIFICATION
+// 2C. REQUEST NUMBER VERIFICATION STATUS
 - (void)retrievePhoneVerificationStatusForUuid:(NSString*)uuid
                                          reply:(void (^)(NSError* error, BOOL calling, BOOL verified))reply;
 
-// 2D. STOP VERIFICATION
+// 2D. REQUEST NUMBER VERIFICATION CANCEL
 - (void)stopPhoneVerificationForUuid:(NSString*)uuid reply:(void (^)(NSError* error))reply;
 
 // 2E. UPDATE VERIFIED NUMBER
 - (void)updatePhoneVerificationForUuid:(NSString*)uuid name:(NSString*)name reply:(void (^)(NSError* error))reply;
+
+// 2F. CHECK VOICE VERIFICATION CODE
+- (void)checkVoiceVerificationCode:(NSString*)code
+                           forUuid:(NSString*)uuid
+                             reply:(void (^)(NSError* error, BOOL isVerified))reply;
 
 // 3. GET VERIFIED NUMBER LIST
 - (void)retrievePhones:(void (^)(NSError* error, NSArray* phones))reply;
