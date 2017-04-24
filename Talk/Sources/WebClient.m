@@ -370,7 +370,7 @@
                                                 NSString* uuid,
                                                 BOOL      verified,
                                                 NSString* code,
-                                                NSArray*  languages))reply
+                                                NSArray*  languageCodes))reply
 {
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSDictionary* parameters = @{@"e164" : [e164 substringFromIndex:1], @"mode" : mode};
@@ -407,7 +407,7 @@
 
 // 2C. CHECK PHONE VERIFICATION STATUS
 - (void)retrievePhoneVerificationStatusForUuid:(NSString*)uuid
-                                         reply:(void (^)(NSError* error, BOOL calling, BOOL verified))reply
+                                         reply:(void (^)(NSError* error, BOOL isCalling, BOOL isVerified))reply
 {
     NSString* username = [Settings sharedSettings].webUsername;
 

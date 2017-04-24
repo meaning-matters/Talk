@@ -157,4 +157,6 @@
 
 + (NSString*)addressVerificationPhraseString;
 
++ (NSString*)languageString;
+
 @end

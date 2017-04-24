@@ -1783,4 +1783,12 @@ static Common* sharedCommon;
             result[14], result[15]];
 }
 
+
++ (NSString*)languageNameForCode:(NSString*)languageCode
+{
+    NSLocale* locale = [NSLocale localeWithLocaleIdentifier:@"en-gb"];
+
+    return [locale displayNameForKey:NSLocaleIdentifier value:languageCode];
+}
+
 @end

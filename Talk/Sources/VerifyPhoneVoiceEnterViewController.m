@@ -346,13 +346,13 @@ typedef enum
                                                               NSString* uuid,
                                                               BOOL      verified,
                                                               NSString* code,
-                                                              NSArray*  languages)
+                                                              NSArray*  languageCodes)
     {
         self.isLoading = NO;
 
         if (error == nil && verified == NO)
         {
-            completion(uuid, languages, code.length);
+            completion(uuid, languageCodes, code.length);
 
             return;
         }
@@ -392,7 +392,7 @@ typedef enum
     VerifyPhoneVoiceCallViewController* viewController;
     viewController = [[VerifyPhoneVoiceCallViewController alloc] initWithPhoneNumber:self.phoneNumberTextFieldDelegate.phoneNumber
                                                                                 uuid:self.uuid
-                                                                           languages:self.languages
+                                                                           languageCodes:self.languages
                                                                           codeLength:self.codeLength
                                                                           completion:^(BOOL isVerified)
     {

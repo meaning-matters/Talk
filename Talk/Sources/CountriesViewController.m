@@ -15,12 +15,10 @@
 
 
 @interface CountriesViewController ()
-{
-    UITableViewCell* selectedCell;
-}
 
-@property (nonatomic, strong) NSString* isoCountryCode;
-@property (nonatomic, strong) NSString* excludedIsoCountryCode;
+@property (nonatomic, strong) UITableViewCell* selectedCell;
+@property (nonatomic, strong) NSString*        isoCountryCode;
+@property (nonatomic, strong) NSString*        excludedIsoCountryCode;
 @property (nonatomic, copy) void (^completion)(BOOL cancelled, NSString* isoCountryCode);
 
 @end
@@ -134,9 +132,9 @@
     }
     else
     {
-        selectedCell.accessoryType = UITableViewCellAccessoryNone;
+        self.selectedCell.accessoryType = UITableViewCellAccessoryNone;
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
-        selectedCell = cell;
+        self.selectedCell = cell;
 
         if (self.isModal == YES)
         {
@@ -173,7 +171,7 @@
     if ([isoCountryCode isEqualToString:self.isoCountryCode])
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
-        selectedCell = cell;
+        self.selectedCell = cell;
     }
     else
     {

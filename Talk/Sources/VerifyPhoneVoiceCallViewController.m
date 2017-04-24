@@ -7,6 +7,7 @@
 //
 
 #import "VerifyPhoneVoiceCallViewController.h"
+#import "LanguagesViewController.h"
 #import "Common.h"
 #import "WebClient.h"
 #import "BlockAlertView.h"
@@ -32,15 +33,20 @@ typedef enum
 
 @interface VerifyPhoneVoiceCallViewController () <UITextFieldDelegate>
 
-@property (nonatomic, assign) TableSections sections;
-@property (nonatomic, assign) CallRows      callRows;
-@property (nonatomic, strong) PhoneNumber*  phoneNumber;
-@property (nonatomic, strong) NSString*     uuid;
-@property (nonatomic, strong) NSArray*      languages;
-@property (nonatomic, assign) NSUInteger    codeLength;
-@property (nonatomic, copy)   void        (^completion)(BOOL isVerified);
+@property (nonatomic, assign) TableSections    sections;
+@property (nonatomic, assign) CallRows         callRows;
+@property (nonatomic, strong) PhoneNumber*     phoneNumber;
+@property (nonatomic, strong) NSString*        uuid;
+@property (nonatomic, strong) NSArray*         languageCodes;
+@property (nonatomic, strong) NSString*        languageCode;
+@property (nonatomic, assign) NSUInteger       codeLength;
+@property (nonatomic, copy)   void           (^completion)(BOOL isVerified);
 
-@property (nonatomic, assign) BOOL         isCancelled;
+@property (nonatomic, assign) BOOL             isCancelled;
+@property (nonatomic, assign) BOOL             isCalling;
+@property (nonatomic, assign) BOOL             canEnterCode;
+
+@property (nonatomic, strong) UITableViewCell* codeCell;
 
 @end
 
@@ -49,17 +55,18 @@ typedef enum
 
 - (instancetype)initWithPhoneNumber:(PhoneNumber*)phoneNumber
                                uuid:(NSString*)uuid
-                          languages:(NSArray*)languages
+                      languageCodes:(NSArray*)languageCodes
                          codeLength:(NSUInteger)codeLength
                          completion:(void (^)(BOOL isVerified))completion
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
-        self.phoneNumber = phoneNumber;
-        self.uuid        = uuid;
-        self.languages   = (languages.count == 0) ? @[ @"en" ] : languages;
-        self.codeLength  = codeLength;
-        self.completion  = completion;
+        self.phoneNumber   = phoneNumber;
+        self.uuid          = uuid;
+        self.languageCodes = (languageCodes.count == 0) ? @[ @"en", @"nl" ] : languageCodes;
+        self.languageCode  = self.languageCodes[0];
+        self.codeLength    = codeLength;
+        self.completion    = completion;
     }
 
     return self;
@@ -186,13 +193,13 @@ typedef enum
     {
         case TableSectionCall:
         {
-            title = NSLocalizedString(@"Call to hear %d-digit code", @"");
+            title = NSLocalizedString(@"Receive call to hear %d-digit code", @"");
             title = [NSString stringWithFormat:title, self.codeLength];
             break;
         }
         case TableSectionCode:
         {
-            title = NSLocalizedString(@"Enter code you heard", @"");
+            title = NSLocalizedString(@"Enter the code you heard", @"");
             break;
         }
     }
@@ -201,21 +208,51 @@ typedef enum
 }
 
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
+- (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    if ([Common nthBitSet:indexPath.section inValue:self.sections] == TableSectionCall)
+    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+
+    switch ([Common nthBitSet:indexPath.section inValue:self.sections])
     {
-        switch ([Common nthBitSet:indexPath.row inValue:self.callRows])
+        case TableSectionCall:
         {
-            case CallRowLanguage:
+            switch ([Common nthBitSet:indexPath.row inValue:self.callRows])
             {
-                [tableView deselectRowAtIndexPath:indexPath animated:YES];
-                break;
+                case CallRowLanguage:
+                {
+                    LanguagesViewController* viewController;
+                    viewController = [[LanguagesViewController alloc] initWithLanguageCodes:self.languageCodes
+                                                                               languageCode:self.languageCode
+                                                                                 completion:^(NSString *languageCode)
+                                      {
+                                          cell.detailTextLabel.text = [Common languageNameForCode:languageCode];
+                                          self.languageCode = languageCode;
+                                      }];
+
+                    [self.navigationController pushViewController:viewController animated:YES];
+                    break;
+                }
+                case CallRowCallMe:
+                {
+                    break;
+                }
             }
-            case CallRowCallMe:
+
+            break;
+        }
+        case TableSectionCode:
+        {
+            if (self.canEnterCode == NO)
             {
-                break;
+                [self showCantCallAlert];
             }
+            else
+            {
+                UITextField* textField = [cell viewWithTag:CommonTextFieldCellTag];
+                [textField becomeFirstResponder];
+            }
+
+            break;
         }
     }
 }
@@ -243,7 +280,9 @@ typedef enum
         {
             case CallRowLanguage:
             {
-                cell.textLabel.text = NSLocalizedString(@"Language", @"");
+                cell.textLabel.text = [Strings languageString];
+                cell.detailTextLabel.text = [Common languageNameForCode:self.languageCode];
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
             }
             case CallRowCallMe:
@@ -267,22 +306,23 @@ typedef enum
 
 - (UITableViewCell*)codeCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell* cell;
-    NSString*        identifier;
+    NSString* identifier;
 
     identifier = @"CodeCell";
-    cell       = [self.tableView dequeueReusableCellWithIdentifier:identifier];
-    if (cell == nil)
+    self.codeCell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+    if (self.codeCell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
-        cell.textLabel.text = NSLocalizedString(@"Code", @"");
+        self.codeCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
+        self.codeCell.textLabel.text = NSLocalizedString(@"Code", @"");
+        self.codeCell.selectionStyle = UITableViewCellSelectionStyleNone;
 
-        UITextField* textField = [Common addTextFieldToCell:cell delegate:self];
+        UITextField* textField = [Common addTextFieldToCell:self.codeCell delegate:self];
         textField.keyboardType = UIKeyboardTypeNumberPad;
         textField.tag          = CommonTextFieldCellTag;
+        textField.placeholder  = [NSString stringWithFormat:NSLocalizedString(@"%d Digits", @""), self.codeLength];
     }
 
-    return cell;
+    return self.codeCell;
 }
 
 
@@ -300,13 +340,54 @@ typedef enum
                                                      forUuid:self.uuid
                                                        reply:^(NSError *error, BOOL isVerified)
         {
-            [self.navigationController popViewControllerAnimated:YES];
+            self.isLoading = NO;
+            
+            if (isVerified == YES)
+            {
+                [self.navigationController popViewControllerAnimated:YES];
 
-            self.completion(isVerified);
+                self.completion(isVerified);
+            }
+            else
+            {
+                NSString* title;
+                NSString* message;
+
+                title   = NSLocalizedString(@"Incorrect Code", @"");
+                message = NSLocalizedString(@"The code you entered seems to be incorrect.\n\nPlease tap 'Call Me' to "
+                                            @"hear the code again.", @"");
+                [BlockAlertView showAlertViewWithTitle:title
+                                               message:message
+                                            completion:^(BOOL cancelled, NSInteger buttonIndex)
+                {
+                    UITextField* textField = [self.codeCell viewWithTag:CommonTextFieldCellTag];
+                    textField.text = nil;
+                    [textField resignFirstResponder];
+
+                    self.canEnterCode = NO;
+                }
+                                     cancelButtonTitle:[Strings closeString]
+                                     otherButtonTitles:nil];
+            }
         }];
     }
 
     return code.length <= self.codeLength;
+}
+
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField*)textField
+{
+    if (self.canEnterCode == NO)
+    {
+        [self showCantCallAlert];
+
+        return NO;
+    }
+    else
+    {
+        return YES;
+    }
 }
 
 
@@ -320,13 +401,9 @@ typedef enum
 
         return;
     }
-    else
-    {
-        self.isLoading = YES;
-    }
 
     [[WebClient sharedClient] retrievePhoneVerificationStatusForUuid:self.uuid
-                                                               reply:^(NSError* error, BOOL calling, BOOL verified)
+                                                               reply:^(NSError* error, BOOL isCalling, BOOL isVerified)
     {
         if (self.isCancelled)
         {
@@ -337,7 +414,10 @@ typedef enum
 
         if (error == nil)
         {
-            if (calling == YES)
+            self.canEnterCode = isCalling ? NO : self.isCalling;
+            self.isCalling    = isCalling;
+
+            if (isCalling == YES)
             {
                 [Common dispatchAfterInterval:1.0 onMain:^
                 {
@@ -379,28 +459,19 @@ typedef enum
 }
 
 
-- (void)showNumberNotVerifiedAlert
+- (void)showCantCallAlert
 {
     NSString* title;
     NSString* message;
 
-    title   = NSLocalizedStringWithDefaultValue(@"VerifyPhone NotVerifiedTitle", nil,
-                                                [NSBundle mainBundle], @"Number Not Verified",
-                                                @"The user's phone number was not verified.\n"
-                                                @"[iOS alert title size].");
-    message = NSLocalizedStringWithDefaultValue(@"VerifyPhone NotVerifiedMessage", nil,
-                                                [NSBundle mainBundle],
-                                                @"Your number has not been verified.\n\n"
-                                                @"Make sure the phone number is correct, and that you "
-                                                @"entered the correct code.",
-                                                @"Alert message verifying the user's number failed.\n"
-                                                @"[iOS alert message size]");
+    title   = NSLocalizedString(@"Can't Enter Code", @"");
+    message = NSLocalizedString(@"You must first tap 'Call Me' and receive an automatic phone call. During that short "
+                                @"call, you will hear a %d-digit code.\n\nAfter the call has ended, you must enter the "
+                                @"code you heard.", @"");
+    message = [NSString stringWithFormat:message, self.codeLength];
     [BlockAlertView showAlertViewWithTitle:title
                                    message:message
-                                completion:^(BOOL cancelled, NSInteger buttonIndex)
-     {
-       //  [self setStep:3];
-     }
+                                completion:nil
                          cancelButtonTitle:[Strings closeString]
                          otherButtonTitles:nil];
 }
@@ -410,11 +481,17 @@ typedef enum
 
 - (void)callMeAction
 {
+    self.canEnterCode = NO;
+    self.isLoading    = YES;
     [[WebClient sharedClient] requestPhoneVerificationCallForUuid:self.uuid reply:^(NSError* error)
     {
         if (error == nil)
         {
             [self checkCallStatusWithRepeatCount:20];
+        }
+        else
+        {
+            //#### Show error.
         }
     }];
 }

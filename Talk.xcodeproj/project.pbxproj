@@ -657,6 +657,7 @@
 		48E54B471DDD017B0043E1EC /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E54B461DDD017B0043E1EC /* libz.tbd */; };
 		48E54B481DDD02430043E1EC /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 48E54B3A1DDD00BC0043E1EC /* HockeySDKResources.bundle */; };
 		48E61AF21EACF191001E3A93 /* CellButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E61AF11EACF191001E3A93 /* CellButton.m */; };
+		48E61AF51EAD1A33001E3A93 /* LanguagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E61AF41EAD1A33001E3A93 /* LanguagesViewController.m */; };
 		48E61EF51C1A1BB900973FB2 /* AnalyticsTransmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E61EF41C1A1BB900973FB2 /* AnalyticsTransmitter.m */; };
 		48E678C91C9DD89000471BDE /* AddressStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E678C81C9DD89000471BDE /* AddressStatus.m */; };
 		48EC6DC016545B1F00394A4B /* AC@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EC6DBD16545B1F00394A4B /* AC@2x.png */; };
@@ -1466,6 +1467,8 @@
 		48E54B461DDD017B0043E1EC /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		48E61AF01EACF191001E3A93 /* CellButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellButton.h; sourceTree = "<group>"; };
 		48E61AF11EACF191001E3A93 /* CellButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellButton.m; sourceTree = "<group>"; };
+		48E61AF31EAD1A33001E3A93 /* LanguagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguagesViewController.h; sourceTree = "<group>"; };
+		48E61AF41EAD1A33001E3A93 /* LanguagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguagesViewController.m; sourceTree = "<group>"; };
 		48E61EF31C1A1BB900973FB2 /* AnalyticsTransmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsTransmitter.h; sourceTree = "<group>"; };
 		48E61EF41C1A1BB900973FB2 /* AnalyticsTransmitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsTransmitter.m; sourceTree = "<group>"; };
 		48E678C71C9DD89000471BDE /* AddressStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressStatus.h; sourceTree = "<group>"; };
@@ -2609,6 +2612,8 @@
 				48EEC7371E8ACBAB006759A3 /* VerifyPhoneVoiceEnterViewController.m */,
 				4823C0CB1CBA7F3800030FC7 /* WebViewController.h */,
 				4823C0CC1CBA7F3800030FC7 /* WebViewController.m */,
+				48E61AF31EAD1A33001E3A93 /* LanguagesViewController.h */,
+				48E61AF41EAD1A33001E3A93 /* LanguagesViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -3486,6 +3491,7 @@
 				48251B9B187F4A8A00E69C3A /* SettingsViewController.m in Sources */,
 				48A26DE618BE279F00736CCB /* ItemsViewController.m in Sources */,
 				486CEF971DEDFCFD00D1E088 /* SignalDotView.m in Sources */,
+				48E61AF51EAD1A33001E3A93 /* LanguagesViewController.m in Sources */,
 				48B8136F1AADF9B20019AF77 /* NBPersonIMCell.m in Sources */,
 				48B813231AADF79F0019AF77 /* NBRecentContactViewController.m in Sources */,
 				48DDF4C21E3A788900BDEC43 /* AFURLRequestSerialization.m in Sources */,

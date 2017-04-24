@@ -15,7 +15,7 @@
 
 - (instancetype)initWithPhoneNumber:(PhoneNumber*)phoneNumber
                                uuid:(NSString*)uuid
-                          languages:(NSArray*)languages
+                      languageCodes:(NSArray*)languageCodes
                          codeLength:(NSUInteger)codeLength
                          completion:(void (^)(BOOL isVerified))completion;
 

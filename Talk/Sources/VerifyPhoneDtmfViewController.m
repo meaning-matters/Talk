@@ -478,7 +478,7 @@
     }
 
     [[WebClient sharedClient] retrievePhoneVerificationStatusForUuid:self.uuid
-                                                               reply:^(NSError* error, BOOL calling, BOOL verified)
+                                                               reply:^(NSError* error, BOOL isCalling, BOOL isVerified)
     {
         if (self.isCancelled)
         {
@@ -487,13 +487,13 @@
 
         if (error == nil)
         {
-            if (verified == YES)
+            if (isVerified == YES)
             {
                 self.completion(self.phoneNumber, self.uuid);
                 self.completion = nil;
                 [self.navigationController popViewControllerAnimated:YES];
             }
-            else if (calling == NO)
+            else if (isCalling == NO)
             {
                 [self showNumberNotVerifiedAlert];
             }

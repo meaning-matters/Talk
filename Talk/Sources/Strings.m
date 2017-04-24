@@ -653,4 +653,10 @@
     return NSLocalizedString(@"Verification may take a few days.", @"States how long it may to check something.");
 }
 
+
++ (NSString*)languageString
+{
+    return NSLocalizedString(@"Language", @"Term for one language, for example English.");
+}
+
 @end

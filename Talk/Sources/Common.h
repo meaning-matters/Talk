@@ -196,4 +196,6 @@ static const NSInteger CommonUseButton1Tag    = 30469;
 
 + (NSString*)md5ForData:(NSData*)data;
 
++ (NSString*)languageNameForCode:(NSString*)languageCode;
+
 @end

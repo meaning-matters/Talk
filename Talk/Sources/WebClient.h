@@ -72,14 +72,14 @@
                                                 NSString* uuid,
                                                 BOOL      verified,
                                                 NSString* code,
-                                                NSArray*  languages))reply;
+                                                NSArray*  languageCodes))reply;
 
 // 2B. REQUEST NUMBER VERIFICATION CALL
 - (void)requestPhoneVerificationCallForUuid:(NSString*)uuid reply:(void (^)(NSError* error))reply;
 
 // 2C. REQUEST NUMBER VERIFICATION STATUS
 - (void)retrievePhoneVerificationStatusForUuid:(NSString*)uuid
-                                         reply:(void (^)(NSError* error, BOOL calling, BOOL verified))reply;
+                                         reply:(void (^)(NSError* error, BOOL isCalling, BOOL isVerified))reply;
 
 // 2D. REQUEST NUMBER VERIFICATION CANCEL
 - (void)stopPhoneVerificationForUuid:(NSString*)uuid reply:(void (^)(NSError* error))reply;
