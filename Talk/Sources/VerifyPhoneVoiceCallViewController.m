@@ -46,7 +46,7 @@ typedef enum
 @property (nonatomic, assign) BOOL             isCalling;
 @property (nonatomic, assign) BOOL             canEnterCode;
 
-@property (nonatomic, strong) UITableViewCell* codeCell;
+@property (nonatomic, strong) UITextField*     codeTextField;
 
 @end
 
@@ -248,8 +248,7 @@ typedef enum
             }
             else
             {
-                UITextField* textField = [cell viewWithTag:CommonTextFieldCellTag];
-                [textField becomeFirstResponder];
+                [self.codeTextField becomeFirstResponder];
             }
 
             break;
@@ -306,23 +305,23 @@ typedef enum
 
 - (UITableViewCell*)codeCellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NSString* identifier;
+    UITableViewCell* cell;
+    NSString*        identifier;
 
-    identifier = @"CodeCell";
-    self.codeCell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
-    if (self.codeCell == nil)
+    identifier = @"cell";
+    cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+    if (cell == nil)
     {
-        self.codeCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
-        self.codeCell.textLabel.text = NSLocalizedString(@"Code", @"");
-        self.codeCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
+        cell.textLabel.text = NSLocalizedString(@"Code", @"");
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
-        UITextField* textField = [Common addTextFieldToCell:self.codeCell delegate:self];
-        textField.keyboardType = UIKeyboardTypeNumberPad;
-        textField.tag          = CommonTextFieldCellTag;
-        textField.placeholder  = [NSString stringWithFormat:NSLocalizedString(@"%d Digits", @""), self.codeLength];
+        self.codeTextField = [Common addTextFieldToCell:cell delegate:self];
+        self.codeTextField.keyboardType = UIKeyboardTypeNumberPad;
+        self.codeTextField.placeholder  = [NSString stringWithFormat:NSLocalizedString(@"%d Digits", @""), self.codeLength];
     }
 
-    return self.codeCell;
+    return cell;
 }
 
 
@@ -331,6 +330,15 @@ typedef enum
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string
 {
     NSString* code = [textField.text stringByReplacingCharactersInRange:range withString:string];
+
+    if (code.length <= self.codeLength)
+    {
+        textField.text = code;
+    }
+    else
+    {
+        return NO;
+    }
 
     if (code.length == self.codeLength)
     {
@@ -360,9 +368,12 @@ typedef enum
                                                message:message
                                             completion:^(BOOL cancelled, NSInteger buttonIndex)
                 {
-                    UITextField* textField = [self.codeCell viewWithTag:CommonTextFieldCellTag];
-                    textField.text = nil;
-                    [textField resignFirstResponder];
+                    self.codeTextField.text = nil;
+
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                    {
+                        [textField resignFirstResponder];
+                    });
 
                     self.canEnterCode = NO;
                 }
@@ -372,7 +383,7 @@ typedef enum
         }];
     }
 
-    return code.length <= self.codeLength;
+    return NO;
 }
 
 
@@ -416,6 +427,11 @@ typedef enum
         {
             self.canEnterCode = isCalling ? NO : self.isCalling;
             self.isCalling    = isCalling;
+
+            if (self.canEnterCode == YES)
+            {
+                [self.codeTextField becomeFirstResponder];
+            }
 
             if (isCalling == YES)
             {
