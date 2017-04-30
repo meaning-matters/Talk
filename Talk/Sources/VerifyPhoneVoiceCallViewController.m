@@ -319,7 +319,7 @@ typedef enum
 
         self.codeTextField = [Common addTextFieldToCell:cell delegate:self];
         self.codeTextField.keyboardType = UIKeyboardTypeNumberPad;
-        self.codeTextField.placeholder  = [NSString stringWithFormat:NSLocalizedString(@"%d Digits", @""), self.codeLength];
+        self.codeTextField.placeholder  = [NSString stringWithFormat:NSLocalizedString(@"%d digits", @""), self.codeLength];
     }
 
     return cell;
@@ -410,7 +410,7 @@ typedef enum
 
 - (NSString*)callMeTitle
 {
-    return NSLocalizedString(@"Call Me to Hear Code", @"");
+    return NSLocalizedString(@"Call Me", @"");
 }
 
 
