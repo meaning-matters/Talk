@@ -342,7 +342,9 @@ typedef enum
             
             if (isVerified == YES)
             {
-                [self.navigationController popViewControllerAnimated:YES];
+                NSUInteger        index               = self.navigationController.viewControllers.count - 2 - 1;
+                UIViewController* phoneViewController = self.navigationController.viewControllers[index];
+                [self.navigationController popToViewController:phoneViewController animated:YES];
 
                 self.completion(isVerified);
             }

@@ -430,7 +430,7 @@ typedef enum
 
     cell.textLabel.text  = [Common capitalizedString:[self.phoneNumber typeString]];
     cell.imageView.image = nil;
-    if (isNew)
+    if (isNew && !self.phoneNumber.isValid)
     {
         cell.textLabel.text            = [Strings numberString];
         cell.detailTextLabel.text      = [Strings requiredString];
@@ -535,7 +535,7 @@ typedef enum
     {
         case TableSectionE164:
         {
-            if (isNew == YES)
+            if (isNew == YES && !self.phoneNumber.isValid)
             {
                 Class class;
                 if ([AppDelegate appDelegate].doDtmfPhoneVerification)
@@ -557,8 +557,11 @@ typedef enum
 
                     if (verifiedPhoneNumber != nil)
                     {
-                        cell.detailTextLabel.text      = [self.phoneNumber internationalFormat];
-                        cell.detailTextLabel.textColor = [UIColor blackColor];
+                        cell.detailTextLabel.text = nil;
+                        NumberLabel* numberLabel  = [Common addNumberLabelToCell:cell];
+                        numberLabel.text          = [self.phoneNumber internationalFormat];
+                        cell.selectionStyle       = UITableViewCellSelectionStyleNone;
+                        cell.accessoryType        = UITableViewCellAccessoryNone;
                     }
                     else
                     {
