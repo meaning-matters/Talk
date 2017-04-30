@@ -83,8 +83,9 @@
 {
     if (self = [super init])
     {
-        self.isoCountryCode = self.defaultIsoCountryCode;
-        self.number = @"";
+        self.defaultIsoCountryCode = [Settings sharedSettings].homeIsoCountryCode;
+        self.isoCountryCode        = self.defaultIsoCountryCode;
+        self.number                = @"";
     }
     
     return self;
