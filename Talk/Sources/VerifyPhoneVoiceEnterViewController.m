@@ -308,28 +308,27 @@ typedef enum
 
 - (void)willMoveToParentViewController:(UIViewController*)parent
 {
+    // We get here when user pops this view via navigation controller.
     if (parent == nil && self.completion != nil)
     {
-        // We get here when user pops this view via navigation controller.
-        self.isCancelled = YES;
-
-        if (self.uuid != nil)
-        {
-            [[WebClient sharedClient] cancelAllRetrievePhoneVerificationCode];
-            [[WebClient sharedClient] cancelAllRetrievePhoneVerificationStatusForUuid:self.uuid];
-            [[WebClient sharedClient] cancelAllRequestPhoneVerificationCallForUuid:self.uuid];
-            if ([self.phoneNumberTextFieldDelegate.phoneNumber isValid] == YES)
-            {
-                [[WebClient sharedClient] stopPhoneVerificationForUuid:self.uuid reply:nil];
-            }
-        }
-
-        self.completion(nil, nil);
+        [self cancel];
     }
 }
 
 
 #pragma mark - Helpers
+
+- (void)cancel
+{
+    self.isCancelled = YES;
+
+    [[WebClient sharedClient] cancelAllRetrievePhoneVerificationCode];
+    if (self.uuid != nil)
+    {
+        [[WebClient sharedClient] stopPhoneVerificationForUuid:self.uuid reply:nil];
+    }
+}
+
 
 - (void)getVerificationData:(void (^)(NSString* uuid, NSArray* languages, NSUInteger codeLength))completion
 {
@@ -411,6 +410,10 @@ typedef enum
 - (void)cancelAction
 {
     self.completion = nil;
+
+    [self cancel];
+
+    [self.phoneNumberTextFieldDelegate.textField resignFirstResponder];
 
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }

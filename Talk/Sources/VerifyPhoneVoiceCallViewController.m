@@ -92,23 +92,10 @@ typedef enum
 
 - (void)willMoveToParentViewController:(UIViewController*)parent
 {
-    if (parent == nil && self.completion != nil)
+    // We get here when user pops this view via navigation controller.
+    if (parent == nil && self.isLoading)
     {
-        // We get here when user pops this view via navigation controller.
-        self.isCancelled = YES;
-
-        if (self.uuid != nil)
-        {
-            [[WebClient sharedClient] cancelAllRetrievePhoneVerificationCode];
-            [[WebClient sharedClient] cancelAllRetrievePhoneVerificationStatusForUuid:self.uuid];
-            [[WebClient sharedClient] cancelAllRequestPhoneVerificationCallForUuid:self.uuid];
-            if ([self.phoneNumber isValid] == YES)
-            {
-                [[WebClient sharedClient] stopPhoneVerificationForUuid:self.uuid reply:nil];
-            }
-        }
-
-      //  self.completion(NO);
+        [self cancel];
     }
 }
 
@@ -408,6 +395,20 @@ typedef enum
 
 #pragma mark - Helpers
 
+- (void)cancel
+{
+    self.isCancelled = YES;
+
+    if (self.uuid != nil)
+    {
+        [[WebClient sharedClient] cancelAllRequestPhoneVerificationCallForUuid:self.uuid];
+        [[WebClient sharedClient] cancelAllRetrievePhoneVerificationStatusForUuid:self.uuid];
+        [[WebClient sharedClient] cancelAllCheckVoiceVerificationCodeForUuid:self.uuid];
+        [[WebClient sharedClient] stopPhoneVerificationForUuid:self.uuid reply:nil];
+    }
+}
+
+
 - (NSString*)callMeTitle
 {
     return NSLocalizedString(@"Call Me", @"");
@@ -531,8 +532,11 @@ typedef enum
 
 - (void)cancelAction
 {
-    self.isCancelled = YES;
     self.completion  = nil;
+
+    [self.codeTextField resignFirstResponder];
+
+    [self cancel];
 
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }

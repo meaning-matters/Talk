@@ -1581,6 +1581,17 @@
 }
 
 
+// 2F.
+- (void)cancelAllCheckVoiceVerificationCodeForUuid:(NSString*)uuid;
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodPost
+                                                  path:[NSString stringWithFormat:@"/users/%@/phones/%@/verification",
+                                                        username, uuid]];
+}
+
+
 // 3.
 - (void)cancelAllRetrievePhonesList
 {

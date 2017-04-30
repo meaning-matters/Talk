@@ -391,6 +391,9 @@
 // 2E.
 - (void)cancelAllUpdatePhoneVerificationForUuid:(NSString*)uuid;
 
+// 2F.
+- (void)cancelAllCheckVoiceVerificationCodeForUuid:(NSString*)uuid;
+
 // 3.
 - (void)cancelAllRetrievePhonesList;
 
