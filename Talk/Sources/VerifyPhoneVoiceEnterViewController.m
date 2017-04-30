@@ -103,14 +103,19 @@ typedef enum
     {
         [textField resignFirstResponder];
 
-        [self getVerificationData:^(NSString* uuid, NSArray* languages, NSUInteger codeLength)
+        // Add delay to prevent a ghost keybpard to appear briefly in case of error when the alert is closed and the
+        // view is dismissed.
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
         {
-            self.uuid       = uuid;
-            self.languages  = languages;
-            self.codeLength = codeLength;
+            [self getVerificationData:^(NSString* uuid, NSArray* languages, NSUInteger codeLength)
+            {
+                self.uuid       = uuid;
+                self.languages  = languages;
+                self.codeLength = codeLength;
 
-            [self pushCallViewController];
-        }];
+                [self pushCallViewController];
+            }];
+        });
     }
 }
 
@@ -367,10 +372,10 @@ typedef enum
         else
         {
             title   = NSLocalizedStringWithDefaultValue(@"VerifyPhone KnownTitle", nil, [NSBundle mainBundle],
-                                                        @"Couldn't Check Number", @"...");
+                                                        @"Couldn't Start Verification", @"...");
             message = NSLocalizedStringWithDefaultValue(@"VerifyPhone KnownMessage", nil, [NSBundle mainBundle],
-                                                        @"Failed to check if you already verified this number: %@\n\n"
-                                                        @"Please try again laeter.", @"...");
+                                                        @"Something went wrong while starting the verification: %@\n\n"
+                                                        @"Please try again later.", @"...");
             message = [NSString stringWithFormat:message, error.localizedDescription];
         }
 

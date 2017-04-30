@@ -478,17 +478,18 @@ typedef enum
                                                         @"[iOS alert title size].");
             message = NSLocalizedStringWithDefaultValue(@"VerifyPhone VerifyCheckErrorMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"Failed to check if verification is ready.\n\n"
+                                                        @"Checking the verification status of your number failed: %@\n\n"
                                                         @"Please try again, later.",
                                                         @"....\n"
                                                         @"[iOS alert message size]");
+            message = [NSString stringWithFormat:message, error.localizedDescription];
             [BlockAlertView showAlertViewWithTitle:title
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
             {
-                [self.navigationController popViewControllerAnimated:YES];
+                [self cancelAction];
             }
-                                 cancelButtonTitle:[Strings closeString]
+                                 cancelButtonTitle:[Strings cancelString]
                                  otherButtonTitles:nil];
         }
     }];
@@ -526,7 +527,30 @@ typedef enum
         }
         else
         {
-            //#### Show error.
+            self.isLoading = NO;
+
+            NSString* title;
+            NSString* message;
+
+            title   = NSLocalizedStringWithDefaultValue(@"VerifyPhone VerifyCheckErrorTitle", nil,
+                                                        [NSBundle mainBundle], @"Failed To Call You",
+                                                        @"Something went wrong.\n"
+                                                        @"[iOS alert title size].");
+            message = NSLocalizedStringWithDefaultValue(@"VerifyPhone VerifyCheckErrorMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"Something went wrong while trying to call you: %@\n\n"
+                                                        @"Please try again, later.",
+                                                        @"....\n"
+                                                        @"[iOS alert message size]");
+            message = [NSString stringWithFormat:message, error.localizedDescription];
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+            {
+                [self cancelAction];
+            }
+                                 cancelButtonTitle:[Strings cancelString]
+                                 otherButtonTitles:nil];
         }
     }];
 }
