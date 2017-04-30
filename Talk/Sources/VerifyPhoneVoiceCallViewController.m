@@ -47,6 +47,7 @@ typedef enum
 @property (nonatomic, assign) BOOL             canEnterCode;
 
 @property (nonatomic, strong) UITextField*     codeTextField;
+@property (nonatomic, strong) CellButton*      callButton;
 
 @end
 
@@ -286,14 +287,14 @@ typedef enum
             }
             case CallRowCallMe:
             {
-                CellButton* button = [CellButton buttonWithType:UIButtonTypeCustom];
-                button.frame = CGRectMake(20.0, 20.0, 280.0, 44.0);
-                [button setTitle:NSLocalizedString(@"Call Me", @"") forState:UIControlStateNormal];
-                [Common styleButton:button];
-                [button addTarget:self action:@selector(callMeAction) forControlEvents:UIControlEventTouchUpInside];
+                self.callButton = [CellButton buttonWithType:UIButtonTypeCustom];
+                self.callButton.frame = CGRectMake(20.0, 20.0, 280.0, 44.0);
+                [self.callButton setTitle:[self callMeTitle] forState:UIControlStateNormal];
+                [Common styleButton:self.callButton];
+                [self.callButton addTarget:self action:@selector(callMeAction) forControlEvents:UIControlEventTouchUpInside];
 
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                [cell addSubview:button];
+                [cell addSubview:self.callButton];
                 break;
             }
         }
@@ -344,6 +345,8 @@ typedef enum
     {
         self.isLoading = YES;
 
+        [self.callButton setTitle:[self callMeTitle] forState:UIControlStateNormal];
+
         [[WebClient sharedClient] checkVoiceVerificationCode:code
                                                      forUuid:self.uuid
                                                        reply:^(NSError *error, BOOL isVerified)
@@ -362,8 +365,9 @@ typedef enum
                 NSString* message;
 
                 title   = NSLocalizedString(@"Incorrect Code", @"");
-                message = NSLocalizedString(@"The code you entered seems to be incorrect.\n\nPlease tap 'Call Me' to "
-                                            @"hear the code again.", @"");
+                message = NSLocalizedString(@"The code you entered seems to be incorrect.\n\nPlease tap '%@' to "
+                                            @"try again and hear a new code.", @"");
+                message = [NSString stringWithFormat:message, [self callMeTitle]];
                 [BlockAlertView showAlertViewWithTitle:title
                                                message:message
                                             completion:^(BOOL cancelled, NSInteger buttonIndex)
@@ -404,6 +408,18 @@ typedef enum
 
 #pragma mark - Helpers
 
+- (NSString*)callMeTitle
+{
+    return NSLocalizedString(@"Call Me to Hear Code", @"");
+}
+
+
+- (NSString*)callMeAgainTitle
+{
+    return NSLocalizedString(@"Hear Code Again", @"");
+}
+
+
 - (void)checkCallStatusWithRepeatCount:(int)count
 {
     if (--count == 0)
@@ -431,6 +447,7 @@ typedef enum
             if (self.canEnterCode == YES)
             {
                 [self.codeTextField becomeFirstResponder];
+                [self.callButton setTitle:[self callMeAgainTitle] forState:UIControlStateNormal];
             }
 
             if (isCalling == YES)
@@ -480,11 +497,10 @@ typedef enum
     NSString* title;
     NSString* message;
 
-    title   = NSLocalizedString(@"Can't Enter Code", @"");
-    message = NSLocalizedString(@"You must first tap 'Call Me' and receive an automatic phone call. During that short "
-                                @"call, you will hear a %d-digit code.\n\nAfter the call has ended, you must enter the "
-                                @"code you heard.", @"");
-    message = [NSString stringWithFormat:message, self.codeLength];
+    title   = NSLocalizedString(@"Can't Enter Code Yet", @"");
+    message = NSLocalizedString(@"First tap '%@' to receive an automatic phone call. During that short "
+                                @"call, you will hear the %d-digit code you must enter.", @"");
+    message = [NSString stringWithFormat:message, [self callMeTitle], self.codeLength];
     [BlockAlertView showAlertViewWithTitle:title
                                    message:message
                                 completion:nil
@@ -503,7 +519,7 @@ typedef enum
     {
         if (error == nil)
         {
-            [self checkCallStatusWithRepeatCount:20];
+            [self checkCallStatusWithRepeatCount:30];
         }
         else
         {
