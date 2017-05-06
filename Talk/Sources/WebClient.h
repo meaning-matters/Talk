@@ -49,7 +49,8 @@
                          vendorId:(NSString*)vendorId
                             reply:(void (^)(NSError*  error,
                                             NSString* webUsername,
-                                            NSString* webPassword))reply;
+                                            NSString* webPassword,
+                                            NSString* accountId))reply;
 
 // 1B. UPDATE DEVICE INFORMATION
 - (void)updateAccountForLanguage:(NSString*)language

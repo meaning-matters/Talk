@@ -252,7 +252,8 @@
                          vendorId:(NSString*)vendorId
                             reply:(void (^)(NSError*  error,
                                             NSString* webUsername,
-                                            NSString* webPassword))reply;
+                                            NSString* webPassword,
+                                            NSString* accountId))reply
 {
     NSDictionary* parameters;
     NSString*     buildType;
@@ -300,7 +301,7 @@
                      parameters:parameters
                           reply:^(NSError *error, id content)
     {
-        reply(error, content[@"webUsername"], content[@"webPassword"]);
+        reply(error, content[@"webUsername"], content[@"webPassword"], [content[@"accountId"] description]);
     }];
 }
 

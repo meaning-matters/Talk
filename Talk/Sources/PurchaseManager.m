@@ -350,12 +350,14 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
                                                vendorId:[[[UIDevice currentDevice] identifierForVendor] UUIDString]
                                                   reply:^(NSError*  error,
                                                           NSString* webUsername,
-                                                          NSString* webPassword)
+                                                          NSString* webPassword,
+                                                          NSString* accountId)
     {
         if (error == nil)
         {
             [Settings sharedSettings].webUsername = webUsername;
             [Settings sharedSettings].webPassword = webPassword;
+            [AppDelegate appDelegate].accountId   = accountId;
 
             [self finishTransaction:transaction];
             [self completeBuyWithSuccess:YES object:transaction];
