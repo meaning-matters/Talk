@@ -545,7 +545,7 @@ typedef enum
     }
     else
     {
-        amountColor = [Skinning tintColor];
+        amountColor = [Skinning onTintColor];
 
         cell.noteLabel.alpha = 0.0f;
     }
