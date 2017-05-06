@@ -107,7 +107,7 @@ typedef enum
     self.sections |= TableSectionCall;
     self.sections |= TableSectionCode;
 
-    self.callRows |= CallRowLanguage;
+    //### self.callRows |= CallRowLanguage;
     self.callRows |= CallRowCallMe;
 
     return [Common bitsSetCount:self.sections];
