@@ -103,6 +103,14 @@
 
     if (isLoading == YES && self.activityIndicator == nil)
     {
+        for (UIView* view in self.view.subviews)
+        {
+            if (view.alpha == 1.0)
+            {
+                view.alpha = 0.5;
+            }
+        }
+
         // Only show image when there's a tableView which is empty.
         if ([self respondsToSelector:NSSelectorFromString(@"tableView")] &&
             [self respondsToSelector:NSSelectorFromString(@"tableView:numberOfRowsInSection:")] &&
@@ -117,6 +125,7 @@
         self.activityIndicator.color = [UIColor blackColor];
 
         [self.activityIndicator startAnimating];
+
         [self.view addSubview:self.activityIndicator];
         self.view.userInteractionEnabled = NO;
         self.navigationItem.leftBarButtonItem.enabled = NO;
@@ -132,6 +141,14 @@
         self.loadingImageView = nil;
         self.view.userInteractionEnabled = YES;
         self.navigationController.view.userInteractionEnabled = YES;
+
+        for (UIView* view in self.view.subviews)
+        {
+            if (view.alpha == 0.5)
+            {
+                view.alpha = 1.0;
+            }
+        }
     }
 
     [self didSetIsLoading];
