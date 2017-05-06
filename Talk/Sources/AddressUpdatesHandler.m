@@ -79,7 +79,7 @@ NSString* const AddressUpdatesNotification = @"AddressUpdatesNotification";
         NSDictionary* addressUpdate = [[AddressUpdatesHandler sharedHandler] addressUpdateWithUuid:address.uuid];
         switch (address.addressStatus)
         {
-            case AddressStatusNotVerifiedMask:
+            case AddressStatusVerificationNotRequiredMask:
             {
                 badgeCount += (addressUpdate == nil) ? 0 : 1;
                 break;

@@ -12,13 +12,13 @@
 
 typedef NS_ENUM(NSUInteger, AddressStatusMask)
 {
-    AddressStatusUnknown                   = 0,
-    AddressStatusStagedMask                = 1UL << 0,
-    AddressStatusNotVerifiedMask           = 1UL << 1,  // Default status for Numbers without Voxbone Address requirement.
-    AddressStatusVerificationRequestedMask = 1UL << 2,
-    AddressStatusVerifiedMask              = 1UL << 3,
-    AddressStatusRejectedMask              = 1UL << 4,
-    AddressStatusDisabledMask              = 1UL << 5,
+    AddressStatusUnknown                     = 0,
+    AddressStatusStagedMask                  = 1UL << 0,
+    AddressStatusVerificationNotRequiredMask = 1UL << 1,  // Default status for Numbers without Voxbone Address requirement.
+    AddressStatusVerificationRequestedMask   = 1UL << 2,
+    AddressStatusVerifiedMask                = 1UL << 3,
+    AddressStatusRejectedMask                = 1UL << 4,
+    AddressStatusDisabledMask                = 1UL << 5,
 };
 
 typedef NS_ENUM(NSUInteger, RejectionReasonMask)
@@ -61,12 +61,12 @@ typedef NS_ENUM(NSUInteger, RejectionReasonMask)
 
 /**
  *  Checks if the address mask indicates available for use; i.e., it is AddressStatusStagedMask,
- *  AddressStatusNotVerifiedMask or AddressStatusVerifiedMask.
+ *  AddressStatusVerificationNotRequiredMask or AddressStatusVerifiedMask.
  */
 + (BOOL)isAvailableAddressStatusMask:(AddressStatusMask)mask;
 
 /**
- *  Checks is the address mask indicates verified; i.e., it is AddressStatusNotVerifiedMask or 
+ *  Checks is the address mask indicates verified; i.e., it is AddressStatusVerificationNotRequiredMask or 
  *  AddressStatusVerifiedMask
  */
 + (BOOL)isVerifiedAddressStatusMask:(AddressStatusMask)mask;

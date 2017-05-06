@@ -352,7 +352,7 @@ typedef enum
             {
                 break;
             }
-            case AddressStatusNotVerifiedMask:
+            case AddressStatusVerificationNotRequiredMask:
             {
                 break;
             }

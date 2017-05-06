@@ -384,7 +384,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             {
                 break;
             }
-            case AddressStatusNotVerifiedMask:
+            case AddressStatusVerificationNotRequiredMask:  // Fall-through.
             case AddressStatusVerifiedMask:
             {
                 title   = NSLocalizedStringWithDefaultValue(@"Address:AddressLocal Verified", nil, [NSBundle mainBundle],

@@ -237,7 +237,7 @@
         {
             break;
         }
-        case AddressStatusNotVerifiedMask:
+        case AddressStatusVerificationNotRequiredMask:
         {
             break;
         }

@@ -19,9 +19,9 @@
     {
         mask = AddressStatusStagedMask;
     }
-    else if ([string isEqualToString:@"NOT_VERIFIED"])
+    else if ([string isEqualToString:@"VERIFICATION_NOT_REQUIRED"])
     {
-        mask = AddressStatusNotVerifiedMask;
+        mask = AddressStatusVerificationNotRequiredMask;
     }
     else if ([string isEqualToString:@"VERIFICATION_REQUESTED"])
     {
@@ -254,7 +254,7 @@
         case AddressStatusUnknown:                   return NSLocalizedString(@"Unknown",                  @"");
         case AddressStatusStagedMask:                return NSLocalizedString(@"Awaiting Verification",    @"");
         case AddressStatusVerificationRequestedMask: return NSLocalizedString(@"Verification In Progress", @"");
-        case AddressStatusNotVerifiedMask:
+        case AddressStatusVerificationNotRequiredMask:  // Fall-through.
         case AddressStatusVerifiedMask:              return NSLocalizedString(@"Verified",                 @"");
         case AddressStatusRejectedMask:              return NSLocalizedString(@"Rejected",                 @"");
         case AddressStatusDisabledMask:              return NSLocalizedString(@"Disabled",                 @"");
@@ -291,7 +291,7 @@
 
             break;
         }
-        case AddressStatusNotVerifiedMask:
+        case AddressStatusVerificationNotRequiredMask:  // Fall-through.
         case AddressStatusVerifiedMask:
         {
             message = NSLocalizedString(@"Your Address has been successfully verified. Numbers that are purchased using "
@@ -342,17 +342,17 @@
 
 + (BOOL)isAvailableAddressStatusMask:(AddressStatusMask)mask
 {
-    return ((mask & AddressStatusStagedMask)      > 0) ||   // Not yet verified by NumberBay yet.
-           ((mask & AddressStatusRejectedMask)    > 0) ||   // Rejected by NumberBay and still editable.
-           ((mask & AddressStatusNotVerifiedMask) > 0) ||   // Verified by NumberBay and not needing Voxbone check.
-           ((mask & AddressStatusVerifiedMask)    > 0);     // Verified by both NumberBay and Voxbone.
+    return ((mask & AddressStatusStagedMask)                  > 0) || // Not yet verified by NumberBay yet.
+           ((mask & AddressStatusRejectedMask)                > 0) || // Rejected by NumberBay and still editable.
+           ((mask & AddressStatusVerificationNotRequiredMask) > 0) || // Verified by NumberBay and not needing Voxbone check.
+           ((mask & AddressStatusVerifiedMask)                > 0);   // Verified by both NumberBay and Voxbone.
 }
 
 
 + (BOOL)isVerifiedAddressStatusMask:(AddressStatusMask)mask
 {
-    return ((mask & AddressStatusNotVerifiedMask) > 0) ||   // Verified by NumberBay and not needing Voxbone check.
-           ((mask & AddressStatusVerifiedMask)    > 0);     // Verified by both NumberBay and Voxbone.
+    return ((mask & AddressStatusVerificationNotRequiredMask) > 0) || // Verified by NumberBay and not needing Voxbone check.
+           ((mask & AddressStatusVerifiedMask)                > 0);   // Verified by both NumberBay and Voxbone.
 }
 
 @end
