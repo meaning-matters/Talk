@@ -306,7 +306,6 @@ typedef enum
 
         self.codeTextField = [Common addTextFieldToCell:cell delegate:self];
         self.codeTextField.keyboardType = UIKeyboardTypeNumberPad;
-        self.codeTextField.placeholder  = [NSString stringWithFormat:NSLocalizedString(@"%d digits", @""), self.codeLength];
     }
 
     return cell;
