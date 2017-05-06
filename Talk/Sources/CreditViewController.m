@@ -518,24 +518,40 @@ typedef enum
 
 - (void)updateAmountCell:(CreditAmountCell*)cell
 {
-    float     credit      = [Settings sharedSettings].credit;
-    NSString* amount      = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
+    float     credit = [Settings sharedSettings].credit;
+    NSString* amount = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
     UIColor*  amountColor;
 
-    amountColor = [self isCreditLow] ? [Skinning deleteTintColor]
-                                     : (self.loadingCreditFailed ? [Skinning valueColor] : [Skinning tintColor]);
+    cell.amountLabel.text  = amount;
+    cell.amountLabel.alpha = self.isLoadingCredit ? 0.5 : 1.0;
+    cell.noteLabel.alpha   = self.isLoadingCredit ? 0.5 : 1.0;
 
-    cell.amountLabel.text      = amount;
-    cell.amountLabel.alpha     = self.isLoadingCredit ? 0.5 : 1.0;
-    cell.amountLabel.textColor = amountColor;
+    // We give precedence to credit low. So if both credit is low and loading failed, we only show the credit low state.
+    if ([self isCreditLow])
+    {
+        amountColor = [Skinning deleteTintColor];
+
+        cell.noteLabel.text      = NSLocalizedString(@"your credit is low - buy more", @"");
+        cell.noteLabel.alpha     = 1.0f;
+        cell.noteLabel.textColor = [Skinning deleteTintColor];
+    }
+    else if (self.loadingCreditFailed == YES)
+    {
+        amountColor = [Skinning valueColor];
+
+        cell.noteLabel.text      = NSLocalizedString(@"not up-to-date", @"Alert title: Credit could not be bought.");
+        cell.noteLabel.alpha     = 1.0f;
+        cell.noteLabel.textColor = [Skinning placeholderColor];
+    }
+    else
+    {
+        amountColor = [Skinning tintColor];
+
+        cell.noteLabel.alpha = 0.0f;
+    }
+
+    cell.amountLabel.textColor            = amountColor;
     cell.amountLabel.highlightedTextColor = amountColor;
-
-    cell.noteLabel.text        = NSLocalizedStringWithDefaultValue(@"BuyCredit ...", nil, [NSBundle mainBundle],
-                                                                   @"not up-to-date",
-                                                                   @"Alert title: Credit could not be bought.\n"
-                                                                   @"[iOS alert title size].");
-    cell.noteLabel.alpha       = self.loadingCreditFailed ? 1.0f : 0.0f;
-    cell.noteLabel.textColor   = [Skinning placeholderColor];
 
     if (self.isLoadingCredit == YES)
     {
