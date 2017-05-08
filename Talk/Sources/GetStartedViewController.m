@@ -77,12 +77,6 @@
 
     if (self.showAsIntro == NO)
     {
-        UIBarButtonItem* rightBarButtonItem;
-        rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                           target:self
-                                                                           action:@selector(cancel)];
-        self.navigationItem.rightBarButtonItem = rightBarButtonItem;
-
         [self.restoreButton setTitle:NSLocalizedStringWithDefaultValue(@"GetStarted RestoreButtonTitle", nil,
                                                                        [NSBundle mainBundle], @"Restore",
                                                                        @"...")
@@ -185,23 +179,45 @@
 }
 
 
+- (void)setFreeAccount:(BOOL)freeAccount
+{
+    _freeAccount = freeAccount;
+
+    if (freeAccount == NO)
+    {
+        UIBarButtonItem* rightBarButtonItem;
+        rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                           target:self
+                                                                           action:@selector(cancel)];
+        self.navigationItem.rightBarButtonItem = rightBarButtonItem;
+    }
+}
+
 - (void)getFreeAccount
 {
-    NetworkStatusReachable reachable = [NetworkStatus sharedStatus].reachableStatus;
-    
-    if (reachable == NetworkStatusReachableWifi || reachable == NetworkStatusReachableCellular)
+    void (^retrieveOptions)() = ^void()
     {
         [[WebClient sharedClient] retrieveOptions:^(NSError* error, BOOL freeAccount)
         {
             if (error == nil)
             {
                 self.freeAccount = freeAccount;
+
+                [[NSNotificationCenter defaultCenter] removeObserver:self.observer];
+                self.observer = nil;
             }
             else
             {
                 NBLog(@"Error getting /options: %@", error);
             }
         }];
+    };
+
+    NetworkStatusReachable reachable = [NetworkStatus sharedStatus].reachableStatus;
+
+    if (reachable == NetworkStatusReachableWifi || reachable == NetworkStatusReachableCellular)
+    {
+        retrieveOptions();
     }
     else if (self.observer == nil)
     {
@@ -214,20 +230,7 @@
 
             if (reachable == NetworkStatusReachableWifi || reachable == NetworkStatusReachableCellular)
             {
-                [[WebClient sharedClient] retrieveOptions:^(NSError* error, BOOL freeAccount)
-                {
-                    if (error == nil)
-                    {
-                        self.freeAccount = freeAccount;
-                    }
-                    else
-                    {
-                        NBLog(@"Error getting /options: %@", error);
-                    }
-                }];
-
-                [[NSNotificationCenter defaultCenter] removeObserver:self.observer];
-                self.observer = nil;
+                retrieveOptions();
             }
         }];
     }
