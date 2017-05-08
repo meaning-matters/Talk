@@ -245,24 +245,11 @@ static const int EditButtonCellTag = 341152; // Some random value.
 
 #pragma mark - Table View Delegates
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
-{
-    return [[self.fetchedAddressesController sections] count];
-}
-
-
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if ([[self.fetchedAddressesController sections] count] > 0)
-    {
-        id<NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedAddressesController sections] objectAtIndex:section];
-        
-        return [sectionInfo numberOfObjects];
-    }
-    else
-    {
-        return 0;
-    }
+    id<NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedAddressesController sections] objectAtIndex:section];
+
+    return [sectionInfo numberOfObjects];
 }
 
 
@@ -270,28 +257,25 @@ static const int EditButtonCellTag = 341152; // Some random value.
 {
     NSString* title = nil;
 
-    if ([[self.fetchedAddressesController sections] count] > 0)
+    id<NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedAddressesController sections] objectAtIndex:section];
+
+    if (self.predicate == nil)
     {
-        id<NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedAddressesController sections] objectAtIndex:section];
-        
+        title = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
+                                                  @"Your Registered Addresses",
+                                                  @"\n"
+                                                  @"[1/4 line larger font].");
+    }
+    else
+    {
         if ([sectionInfo numberOfObjects] > 0)
         {
-            if (self.predicate == nil)
-            {
-                title = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
-                                                          @"Your Registered Addresses",
-                                                          @"\n"
-                                                          @"[1/4 line larger font].");
-            }
-            else
-            {
-                title = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
-                                                          @"Select %@ Address",
-                                                          @"[1/4 line larger font].");
-                title = [NSString stringWithFormat:title, [AddressType localizedStringForAddressTypeMask:self.addressTypeMask]];
-            }
+            title = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
+                                                      @"Select %@ Address",
+                                                      @"[1/4 line larger font].");
+            title = [NSString stringWithFormat:title, [AddressType localizedStringForAddressTypeMask:self.addressTypeMask]];
         }
-        else if (self.predicate != nil)
+        else
         {
             title = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
                                                       @"Create %@ Address",

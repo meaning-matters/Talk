@@ -246,13 +246,10 @@ typedef NS_ENUM(NSUInteger, TableSections)
     {
         case TableSectionNumbers:
         {
-            if ([self tableView:tableView numberOfRowsInSection:section] > 0)
-            {
-                title = NSLocalizedStringWithDefaultValue(@"Numbers Number List Title", nil, [NSBundle mainBundle],
-                                                          @"You Can Be Reached At",
-                                                          @"\n"
-                                                          @"[1/4 line larger font].");
-            }
+            title = NSLocalizedStringWithDefaultValue(@"Numbers Number List Title", nil, [NSBundle mainBundle],
+                                                      @"You Can Be Reached At",
+                                                      @"\n"
+                                                      @"[1/4 line larger font].");
             break;
         }
         case TableSectionAddresses:

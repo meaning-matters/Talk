@@ -159,22 +159,16 @@
 {
     NSString* title = nil;
 
-    if ([[self.fetchedPhonesController sections] count] > 0)
+    if (self.headerTitle == nil)
     {
-        if ([self tableView:tableView numberOfRowsInSection:section] > 0)
-        {
-            if (self.headerTitle == nil)
-            {
-                title = NSLocalizedStringWithDefaultValue(@"Phones ...", nil, [NSBundle mainBundle],
-                                                          @"The Phones you use",
-                                                          @"\n"
-                                                          @"[1/4 line larger font].");
-            }
-            else
-            {
-                title = self.headerTitle;
-            }
-        }
+        title = NSLocalizedStringWithDefaultValue(@"Phones ...", nil, [NSBundle mainBundle],
+                                                  @"The Phones you use",
+                                                  @"\n"
+                                                  @"[1/4 line larger font].");
+    }
+    else
+    {
+        title = self.headerTitle;
     }
 
     return title;
