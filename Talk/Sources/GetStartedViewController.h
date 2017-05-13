@@ -16,6 +16,7 @@
 @property (nonatomic, weak) IBOutlet UIPageControl* pageControl;
 @property (nonatomic, weak) IBOutlet UIButton*      restoreButton;
 @property (nonatomic, weak) IBOutlet UIButton*      startButton;
+@property (nonatomic, weak) IBOutlet UILabel*       internetLabel;
 
 - (id)initShowAsIntro:(BOOL)showAsIntro;
 

@@ -18,6 +18,7 @@
 #import "NSTimer+Blocks.h"
 #import "WebClient.h"
 #import "NetworkStatus.h"
+#import "NSTimer+Blocks.h"
 
 
 @interface GetStartedViewController ()
@@ -26,11 +27,12 @@
 @property (nonatomic, assign) NSUInteger      numberOfPages;
 @property (nonatomic, strong) NSMutableArray* imageViews;
 @property (nonatomic, assign) NSInteger       changingPage; // Is -1 if no page change busy.
-@property (nonatomic, strong) NSTimer*        timer;
+@property (nonatomic, strong) NSTimer*        slideShowTimer;
 @property (nonatomic, assign) BOOL            jumpingBack;
 @property (nonatomic, assign) BOOL            showAsIntro;
+@property (nonatomic, assign) id              internetObserver;
 @property (nonatomic, assign) BOOL            freeAccount;
-@property (nonatomic, assign) id              observer;
+@property (nonatomic, strong) NSTimer*        freeAccountTimer;
 
 @end
 
@@ -133,6 +135,8 @@
     {
         [Common setY:(self.pageControl.frame.origin.y + 20.0f) ofView:self.pageControl];
     }
+
+    self.internetLabel.text = NSLocalizedString(@"Please connect to Internet.", @"");
 }
 
 
@@ -149,7 +153,7 @@
         [Common setHeight:rect.size.height ofView:self.imageViews[page]];
     }
 
-    self.timer = [NSTimer scheduledTimerWithInterval:10.0 repeats:YES block:^(void)
+    self.slideShowTimer = [NSTimer scheduledTimerWithInterval:10.0 repeats:YES block:^(void)
     {
         NSInteger nextPage = (self.pageControl.currentPage + 1) % self.numberOfPages;
         self.jumpingBack   = (nextPage == 0);
@@ -191,40 +195,85 @@
                                                                            action:@selector(cancel)];
         self.navigationItem.rightBarButtonItem = rightBarButtonItem;
     }
+    else
+    {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
 }
+
 
 - (void)getFreeAccount
 {
+    NSTimeInterval duration = 1.0;
+
+    self.startButton.enabled   = NO;
+    self.restoreButton.enabled = NO;
+    self.startButton.alpha     = 0.5;
+    self.restoreButton.alpha   = 0.5;
+
+    self.internetLabel.alpha   = 0.0;
+
     void (^retrieveOptions)() = ^void()
     {
         [[WebClient sharedClient] retrieveOptions:^(NSError* error, BOOL freeAccount)
         {
-            if (error == nil)
+            if (error.code == WebStatusFailNoInternet || error.code == WebStatusFailInternetLogin)
             {
-                self.freeAccount = freeAccount;
-
-                [[NSNotificationCenter defaultCenter] removeObserver:self.observer];
-                self.observer = nil;
+                // Ignore because there's no internet connection yet.
             }
             else
             {
-                NBLog(@"Error getting /options: %@", error);
+                // We get here when all went well, or when there's an error.
+                if (error != nil)
+                {
+                    NBLog(@"Error getting /options: %@", error);
+                }
+
+                // We'll have to reset the state even if there's an error, because we're not handling errors.
+                self.freeAccount = freeAccount;
+
+                self.startButton.enabled   = YES;
+                self.restoreButton.enabled = YES;
+                self.startButton.alpha     = 1.0;
+                self.restoreButton.alpha   = 1.0;
+                self.internetLabel.alpha   = 0.0;
+
+                [self.freeAccountTimer invalidate];
+                self.freeAccountTimer = nil;
+
+                [[NSNotificationCenter defaultCenter] removeObserver:self.internetObserver];
+                self.internetObserver = nil;
             }
         }];
     };
 
     NetworkStatusReachable reachable = [NetworkStatus sharedStatus].reachableStatus;
-
     if (reachable == NetworkStatusReachableWifi || reachable == NetworkStatusReachableCellular)
     {
         retrieveOptions();
     }
-    else if (self.observer == nil)
+    else if (self.internetObserver == nil)
     {
-        self.observer = [[NSNotificationCenter defaultCenter] addObserverForName:NetworkStatusReachableNotification
-                                                                     object:nil
-                                                                      queue:[NSOperationQueue mainQueue]
-                                                                 usingBlock:^(NSNotification* notification)
+        self.freeAccountTimer = [NSTimer scheduledTimerWithInterval:duration repeats:YES block:^
+        {
+            [UIView animateWithDuration:duration animations:^
+            {
+                self.internetLabel.alpha = self.internetLabel.alpha == 1 ? 0 : 1;
+
+                // Poll to catch switch between Wi-Fi behind-captive-portal and being-logged-in.
+                NetworkStatusReachable reachable = [NetworkStatus sharedStatus].reachableStatus;
+                if (reachable == NetworkStatusReachableWifi || reachable == NetworkStatusReachableCellular ||
+                    self.internetLabel.alpha == 1)
+                {
+                    retrieveOptions();
+                }
+            }];
+        }];
+
+        self.internetObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NetworkStatusReachableNotification
+                                                                                  object:nil
+                                                                                   queue:[NSOperationQueue mainQueue]
+                                                                              usingBlock:^(NSNotification* notification)
         {
             NetworkStatusReachable reachable = [notification.userInfo[@"status"] intValue];
 
@@ -394,8 +443,8 @@
 
 - (void)stopSlideShow
 {
-    [self.timer invalidate];
-    self.timer = nil;
+    [self.slideShowTimer invalidate];
+    self.slideShowTimer = nil;
     self.jumpingBack = NO;
 }
 
