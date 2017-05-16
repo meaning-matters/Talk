@@ -39,6 +39,10 @@
     {
         mask = AddressStatusDisabledMask;
     }
+    else if ([string isEqualToString:@"NOT_VERIFIED"])
+    {
+        mask = AddressStatusNotVerifiedMask;
+    }
     else
     {
         mask = AddressStatusUnknown;   //### We should never get here.
@@ -251,13 +255,14 @@
 {
     switch (mask)
     {
-        case AddressStatusUnknown:                   return NSLocalizedString(@"Unknown",                  @"");
-        case AddressStatusStagedMask:                return NSLocalizedString(@"Awaiting Verification",    @"");
-        case AddressStatusVerificationRequestedMask: return NSLocalizedString(@"Verification In Progress", @"");
-        case AddressStatusVerificationNotRequiredMask:  // Fall-through.
-        case AddressStatusVerifiedMask:              return NSLocalizedString(@"Verified",                 @"");
-        case AddressStatusRejectedMask:              return NSLocalizedString(@"Rejected",                 @"");
-        case AddressStatusDisabledMask:              return NSLocalizedString(@"Disabled",                 @"");
+        case AddressStatusUnknown:                     return NSLocalizedString(@"Unknown",                  @"");
+        case AddressStatusStagedMask:                  return NSLocalizedString(@"Awaiting Verification",    @"");
+        case AddressStatusNotVerifiedMask:             // Fall-through.
+        case AddressStatusVerificationRequestedMask:   return NSLocalizedString(@"Verification In Progress", @"");
+        case AddressStatusVerificationNotRequiredMask: // Fall-through.
+        case AddressStatusVerifiedMask:                return NSLocalizedString(@"Verified",                 @"");
+        case AddressStatusRejectedMask:                return NSLocalizedString(@"Rejected",                 @"");
+        case AddressStatusDisabledMask:                return NSLocalizedString(@"Disabled",                 @"");
     }
 }
 
@@ -283,6 +288,7 @@
 
             break;
         }
+        case AddressStatusNotVerifiedMask: // Fall-through.
         case AddressStatusVerificationRequestedMask:
         {
             message = NSLocalizedString(@"Your Address is in the process of being verified. %@\n\nYou can no longer make "

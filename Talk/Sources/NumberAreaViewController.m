@@ -373,6 +373,7 @@ typedef enum
             {
                 break;
             }
+            case AddressStatusNotVerifiedMask:  // Fall-through.
             case AddressStatusVerificationRequestedMask:
             {
                 title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],

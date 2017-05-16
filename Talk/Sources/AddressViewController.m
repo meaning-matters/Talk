@@ -380,6 +380,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             {
                 break;
             }
+            case AddressStatusNotVerifiedMask:  // Fall-through.
             case AddressStatusVerificationRequestedMask:
             {
                 break;

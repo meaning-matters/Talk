@@ -19,6 +19,10 @@ typedef NS_ENUM(NSUInteger, AddressStatusMask)
     AddressStatusVerifiedMask                = 1UL << 3,
     AddressStatusRejectedMask                = 1UL << 4,
     AddressStatusDisabledMask                = 1UL << 5,
+    AddressStatusNotVerifiedMask             = 1UL << 6,  // Address needs Voxbone verification but it has not yet been submitted.
+                                                          // If this happens, there's something wrong in the server. The app
+                                                          // will treat it as `AddressStatusVerificationRequestedMask` to
+                                                          // hide this server issue to users.
 };
 
 typedef NS_ENUM(NSUInteger, RejectionReasonMask)
