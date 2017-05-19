@@ -80,11 +80,11 @@
     if (self.showAsIntro == NO)
     {
         [self.restoreButton setTitle:NSLocalizedStringWithDefaultValue(@"GetStarted RestoreButtonTitle", nil,
-                                                                       [NSBundle mainBundle], @"Restore",
+                                                                       [NSBundle mainBundle], @"Log In",
                                                                        @"...")
                             forState:UIControlStateNormal];
         [self.startButton setTitle:NSLocalizedStringWithDefaultValue(@"GetStarted StartButtonTitle", nil,
-                                                                     [NSBundle mainBundle], @"Start",
+                                                                     [NSBundle mainBundle], @"Sign Up",
                                                                      @"...")
                           forState:UIControlStateNormal];
     }
@@ -466,6 +466,7 @@
     AnalysticsTrace(@"startAction");
 
     GetStartedStartViewController* viewController = [[GetStartedStartViewController alloc] initWithFreeAccount:self.freeAccount];
+    viewController.title = self.startButton.titleLabel.text;
 
     [self.navigationController pushViewController:viewController animated:YES];
 }
@@ -476,6 +477,7 @@
     AnalysticsTrace(@"restoreAction");
 
     GetStartedRestoreViewController* viewController = [[GetStartedRestoreViewController alloc] init];
+    viewController.title = self.restoreButton.titleLabel.text;
 
     [self.navigationController pushViewController:viewController animated:YES];
 }

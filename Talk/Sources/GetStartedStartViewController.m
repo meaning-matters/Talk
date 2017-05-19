@@ -28,11 +28,6 @@
     if (self = [super init])
     {
         self.freeAccount = freeAccount;
-
-        self.title = NSLocalizedStringWithDefaultValue(@"GetStartedStart ScreenTitle", nil, [NSBundle mainBundle],
-                                                       @"Start",
-                                                       @"Title of app screen ...\n"
-                                                       @"[1 line larger font].");
     }
 
     return self;
@@ -55,13 +50,14 @@
     if (self.freeAccount)
     {
         self.textView.text = NSLocalizedStringWithDefaultValue(@"GetStartedStart Text", nil, [NSBundle mainBundle],
-                                                               @"Get some free credit and add your mobile number; "
+                                                               @"Receive some free credit and add your mobile number; "
                                                                @"that's all you need to make calls.\n\n"
-                                                               @"You can buy more credit to get phone numbers in "
-                                                               @"60 countries and over 9,000 cities.\n\n"
+                                                               @"Keep your mobile number private by buying a second "
+                                                               @"number, or as many you wish. Choose from up to "
+                                                               @"60 countries.\n\n"
                                                                @"NumberBay uses your real phone, not Wi-Fi/mobile "
                                                                @"internet calls. Means you can always be reached on the "
-                                                               @"numbers you buy. And to call, internet is used for a "
+                                                               @"numbers you'll buy. And to call, internet is used for a "
                                                                @"second, then your real call starts.",
                                                                @"....\n"
                                                                @"[iOS alert title size].");
@@ -71,11 +67,12 @@
         self.textView.text = NSLocalizedStringWithDefaultValue(@"GetStartedStart Text", nil, [NSBundle mainBundle],
                                                                @"Get some credit and add your mobile number; "
                                                                @"that's all you need to make calls.\n\n"
-                                                               @"You can buy more credit to get phone numbers in "
-                                                               @"60 countries and over 9,000 cities.\n\n"
+                                                               @"Keep your mobile number private by buying a second "
+                                                               @"number, or as many you wish. Choose from up to "
+                                                               @"60 countries.\n\n"
                                                                @"NumberBay uses your real phone, not Wi-Fi/mobile "
                                                                @"internet calls. Means you can always be reached on the "
-                                                               @"numbers you buy. And to call, internet is used for a "
+                                                               @"numbers you'll buy. And to call, internet is used for a "
                                                                @"second, then your real call starts.",
                                                                @"....\n"
                                                                @"[iOS alert title size].");

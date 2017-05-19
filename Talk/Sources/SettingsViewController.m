@@ -267,9 +267,9 @@ typedef enum
         {
             title = NSLocalizedStringWithDefaultValue(@"Settings:AccountDataInfoFull SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"With a reset you only lose these Settings and your call Recents. "
-                                                      @"You can always restore your account Credit, verified "
-                                                      @"Phones, purchased Numbers, and Destinations on other devices.",
+                                                      @"You can always log in (again) on any device to restore your "
+                                                      @"Credit, verified Phones, purchased Numbers, and "
+                                                      @"incoming call Destinations.",
                                                       @"Explanation what the Reset setting is doing\n"
                                                       @"[* lines]");
             break;
@@ -458,14 +458,14 @@ typedef enum
                 [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
                 
                 title   = NSLocalizedStringWithDefaultValue(@"Settings:Reset ResetTitle", nil,
-                                                            [NSBundle mainBundle], @"Reset All",
+                                                            [NSBundle mainBundle], @"Log Out",
                                                             @"Alert title informing about resetting all user data\n"
                                                             @"[iOS alert title size].");
 
                 message = NSLocalizedStringWithDefaultValue(@"Settings:Reset ResetMessage", nil,
                                                             [NSBundle mainBundle],
-                                                            @"Are you sure you want to wipe your account and data "
-                                                            @"from this device?",
+                                                            @"Are you sure you want to log out and clear your account "
+                                                            @"data from this device?",
                                                             @"Alert message informing about resetting all user data\n"
                                                             @"[iOS alert message size]");
 
@@ -474,6 +474,8 @@ typedef enum
                 {
                     if (destruct == YES)
                     {
+                        [Common showGetStartedViewController];
+
                         [[AppDelegate appDelegate] resetAll];
                         
                         int count = [Common bitsSetCount:sections];
@@ -815,7 +817,7 @@ typedef enum
     else
     {
         cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"Settings:Reset CellText", nil,
-                                                                [NSBundle mainBundle], @"Reset All",
+                                                                [NSBundle mainBundle], @"Log Out",
                                                                 @"Title of table cell for resetting all user data\n"
                                                                 @"...].");
         cell.textLabel.textColor = [Skinning deleteTintColor];
