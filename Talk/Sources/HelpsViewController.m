@@ -20,8 +20,8 @@
 
 typedef enum
 {
-    TableSectionTexts     = 1UL << 0,
-    TableSectionContactUs = 1UL << 1,
+    TableSectionContactUs = 1UL << 0,
+    TableSectionTexts     = 1UL << 1,
     TableSectionIntro     = 1UL << 2,
 } TableSections;
 
@@ -50,8 +50,8 @@ typedef enum
         NSData* data = [Common dataForResource:@"Helps" ofType:@"json"];
         helpsArray   = [Common objectWithJsonData:data];
 
-        sections |= TableSectionTexts;
         sections |= TableSectionContactUs;
+        sections |= TableSectionTexts;
 
         [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
                                                           object:nil
@@ -107,8 +107,8 @@ typedef enum
 
     switch ([Common nthBitSet:section inValue:sections])
     {
-        case TableSectionTexts:     numberOfRows = helpsArray.count; break;
         case TableSectionContactUs: numberOfRows = 3;                break;
+        case TableSectionTexts:     numberOfRows = helpsArray.count; break;
         case TableSectionIntro:     numberOfRows = 1;                break;
     }
     
@@ -122,18 +122,18 @@ typedef enum
 
     switch ([Common nthBitSet:section inValue:sections])
     {
-        case TableSectionTexts:
-        {
-            title = NSLocalizedStringWithDefaultValue(@"Helps:Texts SectionHeader", nil, [NSBundle mainBundle],
-                                                      @"Texts",
-                                                      @"Written help.");
-            break;
-        }
         case TableSectionContactUs:
         {
             title = NSLocalizedStringWithDefaultValue(@"Helps:ContactUs SectionHeader", nil, [NSBundle mainBundle],
                                                       @"Contact Us",
                                                       @"Ways to contact us.");
+            break;
+        }
+        case TableSectionTexts:
+        {
+            title = NSLocalizedStringWithDefaultValue(@"Helps:Texts SectionHeader", nil, [NSBundle mainBundle],
+                                                      @"Texts",
+                                                      @"Written help.");
             break;
         }
         case TableSectionIntro:
@@ -161,12 +161,6 @@ typedef enum
 
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
-        case TableSectionTexts:
-        {
-            cell.textLabel.text = [helpsArray[indexPath.row] allKeys][0];
-            cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
-            break;
-        }
         case TableSectionContactUs:
         {
             switch (indexPath.row)
@@ -174,7 +168,7 @@ typedef enum
                 case 0:
                 {
                     text = NSLocalizedStringWithDefaultValue(@"Helps MessageContactUsText", nil, [NSBundle mainBundle],
-                                                             @"Give & Receive Feedback",
+                                                             @"Chat With Us",
                                                              @"....\n"
                                                              @"[1 line larger font].");
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -216,6 +210,12 @@ typedef enum
             cell.textLabel.text = text;
             break;
         }
+        case TableSectionTexts:
+        {
+            cell.textLabel.text = [helpsArray[indexPath.row] allKeys][0];
+            cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+            break;
+        }
         case TableSectionIntro:
         {
             cell.textLabel.text  =NSLocalizedStringWithDefaultValue(@"Helps IntroText", nil, [NSBundle mainBundle],
@@ -242,12 +242,6 @@ typedef enum
 
     switch ([Common nthBitSet:indexPath.section inValue:sections])
     {
-        case TableSectionTexts:
-        {
-            htmlViewController = [[HtmlViewController alloc] initWithDictionary:helpsArray[indexPath.row] modal:NO];
-            [self.navigationController pushViewController:htmlViewController animated:YES];
-            break;
-        }
         case TableSectionContactUs:
         {
             switch (indexPath.row)
@@ -308,6 +302,12 @@ typedef enum
                 }
             }
             
+            break;
+        }
+        case TableSectionTexts:
+        {
+            htmlViewController = [[HtmlViewController alloc] initWithDictionary:helpsArray[indexPath.row] modal:NO];
+            [self.navigationController pushViewController:htmlViewController animated:YES];
             break;
         }
         case TableSectionIntro:
