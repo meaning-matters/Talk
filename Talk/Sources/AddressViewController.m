@@ -1351,28 +1351,28 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         {
             if (self.isNew || self.isUpdatable)
             {
-                if (self.proofTypes.requiresAddressProof && !self.proofTypes.requiresIdentityProof)
+                if (self.proofTypes.requiresAddressProofType && !self.proofTypes.requiresIdentityProofType)
                 {
                     title = NSLocalizedString(@"To use the current Number, a proof of your (company's) address is "
                                               @"legally required.",
                                               @"");
                 }
 
-                if (!self.proofTypes.requiresAddressProof && self.proofTypes.requiresIdentityProof)
+                if (!self.proofTypes.requiresAddressProofType && self.proofTypes.requiresIdentityProofType)
                 {
                     title = NSLocalizedString(@"To use the current Number, a proof of your (company's) identity is "
                                               @"legally required.",
                                               @"");
                 }
 
-                if (self.proofTypes.requiresAddressProof && self.proofTypes.requiresIdentityProof)
+                if (self.proofTypes.requiresAddressProofType && self.proofTypes.requiresIdentityProofType)
                 {
                     title = NSLocalizedString(@"To use the current Number, a proof of your (company's) address and "
                                               @"identity are legally required.",
                                               @"");
                 }
 
-                if (self.proofTypes.requiresAddressProof)
+                if (self.proofTypes.requiresAddressProofType)
                 {
                     title = [NSString stringWithFormat:@"%@\n%@", title,
                              @"• Address: Make sure that the document date, your (company's) name and address, "
@@ -1380,7 +1380,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                              @"visible on the image."];
                 }
 
-                if (self.proofTypes.requiresIdentityProof)
+                if (self.proofTypes.requiresIdentityProofType)
                 {
                     title = [NSString stringWithFormat:@"%@\n%@", title,
                              @"• Identity: Make sure that the document date, your (company's) name, "

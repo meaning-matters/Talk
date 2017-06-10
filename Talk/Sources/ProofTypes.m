@@ -36,8 +36,22 @@
 
 - (NSString*)localizedAddressProofsString
 {
-    NSArray*        types   = self.salutation.isPerson ? self.person[@"addressProofTypes"]
-                                                       : self.company[@"addressProofTypes"];
+    NSArray* types = self.salutation.isPerson ? self.person[@"addressProofTypes"]
+                                              : self.company[@"addressProofTypes"];
+    return [self localizedProofsStringWithTypes:types];
+}
+
+
+- (NSString*)localizedIdentityProofsString
+{
+    NSArray* types   = self.salutation.isPerson ? self.person[@"identityProofTypes"]
+                                                : self.company[@"identityProofTypes"];
+    return [self localizedProofsStringWithTypes:types];
+}
+
+
+- (NSString*)localizedProofsStringWithTypes:(NSArray*)types
+{
     NSMutableArray* strings = [NSMutableArray array];
 
     if ([types containsObject:@"UTILITY"])
@@ -47,21 +61,6 @@
                                                              @"\n"
                                                              @"[One line].")];
     }
-
-    if (strings.count != types.count)
-    {
-        NBLog(@"Unknown address proof type(s) in: %@.", types);
-    }
-
-    return [self stringWithStrings:strings];
-}
-
-
-- (NSString*)localizedIdentityProofsString
-{
-    NSArray*        types   = self.salutation.isPerson ? self.person[@"identityProofTypes"]
-                                                       : self.company[@"identityProofTypes"];
-    NSMutableArray* strings = [NSMutableArray array];
 
     if ([types containsObject:@"COMPANY"])
     {
@@ -89,7 +88,7 @@
 
     if (strings.count != types.count)
     {
-        NBLog(@"Unknown identity proof type(s) in: %@.", types);
+        NBLog(@"Unknown proof type(s) in: %@.", types);
     }
 
     return [self stringWithStrings:strings];
@@ -105,6 +104,44 @@
 - (BOOL)requiresIdentityProof
 {
     return [(self.salutation.isPerson ? self.person[@"identityProofTypes"] : self.company[@"identityProofTypes"]) count] > 0;
+}
+
+
+- (BOOL)requiresAddressProofType
+{
+    NSArray* types = @[];
+    if (self.salutation.isPerson)
+    {
+        types = [types arrayByAddingObjectsFromArray:self.person[@"addressProofTypes"]];
+        types = [types arrayByAddingObjectsFromArray:self.person[@"identityProofTypes"]];
+    }
+
+    if (self.salutation.isCompany)
+    {
+        types = [types arrayByAddingObjectsFromArray:self.company[@"addressProofTypes"]];
+        types = [types arrayByAddingObjectsFromArray:self.company[@"identityProofTypes"]];
+    }
+
+    return [types containsObject:@"UTILITY"];
+}
+
+
+- (BOOL)requiresIdentityProofType
+{
+    NSArray* types = @[];
+    if (self.salutation.isPerson)
+    {
+        types = [types arrayByAddingObjectsFromArray:self.person[@"addressProofTypes"]];
+        types = [types arrayByAddingObjectsFromArray:self.person[@"identityProofTypes"]];
+    }
+
+    if (self.salutation.isCompany)
+    {
+        types = [types arrayByAddingObjectsFromArray:self.company[@"addressProofTypes"]];
+        types = [types arrayByAddingObjectsFromArray:self.company[@"identityProofTypes"]];
+    }
+
+    return [types containsObject:@"COMPANY"] || [types containsObject:@"PASSPORT"] || [types containsObject:@"ID_CARD"];
 }
 
 
