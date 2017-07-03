@@ -133,7 +133,8 @@ static NSUserDefaults* userDefaults;
         }
         else
         {
-            [dictionary setObject:@""                                            forKey:HomeIsoCountryCodeKey];
+            NSLocale* locale = [NSLocale currentLocale];
+            [dictionary setObject:[locale objectForKey:NSLocaleCountryCode]      forKey:HomeIsoCountryCodeKey];
             [dictionary setObject:@(NO)                                          forKey:UseSimIsoCountryCodeKey];
         }
 
