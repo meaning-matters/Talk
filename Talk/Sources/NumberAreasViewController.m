@@ -65,7 +65,6 @@
 #import "Strings.h"
 #import "Common.h"
 #import "Settings.h"
-#import "AddressType.h"
 #import "DataManager.h"
 #import "PurchaseManager.h"
 
@@ -82,11 +81,14 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
 
 @interface NumberAreasViewController ()
 {
-    NSString*      isoCountryCode;
-    NSDictionary*  state;
-    NumberTypeMask numberTypeMask;
-    AreaFormat     areaFormat;
+    NSString*       isoCountryCode;
+    NSDictionary*   state;
+    NumberTypeMask  numberTypeMask;
+    AddressTypeMask addressTypeMask;
+    AreaFormat      areaFormat;
 }
+
+@property (nonatomic, assign) BOOL isFilteringEnabled;
 
 @end
 
@@ -96,12 +98,16 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
 - (instancetype)initWithIsoCountryCode:(NSString*)theIsoCountryCode
                                  state:(NSDictionary*)theState
                         numberTypeMask:(NumberTypeMask)theNumberTypeMask
+                       addressTypeMask:(AddressTypeMask)theAddressTypeMask
+                    isFilteringEnabled:(BOOL)isFilteringEnabled
 {
     if (self = [super init])
     {
-        isoCountryCode = theIsoCountryCode;
-        state          = theState;      // Is nil for country without states.
-        numberTypeMask = theNumberTypeMask;
+        isoCountryCode          = theIsoCountryCode;
+        state                   = theState;      // Is nil for country without states.
+        numberTypeMask          = theNumberTypeMask;
+        addressTypeMask         = theAddressTypeMask;
+        self.isFilteringEnabled = isFilteringEnabled;
     }
 
     return self;
@@ -120,7 +126,7 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
     UIBarButtonItem* cancelButton;
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                  target:self
-                                                                 action:@selector(cancel)];
+                                                                 action:@selector(cancelAction)];
     self.navigationItem.rightBarButtonItem = cancelButton;
 
     if (state != nil)
@@ -229,8 +235,21 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
                 break;
             }
         }
+
+        if (self.isFilteringEnabled                 &&
+            addressTypeMask == AddressTypeLocalMask &&
+            [isoCountryCode isEqualToString:[Settings sharedSettings].numberFilter[@"isoCountryCode"]])
+        {
+            // Show only areas that are avaliable for purchase.
+            NSString*    areaCode  = [Settings sharedSettings].numberFilter[@"areaCode"];
+            NSPredicate* predicate = [NSPredicate predicateWithFormat:@"areaCode == %@", areaCode];
+            self.objectsArray = [content filteredArrayUsingPredicate:predicate];
+        }
+        else
+        {
+            self.objectsArray = content;
+        }
         
-        self.objectsArray = content;
         [self createIndexOfWidth:1];
     }
     else
@@ -313,7 +332,7 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
 }
 
 
-- (void)cancel
+- (void)cancelAction
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }

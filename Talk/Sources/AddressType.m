@@ -101,7 +101,7 @@
     else
     {
         NBLog(@"Received unknown address type: %@", string);
-        mask = AddressTypeWorldwideMask;   //### We should never get here.
+        mask = AddressTypeWorldwideMask;   //### We should never get here, but we do and this is a safe default.
     }
     
     return mask;

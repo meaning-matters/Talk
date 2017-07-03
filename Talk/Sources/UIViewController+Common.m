@@ -103,6 +103,11 @@
 
     if (isLoading == YES && self.activityIndicator == nil)
     {
+        for (UIBarButtonItem* item in self.toolbarItems)
+        {
+            item.enabled = NO;
+        }
+
         for (UIView* view in self.view.subviews)
         {
             if (view.alpha == 1.0)
@@ -148,6 +153,11 @@
             {
                 view.alpha = 1.0;
             }
+        }
+
+        for (UIBarButtonItem* item in self.toolbarItems)
+        {
+            item.enabled = YES;
         }
     }
 

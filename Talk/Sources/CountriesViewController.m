@@ -59,7 +59,7 @@
 }
 
 
-- (void)cancel
+- (void)cancelAction
 {
     [self dismissViewControllerAnimated:YES completion:^
     {
@@ -80,7 +80,7 @@
 
         cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                      target:self
-                                                                     action:@selector(cancel)];
+                                                                     action:@selector(cancelAction)];
         self.navigationItem.rightBarButtonItem = cancelButton;
     }
 }

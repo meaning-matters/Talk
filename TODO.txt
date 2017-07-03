@@ -265,3 +265,6 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 * There's a dirty delay of 3 seconds in applicationDidBecomeActive to make sure contacts are loaded before we get recents. Otherwise Recents can't find contactIds and the calls shows are number instead of contact names. Make this cleaner!
 
 * Refresh Credit from PurchaseManager's completeBuyWithSuccess and remove the alert text "(You may need to refresh your Credit to see the change.)".  Also have a look at mustShowLoadingError, perhaps add as parameter to loadCredit.
+
+* CountriesViewController only needs `cancelled` incompletion if excluded country is supplied -> change completion of
+  constructor that never has `cancelled` YES.

@@ -39,6 +39,8 @@ NSString* const StoreCurrencyCodeKey      = @"StoreCurrencyCode";
 NSString* const StoreCountryCodeKey       = @"StoreCountryCode";
 NSString* const CreditKey                 = @"Credit";
 NSString* const NeedsServerSyncKey        = @"NeedsServerSync";
+NSString* const NumberFilterKey           = @"NumberFilter";
+
 NSString* const AddressUpdatesKey         = @"AddressUpdates";
 NSString* const DnsSrvPrefixKey           = @"DnsSrvPrefix";
 
@@ -424,6 +426,18 @@ static NSUserDefaults* userDefaults;
 {
     [userDefaults setBool:needsServerSync forKey:NeedsServerSyncKey];
     [userDefaults synchronize];
+}
+
+
+- (NSDictionary*)numberFilter
+{
+    return [userDefaults objectForKey:NumberFilterKey];
+}
+
+
+- (void)setNumberFilter:(NSDictionary*)numberFilter
+{
+    [userDefaults setObject:numberFilter forKey:NumberFilterKey];
 }
 
 

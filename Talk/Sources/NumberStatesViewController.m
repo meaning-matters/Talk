@@ -16,9 +16,12 @@
 
 @interface NumberStatesViewController ()
 {
-    NSString*      isoCountryCode;
-    NumberTypeMask numberTypeMask;          // Not used in this class, just being passed on.
+    NSString*       isoCountryCode;
+    NumberTypeMask  numberTypeMask; // Not used in this class, just being passed on.
+    AddressTypeMask addressTypeMask;// Not used in this class, just being passed on.
 }
+
+@property (nonatomic, assign) BOOL isFilteringEnabled;
 
 @end
 
@@ -27,11 +30,15 @@
 
 - (instancetype)initWithIsoCountryCode:(NSString*)theIsoCountryCode
                         numberTypeMask:(NumberTypeMask)theNumberTypeMask
+                       addressTypeMask:(AddressTypeMask)theAddressTypeMask
+                    isFilteringEnabled:(BOOL)isFilteringEnabled
 {
     if (self = [super init])
     {
-        isoCountryCode = theIsoCountryCode;
-        numberTypeMask = theNumberTypeMask;
+        isoCountryCode          = theIsoCountryCode;
+        numberTypeMask          = theNumberTypeMask;
+        addressTypeMask         = theAddressTypeMask;
+        self.isFilteringEnabled = isFilteringEnabled;
     }
 
     return self;
@@ -178,7 +185,9 @@
     NumberAreasViewController* viewController;
     viewController = [[NumberAreasViewController alloc] initWithIsoCountryCode:isoCountryCode
                                                                          state:state
-                                                                numberTypeMask:numberTypeMask];
+                                                                numberTypeMask:numberTypeMask
+                                                               addressTypeMask:addressTypeMask
+                                                            isFilteringEnabled:self.isFilteringEnabled];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

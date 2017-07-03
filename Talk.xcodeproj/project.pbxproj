@@ -26,6 +26,8 @@
 		48017A12194E554C0059A53B /* CallableData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48017A11194E554C0059A53B /* CallableData.m */; };
 		48021B341C3A693200C40B58 /* UIViewController+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 48021B331C3A693100C40B58 /* UIViewController+Common.m */; };
 		4805E5191C5EA7FD00BA1924 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4805E5181C5EA7FD00BA1924 /* Photos.framework */; };
+		48081BCC1ED35FA1009C5BE0 /* NumberFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48081BCB1ED35FA1009C5BE0 /* NumberFilterViewController.m */; };
+		48081BD51ED402D9009C5BE0 /* NumberFilterAreasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48081BD41ED402D9009C5BE0 /* NumberFilterAreasViewController.m */; };
 		480B4FFA1BED1A890098F3A4 /* CountryCallingCodes.json in Resources */ = {isa = PBXBuildFile; fileRef = 480B4FF91BED1A890098F3A4 /* CountryCallingCodes.json */; };
 		480B4FFF1BED4AC20098F3A4 /* WD@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 480B4FFE1BED4AC20098F3A4 /* WD@2x.png */; };
 		480BEF9518D59ECA00C882E0 /* GetStartedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 480BEF9418D59ECA00C882E0 /* GetStartedView.xib */; };
@@ -679,6 +681,7 @@
 		48F552621E2E39C7009A054E /* CallIncoming@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48F5525E1E2E39C7009A054E /* CallIncoming@3x.png */; };
 		48F552631E2E39C7009A054E /* CallOutgoing@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48F5525F1E2E39C7009A054E /* CallOutgoing@2x.png */; };
 		48F552641E2E39C7009A054E /* CallOutgoing@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48F552601E2E39C7009A054E /* CallOutgoing@3x.png */; };
+		48F571BE1ED09E32002D7C2D /* Filter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48F571BD1ED09E32002D7C2D /* Filter@2x.png */; };
 		48F5D2ED16B9A380001576E1 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F5D2EC16B9A380001576E1 /* Base64.m */; };
 		48F5D2EE16B9A380001576E1 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F5D2EC16B9A380001576E1 /* Base64.m */; };
 		48FC30BD1C220E300032387E /* AddressType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FC30BC1C220E300032387E /* AddressType.m */; };
@@ -755,6 +758,10 @@
 		48021B331C3A693100C40B58 /* UIViewController+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Common.m"; sourceTree = "<group>"; };
 		4802621C1C8CCD0F00AAB11B /* Data2.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data2.2.xcdatamodel; sourceTree = "<group>"; };
 		4805E5181C5EA7FD00BA1924 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
+		48081BCA1ED35FA1009C5BE0 /* NumberFilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberFilterViewController.h; sourceTree = "<group>"; };
+		48081BCB1ED35FA1009C5BE0 /* NumberFilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberFilterViewController.m; sourceTree = "<group>"; };
+		48081BD31ED402D9009C5BE0 /* NumberFilterAreasViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberFilterAreasViewController.h; sourceTree = "<group>"; };
+		48081BD41ED402D9009C5BE0 /* NumberFilterAreasViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberFilterAreasViewController.m; sourceTree = "<group>"; };
 		480B4FF91BED1A890098F3A4 /* CountryCallingCodes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CountryCallingCodes.json; path = Resources/CountryCallingCodes.json; sourceTree = "<group>"; };
 		480B4FFE1BED4AC20098F3A4 /* WD@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WD@2x.png"; sourceTree = "<group>"; };
 		480BEF8C18D59E7400C882E0 /* GetStartedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetStartedViewController.h; sourceTree = "<group>"; };
@@ -1505,6 +1512,7 @@
 		48F5525E1E2E39C7009A054E /* CallIncoming@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CallIncoming@3x.png"; sourceTree = "<group>"; };
 		48F5525F1E2E39C7009A054E /* CallOutgoing@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CallOutgoing@2x.png"; sourceTree = "<group>"; };
 		48F552601E2E39C7009A054E /* CallOutgoing@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CallOutgoing@3x.png"; sourceTree = "<group>"; };
+		48F571BD1ED09E32002D7C2D /* Filter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Filter@2x.png"; sourceTree = "<group>"; };
 		48F5D2EB16B9A380001576E1 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
 		48F5D2EC16B9A380001576E1 /* Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
 		48FC30BB1C220E300032387E /* AddressType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressType.h; sourceTree = "<group>"; };
@@ -1920,6 +1928,7 @@
 				48367A1417247B2D001A02AF /* CueStopWhite@2x.png */,
 				4898EC491DA021490010479D /* DollarCents@2x.png */,
 				4898EC4A1DA021490010479D /* DollarCents@3x.png */,
+				48F571BD1ED09E32002D7C2D /* Filter@2x.png */,
 				483679EE1722F2CF001A02AF /* List.png */,
 				483679EF1722F2CF001A02AF /* List@2x.png */,
 				48995E0918739F46001395C2 /* Phone.png */,
@@ -2564,6 +2573,8 @@
 				48F3CE981D27B070000925EE /* IncomingChargesViewController.m */,
 				48AF44F0164947CD00DFE3D8 /* KeypadViewController.h */,
 				48AF44F1164947CE00DFE3D8 /* KeypadViewController.m */,
+				48E61AF31EAD1A33001E3A93 /* LanguagesViewController.h */,
+				48E61AF41EAD1A33001E3A93 /* LanguagesViewController.m */,
 				4849432D1752263600E1D5C4 /* LicensesViewController.h */,
 				4849432E1752263600E1D5C4 /* LicensesViewController.m */,
 				4896D8FE16EBE612008A2354 /* NumberAreasViewController.h */,
@@ -2578,6 +2589,10 @@
 				48F1B7E017E63819003A3933 /* NumberDestinationsViewController.m */,
 				4872DA7A1D360AC4009F4194 /* NumberExtendViewController.h */,
 				4872DA7B1D360AC4009F4194 /* NumberExtendViewController.m */,
+				48081BD31ED402D9009C5BE0 /* NumberFilterAreasViewController.h */,
+				48081BD41ED402D9009C5BE0 /* NumberFilterAreasViewController.m */,
+				48081BCA1ED35FA1009C5BE0 /* NumberFilterViewController.h */,
+				48081BCB1ED35FA1009C5BE0 /* NumberFilterViewController.m */,
 				48931FF31D3CB0FF00A93456 /* NumberPayViewController.h */,
 				48931FF41D3CB0FF00A93456 /* NumberPayViewController.m */,
 				488AD1E816E799C3004D3A2A /* NumberStatesViewController.h */,
@@ -2612,8 +2627,6 @@
 				48EEC7371E8ACBAB006759A3 /* VerifyPhoneVoiceEnterViewController.m */,
 				4823C0CB1CBA7F3800030FC7 /* WebViewController.h */,
 				4823C0CC1CBA7F3800030FC7 /* WebViewController.m */,
-				48E61AF31EAD1A33001E3A93 /* LanguagesViewController.h */,
-				48E61AF41EAD1A33001E3A93 /* LanguagesViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -3052,6 +3065,7 @@
 				485F93D41DEF6D3B006E31ED /* GraphicCallStateView.xib in Resources */,
 				485F6B581637270100D61365 /* MK@2x.png in Resources */,
 				485F6B5A1637270100D61365 /* ML@2x.png in Resources */,
+				48F571BE1ED09E32002D7C2D /* Filter@2x.png in Resources */,
 				485F6B5C1637270100D61365 /* MM@2x.png in Resources */,
 				485F6B5E1637270100D61365 /* MN@2x.png in Resources */,
 				48F157521CA40C2B00A5CB4C /* BV@2x.png in Resources */,
@@ -3390,6 +3404,7 @@
 				482A63A1165FF73400325B3F /* NumberLabel.m in Sources */,
 				48B813321AADF88E0019AF77 /* NBAddressBookManager.m in Sources */,
 				48B813611AADF98C0019AF77 /* NBPeoplePickerNavigationController.m in Sources */,
+				48081BCC1ED35FA1009C5BE0 /* NumberFilterViewController.m in Sources */,
 				48DDF4BE1E3A788900BDEC43 /* AFHTTPSessionManager.m in Sources */,
 				4882748E1660E20D00B41EA1 /* DtmfPlayer.m in Sources */,
 				48C97EA318943C7300174DE9 /* PhoneViewController.m in Sources */,
@@ -3406,6 +3421,7 @@
 				48DD7281169CD4A200CD7080 /* Data.xcdatamodeld in Sources */,
 				48017A12194E554C0059A53B /* CallableData.m in Sources */,
 				48F1B7E117E63819003A3933 /* NumberDestinationsViewController.m in Sources */,
+				48081BD51ED402D9009C5BE0 /* NumberFilterAreasViewController.m in Sources */,
 				480BEF9618D73EF900C882E0 /* GetStartedViewController.m in Sources */,
 				48B813781AADFA030019AF77 /* NSMutableString+Appending.m in Sources */,
 				48DD72D5169F5AC600CD7080 /* WebClient.m in Sources */,

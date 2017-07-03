@@ -749,7 +749,7 @@
                               areaCode:(NSString*)areaCode
                           addressProof:(NSData*)addressProof
                          identityProof:(NSData*)identityProof
-                           nationality:(NSString*)nationality   // Also an ISO-2 cpountry code.
+                           nationality:(NSString*)nationality   // Also an ISO-2 country code.
                                 idType:(NSString*)idType
                               idNumber:(NSString*)idNumber
                           fiscalIdCode:(NSString*)fiscalIdCode

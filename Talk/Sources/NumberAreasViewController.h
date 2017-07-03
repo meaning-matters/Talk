@@ -10,12 +10,15 @@
 #import <UIKit/UIKit.h>
 #import "SearchTableViewController.h"
 #import "NumberType.h"
+#import "AddressType.h"
 
 
-@interface NumberAreasViewController : SearchTableViewController <UITableViewDelegate>
+@interface NumberAreasViewController : SearchTableViewController
 
 - (instancetype)initWithIsoCountryCode:(NSString*)isoCountryCode
                                  state:(NSDictionary*)state
-                        numberTypeMask:(NumberTypeMask)numberTypeMask;
+                        numberTypeMask:(NumberTypeMask)numberTypeMask
+                       addressTypeMask:(AddressTypeMask)theAddressTypeMask
+                    isFilteringEnabled:(BOOL)isFilteringEnabled;
 
 @end

@@ -199,17 +199,17 @@ static const int EditButtonCellTag = 341152; // Some random value.
 {
     switch (addressTypeMask)
     {
-        case AddressTypeWorldwideMask: isoCountryCode = nil; areaCode = nil; numberTypeMask = 0; break;
-        case AddressTypeNationalMask:                        areaCode = nil; numberTypeMask = 0; break;
-        case AddressTypeLocalMask:                                           numberTypeMask = 0; break;
-        case AddressTypeExtranational:                       areaCode = nil; numberTypeMask = 0; break;
+        case AddressTypeWorldwideMask: areaCode = nil;  break;
+        case AddressTypeNationalMask:  areaCode = nil;  break;
+        case AddressTypeLocalMask:                      break;
+        case AddressTypeExtranational: areaCode = nil;  break;
     }
 
     [[WebClient sharedClient] retrieveAddressesForIsoCountryCode:isoCountryCode
                                                         areaCode:areaCode
                                                       numberType:numberTypeMask
                                                  isExtranational:(addressTypeMask == AddressTypeExtranational)
-                                                           reply:^(NSError *error, NSArray *addresses)
+                                                           reply:^(NSError* error, NSArray* addresses)
     {
         NSArray* uuids = [addresses valueForKey:@"uuid"];
         if (areAvailable)
@@ -234,7 +234,6 @@ static const int EditButtonCellTag = 341152; // Some random value.
         completion ? completion(predicate, error) : 0;
     }];
 }
-
 
 
 + (void)cancelLoadingAddressPredicate
@@ -423,7 +422,7 @@ static const int EditButtonCellTag = 341152; // Some random value.
                     {
                         text  = NSLocalizedStringWithDefaultValue(@"Addresses ...", nil, [NSBundle mainBundle],
                                                                   @"%d of your %d addresses match the requirements "
-                                                                  @"for this Number. Select it, or tap + to "
+                                                                  @"for this Number. Select one of them, or tap + to "
                                                                   @"add a new address.",
                                                                   @"[1/4 line larger font].");
                         title = [title stringByAppendingFormat:text, matchCount, totalCount];

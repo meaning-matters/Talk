@@ -54,6 +54,8 @@
 
 @property (nonatomic, assign) BOOL           needsServerSync;       // YES when CoreData was wiped after error.
 
+@property (nonatomic, assign) NSDictionary*  numberFilter;          // Dictionary that defines which Number regions to show as being available.
+
 @property (nonatomic, strong) NSDictionary*  addressUpdates;        // Unseen address updates.
 
 @property (nonatomic, readonly) NSString*    appId;                 // Used in rate-app URL.

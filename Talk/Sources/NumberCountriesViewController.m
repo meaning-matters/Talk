@@ -9,6 +9,7 @@
 #import "NumberCountriesViewController.h"
 #import "NumberStatesViewController.h"
 #import "NumberAreasViewController.h"
+#import "NumberFilterViewController.h"
 #import "CountryNames.h"
 #import "WebClient.h"
 #import "BlockAlertView.h"
@@ -16,12 +17,19 @@
 #import "NumberType.h"
 #import "Common.h"
 #import "Settings.h"
+#import "AddressType.h"
 
 
-@interface NumberCountriesViewController ()
+@interface NumberCountriesViewController () <NumberFilterViewControllerDelegate>
 
+@property (nonatomic, strong) NSArray*            numberCountries;       // As received from the server.
 @property (nonatomic, strong) NSMutableArray*     countriesArray;        // Contains all countries for all number types.
 @property (nonatomic, strong) UISegmentedControl* numberTypeSegmentedControl;
+@property (nonatomic, strong) UIBarButtonItem*    ableItem;              // Says "Filter is disabled/enabled.".
+@property (nonatomic, strong) UIBarButtonItem*    filterItem;            // Filter icon.
+@property (nonatomic, assign) AddressTypeMask     addressTypeMask;       // Address type of home country for selected number type.
+@property (nonatomic, readonly) BOOL              isFilterComplete;
+@property (nonatomic, assign) BOOL                isFilteringEnabled;
 
 @end
 
@@ -47,13 +55,30 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    [self.navigationController setToolbarHidden:NO];
     
-    self.searchBar.placeholder = [self searchBarPlaceHolder];
+    self.searchBar.placeholder  = [self searchBarPlaceHolder];
+    UIBarButtonItem* spaceItem  = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                                target:self
+                                                                                action:nil];
+    self.ableItem               = [[UIBarButtonItem alloc] initWithTitle:[self noFilterString]
+                                                                   style:UIBarButtonItemStylePlain
+                                                                  target:self
+                                                                  action:@selector(ableAction)];
+    self.ableItem.tintColor = [Skinning placeholderColor];
+    UIImage* image = [[UIImage imageNamed:@"Filter"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.filterItem = [[UIBarButtonItem alloc] initWithImage:image
+                                                       style:UIBarButtonItemStylePlain
+                                                      target:self
+                                                      action:@selector(filterAction)];
+    self.filterItem.tintColor = [Skinning placeholderColor];
+    self.toolbarItems = @[ spaceItem, self.ableItem, self.filterItem ];
 
     UIBarButtonItem* cancelButton;
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                  target:self
-                                                                 action:@selector(cancel)];
+                                                                 action:@selector(cancelAction)];
     self.navigationItem.rightBarButtonItem = cancelButton;
 
     self.isLoading = YES;
@@ -61,22 +86,10 @@
     {
         if (error == nil)
         {
-            // Added number type selector.
-            NSArray* items = @[[NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeGeographicMask],
-                               [NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeNationalMask],
-                               [NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeMobileMask],
-                               [NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeTollFreeMask]];
-            self.numberTypeSegmentedControl = [[UISegmentedControl alloc] initWithItems:items];
-            [self.numberTypeSegmentedControl addTarget:self
-                                                action:@selector(numberTypeChangedAction:)
-                                      forControlEvents:UIControlEventValueChanged];
-            self.navigationItem.titleView = self.numberTypeSegmentedControl;
-
-            NSInteger index = [NumberType numberTypeMaskToIndex:[Settings sharedSettings].numberTypeMask];
-            [self.numberTypeSegmentedControl setSelectedSegmentIndex:index];
+            self.numberCountries = content;
 
             // Combine numberTypes per country.
-            for (NSDictionary* newCountry in (NSArray*)content)
+            for (NSDictionary* newCountry in self.numberCountries)
             {
                 NSMutableDictionary* matchedCountry = nil;
                 for (NSMutableDictionary* country in self.countriesArray)
@@ -92,14 +105,44 @@
                 {
                     matchedCountry = [NSMutableDictionary dictionaryWithDictionary:newCountry];
                     matchedCountry[@"numberTypes"] = @(0);
+                    matchedCountry[@"numberType"]  = nil;
+                    matchedCountry[@"regulations"] = [NSMutableDictionary dictionary];
                     [self.countriesArray addObject:matchedCountry];
                 }
 
                 NumberTypeMask mask = [NumberType numberTypeMaskForString:newCountry[@"numberType"]];
                 matchedCountry[@"numberTypes"] = @([matchedCountry[@"numberTypes"] intValue] | mask);
+
+                matchedCountry[@"regulations"][newCountry[@"numberType"]] = newCountry[@"regulation"];
+                matchedCountry[@"regulation"] = nil;
             }
 
+            if ([self isFilterComplete])
+            {
+                self.isFilteringEnabled = YES;
+            }
+            else
+            {
+                [self filterAction];
+            }
+
+            // Added number type selector.
+            NSArray* items = @[[NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeGeographicMask],
+                               [NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeNationalMask],
+                               [NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeMobileMask],
+                               [NumberType abbreviatedLocalizedStringForNumberTypeMask:NumberTypeTollFreeMask]];
+            self.numberTypeSegmentedControl = [[UISegmentedControl alloc] initWithItems:items];
+            [self.numberTypeSegmentedControl addTarget:self
+                                                action:@selector(numberTypeChangedAction)
+                                      forControlEvents:UIControlEventValueChanged];
+            self.navigationItem.titleView = self.numberTypeSegmentedControl;
+
+            NSInteger index = [NumberType numberTypeMaskToIndex:[Settings sharedSettings].numberTypeMask];
+            [self.numberTypeSegmentedControl setSelectedSegmentIndex:index];
+
+            [self updateToolbar];
             [self sortOutArrays];
+
             self.isLoading = NO;    // Placed here, after processing results, to let reload of search results work.
         }
         else if (error.code == WebStatusFailServiceUnavailable)
@@ -154,9 +197,19 @@
 }
 
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    self.navigationController.toolbarHidden = NO;
+}
+
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+
+    self.navigationController.toolbarHidden = YES;
 
     [[WebClient sharedClient] cancelAllRetrieveNumberCountries];
 }
@@ -180,15 +233,51 @@
 
 - (void)sortOutArrays
 {
+    NSString* isoCountryCode = [Settings sharedSettings].numberFilter[@"isoCountryCode"];
+
     // Select from all on numberType.
     NSMutableArray* currentObjectsArray = [NSMutableArray array];
     NumberTypeMask  numberTypeMask      = (NumberTypeMask)(1UL << [self.numberTypeSegmentedControl selectedSegmentIndex]);
+    NSString*       numberType          = [NumberType stringForNumberTypeMask:numberTypeMask];
 
     for (NSMutableDictionary* country in self.countriesArray)
     {
         if ([country[@"numberTypes"] intValue] & numberTypeMask)
         {
-            [currentObjectsArray addObject:country];
+            BOOL isAllowed = NO;
+
+            AddressTypeMask addressTypeMask;
+            NSString* addressTypeString = country[@"regulations"][numberType][@"addressType"];
+            addressTypeMask = [AddressType addressTypeMaskForString:addressTypeString];
+
+            switch (addressTypeMask)
+            {
+                case AddressTypeWorldwideMask:
+                {
+                    isAllowed = YES;
+                    break;
+                }
+                case AddressTypeNationalMask:
+                {
+                    isAllowed = [country[@"isoCountryCode"] isEqualToString:isoCountryCode];
+                    break;
+                }
+                case AddressTypeLocalMask:
+                {
+                    isAllowed = [country[@"isoCountryCode"] isEqualToString:isoCountryCode];
+                    break;
+                }
+                case AddressTypeExtranational:
+                {
+                    isAllowed = ![country[@"isoCountryCode"] isEqualToString:isoCountryCode];
+                    break;
+                }
+            }
+
+            if (isAllowed || !self.isFilterComplete || !self.isFilteringEnabled)
+            {
+                [currentObjectsArray addObject:country];
+            }
         }
     }
 
@@ -197,7 +286,7 @@
 }
 
 
-- (void)cancel
+- (void)cancelAction
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -221,20 +310,25 @@
     NSDictionary* country        = [self objectOnTableView:tableView atIndexPath:indexPath];
     NSString*     isoCountryCode = country[@"isoCountryCode"];
 
-    NumberTypeMask  numberTypeMask = (NumberTypeMask)(1UL << self.numberTypeSegmentedControl.selectedSegmentIndex);
+    NumberTypeMask  numberTypeMask  = (NumberTypeMask)(1UL << self.numberTypeSegmentedControl.selectedSegmentIndex);
+    AddressTypeMask addressTypeMask = [self addressTypeMaskForCountry:isoCountryCode numberTypeMask:numberTypeMask];
     if ([country[@"hasStates"] boolValue] && numberTypeMask == NumberTypeGeographicMask)
     {
         NumberStatesViewController* viewController;
         viewController = [[NumberStatesViewController alloc] initWithIsoCountryCode:isoCountryCode
-                                                                     numberTypeMask:numberTypeMask];
+                                                                     numberTypeMask:numberTypeMask
+                                                                    addressTypeMask:addressTypeMask
+                                                                 isFilteringEnabled:self.isFilteringEnabled];
         [self.navigationController pushViewController:viewController animated:YES];
     }
     else
     {
-        NumberAreasViewController*  viewController;
+        NumberAreasViewController* viewController;
         viewController = [[NumberAreasViewController alloc] initWithIsoCountryCode:isoCountryCode
-                                                                        state:nil
-                                                                numberTypeMask:numberTypeMask];
+                                                                             state:nil
+                                                                    numberTypeMask:numberTypeMask
+                                                                   addressTypeMask:addressTypeMask
+                                                                isFilteringEnabled:self.isFilteringEnabled];
         [self.navigationController pushViewController:viewController animated:YES];
     }
 }
@@ -268,12 +362,122 @@
 
 #pragma mark - UI Actions
 
-- (void)numberTypeChangedAction:(id)sender
+- (void)numberTypeChangedAction
 {
     [Settings sharedSettings].numberTypeMask = (NumberTypeMask)(1UL << self.numberTypeSegmentedControl.selectedSegmentIndex);
-    [self sortOutArrays];
-    
+
     self.searchBar.placeholder = [self searchBarPlaceHolder];
+
+    [self updateToolbar];
+    [self sortOutArrays];
+}
+
+
+- (void)filterAction
+{
+    UINavigationController*      modalViewController;
+    NumberFilterViewController* filterViewController;
+    filterViewController = [[NumberFilterViewController alloc] initWithNumberCountries:self.numberCountries
+                                                                              delegate:self
+                                                                            completion:^
+    {
+        if ([self isFilterComplete])
+        {
+            self.isFilteringEnabled = YES;
+        }
+
+        [self updateToolbar];
+        [self sortOutArrays];
+    }];
+
+    modalViewController = [[UINavigationController alloc] initWithRootViewController:filterViewController];
+    modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+
+    [self presentViewController:modalViewController animated:YES completion:nil];
+}
+
+
+- (void)ableAction
+{
+    if ([self isFilterComplete])
+    {
+        self.isFilteringEnabled = !self.isFilteringEnabled;
+        [self updateToolbar];
+        [self sortOutArrays];
+    }
+    else
+    {
+        [self filterAction];
+    }
+}
+
+
+#pragma mark - NumberFilterViewControllerDelegate
+
+- (BOOL)isFilterComplete
+{
+    NSString*       isoCountryCode  = [Settings sharedSettings].numberFilter[@"isoCountryCode"];
+    AddressTypeMask addressTypeMask = [self addressTypeMaskForCountry:isoCountryCode numberTypeMask:NumberTypeGeographicMask];
+
+    return isoCountryCode != nil &&
+           ([Settings sharedSettings].numberFilter[@"areaName"] != nil || addressTypeMask != AddressTypeLocalMask);
+}
+
+
+#pragma mark - Helpers
+
+- (NSString*)noFilterString
+{
+    return NSLocalizedString(@"No filter defined", @"");
+}
+
+
+- (NSString*)enabledFilterString
+{
+    return NSLocalizedString(@"Showing Numbers you can buy", @"");
+}
+
+
+- (NSString*)disabledFilterString
+{
+    return NSLocalizedString(@"Showing all Numbers", @"");
+}
+
+
+- (void)updateToolbar
+{
+    self.addressTypeMask = [self addressTypeMaskForCountry:[Settings sharedSettings].numberFilter[@"isoCountryCode"]
+                                            numberTypeMask:[Settings sharedSettings].numberTypeMask];
+
+    self.ableItem.tintColor = [Skinning tintColor];
+    if ([self isFilterComplete] == NO)
+    {
+        self.ableItem.title       = [self noFilterString];
+        self.filterItem.tintColor = [Skinning placeholderColor];
+    }
+    else
+    {
+        self.ableItem.title       = self.isFilteringEnabled ? [self enabledFilterString] : [self disabledFilterString];
+        self.filterItem.tintColor = self.isFilteringEnabled ? [Skinning onTintColor]     : [Skinning deleteTintColor];
+    }
+}
+
+
+- (AddressTypeMask)addressTypeMaskForCountry:(NSString*)isoCountryCode numberTypeMask:(NumberTypeMask)numberTypeMask
+{
+    AddressTypeMask addressTypeMask = AddressTypeWorldwideMask;    // Default to start with.
+
+    if (isoCountryCode != nil)
+    {
+        NSPredicate*  predicate         = [NSPredicate predicateWithFormat:@"isoCountryCode == %@", isoCountryCode];
+        NSDictionary* country           = [[self.countriesArray filteredArrayUsingPredicate:predicate] firstObject];
+        NSString*     numberType        = [NumberType stringForNumberTypeMask:numberTypeMask];
+        NSString*     addressTypeString = country[@"regulations"][numberType][@"addressType"];
+
+        addressTypeMask = [AddressType addressTypeMaskForString:addressTypeString];
+    }
+
+    return addressTypeMask;
 }
 
 @end

@@ -63,7 +63,7 @@
 
 + (UIColor*)valueColor
 {
-    return [UIColor colorWithWhite:0.55f alpha:1.00f];
+    return [UIColor colorWithRed:0.56f green:0.56f blue:0.58f alpha:1.00f];
 }
 
 

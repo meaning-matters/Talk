@@ -13,7 +13,6 @@
 #import "NumberTermsViewController.h"
 #import "NumberBuyViewController.h"
 #import "Strings.h"
-#import "WebClient.h"
 #import "BlockAlertView.h"
 #import "Common.h"
 #import "CountryNames.h"
@@ -475,9 +474,11 @@ typedef enum
         {
             title = NSLocalizedStringWithDefaultValue(@"NumberArea:Address SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"A contact name and address "
+                                                      @"A contact name and %@ address "
                                                       @"are legally required.",
                                                       @"Explaining that information must be supplied by user.");
+            NSString* addressTypeString = [[AddressType localizedStringForAddressTypeMask:addressTypeMask] lowercaseString];
+            title = [NSString stringWithFormat:title, addressTypeString];
             break;
         }
         case TableSectionCharges:

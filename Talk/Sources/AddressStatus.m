@@ -351,7 +351,8 @@
     return ((mask & AddressStatusStagedMask)                  > 0) || // Not yet verified by NumberBay yet.
            ((mask & AddressStatusRejectedMask)                > 0) || // Rejected by NumberBay and still editable.
            ((mask & AddressStatusVerificationNotRequiredMask) > 0) || // Verified by NumberBay and not needing Voxbone check.
-           ((mask & AddressStatusVerifiedMask)                > 0);   // Verified by both NumberBay and Voxbone.
+           ((mask & AddressStatusVerifiedMask)                > 0) || // Verified by both NumberBay and Voxbone.
+           ((mask & AddressStatusNotVerifiedMask)             > 0);   // ### Is this correct?
 }
 
 
