@@ -346,7 +346,7 @@ typedef enum
                                                             @"[1/4 line larger font].");
             footerTitle = NSLocalizedStringWithDefaultValue(@"Settings ...", nil, [NSBundle mainBundle],
                                                             @"When you initiate a call, you'll be called back "
-                                                            @"on the selected number.\n\nTo limit your costs, "
+                                                            @"on the selected Phone.\n\nTo limit your costs, "
                                                             @"make sure that the NumberBay calling rate to this "
                                                             @"number is low, and also check the extra charges of your "
                                                             @"telephone operator for receiving calls (which can be "

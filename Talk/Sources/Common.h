@@ -43,8 +43,6 @@ static const NSInteger CommonUseButton1Tag    = 30469;
 
 + (void)openAppStoreReviewPage;
 
-+ (void)addCompanyToAddressBook:(ABAddressBookRef)addressBook;
-
 + (UIViewController*)topViewController; // View controller from which to present a modal.
 
 + (NSData*)jsonDataWithObject:(id)object;

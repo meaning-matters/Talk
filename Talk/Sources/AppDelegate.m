@@ -88,9 +88,6 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
         self.tabBarController = [[UITabBarController alloc] init];
         self.tabBarController.delegate = self;
 
-        // Set address book delegate.
-        [NBAddressBookManager sharedManager].delegate = self;
-
         // Placed here, after processing results, just before tabs are added.  Otherwise navigation bar
         // will overlap with status bar.
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
@@ -124,6 +121,11 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
         // Trigger loading contacts.
         self.nBPeopleListViewController.view.hidden = NO;
+
+        // Set address book delegate. This needs to be called after triggering the loading of contacts because it may
+        // try to add the NumberBay Ltd. contact, for which it needs to first check if that contact is already there.
+        // See comments in addCompanyToAddressBook.
+        [NBAddressBookManager sharedManager].delegate = self;
     });
 }
 
@@ -407,9 +409,16 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     }
     else
     {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
         {
-            [self.nBRecentsListViewController retrieveCallRecordsWithSender:nil completion:nil];
+            if (self.nBPeopleListViewController.contactsAreLoaded)
+            {
+                [self.nBRecentsListViewController retrieveCallRecordsWithSender:nil completion:nil];
+            }
+            else
+            {
+                NBLog(@"### Contacts were not loaded in time for retrieving incoming call records.");
+            }
         });
     }
 }

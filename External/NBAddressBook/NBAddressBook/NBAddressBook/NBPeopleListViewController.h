@@ -83,4 +83,6 @@
 
 - (NSString*)contactNameForId:(NSString*)contactId;
 
+- (void)addCompanyToAddressBook:(ABAddressBookRef)addressBook;
+
 @end

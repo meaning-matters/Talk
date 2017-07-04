@@ -9,6 +9,7 @@
 #import <AddressBookUI/AddressBookUI.h>
 #import "NBPeopleListViewController.h"
 #import "Strings.h"
+#import "Settings.h"
 
 @interface NBPeopleListViewController () <ABNewPersonViewControllerDelegate>
 {
@@ -122,12 +123,12 @@
         @synchronized (self)
         {
             [self loadContacts];
+
+            self.contactsAreLoaded = YES;
         }
 
         dispatch_async(dispatch_get_main_queue(), ^
         {
-            self.contactsAreLoaded = YES;
-
             [self.tableView reloadData];
         });
     });
@@ -633,6 +634,11 @@
 
 - (void)findContactsHavingNumber:(NSString*)number completion:(void(^)(NSArray* contactIds))completion
 {
+    if (!self.contactsAreLoaded)
+    {
+        NBLog(@"### findContactsHavingNumber called before contacts were loaded!");
+    }
+
     // Force viewDidLoad to be called, as this fills the allContacts array.
     self.view.hidden = NO;
 
@@ -701,6 +707,132 @@
     {
         return [[NBContact getListRepresentation:contact] string];
     }
+}
+
+
+- (void)addCompanyToAddressBook:(ABAddressBookRef)addressBook
+{
+    dispatch_async(searchQueue, ^
+    {
+        @synchronized(self)
+        {
+            // This method is called as a result of [NBAddressBookManager sharedManager].delegate = self in AppDelegate.m.
+            // Just above that, the contacts have been triggered to load. To make sure `findContactsHavingNumber` returns
+            // results (which requires contacts to be loaded), we need to call this within a synchronized block; because
+            // loading contacts, which was called earlier, is also in a synchronized block.
+            [self findContactsHavingNumber:[Settings sharedSettings].companyPhone completion:^(NSArray* contactIds)
+            {
+                if (contactIds.count > 0)
+                {
+                    return;
+                }
+
+                ABRecordRef person = ABPersonCreate();
+
+                NSString* venueName     = [Settings sharedSettings].companyName;
+                NSString* venueUrl      = [Settings sharedSettings].companyWebsite;
+                NSString* venueEmail    = [Settings sharedSettings].companyEmail;
+                NSString* venuePhone    = [Settings sharedSettings].companyPhone;
+                NSString* venueAddress1 = [Settings sharedSettings].companyAddress1;
+                NSString* venueAddress2 = [Settings sharedSettings].companyAddress2;
+                NSString* venueCity     = [Settings sharedSettings].companyCity;
+                NSString* venueState    = nil;
+                NSString* venueZip      = [Settings sharedSettings].companyPostcode;
+                NSString* venueCountry  = [Settings sharedSettings].companyCountry;
+                UIImage*  venueImage    = [UIImage imageNamed:@"Icon-152.png"];
+
+                ABRecordSetValue(person, kABPersonOrganizationProperty, (__bridge CFStringRef)venueName, NULL);
+
+                if (venueUrl)
+                {
+                    ABMutableMultiValueRef urlMultiValue = ABMultiValueCreateMutable(kABMultiStringPropertyType);
+                    ABMultiValueAddValueAndLabel(urlMultiValue, (__bridge CFStringRef) venueUrl, kABPersonHomePageLabel, NULL);
+                    ABRecordSetValue(person, kABPersonURLProperty, urlMultiValue, nil);
+                    CFRelease(urlMultiValue);
+                }
+
+                if (venueEmail)
+                {
+                    ABMutableMultiValueRef emailMultiValue = ABMultiValueCreateMutable(kABMultiStringPropertyType);
+                    ABMultiValueAddValueAndLabel(emailMultiValue, (__bridge CFStringRef) venueEmail, kABWorkLabel, NULL);
+                    ABRecordSetValue(person, kABPersonEmailProperty, emailMultiValue, nil);
+                    CFRelease(emailMultiValue);
+                }
+
+                if (venuePhone)
+                {
+                    ABMutableMultiValueRef phoneNumberMultiValue = ABMultiValueCreateMutable(kABMultiStringPropertyType);
+                    NSArray*               venuePhoneNumbers     = [venuePhone componentsSeparatedByString:@" or "];
+
+                    for (NSString *venuePhoneNumberString in venuePhoneNumbers)
+                    {
+                        ABMultiValueAddValueAndLabel(phoneNumberMultiValue, (__bridge CFStringRef) venuePhoneNumberString, kABPersonPhoneMainLabel, NULL);
+                    }
+
+                    ABRecordSetValue(person, kABPersonPhoneProperty, phoneNumberMultiValue, nil);
+                    CFRelease(phoneNumberMultiValue);
+                }
+
+                ABMutableMultiValueRef multiAddress      = ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
+                NSMutableDictionary*   addressDictionary = [[NSMutableDictionary alloc] init];
+
+                if (venueAddress1)
+                {
+                    if (venueAddress2)
+                    {
+                        addressDictionary[(NSString *) kABPersonAddressStreetKey] = [NSString stringWithFormat:@"%@\n%@", venueAddress1, venueAddress2];
+                    }
+                    else
+                    {
+                        addressDictionary[(NSString *) kABPersonAddressStreetKey] = venueAddress1;
+                    }
+                }
+
+                if (venueCity)
+                {
+                    addressDictionary[(NSString *)kABPersonAddressCityKey] = venueCity;
+                }
+
+                if (venueState)
+                {
+                    addressDictionary[(NSString *)kABPersonAddressStateKey] = venueState;
+                }
+
+                if (venueZip)
+                {
+                    addressDictionary[(NSString *)kABPersonAddressZIPKey] = venueZip;
+                }
+
+                if (venueCountry)
+                {
+                    addressDictionary[(NSString *)kABPersonAddressCountryKey] = venueCountry;
+                }
+
+                if (venueImage)
+                {
+                    ABPersonSetImageData(person, (__bridge CFDataRef)UIImagePNGRepresentation(venueImage), nil);
+                }
+
+                ABMultiValueAddValueAndLabel(multiAddress, (__bridge CFDictionaryRef) addressDictionary, kABWorkLabel, NULL);
+                ABRecordSetValue(person, kABPersonAddressProperty, multiAddress, NULL);
+                CFRelease(multiAddress);
+
+                CFErrorRef error = NULL;
+                ABAddressBookAddRecord(addressBook, person, &error);
+                if (error == NULL)
+                {
+                    ABAddressBookSave(addressBook, &error);
+                }
+
+                CFRelease(person);
+
+                dispatch_async(dispatch_get_main_queue(), ^
+                {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:NF_RELOAD_CONTACTS object:nil];
+                });
+            }];
+        }
+    });
 }
 
 
