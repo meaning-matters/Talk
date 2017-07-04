@@ -95,7 +95,8 @@
         }
         else if (error.code == WebStatusFailSecureInternet  ||
                  error.code == WebStatusFailProblemInternet ||
-                 error.code == WebStatusFailInternetLogin)
+                 error.code == WebStatusFailInternetLogin   ||
+                 error.code == WebStatusFailRoamingOff)
         {
             message = NSLocalizedStringWithDefaultValue(@"Recording DeleteFailedMessage", nil,
                                                         [NSBundle mainBundle],

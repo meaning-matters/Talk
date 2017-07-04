@@ -217,7 +217,10 @@
     {
         [[WebClient sharedClient] retrieveOptions:^(NSError* error, BOOL freeAccount)
         {
-            if (error.code == WebStatusFailNoInternet || error.code == WebStatusFailInternetLogin)
+            if (error.code == WebStatusFailSecureInternet ||
+                error.code == WebStatusFailNoInternet     ||
+                error.code == WebStatusFailInternetLogin  ||
+                error.code == WebStatusFailRoamingOff)
             {
                 // Ignore because there's no internet connection yet.
             }

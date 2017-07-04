@@ -35,11 +35,12 @@ typedef enum
     WebStatusFailSecureInternet        = 911052,  // Indirect: not sent by server, from other NSURLError... SSL related.
     WebStatusFailProblemInternet       = 911053,  // Indirect: not sent by server, from NSURLErrorCannotFindHost.
     WebStatusFailInternetLogin         = 911054,  // Indirect: not sent by server, may require to login.
-    WebStatusFailNoAccount             = 911055,  // Indirect: not sent by server.
-    WebStatusFailOther                 = 911056,  // Indirect: not sent by server, for example a 404.
-    WebStatusFailUnspecified           = 911057,  // Indirect: not sent by server, when FAIL_... is missing or is unknown.
-    WebStatusFailInvalidResponse       = 911058,  // Indirect: not sent by server, when server response is malformed.
-    WebStatusFailNoServer              = 911059,  // No API server could be retrieved with DNS-SRV.
+    WebStatusFailRoamingOff            = 911055,  // Indirect: not sent by server, from NSURLErrorInternationalRoamingOff.
+    WebStatusFailNoAccount             = 911056,  // Indirect: not sent by server.
+    WebStatusFailOther                 = 911057,  // Indirect: not sent by server, for example a 404.
+    WebStatusFailUnspecified           = 911058,  // Indirect: not sent by server, when FAIL_... is missing or is unknown.
+    WebStatusFailInvalidResponse       = 911059,  // Indirect: not sent by server, when server response is malformed.
+    WebStatusFailNoServer              = 911060,  // No API server could be retrieved with DNS-SRV.
     WebStatusFailUnknown               = 911099,  // Extreme unlikely situation where AFNetworking gives failure with error == nil.
 } WebStatusCode;
 

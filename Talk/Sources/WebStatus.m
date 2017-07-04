@@ -248,6 +248,12 @@
                                                        @"[].");
             break;
         }
+        case WebStatusFailRoamingOff:
+        {
+            string = NSLocalizedString(@"It appears there's no Internet connection because international roaming is off.\n\n"
+                                       @"Please check iOS Settings > Mobile Data > Mobile Data Options > Data Roaming.", @"");
+            break;
+        }
         case WebStatusFailInternetLogin:
         {
             NSString* networkText;

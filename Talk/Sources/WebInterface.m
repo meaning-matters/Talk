@@ -770,7 +770,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
         }
         else if (error.code == NSURLErrorCannotFindHost)
         {
-            reply([Common errorWithCode:WebStatusFailInternetLogin
+            reply([Common errorWithCode:WebStatusFailProblemInternet
                             description:[WebStatus localizedStringForStatus:WebStatusFailProblemInternet]], nil);
         }
         else if (error.code == NSURLErrorUserCancelledAuthentication     ||
@@ -778,6 +778,11 @@ static void processDnsReply(DNSServiceRef       sdRef,
         {
             reply([Common errorWithCode:WebStatusFailInternetLogin
                             description:[WebStatus localizedStringForStatus:WebStatusFailInternetLogin]], nil);
+        }
+        else if (error.code == NSURLErrorInternationalRoamingOff)
+        {
+            reply([Common errorWithCode:WebStatusFailRoamingOff
+                            description:[WebStatus localizedStringForStatus:WebStatusFailRoamingOff]], nil);
         }
         else
         {
