@@ -573,6 +573,13 @@ static void processDnsReply(DNSServiceRef       sdRef,
                 {
                     failure ? failure(task, error) : 0;
                 }
+                else if ([task.response isKindOfClass:[NSHTTPURLResponse class]] &&
+                         ((NSHTTPURLResponse*)task.response).statusCode == 401) // Unauthorized.
+                {
+                    // Something is very wrong, do a hard logout of the user.
+                    [[Settings sharedSettings] resetAll];
+                    failure ? failure(task, error) : 0;
+                }
                 else if (error.code != NSURLErrorCancelled)
                 {
                     if (retrying == NO)
