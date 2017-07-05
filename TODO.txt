@@ -16,8 +16,6 @@ Make country list diacritic insensitive
   and off.  Integrate this behaviour with alerts given to user when he calls first local
   number.  Also find better place for code in viewWillAppear of SettingsViewController.
 
-* Netherlands Antilles flag not correct, must have 5 instead of 6 stars.
-
 * Use special new textfield with format in DestinationVC.
 
 * Revisit "canceled" (iOS preferred?) vs. "cancelled" (current in app, also used in
