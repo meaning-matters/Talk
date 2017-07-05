@@ -16,6 +16,8 @@
 #import "Settings.h"
 #import "CountryRegions.h"
 #import "NetworkStatus.h"
+#import "DataManager.h"
+#import "PhoneData.h"
 
 
 @interface CallRatesViewController ()
@@ -107,6 +109,8 @@
     NSString*     fixedPriceString    = [[PurchaseManager sharedManager] localizedFormattedPrice1ExtraDigit:fixedPrice];
     NSString*     mobilePriceString   = [[PurchaseManager sharedManager] localizedFormattedPrice1ExtraDigit:mobilePrice];
     NSString*     perMinuteString     = [NSString stringWithFormat:@"/%@", [Strings shortMinuteString]];
+    PhoneData*    phone               = [[DataManager sharedManager] lookupPhoneForE164:[Settings sharedSettings].callbackE164];
+    NSString*     callbackName        = (phone != nil) ? phone.name : [self.callbackPhoneNumber asYouTypeFormat];
 
     callbackPriceString = [callbackPriceString stringByAppendingString:perMinuteString];
     fixedPriceString    = [fixedPriceString    stringByAppendingString:perMinuteString];
@@ -119,15 +123,25 @@
                                                 @"Prices Per Minute to %@",
                                                 @"....\n"
                                                 @"[iOS alert message size]");
-    message = NSLocalizedStringWithDefaultValue(@"CallRates InfoAlertMessage", nil, [NSBundle mainBundle],
-                                                @"Fixed: from %@\nMobile: from %@\n\n"
-                                                @"Plus the callback to your %@ number in %@: %@",
-                                                @"....\n"
-                                                @"[iOS alert message size]");
-    title   = [NSString stringWithFormat:title, isoCountryCode];
-    message = [NSString stringWithFormat:message, fixedPriceString, mobilePriceString,
-                                         self.callbackPhoneNumber.typeString, self.callbackPhoneNumber.isoCountryCode,
-                                         callbackPriceString];
+    if (phone != nil)
+    {
+        message = NSLocalizedStringWithDefaultValue(@"CallRates InfoAlertMessage A", nil, [NSBundle mainBundle],
+                                                    @"Fixed: from %@\nMobile: from %@\n\n"
+                                                    @"Plus the callback to your Phone '%@': %@",
+                                                    @"....\n"
+                                                    @"[iOS alert message size]");
+    }
+    else
+    {
+        message = NSLocalizedStringWithDefaultValue(@"CallRates InfoAlertMessage B", nil, [NSBundle mainBundle],
+                                                    @"Fixed: from %@\nMobile: from %@\n\n"
+                                                    @"Plus the callback to your phone %@: %@",
+                                                    @"....\n"
+                                                    @"[iOS alert message size]");
+    }
+
+    title   = [NSString stringWithFormat:title, name];
+    message = [NSString stringWithFormat:message, fixedPriceString, mobilePriceString, callbackName, callbackPriceString];
     [BlockAlertView showAlertViewWithTitle:title
                                    message:message
                                 completion:nil

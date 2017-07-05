@@ -18,11 +18,6 @@ Make country list diacritic insensitive
 
 * Use special new textfield with format in DestinationVC.
 
-* Revisit "canceled" (iOS preferred?) vs. "cancelled" (current in app, also used in
-  AFNetworking, so don't change these!).
-
-* Check waarom call direct na prov. niet lukt.  Ook lukken calls sowieso soms niet.
-
 * Zag "Nothing to Restore" terwijl er wel een account was.  Zijn er andere errors misschien die nu op een hoop
   worden geveegd?
   
@@ -43,8 +38,6 @@ Make country list diacritic insensitive
 * Make sure that credit & number purchases are handled correctly when they are pushed by App Store later, i.e.
   without the UI (for example at app kill/crash/error between payment OK, and processing on server).  The
   productCompletion will/should be nil then.
-  
-* Rename WebClient methods to simpler prefixes: Get, Buy, ... (instead fo retrieve, purchase, ...).
 
 * Sort PurchaseManager methods in REST.txt order.
 
@@ -60,8 +53,6 @@ Make country list diacritic insensitive
 * In WebClient return NSError with webClientFail code and localized string, as id content (call it object?); in case of error.
 
 * Rewrite WebClient status texts. localizedStringForStatus
-
-* Add a badge to Credit tab when below tier 5. 
 
 * Add warning push notification from server when credit gets below tier 5.
 
@@ -235,8 +226,6 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 * Recents: Show Number on Recent info. Help to determine why a call was missed.
 
 * BUG: When on slow internet, e.g. Edge (via Developer iOS settings), and calling a contact from the keypad before the price was not retrieved yet, the keypad shows "(null) - 0.020", on return to the keypad when cancelling the call for example.  Apparently the answer comes after this keypad label was wiped, but the country and phone type were no longer available (because they were wiped).
-
-* Call rates popup says "Plus the callback to your mobile number in BE". Must mention 'Phone' -> "Plus callback to the Phone (BE mobile) you selected: £0.05"
 
 * The width of textfields added to cells is fixed (at 224) which may allow the text to run under the textLabel on the left. The textfield width needs to be adjusted according to the textLabel on the left.
 
