@@ -25,6 +25,7 @@
 @property (nonatomic, copy) void                                 (^completion)();
 @property (nonatomic, strong) NSArray*                             areas;
 @property (nonatomic, strong) NSString*                            loadingIsoCountryCode;
+@property (nonatomic, strong) NSDictionary*                        numberFilter;
 
 @end
 
@@ -42,6 +43,7 @@
         self.numberCountries = numberCountries;
         self.delegate        = delegate;
         self.completion      = completion;
+        self.numberFilter    = [Settings sharedSettings].numberFilter;
     }
 
     return self;
@@ -297,6 +299,9 @@
 
 - (void)cancelAction
 {
+    // Put back the original.
+    [Settings sharedSettings].numberFilter = self.numberFilter;
+
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
