@@ -107,9 +107,10 @@
 
 - (UIImage*)scaledImageWithImage:(UIImage*)image
 {
-    CGFloat  maximumDimension = MAX(image.size.width, image.size.height);
-    CGFloat  scaleFactor      = MIN(1440.0f / maximumDimension, 1.0f);  // Image will be 1440x1080 or 1080x1440.
-    CGSize   scaledSize       = CGSizeMake(image.size.width * scaleFactor, image.size.height * scaleFactor);
+    CGFloat maximumPixelCount = 1440 * 1080;
+    CGFloat pixelCount        = image.size.width * image.size.height;
+    CGFloat scaleFactor       = MIN(sqrt(maximumPixelCount / pixelCount), 1.0);
+    CGSize  scaledSize        = CGSizeMake(image.size.width * scaleFactor, image.size.height * scaleFactor);
 
     UIGraphicsBeginImageContext(scaledSize);
     [image drawInRect:CGRectMake(0, 0, scaledSize.width, scaledSize.height)];
