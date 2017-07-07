@@ -82,10 +82,18 @@
         }
         else
         {
-            NSPredicate* predicate     = [NSPredicate predicateWithFormat:@"(postcode == %@)", self.address.postcode];
-            NSArray*     filteredArray = [self.objectsArray filteredArrayUsingPredicate:predicate];
+            // SearchTableViewController.m keep an internal objects array from the data passed with `createIndexOfWidth`.
+            // In `sortOutArray` below, the `objectsArray` is created twice. After the first time, postcodes can be
+            // padded with leading spaces (e.g. for South Korea with has 3 and 5 character postcodes). This is when
+            // `createIndexOfWidth` is called, which then calls this function. That's why the objects here may have
+            // padded postcodes which we trim before comparing with the `self.address.postcode` which never has leading
+            // padding spaces.
+            NSPredicate* predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary* bindings)
+            {
+                return [[evaluatedObject[@"postcode"] stringByTrimmingLeadingWhiteSpace] isEqualToString:self.address.postcode];
+            }];
 
-            _selectedObject = [filteredArray firstObject];
+            _selectedObject = [[self.objectsArray filteredArrayUsingPredicate:predicate] firstObject];
         }
     }
 
@@ -97,36 +105,41 @@
 
 - (void)sortOutArrays
 {
-    NSMutableArray* objectsArray = [NSMutableArray array];
-
-    // Create one big postcodes array, and create city lookup dictionary.
+    // Find maximum postcode size.
+    NSUInteger maximumSize = 0;
     for (NSMutableDictionary* city in self.citiesArray)
     {
         for (NSString* postcode in city[@"postcodes"])
         {
-            [objectsArray addObject:@{@"postcode" : postcode,
-                                      @"city"     : city[@"city"]}];
+            maximumSize = MAX(maximumSize, postcode.length);
         }
     }
 
-    // Find maximum postcode size.
-    NSUInteger maximumSize = 0;
-    for (NSDictionary* object in objectsArray)
+    // Create one big postcodes array, and create city lookup dictionary/ The postcodes may
+    // be padded with leading spaces to make the all the same width, which is needed for
+    // proper index creation.
+    //
+    // This padding will be removed again below for display in the cells and when a cell is selected.
+    NSMutableArray* objectsArray = [NSMutableArray array];
+    for (NSMutableDictionary* city in self.citiesArray)
     {
-        if ([object[@"postcode"] length] > maximumSize)
+        for (NSString* postcode in city[@"postcodes"])
         {
-            maximumSize = [object[@"postcode"] length];
-        }
+            NSString* padding = [[NSString string] stringByPaddingToLength:(maximumSize - postcode.length)
+                                                                withString:@" "
+                                                           startingAtIndex:0];
 
-        if ([object[@"postcode"] length] == 5)
-        {
-            NSLog(@"%@", object);
+            [objectsArray addObject:@{@"postcode" : [padding stringByAppendingString:postcode],
+                                      @"city"     : city[@"city"]}];
         }
     }
 
     // Determine a good width of section title, such that number of sections is
     // smaller than 40, and the number of sections is smaller than the total
     // number of items devided by a minimum section size of for example 5.
+    //
+    // This too must be done with postcodes of the same wdith. So we need the
+    // padding (done above) too.
     NSInteger width;
     NSMutableDictionary* nameIndexDictionary = [NSMutableDictionary dictionary];
     for (width = maximumSize; width > 0; width--)
@@ -149,6 +162,7 @@
         [nameIndexDictionary removeAllObjects];
     }
 
+    // We create the index. This also requires the padded postcodes.
     self.objectsArray = objectsArray;
     [self createIndexOfWidth:width];
 }
@@ -159,10 +173,10 @@
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell   = [self.tableView cellForRowAtIndexPath:indexPath];
-    NSDictionary*    object = [self objectOnTableView:tableView atIndexPath:indexPath];
+    NSDictionary*    object = [self objectOnTableView:tableView atIndexPath:indexPath];  // Potentially padded postcode.
 
     self.address.city     = object[@"city"];
-    self.address.postcode = object[@"postcode"];
+    self.address.postcode = [object[@"postcode"] stringByTrimmingLeadingWhiteSpace];     // Strip padding.
 
     if (self.checkmarkedCell.accessoryType == UITableViewCellAccessoryCheckmark)
     {
@@ -178,7 +192,7 @@
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
-    NSDictionary*    object = [self objectOnTableView:tableView atIndexPath:indexPath];
+    NSDictionary*    object = [self objectOnTableView:tableView atIndexPath:indexPath];  // Potentially padded postcode.
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"SubtitleCell"];
     if (cell == nil)
@@ -186,10 +200,11 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"SubtitleCell"];
     }
 
-    cell.textLabel.text       = object[@"postcode"];
+    NSString* postcode        = [object[@"postcode"] stringByTrimmingLeadingWhiteSpace]; // Strip padding.
+    cell.textLabel.text       = postcode;
     cell.detailTextLabel.text = object[@"city"];
-    if ([object[@"postcode"] isEqualToString:self.address.postcode] &&
-        [object[@"city"]     isEqualToString:self.address.city])
+    if ([postcode        isEqualToString:self.address.postcode] &&
+        [object[@"city"] isEqualToString:self.address.city])
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
         self.checkmarkedCell = cell;

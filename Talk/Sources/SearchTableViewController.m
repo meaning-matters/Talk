@@ -8,6 +8,7 @@
 
 #import "SearchTableViewController.h"
 #import "Skinning.h"
+#import "NSString+Common.h"
 
 
 @interface SearchTableViewController ()
@@ -125,7 +126,7 @@
     for (id object in self.objectsArray)
     {
         NSString*       name      = [self nameForObject:object];
-        NSString*       nameIndex = [name substringToIndex:self.width];
+        NSString*       nameIndex = [[name substringToIndex:self.width] stringByTrimmingLeadingWhiteSpace]; // Trimming done to support South Korea unequal sized postcodes (see AddressPostcodesViewController.m for more changes).
         NSMutableArray* indexArray;
         if ((indexArray = self.indexedObjectsDictionary[nameIndex]) == nil)
         {
