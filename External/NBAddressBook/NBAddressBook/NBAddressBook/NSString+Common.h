@@ -15,6 +15,10 @@
 
 - (NSString*)stringByRemovingWhiteSpace;
 
+- (NSString*)stringByTrimmingLeadingWhiteSpace;
+
+- (NSString*)stringByTrimmingTrailingWhiteSpace;
+
 + (NSString*)formatToShortDate:(NSDate*)date;
 
 + (NSString*)formatToSlashSeparatedDate:(NSDate*)date;

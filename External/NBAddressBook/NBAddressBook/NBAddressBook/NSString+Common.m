@@ -41,6 +41,23 @@
 }
 
 
+
+- (NSString*)stringByTrimmingLeadingWhiteSpace
+{
+    NSRange range = [self rangeOfString:@"^\\s*" options:NSRegularExpressionSearch];
+
+    return [self stringByReplacingCharactersInRange:range withString:@""];
+}
+
+
+- (NSString*)stringByTrimmingTrailingWhiteSpace
+{
+    NSRange range = [self rangeOfString:@"\\s*$" options:NSRegularExpressionSearch];
+
+    return [self stringByReplacingCharactersInRange:range withString:@""];
+}
+
+
 #pragma mark - Date formatting
 
 + (NSString*)formatToShortDate:(NSDate*)date
