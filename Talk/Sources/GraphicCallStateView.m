@@ -8,8 +8,10 @@
 
 #import "GraphicCallStateView.h"
 #import "SignalDotView.h"
+#import "SoundWaveView.h"
 #import "Skinning.h"
 #import "Common.h"
+#import "NSTimer+Blocks.h"
 
 
 @interface GraphicCallStateView () <SignalDotViewDelegate>
@@ -23,9 +25,14 @@
 @property (nonatomic, weak) IBOutlet UIImageView* keypadImageView;
 @property (nonatomic, weak) IBOutlet UIImageView* cloudImageView;
 
+@property (nonatomic, strong) NSArray<SoundWaveView*>* callerWaveViews;
+@property (nonatomic, strong) NSArray<SoundWaveView*>* calleeWaveViews;
+
 @property (nonatomic, assign) BOOL requestStarted;
 @property (nonatomic, assign) BOOL callbackStarted;
 @property (nonatomic, assign) BOOL callthruStarted;
+
+@property (nonatomic, strong) NSTimer* soundWaveTimer;
 
 @end
 
@@ -48,7 +55,7 @@
         return;
     }
 
-    if (self.callbackStarted)
+    if (self.callbackStarted == YES)
     {
         [self stopCallback];
     }
@@ -91,17 +98,6 @@
 }
 
 
-- (void)stopCallback
-{
-    for (SignalDotView* dotView in self.callbackDotViews)
-    {
-        [dotView stop];
-    }
-
-    self.callbackStarted = NO;
-}
-
-
 - (void)connectCallback
 {
     [self stopRequest];
@@ -111,6 +107,17 @@
     {
         dotView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.7];
     }
+}
+
+
+- (void)stopCallback
+{
+    for (SignalDotView* dotView in self.callbackDotViews)
+    {
+        [dotView stop];
+    }
+
+    self.callbackStarted = NO;
 }
 
 
@@ -127,31 +134,71 @@
 }
 
 
-- (void)stopCallthru
+- (void)connectCallthru
 {
     for (SignalDotView* dotView in self.callthruDotViews)
     {
         [dotView stop];
     }
 
-    self.callthruStarted = NO;
-}
-
-
-- (void)connectCallthru
-{
-    [self stopCallthru];
-
     for (SignalDotView* dotView in self.callthruDotViews)
     {
         dotView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.7];
     }
+
+    if ([self.soundWaveTimer isValid])
+    {
+        return;
+    }
+
+    [self.soundWaveTimer invalidate];
+    self.soundWaveTimer = [NSTimer scheduledTimerWithInterval:0.5 repeats:YES block:^
+    {
+        uint32_t value = arc4random_uniform(100);
+
+        if (value > 50)
+        {
+            if (value % 2 == 0)
+            {
+                [self.callerWaveViews.firstObject startNextWithColor:[Skinning tintColor]];
+            }
+            else
+            {
+                [self.calleeWaveViews.firstObject startNextWithColor:[Skinning tintColor]];
+            }
+        }
+    }];
+}
+
+
+- (void)stopCallthru
+{
+    [self.soundWaveTimer invalidate];
+    self.soundWaveTimer = nil;
+
+    for (SoundWaveView* waveView in self.callerWaveViews)
+    {
+        [waveView stop];
+    }
+
+    for (SoundWaveView* waveView in self.calleeWaveViews)
+    {
+        [waveView stop];
+    }
+
+    self.callthruStarted = NO;
 }
 
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+
+    // This method is called 2 times; prevent the double creation of the wave views.
+    if (self.callerWaveViews == nil || self.calleeWaveViews == nil)
+    {
+        [self addSoundWaveViews];
+    }
 
     [self setTintColor:[UIColor whiteColor] ofImageView:self.phoneImageView];
     [self setTintColor:[UIColor whiteColor] ofImageView:self.contactImageView];
@@ -184,6 +231,61 @@
     animation.duration     = 0.05f;
 
     [imageView.layer addAnimation:animation forKey:nil] ;
+}
+
+
+- (void)addSoundWaveViews
+{
+    NSMutableArray* waveViews;
+    SoundWaveView*  previousView;
+    CGFloat         x;
+    CGFloat         y;
+    CGFloat         width = 7.0;
+    CGFloat         height;
+
+    x            = 65.0;
+    y            = 80.0;
+    height       = 20.0;
+    waveViews    = [NSMutableArray array];
+    previousView = nil;
+    for (int n = 0; n < 24; n++)
+    {
+        SoundWaveView* view = [[SoundWaveView alloc] initWithFrame:CGRectMake(x, y, width, height)];
+        view.direction = SoundWaveRight;
+        previousView.next = view;
+        [waveViews addObject:view];
+
+        [self addSubview:view];
+        previousView = view;
+
+        x      += width;
+        y      -= 1;
+        height += 2;
+    }
+
+    self.callerWaveViews = waveViews;
+
+    x            = x - width;
+    y            = 80.0;
+    height       = 20.0;
+    waveViews    = [NSMutableArray array];
+    previousView = nil;
+    for (int n = 0; n < 24; n++)
+    {
+        SoundWaveView* view = [[SoundWaveView alloc] initWithFrame:CGRectMake(x, y, width, height)];
+        view.direction = SoundWaveLeft;
+        previousView.next = view;
+        [waveViews addObject:view];
+
+        [self addSubview:view];
+        previousView = view;
+
+        x      -= width;
+        y      -= 1;
+        height += 2;
+    }
+
+    self.calleeWaveViews = waveViews;
 }
 
 

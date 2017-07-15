@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" colorMatched="YES">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -42,28 +42,28 @@
             <rect key="frame" x="0.0" y="0.0" width="296" height="247"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" alpha="0.90000000000000002" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LogoIcon.png" translatesAutoresizingMaskIntoConstraints="NO" id="IWW-mC-HfV">
-                    <rect key="frame" x="31" y="75" width="30" height="30"/>
+                <imageView userInteractionEnabled="NO" alpha="0.90000000000000002" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="LogoIcon.png" id="IWW-mC-HfV">
+                    <rect key="frame" x="30" y="75" width="30" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Phone.png" translatesAutoresizingMaskIntoConstraints="NO" id="JvC-zG-RHx">
-                    <rect key="frame" x="31" y="75" width="30" height="30"/>
+                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Phone.png" id="JvC-zG-RHx">
+                    <rect key="frame" x="30" y="75" width="30" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <imageView userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CloudFilled.png" translatesAutoresizingMaskIntoConstraints="NO" id="XAY-Iy-bnZ">
-                    <rect key="frame" x="119" y="137" width="56" height="36"/>
+                <imageView userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="CloudFilled.png" id="XAY-Iy-bnZ">
+                    <rect key="frame" x="118" y="137" width="56" height="36"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <imageView userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NBPeopleListTab.png" translatesAutoresizingMaskIntoConstraints="NO" id="DG6-hL-OTe">
-                    <rect key="frame" x="233" y="75" width="30" height="30"/>
+                <imageView userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="NBPeopleListTab.png" id="DG6-hL-OTe">
+                    <rect key="frame" x="234" y="75" width="30" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <imageView userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="KeypadTab.png" translatesAutoresizingMaskIntoConstraints="NO" id="fDE-PG-wBZ">
-                    <rect key="frame" x="233" y="75" width="30" height="30"/>
+                <imageView userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="KeypadTab.png" id="fDE-PG-wBZ">
+                    <rect key="frame" x="234" y="75" width="30" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f7P-W8-ZLg" customClass="SignalDotView">
-                    <rect key="frame" x="95" y="151" width="8" height="8"/>
+                <view contentMode="scaleToFill" misplaced="YES" id="f7P-W8-ZLg" customClass="SignalDotView">
+                    <rect key="frame" x="94" y="151" width="8" height="8"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
@@ -71,8 +71,8 @@
                         <outlet property="previous" destination="vS0-il-dKQ" id="ihC-c2-4dM"/>
                     </connections>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vS0-il-dKQ" customClass="SignalDotView">
-                    <rect key="frame" x="109" y="151" width="8" height="8"/>
+                <view contentMode="scaleToFill" misplaced="YES" id="vS0-il-dKQ" customClass="SignalDotView">
+                    <rect key="frame" x="108" y="151" width="8" height="8"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
@@ -80,8 +80,8 @@
                         <outlet property="previous" destination="nKA-qf-yLJ" id="2sD-6G-5wq"/>
                     </connections>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m52-uG-po2" customClass="SignalDotView">
-                    <rect key="frame" x="81" y="151" width="8" height="8"/>
+                <view contentMode="scaleToFill" misplaced="YES" id="m52-uG-po2" customClass="SignalDotView">
+                    <rect key="frame" x="80" y="151" width="8" height="8"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
@@ -89,8 +89,8 @@
                         <outlet property="previous" destination="f7P-W8-ZLg" id="DiF-5N-nJv"/>
                     </connections>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4oL-IO-y0d" customClass="SignalDotView">
-                    <rect key="frame" x="67" y="151" width="8" height="8"/>
+                <view contentMode="scaleToFill" misplaced="YES" id="4oL-IO-y0d" customClass="SignalDotView">
+                    <rect key="frame" x="66" y="151" width="8" height="8"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
@@ -98,8 +98,8 @@
                         <outlet property="previous" destination="m52-uG-po2" id="Qco-b2-eYW"/>
                     </connections>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xHQ-hb-vuZ" customClass="SignalDotView">
-                    <rect key="frame" x="53" y="151" width="8" height="8"/>
+                <view contentMode="scaleToFill" misplaced="YES" id="xHQ-hb-vuZ" customClass="SignalDotView">
+                    <rect key="frame" x="52" y="151" width="8" height="8"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
@@ -107,8 +107,8 @@
                         <outlet property="previous" destination="4oL-IO-y0d" id="40K-Gm-eit"/>
                     </connections>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8z7-iP-JML" customClass="SignalDotView">
-                    <rect key="frame" x="42" y="140" width="8" height="8"/>
+                <view contentMode="scaleToFill" misplaced="YES" id="8z7-iP-JML" customClass="SignalDotView">
+                    <rect key="frame" x="41" y="140" width="8" height="8"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
@@ -116,8 +116,8 @@
                         <outlet property="previous" destination="xHQ-hb-vuZ" id="n1R-75-RAe"/>
                     </connections>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pQf-Ek-qQV" customClass="SignalDotView">
-                    <rect key="frame" x="42" y="126" width="8" height="8"/>
+                <view contentMode="scaleToFill" misplaced="YES" id="pQf-Ek-qQV" customClass="SignalDotView">
+                    <rect key="frame" x="41" y="126" width="8" height="8"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
@@ -125,8 +125,8 @@
                         <outlet property="previous" destination="8z7-iP-JML" id="U8M-KD-sb0"/>
                     </connections>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nKA-qf-yLJ" customClass="SignalDotView">
-                    <rect key="frame" x="42" y="112" width="8" height="8"/>
+                <view contentMode="scaleToFill" misplaced="YES" id="nKA-qf-yLJ" customClass="SignalDotView">
+                    <rect key="frame" x="41" y="112" width="8" height="8"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
@@ -134,79 +134,93 @@
                         <outlet property="previous" destination="pQf-Ek-qQV" id="tK6-R5-cUZ"/>
                     </connections>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jPU-DJ-U8S" customClass="SignalDotView">
-                    <rect key="frame" x="233" y="151" width="8" height="8"/>
+                <view contentMode="scaleToFill" misplaced="YES" id="jPU-DJ-U8S" customClass="SignalDotView">
+                    <rect key="frame" x="234" y="151" width="8" height="8"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="next" destination="R8n-gh-cuo" id="KSX-SM-LgK"/>
                     </connections>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AwM-gV-Lga" customClass="SignalDotView">
-                    <rect key="frame" x="219" y="151" width="8" height="8"/>
+                <view contentMode="scaleToFill" misplaced="YES" id="AwM-gV-Lga" customClass="SignalDotView">
+                    <rect key="frame" x="220" y="151" width="8" height="8"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="next" destination="jPU-DJ-U8S" id="8uW-an-kGb"/>
                     </connections>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CuM-uY-HtE" customClass="SignalDotView">
-                    <rect key="frame" x="205" y="151" width="8" height="8"/>
+                <view contentMode="scaleToFill" misplaced="YES" id="CuM-uY-HtE" customClass="SignalDotView">
+                    <rect key="frame" x="206" y="151" width="8" height="8"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="next" destination="AwM-gV-Lga" id="VvG-XC-kvK"/>
                     </connections>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PZ8-A2-iyQ" customClass="SignalDotView">
-                    <rect key="frame" x="191" y="151" width="8" height="8"/>
+                <view contentMode="scaleToFill" misplaced="YES" id="PZ8-A2-iyQ" customClass="SignalDotView">
+                    <rect key="frame" x="192" y="151" width="8" height="8"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="next" destination="CuM-uY-HtE" id="B5Q-aM-uS8"/>
                     </connections>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dpo-d1-QcZ" customClass="SignalDotView">
-                    <rect key="frame" x="177" y="151" width="8" height="8"/>
+                <view contentMode="scaleToFill" misplaced="YES" id="dpo-d1-QcZ" customClass="SignalDotView">
+                    <rect key="frame" x="178" y="151" width="8" height="8"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="next" destination="PZ8-A2-iyQ" id="bLw-BE-1Sf"/>
                     </connections>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R8n-gh-cuo" customClass="SignalDotView">
-                    <rect key="frame" x="244" y="140" width="8" height="8"/>
+                <view contentMode="scaleToFill" misplaced="YES" id="R8n-gh-cuo" customClass="SignalDotView">
+                    <rect key="frame" x="245" y="140" width="8" height="8"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="next" destination="Gje-Yd-NEw" id="cWL-Ny-rQc"/>
                     </connections>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gje-Yd-NEw" customClass="SignalDotView">
-                    <rect key="frame" x="244" y="126" width="8" height="8"/>
+                <view contentMode="scaleToFill" misplaced="YES" id="Gje-Yd-NEw" customClass="SignalDotView">
+                    <rect key="frame" x="245" y="126" width="8" height="8"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="next" destination="k3i-n3-9Qr" id="3yx-jo-4ha"/>
                     </connections>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k3i-n3-9Qr" customClass="SignalDotView">
-                    <rect key="frame" x="244" y="112" width="8" height="8"/>
+                <view contentMode="scaleToFill" misplaced="YES" id="k3i-n3-9Qr" customClass="SignalDotView">
+                    <rect key="frame" x="245" y="112" width="8" height="8"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="next" destination="dpo-d1-QcZ" id="p3I-sC-DOp"/>
                     </connections>
                 </view>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="calling you sf sd sdf sdfs dff sf sfs fs dfsdfsd gggg sdfdg sdf sdfg df sdf sdf sdf sdf" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K0d-rA-uir">
-                    <rect key="frame" x="22" y="171" width="252" height="58"/>
+                <view alpha="0.25" contentMode="scaleToFill" id="Egi-4i-yrX">
+                    <rect key="frame" x="18" y="18" width="260" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone: T-Mobile NL" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xr1-cI-4hb">
-                    <rect key="frame" x="22" y="20" width="252" height="21"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                            <real key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                            <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <view alpha="0.25" contentMode="scaleToFill" misplaced="YES" id="zJR-bE-tM4">
+                    <rect key="frame" x="19" y="39.5" width="258" height="1"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone: T-Mobile NL" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Xr1-cI-4hb">
+                    <rect key="frame" x="22" y="18.5" width="252" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" white="0.79895662006578949" alpha="1" colorSpace="calibratedWhite"/>
@@ -217,11 +231,18 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Caller ID: Anonymous" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1zd-Sf-MqC">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Caller ID: Anonymous" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="1zd-Sf-MqC">
                     <rect key="frame" x="22" y="40" width="252" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" white="0.79864823190789469" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="calling you sf sd sdf sdfs dff sf sfs fs dfsdfsd gggg sdfdg sdf sdfg df sdf sdf sdf sdf" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="K0d-rA-uir">
+                    <rect key="frame" x="22" y="171" width="252" height="58"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
@@ -238,4 +259,9 @@
         <image name="NBPeopleListTab.png" width="30" height="30"/>
         <image name="Phone.png" width="30" height="30"/>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4_0.fullscreen"/>
+    </simulatedMetricsContainer>
 </document>

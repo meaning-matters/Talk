@@ -221,9 +221,9 @@ const NSTimeInterval TransitionDuration = 0.5;
     CGContextRef context = UIGraphicsGetCurrentContext();
 
     //// Color Declarations
-    UIColor* gradientBottomColor = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.8];
-    UIColor* gradientTopColor = [UIColor colorWithRed: 0.101 green: 0.101 blue: 0.101 alpha: 0.8];
-    UIColor* lineColor = [UIColor colorWithRed: 0.35 green: 0.35 blue: 0.35 alpha: 0.8];
+    UIColor* gradientBottomColor = [UIColor colorWithRed: 0.000 green: 0.000 blue: 0.000 alpha: 0.8];
+    UIColor* gradientTopColor    = [UIColor colorWithRed: 0.101 green: 0.101 blue: 0.101 alpha: 0.8];
+    UIColor* lineColor           = [UIColor colorWithRed: 0.350 green: 0.350 blue: 0.350 alpha: 0.8];
 
     //// Gradient Declarations
     NSArray* gradientColors = [NSArray arrayWithObjects:

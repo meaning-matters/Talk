@@ -127,6 +127,9 @@
 {
     [super viewWillDisappear:animated];
 
+    [graphicStateView stopCallback];
+    [graphicStateView stopCallthru];
+
     [self removeNotificationObservers]; // Can't be done in dealloc, because the observers prevent dealloc from being called.
 }
 
@@ -545,7 +548,7 @@
             {
                 case CallLegNone:     return NSLocalizedString(@"calling...", @"iOS string for phone call in progress");
                 case CallLegCallback: return NSLocalizedString(@"calling your Phone...", @"");
-                case CallLegCallthru: return NSLocalizedString(@"calling the other", @"");
+                case CallLegCallthru: return NSLocalizedString(@"calling the other...", @"");
             }
         }
         case CallStateConnected:
@@ -553,7 +556,7 @@
             switch (self.call.leg)
             {
                 case CallLegNone:     return NSLocalizedString(@"connected", @"");
-                case CallLegCallback: return NSLocalizedString(@"your Phone answered\n(end if you're not connected, could be your voicemail)", @"");
+                case CallLegCallback: return NSLocalizedString(@"your Phone answered\n(if you're not connected, end the call; could be your voicemail)", @"");
                 case CallLegCallthru: return NSLocalizedString(@"you're connected\nenjoy the call", @"");
             }
             break;
