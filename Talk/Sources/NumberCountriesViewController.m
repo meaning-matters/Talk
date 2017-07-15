@@ -18,6 +18,7 @@
 #import "Common.h"
 #import "Settings.h"
 #import "AddressType.h"
+#import "BlockAlertView.h"
 
 
 @interface NumberCountriesViewController () <NumberFilterViewControllerDelegate>
@@ -233,56 +234,59 @@
 
 - (void)sortOutArrays
 {
-    NSString* isoCountryCode = [Settings sharedSettings].numberFilter[@"isoCountryCode"];
-
     // Select from all on numberType.
     NSMutableArray* currentObjectsArray = [NSMutableArray array];
     NumberTypeMask  numberTypeMask      = (NumberTypeMask)(1UL << [self.numberTypeSegmentedControl selectedSegmentIndex]);
-    NSString*       numberType          = [NumberType stringForNumberTypeMask:numberTypeMask];
 
     for (NSMutableDictionary* country in self.countriesArray)
     {
         if ([country[@"numberTypes"] intValue] & numberTypeMask)
         {
-            BOOL isAllowed = NO;
-
-            AddressTypeMask addressTypeMask;
-            NSString* addressTypeString = country[@"regulations"][numberType][@"addressType"];
-            addressTypeMask = [AddressType addressTypeMaskForString:addressTypeString];
-
-            switch (addressTypeMask)
-            {
-                case AddressTypeWorldwideMask:
-                {
-                    isAllowed = YES;
-                    break;
-                }
-                case AddressTypeNationalMask:
-                {
-                    isAllowed = [country[@"isoCountryCode"] isEqualToString:isoCountryCode];
-                    break;
-                }
-                case AddressTypeLocalMask:
-                {
-                    isAllowed = [country[@"isoCountryCode"] isEqualToString:isoCountryCode];
-                    break;
-                }
-                case AddressTypeExtranational:
-                {
-                    isAllowed = ![country[@"isoCountryCode"] isEqualToString:isoCountryCode];
-                    break;
-                }
-            }
-
-            if (isAllowed || !self.isFilterComplete || !self.isFilteringEnabled)
-            {
-                [currentObjectsArray addObject:country];
-            }
+            [currentObjectsArray addObject:country];
         }
     }
 
     self.objectsArray = currentObjectsArray;
     [self createIndexOfWidth:1];
+}
+
+
+- (BOOL)isAllowedCountry:(NSDictionary*)country
+{
+    NSString*      isoCountryCode = [Settings sharedSettings].numberFilter[@"isoCountryCode"];
+    NumberTypeMask numberTypeMask = (NumberTypeMask)(1UL << [self.numberTypeSegmentedControl selectedSegmentIndex]);
+    NSString*      numberType     = [NumberType stringForNumberTypeMask:numberTypeMask];
+    BOOL           isAllowed      = NO;
+
+    AddressTypeMask addressTypeMask;
+    NSString* addressTypeString = country[@"regulations"][numberType][@"addressType"];
+    addressTypeMask = [AddressType addressTypeMaskForString:addressTypeString];
+
+    switch (addressTypeMask)
+    {
+        case AddressTypeWorldwideMask:
+        {
+            isAllowed = YES;
+            break;
+        }
+        case AddressTypeNationalMask:
+        {
+            isAllowed = [country[@"isoCountryCode"] isEqualToString:isoCountryCode];
+            break;
+        }
+        case AddressTypeLocalMask:
+        {
+            isAllowed = [country[@"isoCountryCode"] isEqualToString:isoCountryCode];
+            break;
+        }
+        case AddressTypeExtranational:
+        {
+            isAllowed = ![country[@"isoCountryCode"] isEqualToString:isoCountryCode];
+            break;
+        }
+    }
+
+    return isAllowed;
 }
 
 
@@ -310,26 +314,64 @@
     NSDictionary* country        = [self objectOnTableView:tableView atIndexPath:indexPath];
     NSString*     isoCountryCode = country[@"isoCountryCode"];
 
-    NumberTypeMask  numberTypeMask  = (NumberTypeMask)(1UL << self.numberTypeSegmentedControl.selectedSegmentIndex);
-    AddressTypeMask addressTypeMask = [self addressTypeMaskForCountry:isoCountryCode numberTypeMask:numberTypeMask];
-    if ([country[@"hasStates"] boolValue] && numberTypeMask == NumberTypeGeographicMask)
+    void (^nextLevelBlock)(void) = ^
     {
-        NumberStatesViewController* viewController;
-        viewController = [[NumberStatesViewController alloc] initWithIsoCountryCode:isoCountryCode
-                                                                     numberTypeMask:numberTypeMask
-                                                                    addressTypeMask:addressTypeMask
-                                                                 isFilteringEnabled:self.isFilteringEnabled];
-        [self.navigationController pushViewController:viewController animated:YES];
+        NumberTypeMask  numberTypeMask  = (NumberTypeMask)(1UL << self.numberTypeSegmentedControl.selectedSegmentIndex);
+        AddressTypeMask addressTypeMask = [self addressTypeMaskForCountry:isoCountryCode numberTypeMask:numberTypeMask];
+        if ([country[@"hasStates"] boolValue] && numberTypeMask == NumberTypeGeographicMask)
+        {
+            NumberStatesViewController* viewController;
+            viewController = [[NumberStatesViewController alloc] initWithIsoCountryCode:isoCountryCode
+                                                                         numberTypeMask:numberTypeMask
+                                                                        addressTypeMask:addressTypeMask
+                                                                     isFilteringEnabled:self.isFilteringEnabled];
+            [self.navigationController pushViewController:viewController animated:YES];
+        }
+        else
+        {
+            NumberAreasViewController* viewController;
+            viewController = [[NumberAreasViewController alloc] initWithIsoCountryCode:isoCountryCode
+                                                                                 state:nil
+                                                                        numberTypeMask:numberTypeMask
+                                                                       addressTypeMask:addressTypeMask
+                                                                    isFilteringEnabled:self.isFilteringEnabled];
+            [self.navigationController pushViewController:viewController animated:YES];
+        }
+    };
+
+    if ([self isAllowedCountry:country] || !self.isFilterComplete || !self.isFilteringEnabled)
+    {
+        nextLevelBlock();
     }
     else
     {
-        NumberAreasViewController* viewController;
-        viewController = [[NumberAreasViewController alloc] initWithIsoCountryCode:isoCountryCode
-                                                                             state:nil
-                                                                    numberTypeMask:numberTypeMask
-                                                                   addressTypeMask:addressTypeMask
-                                                                isFilteringEnabled:self.isFilteringEnabled];
-        [self.navigationController pushViewController:viewController animated:YES];
+        NSString* title   = NSLocalizedString(@"Can't Buy Number", @"");
+        NSString* message = NSLocalizedString(@"If you're based in %@ (which you selected in the filter), you can't "
+                                              @"buy this Number because of regulations.\n\n"
+                                              @"When you continue you'll be asked for an Address in %@.", @"");
+        NSString* filterIsoCountryCode = [Settings sharedSettings].numberFilter[@"isoCountryCode"];
+        message = [NSString stringWithFormat:message, [[CountryNames sharedNames] nameForIsoCountryCode:filterIsoCountryCode],
+                                                      [[CountryNames sharedNames] nameForIsoCountryCode:isoCountryCode]];
+        [BlockAlertView showAlertViewWithTitle:title message:message completion:^(BOOL cancelled, NSInteger buttonIndex)
+        {
+            if (buttonIndex == 1)
+            {
+                [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                [self filterAction];
+            }
+
+            if (buttonIndex == 2)
+            {
+                nextLevelBlock();
+            }
+
+            if (cancelled)
+            {
+                [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+            }
+        }
+                             cancelButtonTitle:[Strings cancelString]
+                             otherButtonTitles:@"Update Filter", @"Continue", nil];
     }
 }
 
@@ -337,8 +379,8 @@
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell;
-    id               object = [self objectOnTableView:tableView atIndexPath:indexPath];
-    NSString*        name   = [self nameForObject:object];
+    id               country = [self objectOnTableView:tableView atIndexPath:indexPath];
+    NSString*        name    = [self nameForObject:country];
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
@@ -351,10 +393,12 @@
     [components removeObjectAtIndex:(components.count - 1)];
     name = [components componentsJoinedByString:@" "];
 
-    cell.imageView.image      = [UIImage imageNamed:object[@"isoCountryCode"]];
+    cell.imageView.image      = [UIImage imageNamed:country[@"isoCountryCode"]];
     cell.textLabel.text       = name;
-    cell.detailTextLabel.text = [@"+" stringByAppendingString:[Common callingCodeForCountry:object[@"isoCountryCode"]]];
+    cell.detailTextLabel.text = [@"+" stringByAppendingString:[Common callingCodeForCountry:country[@"isoCountryCode"]]];
     cell.accessoryType        = UITableViewCellAccessoryNone;
+
+    cell.contentView.alpha = ([self isAllowedCountry:country] || !self.isFilterComplete || !self.isFilteringEnabled) ? 1.0 : 0.5;
 
     return cell;
 }
