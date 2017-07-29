@@ -19,6 +19,7 @@
                                  state:(NSDictionary*)state
                         numberTypeMask:(NumberTypeMask)numberTypeMask
                        addressTypeMask:(AddressTypeMask)theAddressTypeMask
-                    isFilteringEnabled:(BOOL)isFilteringEnabled;
+                    isFilteringEnabled:(BOOL)isFilteringEnabled
+                      isAllowedCountry:(BOOL)isAllowedCountry;
 
 @end

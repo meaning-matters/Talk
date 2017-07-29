@@ -155,7 +155,7 @@ static NSTimer*                 loadUrlTestTimer;
 
 - (BOOL)simAvailable
 {
-    return ([[networkInfo subscriberCellularProvider].isoCountryCode length] == 2 ||
+    return ([[networkInfo subscriberCellularProvider].isoCountryCode    length] == 2 ||
             [[networkInfo subscriberCellularProvider].mobileCountryCode length] == 3);
 }
 

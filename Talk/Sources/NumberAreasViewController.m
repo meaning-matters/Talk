@@ -89,6 +89,8 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
 }
 
 @property (nonatomic, assign) BOOL isFilteringEnabled;
+@property (nonatomic, assign) BOOL isAllowedCountry;
+@property (nonatomic, strong) id   cachedSelectedObject; // - (id)selectedObject is called frequently, we cache the first result to optimize.
 
 @end
 
@@ -100,6 +102,7 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
                         numberTypeMask:(NumberTypeMask)theNumberTypeMask
                        addressTypeMask:(AddressTypeMask)theAddressTypeMask
                     isFilteringEnabled:(BOOL)isFilteringEnabled
+                      isAllowedCountry:(BOOL)isAllowedCountry
 {
     if (self = [super init])
     {
@@ -108,6 +111,7 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
         numberTypeMask          = theNumberTypeMask;
         addressTypeMask         = theAddressTypeMask;
         self.isFilteringEnabled = isFilteringEnabled;
+        self.isAllowedCountry   = isAllowedCountry;
     }
 
     return self;
@@ -234,20 +238,8 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
             }
         }
 
-        if (self.isFilteringEnabled                 &&
-            addressTypeMask == AddressTypeLocalMask &&
-            [isoCountryCode isEqualToString:[Settings sharedSettings].numberFilter[@"isoCountryCode"]])
-        {
-            // Show only areas that are avaliable for purchase.
-            NSString*    areaCode  = [Settings sharedSettings].numberFilter[@"areaCode"];
-            NSPredicate* predicate = [NSPredicate predicateWithFormat:@"areaCode == %@", areaCode];
-            self.objectsArray = [content filteredArrayUsingPredicate:predicate];
-        }
-        else
-        {
-            self.objectsArray = content;
-        }
-        
+        self.objectsArray = content;
+
         [self createIndexOfWidth:1];
     }
     else
@@ -336,7 +328,7 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
 }
 
 
-#pragma mark - Base Class Override
+#pragma mark - Base Class Overrides
 
 - (NSString*)nameForObject:(id)object
 {
@@ -359,6 +351,55 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
     }
     
     return name;
+}
+
+
+// This method is called frequently. Because this implementation does a full search over the areas, we cache the first
+// result in `cachedSelectedObject` to optimize.
+- (id)selectedObject
+{
+    if (self.isFilteringEnabled && addressTypeMask == AddressTypeLocalMask)
+    {
+        if ([isoCountryCode isEqualToString:[Settings sharedSettings].numberFilter[@"isoCountryCode"]])
+        {
+            if (self.cachedSelectedObject)
+            {
+                return self.cachedSelectedObject;
+            }
+
+            NSString*    areaName          = [Settings sharedSettings].numberFilter[@"areaName"];
+            NSString*    areaCode          = [Settings sharedSettings].numberFilter[@"areaCode"];
+            NSPredicate* areaNamePredicate = [NSPredicate predicateWithFormat:@"areaName == %@", areaName];
+            NSPredicate* areaCodePredicate = [NSPredicate predicateWithFormat:@"areaCode == %@", areaCode];
+            NSArray*     areas;
+
+            areas = [self.objectsArray filteredArrayUsingPredicate:areaNamePredicate];
+            if (areas.count > 0)
+            {
+                self.cachedSelectedObject = areas.firstObject;
+
+                return areas.firstObject;
+            }
+
+            areas = [self.objectsArray filteredArrayUsingPredicate:areaCodePredicate];
+            if (areas.count > 0)
+            {
+                self.cachedSelectedObject = areas.firstObject;
+
+                return areas.firstObject;
+            }
+
+            return nil;
+        }
+        else
+        {
+            return nil;
+        }
+    }
+    else
+    {
+        return nil;
+    }
 }
 
 
@@ -493,7 +534,29 @@ typedef NS_ENUM(NSUInteger, AreaFormat)
         cell.accessoryView = nil;
     }
 
+    cell.contentView.alpha = [self isAllowedAreaCode:code] ? 1.0 : 0.5;
+
     return cell;
+}
+
+
+- (BOOL)isAllowedAreaCode:(NSString*)areaCode
+{
+    if (self.isFilteringEnabled && addressTypeMask == AddressTypeLocalMask)
+    {
+        if ([isoCountryCode isEqualToString:[Settings sharedSettings].numberFilter[@"isoCountryCode"]])
+        {
+            return [areaCode isEqualToString:[Settings sharedSettings].numberFilter[@"areaCode"]];
+        }
+        else
+        {
+            return self.isAllowedCountry;
+        }
+    }
+    else
+    {
+        return self.isAllowedCountry;
+    }
 }
 
 

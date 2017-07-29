@@ -187,7 +187,8 @@
                                                                          state:state
                                                                 numberTypeMask:numberTypeMask
                                                                addressTypeMask:addressTypeMask
-                                                            isFilteringEnabled:self.isFilteringEnabled];
+                                                            isFilteringEnabled:self.isFilteringEnabled
+                                                              isAllowedCountry:YES];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

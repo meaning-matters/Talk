@@ -334,7 +334,8 @@
                                                                                  state:nil
                                                                         numberTypeMask:numberTypeMask
                                                                        addressTypeMask:addressTypeMask
-                                                                    isFilteringEnabled:self.isFilteringEnabled];
+                                                                    isFilteringEnabled:self.isFilteringEnabled
+                                                                      isAllowedCountry:[self isAllowedCountry:country]];
             [self.navigationController pushViewController:viewController animated:YES];
         }
     };

@@ -68,7 +68,7 @@
     [[UIColor clearColor] setFill];
     [path fill];
     [[Skinning tintColor] setStroke];
-    path.lineWidth = LINE_WIDTH;
+    path.lineWidth    = LINE_WIDTH;
     path.lineCapStyle = kCGLineCapRound;
     [path stroke];
 }
