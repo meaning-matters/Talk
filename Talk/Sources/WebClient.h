@@ -255,11 +255,16 @@
                        reply:(void (^)(NSError* error))reply;
 
 // 11C. EXTEND NUMBER
-- (void)extendNumberWithUuid:(NSString*)uuid forMonths:(NSUInteger)months
+- (void)extendNumberWithUuid:(NSString*)uuid
+                   forMonths:(NSUInteger)months
                        reply:(void (^)(NSError* error,
                                        float    monthFee,
                                        float    renewFee,
                                        NSDate*  expiryDate))reply;
+
+// 11D. DELETE PENDING NUMBER
+- (void)deleteNumberWithUuid:(NSString*)uuid
+                       reply:(void (^)(NSError* error))reply;
 
 // 12. GET LIST OF NUMBERS
 - (void)retrieveNumbers:(void (^)(NSError* error, NSArray* numbers))reply;

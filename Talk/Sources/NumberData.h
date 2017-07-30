@@ -66,4 +66,8 @@
 
 - (NSString*)expiryDateString;
 
+- (NSString*)cantDeleteMessage;
+
+- (void)deleteWithCompletion:(void (^)(BOOL succeeded))completion;
+
 @end

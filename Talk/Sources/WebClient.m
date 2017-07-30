@@ -952,7 +952,8 @@
 
 
 // 11C. EXTEND NUMBER
-- (void)extendNumberWithUuid:(NSString*)uuid forMonths:(NSUInteger)months
+- (void)extendNumberWithUuid:(NSString*)uuid
+                   forMonths:(NSUInteger)months
                        reply:(void (^)(NSError* error,
                                        float    monthFee,
                                        float    renewFee,
@@ -972,6 +973,20 @@
     }];
 }
 
+
+// 11D. DELETE PENDING NUMBER
+- (void)deleteNumberWithUuid:(NSString*)uuid
+                       reply:(void (^)(NSError* error))reply
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+
+    [self deletePath:[NSString stringWithFormat:@"/users/%@/numbers/%@", username, uuid]
+          parameters:nil
+               reply:^(NSError* error, id content)
+    {
+        reply(error);
+    }];
+}
 
 // 12. GET LIST OF NUMBERS
 - (void)retrieveNumbers:(void (^)(NSError* error, NSArray* numbers))reply

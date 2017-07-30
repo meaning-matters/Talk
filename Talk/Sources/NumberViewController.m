@@ -27,6 +27,7 @@
 #import "NetworkStatus.h"
 #import "AppDelegate.h"
 #import "PhoneData.h"
+#import "BlockActionSheet.h"
 
 
 typedef enum
@@ -49,15 +50,16 @@ typedef enum
 
 @interface NumberViewController ()
 {
-    NumberData*   number;
-    
     TableSections sections;
     InfoRows      infoRows;
     BOOL          isLoadingAddress;
     NSIndexPath*  expiryIndexPath;
     id            reachabilityObserver;
+
+    BOOL          isDeleting;
 }
 
+@property (nonatomic, strong) NumberData*  number;
 @property (nonatomic, strong) NSPredicate* addressesPredicate;
 
 @end
@@ -65,12 +67,12 @@ typedef enum
 
 @implementation NumberViewController
 
-- (instancetype)initWithNumber:(NumberData*)theNumber
+- (instancetype)initWithNumber:(NumberData*)number
           managedObjectContext:(NSManagedObjectContext*)managedObjectContext
 {
     if (self = [super initWithManagedObjectContext:managedObjectContext])
     {
-        number = theNumber;
+        self.number = number;
 
         self.title = NSLocalizedStringWithDefaultValue(@"Number:NumberDetails ScreenTitle", nil,
                                                        [NSBundle mainBundle], @"Number",
@@ -84,8 +86,8 @@ typedef enum
         sections |= TableSectionAddress;
 
         // Optional section.
-        sections |= number.isPending ? 0 : TableSectionUsage;
-        sections |= number.isPending ? 0 : TableSectionPeriod;
+        sections |= self.number.isPending ? 0 : TableSectionUsage;
+        sections |= self.number.isPending ? 0 : TableSectionPeriod;
         sections |= [IncomingChargesViewController hasIncomingChargesWithNumber:number] ? TableSectionCharges : 0;
 
         // Info Rows
@@ -95,7 +97,7 @@ typedef enum
         NSInteger section  = [Common nOfBit:TableSectionName inValue:sections];
         self.nameIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
 
-        self.item = theNumber;
+        self.item = number;
     }
 
     return self;
@@ -119,6 +121,12 @@ typedef enum
             [weakSelf loadAddressesPredicate];
         }
     }];
+
+    UIBarButtonItem* buttonItem;
+    buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
+                                                               target:self
+                                                               action:@selector(deleteAction)];
+    self.navigationItem.rightBarButtonItem = buttonItem;
 }
 
 
@@ -240,7 +248,7 @@ typedef enum
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    if (!number.isPending && [number hasExpired])
+    if (!self.number.isPending && [self.number hasExpired])
     {
         [self.navigationController popViewControllerAnimated:YES];
 
@@ -280,17 +288,17 @@ typedef enum
         }
         case TableSectionDestination:
         {
-            destinationsViewController = [[NumberDestinationsViewController alloc] initWithNumber:number];
+            destinationsViewController = [[NumberDestinationsViewController alloc] initWithNumber:self.number];
             [self.navigationController pushViewController:destinationsViewController animated:YES];
             break;
         }
         case TableSectionUsage:
         {
-            [Common checkCallerIdUsageOfNumber:number completion:^(BOOL canUse)
+            [Common checkCallerIdUsageOfNumber:self.number completion:^(BOOL canUse)
             {
                 if (canUse)
                 {
-                    [Settings sharedSettings].callerIdE164 = number.e164;
+                    [Settings sharedSettings].callerIdE164 = self.number.e164;
 
                     UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
                     cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -307,7 +315,7 @@ typedef enum
         {
             NumberExtendViewController* extendViewController;
 
-            extendViewController = [[NumberExtendViewController alloc] initWithNumber:number
+            extendViewController = [[NumberExtendViewController alloc] initWithNumber:self.number
                                                                            completion:^
             {
                 UITableViewCell* expiryCell = [self.tableView cellForRowAtIndexPath:expiryIndexPath];
@@ -325,27 +333,27 @@ typedef enum
         {
             NSManagedObjectContext*  managedObjectContext = [DataManager sharedManager].managedObjectContext;
             AddressesViewController* viewController;
-            NumberTypeMask           numberTypeMask  = [NumberType numberTypeMaskForString:number.numberType];
-            AddressTypeMask          addressTypeMask = [AddressType addressTypeMaskForString:number.addressType];
+            NumberTypeMask           numberTypeMask  = [NumberType numberTypeMaskForString:self.number.numberType];
+            AddressTypeMask          addressTypeMask = [AddressType addressTypeMaskForString:self.number.addressType];
 
             viewController = [[AddressesViewController alloc] initWithManagedObjectContext:managedObjectContext
-                                                                           selectedAddress:number.address
-                                                                            isoCountryCode:number.isoCountryCode
-                                                                                  areaCode:number.areaCode
-                                                                                    areaId:number.areaId
+                                                                           selectedAddress:self.number.address
+                                                                            isoCountryCode:self.number.isoCountryCode
+                                                                                  areaCode:self.number.areaCode
+                                                                                    areaId:self.number.areaId
                                                                                       city:nil
                                                                                 numberType:numberTypeMask
                                                                                addressType:addressTypeMask
                                                                                  predicate:self.addressesPredicate
-                                                                                isVerified:number.isPending ? NO : YES
+                                                                                isVerified:self.number.isPending ? NO : YES
                                                                                 completion:^(AddressData *selectedAddress)
             {
-                if (selectedAddress != number.address)
+                if (selectedAddress != self.number.address)
                 {
                     self.isLoading = YES;
-                    [[WebClient sharedClient] updateNumberWithUuid:number.uuid
-                                                              name:number.name
-                                                         autoRenew:number.autoRenew
+                    [[WebClient sharedClient] updateNumberWithUuid:self.number.uuid
+                                                              name:self.number.name
+                                                         autoRenew:self.number.autoRenew
                                                    destinationUuid:nil
                                                        addressUuid:selectedAddress.uuid
                                                              reply:^(NSError* error)
@@ -353,7 +361,7 @@ typedef enum
                         self.isLoading = NO;
                         if (error == nil)
                         {
-                            number.address = selectedAddress;
+                            self.number.address = selectedAddress;
                             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
                             [self reloadAddressCell];
 
@@ -380,7 +388,7 @@ typedef enum
         }
         case TableSectionCharges:
         {
-            chargesViewController       = [[IncomingChargesViewController alloc] initWithNumber:number];
+            chargesViewController       = [[IncomingChargesViewController alloc] initWithNumber:self.number];
             chargesViewController.title = cell.textLabel.text;
             [self.navigationController pushViewController:chargesViewController animated:YES];
             break;
@@ -504,7 +512,7 @@ typedef enum
 - (void)autoRenewSwitchAction:(UISwitch*)switchView
 {
     self.isLoading = YES;
-    [[WebClient sharedClient] updateNumberWithUuid:number.uuid
+    [[WebClient sharedClient] updateNumberWithUuid:self.number.uuid
                                               name:nil
                                          autoRenew:switchView.isOn
                                    destinationUuid:nil
@@ -514,7 +522,7 @@ typedef enum
         self.isLoading = NO;
         if (error == nil)
         {
-            number.autoRenew = switchView.isOn;
+            self.number.autoRenew = switchView.isOn;
 
             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
 
@@ -534,18 +542,73 @@ typedef enum
                 UITableViewCell* cell       = [self.tableView cellForRowAtIndexPath:indexPath];
                 UISwitch*        switchView = (UISwitch*)cell.accessoryView;
 
-                [switchView setOn:number.autoRenew animated:YES];
+                [switchView setOn:self.number.autoRenew animated:YES];
             }];
         }
     }];
 }
 
 
+- (void)deleteAction
+{
+    NSString* cantDeleteMessage = [self.number cantDeleteMessage];
+
+    if (cantDeleteMessage == nil)
+    {
+        NSString* title       = NSLocalizedString(@"Delete this pending Number to receive back its price in Credit. "
+                                                  @"Or, cancel if you want to resolve the Address issues.", @"");
+        NSString* buttonTitle = NSLocalizedStringWithDefaultValue(@"NumberView DeleteTitle", nil, [NSBundle mainBundle],
+                                                                  @"Delete Number",
+                                                                  @"...\n"
+                                                                  @"[1/3 line small font].");
+
+        [BlockActionSheet showActionSheetWithTitle:title
+                                        completion:^(BOOL cancelled, BOOL destruct, NSInteger buttonIndex)
+        {
+            if (destruct == YES)
+            {
+                isDeleting = YES;
+
+                [self.number deleteWithCompletion:^(BOOL succeeded)
+                {
+                    if (succeeded)
+                    {
+                        [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+                        [self.navigationController popViewControllerAnimated:YES];
+                    }
+                    else
+                    {
+                        isDeleting = NO;
+                    }
+                }];
+            }
+        }
+                                 cancelButtonTitle:[Strings cancelString]
+                            destructiveButtonTitle:buttonTitle
+                                 otherButtonTitles:nil];
+    }
+    else
+    {
+        NSString* title;
+
+        title   = NSLocalizedStringWithDefaultValue(@"NumberView CantDeleteTitle", nil, [NSBundle mainBundle],
+                                                    @"Can't Delete Number",
+                                                    @"...\n"
+                                                    @"[1/3 line small font].");
+
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:cantDeleteMessage
+                                    completion:nil
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:nil];
+    }}
+
+
 #pragma mark - Cell Methods
 
 - (void)updateInfoE164Cell:(UITableViewCell*)cell
 {
-    if (number.isPending)
+    if (self.number.isPending)
     {
         cell.detailTextLabel.text      = [Strings pendingString];
         cell.detailTextLabel.textColor = [Skinning tintColor];
@@ -555,7 +618,7 @@ typedef enum
     else
     {
         NumberLabel*               numberLabel      = [Common addNumberLabelToCell:cell];
-        PhoneNumber*               phoneNumber      = [[PhoneNumber alloc] initWithNumber:number.e164];
+        PhoneNumber*               phoneNumber      = [[PhoneNumber alloc] initWithNumber:self.number.e164];
         NSString*                  string           = phoneNumber.internationalFormat;
         NSMutableAttributedString* attributedString = [[NSMutableAttributedString alloc] initWithString:string];
 
@@ -564,9 +627,9 @@ typedef enum
         UIFont*           boldFont   = [UIFont fontWithDescriptor:descriptor size:font.pointSize];
 
         NSRange range;
-        if (number.areaCode.length > 0)
+        if (self.number.areaCode.length > 0)
         {
-            range = NSMakeRange(0, 1 + phoneNumber.callCountryCode.length + 1 + number.areaCode.length);
+            range = NSMakeRange(0, 1 + phoneNumber.callCountryCode.length + 1 + self.number.areaCode.length);
         }
         else
         {
@@ -580,7 +643,7 @@ typedef enum
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
 
-    NumberTypeMask numberTypeMask = [NumberType numberTypeMaskForString:number.numberType];
+    NumberTypeMask numberTypeMask = [NumberType numberTypeMaskForString:self.number.numberType];
 
     cell.textLabel.text = [NumberType localizedStringForNumberTypeMask:numberTypeMask];
 }
@@ -588,7 +651,7 @@ typedef enum
 
 - (void)updateInfoAreaCell:(UITableViewCell*)cell
 {
-    cell.imageView.image      = [UIImage imageNamed:number.isoCountryCode];
+    cell.imageView.image      = [UIImage imageNamed:self.number.isoCountryCode];
     cell.detailTextLabel.text = [self areaName];
     cell.selectionStyle       = UITableViewCellSelectionStyleNone;
 }
@@ -596,14 +659,14 @@ typedef enum
 
 - (void)updateDestinationCell:(UITableViewCell*)cell
 {
-    if (number.destination == nil)
+    if (self.number.destination == nil)
     {
         cell.detailTextLabel.text      = [Strings noneString];
         cell.detailTextLabel.textColor = [Skinning deleteTintColor];
     }
     else
     {
-        cell.detailTextLabel.text      = [number.destination defaultName];
+        cell.detailTextLabel.text      = [self.number.destination defaultName];
         cell.detailTextLabel.textColor = [Skinning valueColor];
     }
 
@@ -620,7 +683,7 @@ typedef enum
                                                             [NSBundle mainBundle], @"Use As Default Caller ID",
                                                             @"..."
                                                             @"[....");
-    if ([[Settings sharedSettings].callerIdE164 isEqualToString:number.e164])
+    if ([[Settings sharedSettings].callerIdE164 isEqualToString:self.number.e164])
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
@@ -639,7 +702,7 @@ typedef enum
             cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Number:PeriodPurchaseDate Label", nil,
                                                                           [NSBundle mainBundle], @"Purchase",
                                                                           @"....");
-            cell.detailTextLabel.text = [number purchaseDateString];
+            cell.detailTextLabel.text = [self.number purchaseDateString];
             cell.selectionStyle       = UITableViewCellSelectionStyleNone;
             break;
         }
@@ -648,10 +711,10 @@ typedef enum
             cell.textLabel.text       = NSLocalizedStringWithDefaultValue(@"Number:PeriodRenewalDate Label", nil,
                                                                           [NSBundle mainBundle], @"Expiry",
                                                                           @"....");
-            cell.detailTextLabel.text = [number expiryDateString];
+            cell.detailTextLabel.text = [self.number expiryDateString];
             cell.selectionStyle       = UITableViewCellSelectionStyleNone;
 
-            if ([number isExpiryCritical])
+            if ([self.number isExpiryCritical])
             {
                 cell.detailTextLabel.textColor = [Skinning deleteTintColor];    // Overrides the default color.
             }
@@ -667,7 +730,7 @@ typedef enum
             cell.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
 
-            NSString* monthPriceString = [[PurchaseManager sharedManager] localizedFormattedPrice:number.monthFee];
+            NSString* monthPriceString = [[PurchaseManager sharedManager] localizedFormattedPrice:self.number.monthFee];
             cell.detailTextLabel.text      = [NSString stringWithFormat:@"%@/%@", monthPriceString, [Strings monthString]];
             cell.detailTextLabel.textColor = [Skinning priceColor];
             break;
@@ -678,7 +741,7 @@ typedef enum
                                                                     [NSBundle mainBundle], @"Renew Automatically",
                                                                     @"....");
             UISwitch* switchView = (UISwitch*)cell.accessoryView;
-            switchView.on = number.autoRenew;
+            switchView.on = self.number.autoRenew;
             break;
         }
     }
@@ -687,9 +750,9 @@ typedef enum
 
 - (void)updateAddressCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
 {
-    if (number.address != nil)
+    if (self.number.address != nil)
     {
-        if ([AddressStatus isVerifiedAddressStatusMask:number.address.addressStatus])
+        if ([AddressStatus isVerifiedAddressStatusMask:self.number.address.addressStatus])
         {
             cell.detailTextLabel.textColor = [Skinning valueColor];
         }
@@ -700,7 +763,7 @@ typedef enum
     }
     else
     {
-        if (number.isPending)
+        if (self.number.isPending)
         {
             cell.detailTextLabel.textColor = [Skinning placeholderColor];
         }
@@ -724,7 +787,7 @@ typedef enum
     }
 
     cell.textLabel.text         = [Strings addressString];
-    cell.detailTextLabel.text   = number.address ? number.address.name : [Strings requiredString];
+    cell.detailTextLabel.text   = self.number.address ? self.number.address.name : [Strings requiredString];
     cell.accessoryType          = (self.addressesPredicate != nil) ? UITableViewCellAccessoryDisclosureIndicator
                                                                    : UITableViewCellAccessoryNone;
     cell.userInteractionEnabled = (self.addressesPredicate != nil); // Must be set last, otherwise setting colors does not work.
@@ -747,11 +810,11 @@ typedef enum
     isLoadingAddress        = YES;
     [self reloadAddressCell];
 
-    AddressTypeMask addressTypeMask = [AddressType addressTypeMaskForString:number.addressType];
-    NumberTypeMask  numberTypeMask  = [NumberType numberTypeMaskForString:number.numberType];
+    AddressTypeMask addressTypeMask = [AddressType addressTypeMaskForString:self.number.addressType];
+    NumberTypeMask  numberTypeMask  = [NumberType numberTypeMaskForString:self.number.numberType];
     [AddressesViewController loadAddressesPredicateWithAddressType:addressTypeMask
-                                                    isoCountryCode:number.isoCountryCode
-                                                          areaCode:number.areaCode
+                                                    isoCountryCode:self.number.isoCountryCode
+                                                          areaCode:self.number.areaCode
                                                         numberType:numberTypeMask
                                                       areAvailable:YES
                                                         completion:^(NSPredicate *predicate, NSError *error)
@@ -809,20 +872,20 @@ typedef enum
 
 - (NSString*)areaName
 {
-    if (number.areaName.length > 0)
+    if (self.number.areaName.length > 0)
     {
-        if (number.stateCode.length > 0)
+        if (self.number.stateCode.length > 0)
         {
-            return [NSString stringWithFormat:@"%@  %@", number.areaName, number.stateCode];
+            return [NSString stringWithFormat:@"%@  %@", self.number.areaName, self.number.stateCode];
         }
         else
         {
-            return number.areaName;
+            return self.number.areaName;
         }
     }
     else
     {
-        return [[CountryNames sharedNames] nameForIsoCountryCode:number.isoCountryCode];
+        return [[CountryNames sharedNames] nameForIsoCountryCode:self.number.isoCountryCode];
     }
 }
 
@@ -831,17 +894,17 @@ typedef enum
 
 - (void)save
 {
-    if (number.changedValues.count == 0)
+    if (self.number.changedValues.count == 0 || isDeleting == YES)
     {
         return;
     }
 
     self.isLoading = YES;
-    [[WebClient sharedClient] updateNumberWithUuid:number.uuid
-                                              name:number.name
-                                         autoRenew:number.autoRenew
-                                   destinationUuid:(number.destination == nil) ? @"" : number.destination.uuid
-                                       addressUuid:number.address.uuid
+    [[WebClient sharedClient] updateNumberWithUuid:self.number.uuid
+                                              name:self.number.name
+                                         autoRenew:self.number.autoRenew
+                                   destinationUuid:(self.number.destination == nil) ? @"" : self.number.destination.uuid
+                                       addressUuid:self.number.address.uuid
                                              reply:^(NSError* error)
     {
         self.isLoading = NO;
@@ -854,7 +917,7 @@ typedef enum
         {
             [self showSaveError:error title:nil itemName:[Strings numberString] completion:^
             {
-                [number.managedObjectContext refreshObject:number mergeChanges:NO];
+                [self.number.managedObjectContext refreshObject:self.number mergeChanges:NO];
                 [Common reloadSections:sections allSections:sections tableView:self.tableView];
             }];
         }

@@ -40,7 +40,8 @@
                      @"FAIL_ADDRESS_IN_USE"          : @(WebStatusFailAddressInUse),
                      @"FAIL_ADDRESS_UNKNOWN"         : @(WebStatusFailAddressUnknown),
                      @"FAIL_STOCK_EXHAUSTED"         : @(WebStatusFailStockExhausted),
-                     @"FAIL_AUDIO_IN_USE"            : @(WebStatusFailAudioInUse)};
+                     @"FAIL_AUDIO_IN_USE"            : @(WebStatusFailAudioInUse),
+                     @"FAIL_ADDRESS_NOT_REJECTED"    : @(WebStatusFailAddressNotRejected)};
     });
     
     NSNumber*     number = statuses[string];
@@ -222,6 +223,12 @@
                                                        @"This Recording is still being used.",
                                                        @"Status text.\n"
                                                        @"[].");
+            break;
+        }
+        case WebStatusFailAddressNotRejected:
+        {
+            string = NSLocalizedString(@"This Number no longer has a rejected Address (probably because you made changes).",
+                                       @"");
             break;
         }
         case WebStatusFailNoInternet:

@@ -31,6 +31,7 @@ typedef enum
     WebStatusFailAddressUnknown        = 911018,
     WebStatusFailStockExhausted        = 911019,
     WebStatusFailAudioInUse            = 911020,
+    WebStatusFailAddressNotRejected    = 911021,
     WebStatusFailNoInternet            = 911051,  // Indirect: not sent by server, from NSURLErrorNotConnectedToInternet.
     WebStatusFailSecureInternet        = 911052,  // Indirect: not sent by server, from other NSURLError... SSL related.
     WebStatusFailProblemInternet       = 911053,  // Indirect: not sent by server, from NSURLErrorCannotFindHost.
