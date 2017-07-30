@@ -1434,8 +1434,6 @@
             CallState state;
             CallLeg   leg;
 
-            NBLog(@"Callback: %@", content);
-
             if ([stateString isEqualToString:@"CALLBACK_RINGING"])
             {
                 state = CallStateCalling;
@@ -1489,8 +1487,8 @@
                   leg,
                   [content[@"callbackDuration"] intValue],
                   [content[@"callthruDuration"] intValue],
-                  [content[@"callbackCost"] floatValue],
-                  [content[@"callthruCost"] floatValue]);
+                  [content[@"callbackCost"]     floatValue],
+                  [content[@"callthruCost"]     floatValue]);
         }
         else
         {
