@@ -140,6 +140,8 @@
     self.button.alpha   = busy ? 0.5f : 1.0f;
 
     busy ? [self.busyIndicator startAnimating] : [self.busyIndicator stopAnimating];
+
+    [self.navigationItem setHidesBackButton:busy animated:YES];
 }
 
 
