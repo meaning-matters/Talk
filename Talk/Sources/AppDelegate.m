@@ -963,7 +963,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
         self.doDtmfPhoneVerification = YES; // Override, use the old code-on-screen based verfication.
     }];
 
-    // ACCOUNT# - switch to the code-based Phone verification.
+    // ACCOUNT# - show server account ID.
     number = [NSString stringWithFormat:@"%d%d%d%d%c", 22, 26, 8, 68, '#'];
     [self.keypadViewController registerSpecialNumber:number action:^(NSString* number)
     {
