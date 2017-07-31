@@ -247,14 +247,14 @@
         case AddressStatusVerificationNotRequiredMask: // Fallthrough.
         case AddressStatusVerifiedMask:
         {
-            reason = NSLocalizedString(@"it's not pending; only pending Number puchases can be cancelled.\n\n"
+            reason = NSLocalizedString(@"it's not pending; only pending Number purchases can be cancelled.\n\n"
                                        @"(To stop receiving calls, go to Numbers > [Number] > Destination, "
                                        @"and tap the delete button there. This will disconnect the Number.)", @"");
             break;
         }
         case AddressStatusDisabledMask:
         {
-            reason = NSLocalizedString(@"it's not pending; only pending Number puchases can be cancelled.\n\n"
+            reason = NSLocalizedString(@"it's not pending; only pending Number purchases can be cancelled.\n\n"
                                        @"(Please be aware that its Address is disabled. Assign a valid Address to "
                                        @"receive calls on this Number!)", @"");
                                        break;
