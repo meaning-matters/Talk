@@ -17,6 +17,7 @@
 #import "Common.h"
 #import "PhoneData.h"
 #import "PurchaseManager.h"
+#import "BlockActionSheet.h"
 
 
 @interface NumberDestinationsViewController ()
@@ -202,7 +203,7 @@
         {
             titleBottom = NSLocalizedStringWithDefaultValue(@"Destinations Destinations List Footer A", nil, [NSBundle mainBundle],
                                                             @"Tap the delete button to disconnect this Number; you will "
-                                                            @"then stop receiving calls, and people calling will hear %@.",
+                                                            @"stop receiving calls, and people calling will hear %@.",
                                                             @"\n"
                                                             @"[1/4 line larger font].");
             titleBottom = [NSString stringWithFormat:titleBottom, [Strings numberDisconnectedToneOrMessageString]];
@@ -301,9 +302,27 @@
     {
         if (canDisconnect)
         {
-            [self setDestination:nil atIndexPath:nil];
+            NSString* title = NSLocalizedString(@"Stop receiving calls on this Number. People calling will hear %@.", @"\n");
+            title = [NSString stringWithFormat:title, [Strings numberDisconnectedToneOrMessageString]];
 
-            [[AppDelegate appDelegate] updateNumbersBadgeValue];
+            NSString* buttonTitle = NSLocalizedStringWithDefaultValue(@"DestinationView DeleteTitle", nil,
+                                                                      [NSBundle mainBundle], @"Disconnect Number",
+                                                                      @"...\n"
+                                                                      @"[1/3 line small font].");
+
+            [BlockActionSheet showActionSheetWithTitle:title
+                                            completion:^(BOOL cancelled, BOOL destruct, NSInteger buttonIndex)
+            {
+                if (destruct == YES)
+                {
+                    [self setDestination:nil atIndexPath:nil];
+
+                    [[AppDelegate appDelegate] updateNumbersBadgeValue];
+                }
+            }
+                                     cancelButtonTitle:[Strings cancelString]
+                                destructiveButtonTitle:buttonTitle
+                                     otherButtonTitles:nil];
         }
     }];
 }
