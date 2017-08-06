@@ -118,12 +118,17 @@
 
 - (void)doLoad
 {
+    if (self.isLoading == YES)
+    {
+        return;
+    }
+
     self.isLoading = YES;
 
     dispatch_async(searchQueue, ^
     {
         // Added to prevent clashes -> crashes with loading and findContactsHavingNumber by different threads.
-        @synchronized (self)
+        @synchronized(self)
         {
            // for (int n = 0; n < 100; n++)
             [self loadContacts];
@@ -848,6 +853,11 @@
     }
     else
     {
+        if (self.isLoading == NO)
+        {
+            [self doLoad];
+        }
+
         @synchronized (self)
         {
             block ? block() : nil;
