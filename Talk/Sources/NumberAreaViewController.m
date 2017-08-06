@@ -351,10 +351,6 @@ typedef enum
             {
                 break;
             }
-            case AddressStatusVerificationNotRequiredMask:
-            {
-                break;
-            }
             case AddressStatusDisabledMask:
             {
                 // Don't know when this occurs, it at all.
@@ -368,11 +364,12 @@ typedef enum
                                                             @"[iOS alert message size]");
                 break;
             }
+            case AddressStatusVerificationNotRequiredMask: // Fall-through.
+            case AddressStatusNotVerifiedMask:             // Fall-through.
             case AddressStatusVerifiedMask:
             {
                 break;
             }
-            case AddressStatusNotVerifiedMask:  // Fall-through.
             case AddressStatusVerificationRequestedMask:
             {
                 title   = NSLocalizedStringWithDefaultValue(@"...", nil, [NSBundle mainBundle],
