@@ -230,6 +230,11 @@
     NSString* message = NSLocalizedString(@"This Number can't be deleted because %@ ", @"");
     NSString* reason;
 
+    if (self.isPending)
+    {
+        return nil;
+    }
+
     switch (self.address.addressStatus)
     {
         case AddressStatusUnknown:
