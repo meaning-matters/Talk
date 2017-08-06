@@ -352,13 +352,14 @@
            ((mask & AddressStatusRejectedMask)                > 0) || // Rejected by NumberBay and still editable.
            ((mask & AddressStatusVerificationNotRequiredMask) > 0) || // Verified by NumberBay and not needing Voxbone check.
            ((mask & AddressStatusVerifiedMask)                > 0) || // Verified by both NumberBay and Voxbone.
-           ((mask & AddressStatusNotVerifiedMask)             > 0);   // ### Is this correct?
+           ((mask & AddressStatusNotVerifiedMask)             > 0);   // Voxbone state meaning meaning that no verification is needed.
 }
 
 
 + (BOOL)isVerifiedAddressStatusMask:(AddressStatusMask)mask
 {
     return ((mask & AddressStatusVerificationNotRequiredMask) > 0) || // Verified by NumberBay and not needing Voxbone check.
+           ((mask & AddressStatusNotVerifiedMask)             > 0) || // Voxbone state meaning meaning that no verification is needed.
            ((mask & AddressStatusVerifiedMask)                > 0);   // Verified by both NumberBay and Voxbone.
 }
 
