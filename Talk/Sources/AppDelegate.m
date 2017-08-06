@@ -406,28 +406,24 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
     [self.nBPeopleListViewController callWhenContactsAreLoaded:^
     {
-        [self.nBRecentsListViewController retrieveCallRecordsWithSender:nil completion:nil];
-    }];
-
-/*
-    if (self.nBPeopleListViewController.contactsAreLoaded)
-    {
-    }
-    else
-    {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+        NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:[Settings sharedSettings].synchronizeDate];
+        if ([Settings sharedSettings].synchronizeDate == nil || interval > 2 * 3600) // Longer than background fetch which is about 1 hour.
         {
-            if (self.nBPeopleListViewController.contactsAreLoaded)
+            // We delay to not interfere with UI animation triggered from `showMissedNotifications`.
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
             {
-                [self.nBRecentsListViewController retrieveCallRecordsWithSender:nil completion:nil];
-            }
-            else
-            {
-                NBLog(@"### Contacts were not loaded in time for retrieving incoming call records.");
-            }
-        });
-    }
-    */
+                // This includes calling `retrieveCallRecordsWithSender`.
+                [self application:[UIApplication sharedApplication] performFetchWithCompletionHandler:^(UIBackgroundFetchResult result)
+                {
+                    // Do nothing.
+                }];
+            });
+        }
+        else
+        {
+            [self.nBRecentsListViewController retrieveCallRecordsWithSender:nil completion:nil];
+        }
+    }];
 }
 
 
@@ -580,9 +576,15 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
                             {
                                 [self updateNumbersBadgeValue];
                                 [self refreshLocalNotifications];
-                            }
 
-                            completionHandler((error == nil) ? UIBackgroundFetchResultNewData : UIBackgroundFetchResultFailed);
+                                [Settings sharedSettings].synchronizeDate = [NSDate date];
+
+                                completionHandler(UIBackgroundFetchResultNewData);
+                            }
+                            else
+                            {
+                                completionHandler(UIBackgroundFetchResultFailed);
+                            }
                         }];
                     }
                     else
