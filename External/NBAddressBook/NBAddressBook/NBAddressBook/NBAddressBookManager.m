@@ -134,12 +134,15 @@ shouldPerformDefaultActionForPerson:(ABRecordRef)person
 #pragma mark - Get address book
 - (ABAddressBookRef)getAddressBook
 {
-    if (addressBook == nil)
+    @synchronized(self)
     {
-        [self reloadAddressBook];
-    }
+        if (addressBook == nil)
+        {
+            [self reloadAddressBook];
+        }
 
-    return addressBook;
+        return addressBook;
+    }
 }
 
 

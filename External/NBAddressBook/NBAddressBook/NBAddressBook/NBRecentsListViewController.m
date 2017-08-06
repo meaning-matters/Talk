@@ -53,6 +53,8 @@ typedef enum
 
     //Flag to indicate we're displaying missed calls only
     CallSelection                         callSelection;
+
+    BOOL                                  isRetrievingRecents;
 }
 
 @end
@@ -79,8 +81,6 @@ typedef enum
 
         //Listen for reloads
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doLoad) name:NF_RELOAD_CONTACTS object:nil];
-
-        [self findContactsForAnonymousItems];
     }
 
     return self;
@@ -98,7 +98,6 @@ typedef enum
     dispatch_async(dispatch_get_main_queue(), ^
     {
         [self findContactsForAnonymousItems];
-        [self.tableView reloadData];
     });
 }
 
@@ -118,6 +117,17 @@ typedef enum
             }];
         }
     }
+
+    [[DataManager sharedManager] saveManagedObjectContext:nil];
+
+    // ### Without this delay, the contact name does not appear when restarting the app right after a missed call.
+    //     The contact name does appear after the incoming call has been hung up, but the after the app restart it's
+    //     no longer showing up. It does however again when scrolling the table up and, forcing that cell to reload.
+    //     It's strange that doing a reloadData immediately does not work, while after a short delay it does.
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+    {
+        [self.tableView reloadData];
+    });
 }
 
 
@@ -202,6 +212,15 @@ typedef enum
     //####### TEMP
     //date = [[NSDate date] dateByAddingTimeInterval:-100000];
 
+    if (isRetrievingRecents == YES)
+    {
+        completion ? completion(nil) : 0;
+
+        return;
+    }
+
+    isRetrievingRecents = YES;
+
     [[WebClient sharedClient] retrieveCallRecordsFromDate:date
                                                   inbound:YES
                                                  outbound:NO
@@ -230,6 +249,10 @@ typedef enum
         }
 
         completion ? completion(error) : 0;
+
+        isRetrievingRecents = NO;
+
+        [self findContactsForAnonymousItems];
     }];
 }
 
@@ -326,9 +349,9 @@ typedef enum
         uuid = record[@"uuid"];
         NSPredicate* predicate = [NSPredicate predicateWithFormat:@"uuid == %@", uuid];
         if ([[DataManager sharedManager] fetchEntitiesWithName:@"CallRecord"
-                                                  sortKeys:nil
-                                                 predicate:predicate
-                                      managedObjectContext:nil].count != 0)
+                                                      sortKeys:nil
+                                                     predicate:predicate
+                                          managedObjectContext:nil].count != 0)
         {
             continue;
         }
@@ -367,6 +390,8 @@ typedef enum
             NBLog(@"Discarding CDR leg record.");
         }
     }
+
+    [[DataManager sharedManager] saveManagedObjectContext:nil];
 }
 
 

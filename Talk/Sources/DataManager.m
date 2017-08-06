@@ -25,6 +25,7 @@
 @interface DataManager ()
 {
     NSURL* storeUrl;
+    BOOL   isSynchronizing;
 }
 
 @end
@@ -163,21 +164,24 @@
 
 - (void)saveManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
 {
-    NSError* error = nil;
-
-    managedObjectContext = (managedObjectContext != nil) ? managedObjectContext : self.managedObjectContext;
-
-    if (managedObjectContext != nil)
+    @synchronized (self)
     {
-        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
-        {
-            [self handleError:error];
-        }
+        NSError* error = nil;
 
-        // Recursively save children up until parent.
-        if (managedObjectContext != self.managedObjectContext)
+        managedObjectContext = (managedObjectContext != nil) ? managedObjectContext : self.managedObjectContext;
+
+        if (managedObjectContext != nil)
         {
-            [self saveManagedObjectContext:managedObjectContext.parentContext];
+            if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
+            {
+                [self handleError:error];
+            }
+
+            // Recursively save children up until parent.
+            if (managedObjectContext != self.managedObjectContext)
+            {
+                [self saveManagedObjectContext:managedObjectContext.parentContext];
+            }
         }
     }
 }
@@ -471,6 +475,15 @@
 
 - (void)synchronizeAll:(void (^)(NSError* error))completion
 {
+    if (isSynchronizing == YES)
+    {
+        completion ? completion(nil) : 0;
+
+        return;
+    }
+
+    isSynchronizing = YES;
+
     [self saveManagedObjectContext:nil];
 
     [self synchronizeAddresses:^(NSError* error)
@@ -503,11 +516,15 @@
                                                 dispatch_async(dispatch_get_main_queue(), ^
                                                 {
                                                     completion ? completion(nil) : 0;
+
+                                                    isSynchronizing = NO;
                                                 });
                                             }
                                             else
                                             {
                                                 [self handleError:error];
+
+                                                isSynchronizing = NO;
 
                                                 return;
                                             }
@@ -516,6 +533,8 @@
                                         {
                                             [self.managedObjectContext rollback];
                                             completion ? completion(error) : 0;
+
+                                            isSynchronizing = NO;
                                         }
                                     }];
                                 }
@@ -523,6 +542,8 @@
                                 {
                                     [self.managedObjectContext rollback];
                                     completion ? completion(error) : 0;
+
+                                    isSynchronizing = NO;
                                 }
                             }];
                         }
@@ -530,6 +551,8 @@
                         {
                             [self.managedObjectContext rollback];
                             completion ? completion(error) : 0;
+
+                            isSynchronizing = NO;
                         }
                     }];
                 }
@@ -537,6 +560,8 @@
                 {
                     [self.managedObjectContext rollback];
                     completion ? completion(error) : 0;
+
+                    isSynchronizing = NO;
                 }
             }];
         }
@@ -544,6 +569,8 @@
         {
             [self.managedObjectContext rollback];
             completion ? completion(error) : 0;
+
+            isSynchronizing = NO;
         }
     }];
 }

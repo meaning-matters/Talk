@@ -10,6 +10,7 @@
 #import "NBPeopleListViewController.h"
 #import "Strings.h"
 #import "Settings.h"
+#import "UIViewController+Common.h"
 
 @interface NBPeopleListViewController () <ABNewPersonViewControllerDelegate>
 {
@@ -117,11 +118,14 @@
 
 - (void)doLoad
 {
+    self.isLoading = YES;
+
     dispatch_async(searchQueue, ^
     {
         // Added to prevent clashes -> crashes with loading and findContactsHavingNumber by different threads.
         @synchronized (self)
         {
+           // for (int n = 0; n < 100; n++)
             [self loadContacts];
 
             self.contactsAreLoaded = YES;
@@ -130,6 +134,8 @@
         dispatch_async(dispatch_get_main_queue(), ^
         {
             [self.tableView reloadData];
+
+            self.isLoading = NO;
         });
     });
 }
@@ -267,11 +273,11 @@
     if (addressBook != nil)
     {
         //Display all contacts
-        NSMutableArray * contactsInSelectedSources = [NSMutableArray array];
+        NSMutableArray* contactsInSelectedSources = [NSMutableArray array];
         
         //Update the title to show some or all contacts were selected
         BOOL allGroupsSelected = YES;
-        for (NBGroup * group in groupsManager.userGroups)
+        for (NBGroup* group in groupsManager.userGroups)
         {
             if (![group groupSelected])
             {
@@ -634,63 +640,61 @@
 
 - (void)findContactsHavingNumber:(NSString*)number completion:(void(^)(NSArray* contactIds))completion
 {
-    if (!self.contactsAreLoaded)
-    {
-        NBLog(@"### findContactsHavingNumber called before contacts were loaded!");
-    }
-
     // Force viewDidLoad to be called, as this fills the allContacts array.
     self.view.hidden = NO;
 
-    NSCharacterSet* stripSet = [NSCharacterSet characterSetWithCharactersInString:@"+()-. \u00a0"];
-
-    number = [[number componentsSeparatedByCharactersInSet:stripSet] componentsJoinedByString:@""];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+    [self callWhenContactsAreLoaded:^
     {
-        NSMutableArray* contacts = [NSMutableArray arrayWithArray:allContacts];
+        NSCharacterSet* stripSet = [NSCharacterSet characterSetWithCharactersInString:@"+()-. \u00a0"];
 
-        // The method is sometimes run concurrently, and then gives a EXC_BAD_ACCESS here.
-        // By synchronizing it went away.  Apparently ABRecordCopyValue is not re-entrant.
-        // http://stackoverflow.com/questions/23118802/exc-bad-access-in-abrecordcopyvalue
-        @synchronized(self)
+        NSString* strippedNumber = [[number componentsSeparatedByCharactersInSet:stripSet] componentsJoinedByString:@""];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
         {
-            [contacts filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary* bindings)
-            {
-                ABRecordRef contact = (__bridge ABRecordRef)evaluatedObject;
-                
-                ABMultiValueRef numberArray;
+            NSMutableArray* contacts = [NSMutableArray arrayWithArray:allContacts];
 
-                numberArray = ABRecordCopyValue(contact, kABPersonPhoneProperty);
-                
-                CFIndex count = ABMultiValueGetCount(numberArray);
-                for (CFIndex i = 0; i < count; i++)
+            // The method is sometimes run concurrently, and then gives a EXC_BAD_ACCESS here.
+            // By synchronizing it went away.  Apparently ABRecordCopyValue is not re-entrant.
+            // http://stackoverflow.com/questions/23118802/exc-bad-access-in-abrecordcopyvalue
+            @synchronized(self)
+            {
+                [contacts filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary* bindings)
                 {
-                    NSString* contactNumber = (__bridge NSString*)(ABMultiValueCopyValueAtIndex(numberArray, i));
-                    contactNumber = [[contactNumber componentsSeparatedByCharactersInSet:stripSet] componentsJoinedByString:@""];
+                    ABRecordRef contact = (__bridge ABRecordRef)evaluatedObject;
                     
-                    if ([contactNumber hasSuffix:number])
-                    {
-                        return YES;
-                    }
-                }
-                
-                return NO;
-            }]];
-        }
+                    ABMultiValueRef numberArray;
 
-        dispatch_async(dispatch_get_main_queue(), ^
-        {
-            NSMutableArray* contactIds = [NSMutableArray array];
-            for (id object in contacts)
-            {
-                ABRecordRef contact   = (__bridge ABRecordRef)object;
-                NSString*   contactId = [NSString stringWithFormat:@"%d", ABRecordGetRecordID(contact)];
-                [contactIds addObject:contactId];
+                    numberArray = ABRecordCopyValue(contact, kABPersonPhoneProperty);
+                    
+                    CFIndex count = ABMultiValueGetCount(numberArray);
+                    for (CFIndex i = 0; i < count; i++)
+                    {
+                        NSString* contactNumber = (__bridge NSString*)(ABMultiValueCopyValueAtIndex(numberArray, i));
+                        contactNumber = [[contactNumber componentsSeparatedByCharactersInSet:stripSet] componentsJoinedByString:@""];
+                        
+                        if ([contactNumber hasSuffix:strippedNumber])
+                        {
+                            return YES;
+                        }
+                    }
+                    
+                    return NO;
+                }]];
             }
 
-            completion(contactIds);
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                NSMutableArray* contactIds = [NSMutableArray array];
+                for (id object in contacts)
+                {
+                    ABRecordRef contact   = (__bridge ABRecordRef)object;
+                    NSString*   contactId = [NSString stringWithFormat:@"%d", ABRecordGetRecordID(contact)];
+                    [contactIds addObject:contactId];
+                }
+
+                completion(contactIds);
+            });
         });
-    });
+    }];
 }
 
 
@@ -833,6 +837,22 @@
             }];
         }
     });
+}
+
+
+- (void)callWhenContactsAreLoaded:(void(^)(void))block
+{
+    if (self.contactsAreLoaded)
+    {
+        block ? block() : nil;
+    }
+    else
+    {
+        @synchronized (self)
+        {
+            block ? block() : nil;
+        }
+    }
 }
 
 

@@ -403,9 +403,15 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 {
     [self showMissedNotifications];
     [self checkCreditWithCompletion:nil];
-    if (self.nBPeopleListViewController.contactsAreLoaded)
+
+    [self.nBPeopleListViewController callWhenContactsAreLoaded:^
     {
         [self.nBRecentsListViewController retrieveCallRecordsWithSender:nil completion:nil];
+    }];
+
+/*
+    if (self.nBPeopleListViewController.contactsAreLoaded)
+    {
     }
     else
     {
@@ -421,6 +427,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
             }
         });
     }
+    */
 }
 
 

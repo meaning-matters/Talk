@@ -255,3 +255,9 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
   constructor that never has `cancelled` YES.
 
 * When the termination to SP was broken (26 July 2017) this resulted in CDR status NORMAL_TEMPORARY_FAILURE. Incoming recents picks this up correctly, but callback does not. When doing a callback the call screen simply dismissed again a few seconds later without any warning/error and Recents showed "cancelled". Turns out that `retrieveCallbackStateForUuid` #34 does not seem to process the "callbackHangupCause" nor "callthruHangupCause". Also CallRecordData.m has an unused (and incorrect, returning non-existent values for errors) `callStatusForString` method. Task: Make sure that failures are picked up and shown in Recent.
+
+* See NSRecentsListViewController.m:
+    // ### Without this delay, the contact name does not appear when restarting the app right after a missed call.
+    //     The contact name does appear after the incoming call has been hung up, but the after the app restart it's
+    //     no longer showing up. It does however again when scrolling the table up and, forcing that cell to reload.
+    //     It's strange that doing a reloadData immediately does not work, while after a short delay it does.

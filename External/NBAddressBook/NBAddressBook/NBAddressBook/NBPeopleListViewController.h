@@ -85,4 +85,6 @@
 
 - (void)addCompanyToAddressBook:(ABAddressBookRef)addressBook;
 
+- (void)callWhenContactsAreLoaded:(void(^)(void))block;
+
 @end
