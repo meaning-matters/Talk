@@ -356,12 +356,29 @@ typedef enum
                                                          autoRenew:self.number.autoRenew
                                                    destinationUuid:nil
                                                        addressUuid:selectedAddress.uuid
-                                                             reply:^(NSError* error)
+                                                             reply:^(NSError*  error,
+                                                                     NSString* e164,
+                                                                     NSDate*   purchaseDate,
+                                                                     NSDate*   expiryDate,
+                                                                     float     monthFee,
+                                                                     float     renewFee)
                     {
                         self.isLoading = NO;
                         if (error == nil)
                         {
                             self.number.address = selectedAddress;
+
+                            // Check if the Number was purchased as a result of selecting a verified Address.
+                            if (self.number.isPending && e164 != nil)
+                            {
+                                self.number.e164               = e164;
+                                self.number.purchaseDate       = purchaseDate;
+                                self.number.expiryDate         = expiryDate;
+                                self.number.monthFee           = monthFee;
+                                self.number.renewFee           = renewFee;
+                                self.number.notifiedExpiryDays = INT16_MAX;
+                            }
+
                             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
                             [self reloadAddressCell];
 
@@ -517,7 +534,12 @@ typedef enum
                                          autoRenew:switchView.isOn
                                    destinationUuid:nil
                                        addressUuid:nil
-                                             reply:^(NSError* error)
+                                             reply:^(NSError*  error,
+                                                     NSString* e164,
+                                                     NSDate*   purchaseDate,
+                                                     NSDate*   expiryDate,
+                                                     float     monthFee,
+                                                     float     renewFee)
     {
         self.isLoading = NO;
         if (error == nil)
@@ -591,17 +613,18 @@ typedef enum
     {
         NSString* title;
 
-        title   = NSLocalizedStringWithDefaultValue(@"NumberView CantDeleteTitle", nil, [NSBundle mainBundle],
-                                                    @"Can't Delete Number",
-                                                    @"...\n"
-                                                    @"[1/3 line small font].");
+        title = NSLocalizedStringWithDefaultValue(@"NumberView CantDeleteTitle", nil, [NSBundle mainBundle],
+                                                  @"Can't Delete Number",
+                                                  @"...\n"
+                                                  @"[1/3 line small font].");
 
         [BlockAlertView showAlertViewWithTitle:title
                                        message:cantDeleteMessage
                                     completion:nil
                              cancelButtonTitle:[Strings closeString]
                              otherButtonTitles:nil];
-    }}
+    }
+}
 
 
 #pragma mark - Cell Methods
@@ -904,8 +927,13 @@ typedef enum
                                               name:self.number.name
                                          autoRenew:self.number.autoRenew
                                    destinationUuid:(self.number.destination == nil) ? @"" : self.number.destination.uuid
-                                       addressUuid:self.number.address.uuid
-                                             reply:^(NSError* error)
+                                       addressUuid:nil  // When an Address is selected this call is already done above.
+                                             reply:^(NSError*  error,
+                                                     NSString* e164,
+                                                     NSDate*   purchaseDate,
+                                                     NSDate*   expiryDate,
+                                                     float     monthFee,
+                                                     float     renewFee)
     {
         self.isLoading = NO;
 

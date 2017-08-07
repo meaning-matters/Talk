@@ -132,7 +132,12 @@
                                                                  autoRenew:number.autoRenew
                                                            destinationUuid:destinationUuid
                                                                addressUuid:nil
-                                                                     reply:^(NSError* error)
+                                                                     reply:^(NSError*  error,
+                                                                             NSString* e164,
+                                                                             NSDate*   purchaseDate,
+                                                                             NSDate*   expiryDate,
+                                                                             float     monthFee,
+                                                                             float     renewFee)
                             {
                                 if (error == nil)
                                 {

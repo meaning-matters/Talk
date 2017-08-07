@@ -252,7 +252,12 @@
                    autoRenew:(BOOL)autoRenew
              destinationUuid:(NSString*)destinationUuid
                  addressUuid:(NSString*)addressUuid
-                       reply:(void (^)(NSError* error))reply;
+                       reply:(void (^)(NSError*  error,
+                                       NSString* e164,            // This and the values below will only be returned
+                                       NSDate*   purchaseDate,    // when the Number was purchased as a result of
+                                       NSDate*   expiryDate,      // selecting a verified Address.
+                                       float     monthFee,        //
+                                       float     renewFee))reply; //
 
 // 11C. EXTEND NUMBER
 - (void)extendNumberWithUuid:(NSString*)uuid

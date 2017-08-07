@@ -932,7 +932,12 @@
                    autoRenew:(BOOL)autoRenew
              destinationUuid:(NSString*)destinationUuid
                  addressUuid:(NSString*)addressUuid
-                       reply:(void (^)(NSError* error))reply;
+                       reply:(void (^)(NSError*  error,
+                                       NSString* e164,
+                                       NSDate*   purchaseDate,
+                                       NSDate*   expiryDate,
+                                       float     monthFee,
+                                       float     renewFee))reply
 {
     NSString*            username   = [Settings sharedSettings].webUsername;
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
@@ -946,7 +951,19 @@
         parameters:parameters
              reply:^(NSError* error, id content)
     {
-        reply(error);
+        if (error == nil)
+        {
+            reply(nil,
+                  content[@"e164"] ? [@"+" stringByAppendingString:content[@"e164"]] : nil,
+                  [Common dateWithString:content[@"purchaseDateTime"]],
+                  [Common dateWithString:content[@"expiryDateTime"]],
+                  [content[@"monthFee"] floatValue],
+                  [content[@"renewFee"] floatValue]);
+        }
+        else
+        {
+            reply(error, nil, nil, nil, 0.0f, 0.0f);
+        }
     }];
 }
 
