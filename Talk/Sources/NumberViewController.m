@@ -377,10 +377,17 @@ typedef enum
                                 self.number.monthFee           = monthFee;
                                 self.number.renewFee           = renewFee;
                                 self.number.notifiedExpiryDays = INT16_MAX;
-                            }
 
-                            [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
-                            [self reloadAddressCell];
+                                [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+
+                                [self.tableView reloadData];
+                            }
+                            else
+                            {
+                                [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+
+                                [self reloadAddressCell];
+                            }
 
                             [[AppDelegate appDelegate] updateNumbersBadgeValue];
                         }
@@ -636,10 +643,13 @@ typedef enum
         cell.detailTextLabel.text      = [Strings pendingString];
         cell.detailTextLabel.textColor = [Skinning tintColor];
 
-        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        cell.selectionStyle            = UITableViewCellSelectionStyleDefault;
     }
     else
     {
+        cell.detailTextLabel.text      = nil;
+        cell.selectionStyle            = UITableViewCellSelectionStyleNone;
+
         NumberLabel*               numberLabel      = [Common addNumberLabelToCell:cell];
         PhoneNumber*               phoneNumber      = [[PhoneNumber alloc] initWithNumber:self.number.e164];
         NSString*                  string           = phoneNumber.internationalFormat;
