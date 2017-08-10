@@ -26,11 +26,10 @@
 @property (nonatomic, strong) NSArray*            numberCountries;       // As received from the server.
 @property (nonatomic, strong) NSMutableArray*     countriesArray;        // Contains all countries for all number types.
 @property (nonatomic, strong) UISegmentedControl* numberTypeSegmentedControl;
-@property (nonatomic, strong) UIBarButtonItem*    ableItem;              // Says "Filter is disabled/enabled.".
-@property (nonatomic, strong) UIBarButtonItem*    filterItem;            // Filter icon.
+@property (nonatomic, strong) UIBarButtonItem*    textItem;
+@property (nonatomic, strong) UIBarButtonItem*    iconItem;
 @property (nonatomic, assign) AddressTypeMask     addressTypeMask;       // Address type of home country for selected number type.
 @property (nonatomic, readonly) BOOL              isFilterComplete;
-@property (nonatomic, assign) BOOL                isFilteringEnabled;
 
 @end
 
@@ -63,18 +62,18 @@
     UIBarButtonItem* spaceItem  = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
                                                                                 target:self
                                                                                 action:nil];
-    self.ableItem               = [[UIBarButtonItem alloc] initWithTitle:[self noFilterString]
+    self.textItem               = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Select where you're based", @"")
                                                                    style:UIBarButtonItemStylePlain
                                                                   target:self
-                                                                  action:@selector(ableAction)];
-    self.ableItem.tintColor = [Skinning placeholderColor];
+                                                                  action:@selector(filterAction)];
+    self.textItem.tintColor = [Skinning placeholderColor];
     UIImage* image = [[UIImage imageNamed:@"Filter"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    self.filterItem = [[UIBarButtonItem alloc] initWithImage:image
-                                                       style:UIBarButtonItemStylePlain
-                                                      target:self
-                                                      action:@selector(filterAction)];
-    self.filterItem.tintColor = [Skinning placeholderColor];
-    self.toolbarItems = @[ spaceItem, self.ableItem, self.filterItem ];
+    self.iconItem  = [[UIBarButtonItem alloc] initWithImage:image
+                                                      style:UIBarButtonItemStylePlain
+                                                     target:self
+                                                     action:@selector(filterAction)];
+    self.iconItem.tintColor = [Skinning placeholderColor];
+    self.toolbarItems = @[ spaceItem, self.textItem, self.iconItem ];
 
     UIBarButtonItem* cancelButton;
     cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
@@ -118,11 +117,7 @@
                 matchedCountry[@"regulation"] = nil;
             }
 
-            if ([self isFilterComplete])
-            {
-                self.isFilteringEnabled = YES;
-            }
-            else
+            if (!self.isFilterComplete)
             {
                 [self filterAction];
             }
@@ -324,7 +319,7 @@
             viewController = [[NumberStatesViewController alloc] initWithIsoCountryCode:isoCountryCode
                                                                          numberTypeMask:numberTypeMask
                                                                         addressTypeMask:addressTypeMask
-                                                                     isFilteringEnabled:self.isFilteringEnabled];
+                                                                     isFilteringEnabled:self.isFilterComplete];
             [self.navigationController pushViewController:viewController animated:YES];
         }
         else
@@ -334,24 +329,25 @@
                                                                                  state:nil
                                                                         numberTypeMask:numberTypeMask
                                                                        addressTypeMask:addressTypeMask
-                                                                    isFilteringEnabled:self.isFilteringEnabled
+                                                                    isFilteringEnabled:self.isFilterComplete
                                                                       isAllowedCountry:[self isAllowedCountry:country]];
             [self.navigationController pushViewController:viewController animated:YES];
         }
     };
 
-    if ([self isAllowedCountry:country] || !self.isFilterComplete || !self.isFilteringEnabled)
+    if ([self isAllowedCountry:country] || !self.isFilterComplete)
     {
         nextLevelBlock();
     }
     else
     {
         NSString* title   = NSLocalizedString(@"Can't Buy Number", @"");
-        NSString* message = NSLocalizedString(@"If you're based in %@ (which you selected in the filter), you can't "
-                                              @"buy this Number because of regulations.\n\n"
-                                              @"When you continue you'll be asked for an Address in %@.", @"");
+        NSString* message = NSLocalizedString(@"If you're based in %@ (which you selected), you can't "
+                                              @"buy this Number because of regulations in %@.\n\n"
+                                              @"If you continue, you'll be asked for an Address in %@.", @"");
         NSString* filterIsoCountryCode = [Settings sharedSettings].numberFilter[@"isoCountryCode"];
         message = [NSString stringWithFormat:message, [[CountryNames sharedNames] nameForIsoCountryCode:filterIsoCountryCode],
+                                                      [[CountryNames sharedNames] nameForIsoCountryCode:isoCountryCode],
                                                       [[CountryNames sharedNames] nameForIsoCountryCode:isoCountryCode]];
         [BlockAlertView showAlertViewWithTitle:title message:message completion:^(BOOL cancelled, NSInteger buttonIndex)
         {
@@ -399,7 +395,7 @@
     cell.detailTextLabel.text = [@"+" stringByAppendingString:[Common callingCodeForCountry:country[@"isoCountryCode"]]];
     cell.accessoryType        = UITableViewCellAccessoryNone;
 
-    cell.contentView.alpha = ([self isAllowedCountry:country] || !self.isFilterComplete || !self.isFilteringEnabled) ? 1.0 : 0.5;
+    cell.contentView.alpha = ([self isAllowedCountry:country] || !self.isFilterComplete) ? 1.0 : 0.5;
 
     return cell;
 }
@@ -426,11 +422,6 @@
                                                                               delegate:self
                                                                             completion:^
     {
-        if ([self isFilterComplete])
-        {
-            self.isFilteringEnabled = YES;
-        }
-
         [self updateToolbar];
         [self sortOutArrays];
     }];
@@ -439,21 +430,6 @@
     modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
 
     [self presentViewController:modalViewController animated:YES completion:nil];
-}
-
-
-- (void)ableAction
-{
-    if ([self isFilterComplete])
-    {
-        self.isFilteringEnabled = !self.isFilteringEnabled;
-        [self updateToolbar];
-        [self sortOutArrays];
-    }
-    else
-    {
-        [self filterAction];
-    }
 }
 
 
@@ -471,39 +447,20 @@
 
 #pragma mark - Helpers
 
-- (NSString*)noFilterString
-{
-    return NSLocalizedString(@"No filter defined", @"");
-}
-
-
-- (NSString*)enabledFilterString
-{
-    return NSLocalizedString(@"Showing Numbers you can buy", @"");
-}
-
-
-- (NSString*)disabledFilterString
-{
-    return NSLocalizedString(@"Showing all Numbers", @"");
-}
-
-
 - (void)updateToolbar
 {
     self.addressTypeMask = [self addressTypeMaskForCountry:[Settings sharedSettings].numberFilter[@"isoCountryCode"]
                                             numberTypeMask:[Settings sharedSettings].numberTypeMask];
 
-    self.ableItem.tintColor = [Skinning tintColor];
     if ([self isFilterComplete] == NO)
     {
-        self.ableItem.title       = [self noFilterString];
-        self.filterItem.tintColor = [Skinning placeholderColor];
+        self.textItem.tintColor = [Skinning deleteTintColor];
+        self.iconItem.tintColor = [Skinning deleteTintColor];
     }
     else
     {
-        self.ableItem.title       = self.isFilteringEnabled ? [self enabledFilterString] : [self disabledFilterString];
-        self.filterItem.tintColor = self.isFilteringEnabled ? [Skinning onTintColor]     : [Skinning deleteTintColor];
+        self.textItem.tintColor = [Skinning tintColor];
+        self.iconItem.tintColor = [Skinning tintColor];
     }
 }
 
