@@ -41,7 +41,9 @@
                      @"FAIL_ADDRESS_UNKNOWN"         : @(WebStatusFailAddressUnknown),
                      @"FAIL_STOCK_EXHAUSTED"         : @(WebStatusFailStockExhausted),
                      @"FAIL_AUDIO_IN_USE"            : @(WebStatusFailAudioInUse),
-                     @"FAIL_ADDRESS_NOT_REJECTED"    : @(WebStatusFailAddressNotRejected)};
+                     @"FAIL_ADDRESS_NOT_REJECTED"    : @(WebStatusFailAddressNotRejected),
+                     @"FAIL_NUMBER_CANCELLED"        : @(WebStatusFailNumberCancelled),
+                     @"FAIL_NUMBER_PURCHASED"        : @(WebStatusFailNumberPurchased)};
     });
     
     NSNumber*     number = statuses[string];
@@ -227,8 +229,17 @@
         }
         case WebStatusFailAddressNotRejected:
         {
-            string = NSLocalizedString(@"This Number no longer has a rejected Address (probably because you made changes).",
-                                       @"");
+            string = NSLocalizedString(@"This Number no longer has a rejected Address.", @"");
+            break;
+        }
+        case WebStatusFailNumberCancelled:
+        {
+            string = NSLocalizedString(@"This Number was already cancelled.", @"");
+            break;
+        }
+        case WebStatusFailNumberPurchased:
+        {
+            string = NSLocalizedString(@"This Number has been purchased and can no longer be cancelled.", @"");
             break;
         }
         case WebStatusFailNoInternet:

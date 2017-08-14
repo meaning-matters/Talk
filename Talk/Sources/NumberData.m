@@ -320,12 +320,14 @@
                                                             @"Alert title telling that something could not be deleted.\n"
                                                             @"[iOS alert title size].");
         NSString* message;
-        if (error.code == WebStatusFailAddressNotRejected)
+        if (error.code == WebStatusFailAddressNotRejected ||
+            error.code == WebStatusFailNumberCancelled    ||
+            error.code == WebStatusFailNumberPurchased)
         {
             message = NSLocalizedStringWithDefaultValue(@"Destination InUseMessage", nil,
                                                         [NSBundle mainBundle],
                                                         @"Deleting this Number failed: %@\n\n"
-                                                        @"Choose another Number for each Destination that uses this one.",
+                                                        @"Please drag down the list of Numbers to refresh.",
                                                         @"Alert message telling ....\n"
                                                         @"[iOS alert message size]");
         }
@@ -367,7 +369,7 @@
         {
             completion ? completion(NO) : 0;
         }
-                             cancelButtonTitle:[Strings cancelString]
+                             cancelButtonTitle:[Strings closeString]
                              otherButtonTitles:nil];
     }];
 }
