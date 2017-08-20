@@ -597,6 +597,7 @@ typedef enum
             if (destruct == YES)
             {
                 isDeleting = YES;
+                self.navigationItem.rightBarButtonItem.enabled = NO;
 
                 [self.number deleteWithCompletion:^(BOOL succeeded)
                 {
@@ -608,6 +609,7 @@ typedef enum
                     else
                     {
                         isDeleting = NO;
+                        self.navigationItem.rightBarButtonItem.enabled = YES;
                     }
                 }];
             }

@@ -227,46 +227,49 @@
 
 - (NSString*)cantDeleteMessage
 {
-    NSString* message = NSLocalizedString(@"This Number can't be deleted because %@ ", @"");
+    NSString* message = NSLocalizedString(@"This Number can't be cancelled because it is not pending.%@", @"");
     NSString* reason;
 
     if (self.isPending)
     {
         return nil;
     }
-
-    switch (self.address.addressStatus)
+    else if (self.address == nil)
     {
-        case AddressStatusUnknown:
+        // We should never get here.
+        reason = @"";
+    }
+    else
+    {
+        switch (self.address.addressStatus)
         {
-            reason = NSLocalizedString(@"the status of its Address is unknow. Please try again later.", @"");
-            break;
-        }
-        case AddressStatusVerificationRequestedMask:   // Fallthrough.
-        case AddressStatusStagedMask:
-        {
-            reason = NSLocalizedString(@"its Address is waiting to be verified by us.", @"");
-            break;
-        }
-        case AddressStatusNotVerifiedMask:             // Fallthrough.
-        case AddressStatusVerificationNotRequiredMask: // Fallthrough.
-        case AddressStatusVerifiedMask:
-        {
-            reason = NSLocalizedString(@"it's not pending; only pending Number purchases can be cancelled.\n\n"
-                                       @"(To stop receiving calls, go to Numbers > [Number] > Destination, "
-                                       @"and tap the delete button there. This will disconnect the Number.)", @"");
-            break;
-        }
-        case AddressStatusDisabledMask:
-        {
-            reason = NSLocalizedString(@"it's not pending; only pending Number purchases can be cancelled.\n\n"
-                                       @"(Please be aware that its Address is disabled. Assign a valid Address to "
-                                       @"receive calls on this Number!)", @"");
-                                       break;
-        }
-        case AddressStatusRejectedMask:
-        {
-            return nil;
+            case AddressStatusUnknown:                     // Fallthrough.
+            case AddressStatusVerificationRequestedMask:   // Fallthrough.
+            case AddressStatusStagedMask:
+            {
+                reason = @"";
+                break;
+            }
+            case AddressStatusNotVerifiedMask:             // Fallthrough.
+            case AddressStatusVerificationNotRequiredMask: // Fallthrough.
+            case AddressStatusVerifiedMask:
+            {
+                reason = NSLocalizedString(@"\n\n(To stop receiving calls, go to Numbers > [Number] > Destination, "
+                                           @"and tap the delete button there. This will disconnect your Number.)", @"");
+                break;
+            }
+            case AddressStatusDisabledMask:
+            {
+                reason = NSLocalizedString(@"\n\n(Please be aware that its Address is disabled. Assign a valid Address to "
+                                           @"receive calls on this Number!)", @"");
+                break;
+            }
+            case AddressStatusRejectedMask:
+            {
+                reason = NSLocalizedString(@"\n\n(Please be aware that its Address is rejected. Assign a valid Address to "
+                                           @"receive calls on this Number!)", @"");
+                break;
+            }
         }
     }
 
@@ -287,7 +290,7 @@
         NSString* title;
 
         title = NSLocalizedStringWithDefaultValue(@"NumberView CantDeleteTitle", nil, [NSBundle mainBundle],
-                                                  @"Can't Delete Number",
+                                                  @"Can't Cancel Number",
                                                   @"...\n"
                                                   @"[1/3 line small font].");
 
