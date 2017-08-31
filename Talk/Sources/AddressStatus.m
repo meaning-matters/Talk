@@ -116,6 +116,18 @@
     {
         mask = RejectionReasonOtherMask;
     }
+    else if ([string isEqualToString:@"INFO_MISMATCH_ADDRESS_NOT_IN_AREA"])      // NumberBay added.
+    {
+        mask = RejectionReasonInfoMismatchAddressNotInAreaMask;
+    }
+    else if ([string isEqualToString:@"INVALID_DOCTYPE_ADDRESS_NOT_PERSONAL"])   // NumberBay added.
+    {
+        mask = RejectionReasonInvalidDoctypeAddressNotPersonalMask;
+    }
+    else if ([string isEqualToString:@"INVALID_DOCTYPE_REQUIRED_ADDRESS"])       // NumberBay added.
+    {
+        mask = RejectionReasonInvalidDoctypeRequiredAddressMask;
+    }
     else
     {
         mask = RejectionReasonOtherMask;
@@ -145,14 +157,14 @@
     if (mask & RejectionReasonInvalidDoctypeMask)
     {
         [messages addObject:NSLocalizedStringWithDefaultValue(@"AddressStatus ...", nil, [NSBundle mainBundle],
-                                                              @"Document type not accepted",
+                                                              @"Document type is not accepted",
                                                               @"...")];
     }
 
     if (mask & RejectionReasonInvalidDoctypeVirtualAddressMask)
     {
         [messages addObject:NSLocalizedStringWithDefaultValue(@"AddressStatus ...", nil, [NSBundle mainBundle],
-                                                              @"Virtual Office address proofs not accepted",
+                                                              @"Virtual office address proof is not accepted",
                                                               @"...")];
     }
 
@@ -173,7 +185,7 @@
     if (mask & RejectionReasonInvalidDoctypeRequiredIdMask)
     {
         [messages addObject:NSLocalizedStringWithDefaultValue(@"AddressStatus ...", nil, [NSBundle mainBundle],
-                                                              @"Proof of identity required, instead of proof of address",
+                                                              @"Proof of identity is required, instead of proof of address",
                                                               @"...")];
     }
 
@@ -187,7 +199,7 @@
     if (mask & RejectionReasonDocIllegibleMask)
     {
         [messages addObject:NSLocalizedStringWithDefaultValue(@"AddressStatus ...", nil, [NSBundle mainBundle],
-                                                              @"Document illegible or incomplete",
+                                                              @"Document is illegible or incomplete",
                                                               @"...")];
     }
 
@@ -243,7 +255,30 @@
     if (mask & RejectionReasonOtherMask)
     {
         [messages addObject:NSLocalizedStringWithDefaultValue(@"AddressStatus ...", nil, [NSBundle mainBundle],
-                                                              @"Other issue",
+                                                              @"Other issue. Contact us via Help > Chat With Us "
+                                                              @"or Send Email",
+                                                              @"...")];
+    }
+
+    if (mask & RejectionReasonInfoMismatchAddressNotInAreaMask)      // NumberBay added.
+    {
+        [messages addObject:NSLocalizedStringWithDefaultValue(@"AddressStatus ...", nil, [NSBundle mainBundle],
+                                                              @"Address does not match the Number's area code",
+                                                              @"...")];
+    }
+
+    if (mask & RejectionReasonInvalidDoctypeAddressNotPersonalMask)  // NumberBay added.
+    {
+        [messages addObject:NSLocalizedStringWithDefaultValue(@"AddressStatus ...", nil, [NSBundle mainBundle],
+                                                              @"Proof of address is not personal and could be acquired "
+                                                              @"by others",
+                                                              @"...")];
+    }
+
+    if (mask & RejectionReasonInvalidDoctypeRequiredAddressMask)    // NumberBay added.
+    {
+        [messages addObject:NSLocalizedStringWithDefaultValue(@"AddressStatus ...", nil, [NSBundle mainBundle],
+                                                              @"Proof of address is required, instead of proof of identity",
                                                               @"...")];
     }
 

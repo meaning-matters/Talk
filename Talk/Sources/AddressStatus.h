@@ -27,22 +27,30 @@ typedef NS_ENUM(NSUInteger, AddressStatusMask)
 
 typedef NS_ENUM(NSUInteger, RejectionReasonMask)
 {
-    RejectionReasonUnknown                          = 0,
-    RejectionReasonInvalidDoctypeMask               = 1UL <<  0,
-    RejectionReasonInvalidDoctypeVirtualAddressMask = 1UL <<  1,
-    RejectionReasonInvalidDoctypeThirdPartyMask     = 1UL <<  2,
-    RejectionReasonInvalidDoctypeNoAddressMask      = 1UL <<  3,
-    RejectionReasonInvalidDoctypeRequiredIdMask     = 1UL <<  4,
-    RejectionReasonNotRecentEnoughMask              = 1UL <<  5,
-    RejectionReasonDocIllegibleMask                 = 1UL <<  6,
-    RejectionReasonInfoMismatchMask                 = 1UL <<  7,
-    RejectionReasonInfoMismatchWithProofMask        = 1UL <<  8,
-    RejectionReasonInfoMismatchAddressMask          = 1UL <<  9,
-    RejectionReasonInfoMismatchLocationMask         = 1UL << 10,
-    RejectionReasonInfoIncompleteMask               = 1UL << 11,
-    RejectionReasonInfoIncompleteDateMask           = 1UL << 12,
-    RejectionReasonInfoIncompleteAddressMask        = 1UL << 13,
-    RejectionReasonOtherMask                        = 1UL << 14,
+    RejectionReasonUnknown                              = 0,
+
+    // From Voxbone.
+    RejectionReasonInvalidDoctypeMask                   = 1UL <<  0,
+    RejectionReasonInvalidDoctypeVirtualAddressMask     = 1UL <<  1,
+    RejectionReasonInvalidDoctypeThirdPartyMask         = 1UL <<  2,
+    RejectionReasonInvalidDoctypeNoAddressMask          = 1UL <<  3,
+    RejectionReasonInvalidDoctypeRequiredIdMask         = 1UL <<  4,
+    RejectionReasonNotRecentEnoughMask                  = 1UL <<  5,
+    RejectionReasonDocIllegibleMask                     = 1UL <<  6,
+    RejectionReasonInfoMismatchMask                     = 1UL <<  7,
+    RejectionReasonInfoMismatchWithProofMask            = 1UL <<  8,
+    RejectionReasonInfoMismatchAddressMask              = 1UL <<  9,
+    RejectionReasonInfoMismatchLocationMask             = 1UL << 10,
+    RejectionReasonInfoIncompleteMask                   = 1UL << 11,
+    RejectionReasonInfoIncompleteDateMask               = 1UL << 12,
+    RejectionReasonInfoIncompleteAddressMask            = 1UL << 13,
+    RejectionReasonOtherMask                            = 1UL << 14,
+
+    // Added by NumberBay.
+    RejectionReasonInfoMismatchAddressNotInAreaMask     = 1UL << 15,
+    RejectionReasonInvalidDoctypeAddressNotPersonalMask = 1UL << 16,
+    RejectionReasonInvalidDoctypeRequiredAddressMask    = 1UL << 17,
+
 };
 
 
