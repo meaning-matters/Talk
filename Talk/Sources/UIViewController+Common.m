@@ -103,6 +103,13 @@
 
     if (isLoading == YES && self.activityIndicator == nil)
     {
+        [self.navigationItem setHidesBackButton:YES animated:YES];
+
+        for (UITabBarItem* item in self.tabBarController.tabBar.items)
+        {
+            item.enabled = NO;
+        }
+
         for (UIBarButtonItem* item in self.toolbarItems)
         {
             item.enabled = NO;
@@ -159,6 +166,13 @@
         {
             item.enabled = YES;
         }
+
+        for (UITabBarItem* item in self.tabBarController.tabBar.items)
+        {
+            item.enabled = YES;
+        }
+
+        [self.navigationItem setHidesBackButton:NO animated:YES];
     }
 
     [self didSetIsLoading];
