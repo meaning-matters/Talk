@@ -79,24 +79,6 @@ typedef enum
                                                        @"Title of app screen with details of a phone number\n"
                                                        @"[1 line larger font].");
 
-        // Mandatory sections.
-        sections |= TableSectionName;
-        sections |= TableSectionInfo;
-        sections |= TableSectionDestination;
-        sections |= TableSectionAddress;
-
-        // Optional section.
-        sections |= self.number.isPending ? 0 : TableSectionUsage;
-        sections |= self.number.isPending ? 0 : TableSectionPeriod;
-        sections |= [IncomingChargesViewController hasIncomingChargesWithNumber:number] ? TableSectionCharges : 0;
-
-        // Info Rows
-        infoRows |= InfoRowE164;
-        infoRows |= InfoRowArea;
-
-        NSInteger section  = [Common nOfBit:TableSectionName inValue:sections];
-        self.nameIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
-
         self.item = number;
     }
 
@@ -223,6 +205,24 @@ typedef enum
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
+    // Mandatory sections.
+    sections |= TableSectionName;
+    sections |= TableSectionInfo;
+    sections |= TableSectionDestination;
+    sections |= TableSectionAddress;
+
+    // Optional section.
+    sections |= self.number.isPending ? 0 : TableSectionUsage;
+    sections |= self.number.isPending ? 0 : TableSectionPeriod;
+    sections |= [IncomingChargesViewController hasIncomingChargesWithNumber:self.number] ? TableSectionCharges : 0;
+
+    // Info Rows
+    infoRows |= InfoRowE164;
+    infoRows |= InfoRowArea;
+
+    NSInteger section  = [Common nOfBit:TableSectionName inValue:sections];
+    self.nameIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
+
     return [Common bitsSetCount:sections];
 }
 
@@ -346,11 +346,12 @@ typedef enum
                                                                                addressType:addressTypeMask
                                                                                  predicate:self.addressesPredicate
                                                                                 isVerified:self.number.isPending ? NO : YES
-                                                                                completion:^(AddressData *selectedAddress)
+                                                                                completion:^(AddressData* selectedAddress)
             {
                 if (selectedAddress != self.number.address)
                 {
                     self.isLoading = YES;
+                    self.navigationItem.rightBarButtonItem.enabled = NO;
                     [[WebClient sharedClient] updateNumberWithUuid:self.number.uuid
                                                               name:self.number.name
                                                          autoRenew:self.number.autoRenew
@@ -364,6 +365,7 @@ typedef enum
                                                                      float     renewFee)
                     {
                         self.isLoading = NO;
+                        self.navigationItem.rightBarButtonItem.enabled = YES;
                         if (error == nil)
                         {
                             self.number.address = selectedAddress;
@@ -380,6 +382,7 @@ typedef enum
 
                                 [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
 
+                                // TODO: Animate the reload. (Got crash when just reloading the sections.)
                                 [self.tableView reloadData];
                             }
                             else
