@@ -6,20 +6,6 @@
 	objectVersion = 46;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		48338EFE1615E3560033F4C1 /* Documentation */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 48338F011615E3560033F4C1 /* Build configuration list for PBXAggregateTarget "Documentation" */;
-			buildPhases = (
-				48338F031615E3F60033F4C1 /* ShellScript */,
-			);
-			dependencies = (
-			);
-			name = Documentation;
-			productName = Documentation;
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
 		4800379A1CA7CD050083D24B /* Favorites@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 480037991CA7CD050083D24B /* Favorites@2x.png */; };
 		480037A11CA840210083D24B /* TableLoading@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 480037A01CA840210083D24B /* TableLoading@2x.png */; };
@@ -2843,7 +2829,6 @@
 			targets = (
 				48884A6F1615CE920005AA79 /* Talk */,
 				48884AA41615CE920005AA79 /* TalkTests */,
-				48338EFE1615E3560033F4C1 /* Documentation */,
 			);
 		};
 /* End PBXProject section */
@@ -3324,19 +3309,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		48338F031615E3F60033F4C1 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/Applications/appledoc --verbose xcode $SOURCE_ROOT/$PROJECT_NAME";
-		};
 		48884AA31615CE920005AA79 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3643,20 +3615,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		48338EFF1615E3560033F4C1 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		48338F001615E3560033F4C1 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
 		48884AB51615CE920005AA79 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3968,26 +3926,9 @@
 			};
 			name = AdHoc;
 		};
-		488FBBD61700604C000ECC71 /* AdHoc */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = AdHoc;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		48338F011615E3560033F4C1 /* Build configuration list for PBXAggregateTarget "Documentation" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				48338EFF1615E3560033F4C1 /* Debug */,
-				48338F001615E3560033F4C1 /* Release */,
-				488FBBD61700604C000ECC71 /* AdHoc */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
 		48884A6A1615CE920005AA79 /* Build configuration list for PBXProject "Talk" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
