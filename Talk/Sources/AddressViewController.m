@@ -2210,6 +2210,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     cell.textLabel.text = [self localizedExtraFieldTitleForRow:indexPath.row];
     
     [self updateTextField:textField onCell:cell];
+    [self update];
     
     return cell;
 }
