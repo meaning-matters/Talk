@@ -39,7 +39,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
     TableSectionProof       = 1UL << 2, // Proof images.
     TableSectionDetails     = 1UL << 3, // Salutation, company, first, last.
     TableSectionAddress     = 1UL << 4, // Street, number, city, postcode.
-    TableSectionExtraFields = 1UL << 5, // Extra for few countries.  Assumed last section in updateExtraFieldsSection.
+    TableSectionExtraFields = 1UL << 5, // Extra for few countries.
     TableSectionNumbers     = 1UL << 6, // Optional list of Numbers for which this Address is used currently.
 };
 
@@ -905,7 +905,9 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     self.address.idNumber     = nil;
     self.address.fiscalIdCode = nil;
 
+    [self.tableView beginUpdates];
     [Common reloadSections:TableSectionExtraFields allSections:self.sections tableView:self.tableView];
+    [self.tableView endUpdates];
 }
 
 
@@ -913,18 +915,19 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 {
     if (self.extraFields.count > 0)
     {
-        // Assumes that Extra Fields section is bottom one.
-        NSUInteger  index    = [self numberOfSectionsInTableView:self.tableView] - 1;
+        NSUInteger  index    = [Common nOfBit:TableSectionExtraFields inValue:self.sections];
         NSIndexSet* indexSet = [NSIndexSet indexSetWithIndex:index];
 
         [self.tableView beginUpdates];
         [self.tableView insertSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
         [self.tableView endUpdates];
+
+        // TODO: Combine both `updateExtraFieldsSection` and `refreshExtraFieldsSection`.
+        [self refreshExtraFieldsSection];
     }
     else
     {
-        // Assumes that Extra Fields section is bottom one.
-        NSUInteger  index    = [self numberOfSectionsInTableView:self.tableView];
+        NSUInteger  index    = [Common nOfBit:TableSectionExtraFields inValue:self.sections];
         NSIndexSet* indexSet = [NSIndexSet indexSetWithIndex:index];
 
         [self.tableView beginUpdates];
@@ -1526,13 +1529,18 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             }
             case TableSectionDetails:
             {
+                BOOL hadExtraFields = (self.extraFields.count > 0);
                 salutationsViewController = [[AddressSalutationsViewController alloc] initWithSalutation:self.salutation
                                                                                               completion:^
                 {
-                    BOOL update = ([self.address.salutation isEqualToString:self.salutation.string] == NO);
+                    BOOL refresh = ([self.address.salutation isEqualToString:self.salutation.string] == NO);
                     self.address.salutation = self.salutation.string;
 
-                    if (update)
+                    if (hadExtraFields != (self.extraFields.count > 0))
+                    {
+                        [self updateExtraFieldsSection];
+                    }
+                    else if (refresh)
                     {
                         [self refreshExtraFieldsSection];
                     }
