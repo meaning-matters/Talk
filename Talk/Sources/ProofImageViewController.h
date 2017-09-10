@@ -22,6 +22,7 @@ typedef enum
 - (instancetype)initWithAddress:(AddressData*)address
                            type:(ProofImageType)type
                        editable:(BOOL)editable
+               actionSheetTitle:(NSString*)actionSheetTitle
                      completion:(void (^)(BOOL edited))completion;
 
 @end

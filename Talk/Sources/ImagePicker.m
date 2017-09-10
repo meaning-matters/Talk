@@ -36,7 +36,7 @@
 }
 
 
-- (void)pickImageWithCompletion:(void (^)(NSData* imageData))completion
+- (void)pickImageWithTitle:(NSString*)title completion:(void (^)(NSData* imageData))completion
 {
     self.completion = completion;
 
@@ -49,7 +49,7 @@
                                                                     @"...\n"
                                                                     @"[1/3 line small font].");
 
-    [BlockActionSheet showActionSheetWithTitle:nil
+    [BlockActionSheet showActionSheetWithTitle:title
                                     completion:^(BOOL cancelled, BOOL destruct, NSInteger buttonIndex)
     {
         switch (buttonIndex)

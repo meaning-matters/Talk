@@ -44,8 +44,8 @@
 
 - (NSString*)localizedIdentityProofsString
 {
-    NSArray* types   = self.salutation.isPerson ? self.person[@"identityProofTypes"]
-                                                : self.company[@"identityProofTypes"];
+    NSArray* types = self.salutation.isPerson ? self.person[@"identityProofTypes"]
+                                              : self.company[@"identityProofTypes"];
     return [self localizedProofsStringWithTypes:types];
 }
 
@@ -81,7 +81,7 @@
     if ([types containsObject:@"ID_CARD"])
     {
         [strings addObject:NSLocalizedStringWithDefaultValue(@"ProofType ID Card", nil, [NSBundle mainBundle],
-                                                             @"Identity Card",
+                                                             @"ID Card",
                                                              @"\n"
                                                              @"[One line].")];
     }
@@ -166,7 +166,7 @@
             else
             {
                 NSString* orString = NSLocalizedString(@"or", @"This 'or' that.");
-                [resultString stringByAppendingFormat:@"%@ %@", orString, string];
+                resultString = [resultString stringByAppendingFormat:@" %@ %@", orString, string];
             }
         }
     }

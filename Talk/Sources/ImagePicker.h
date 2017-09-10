@@ -12,6 +12,6 @@
 
 - (instancetype)initWithPresentingViewController:(UIViewController*)presentingViewController;
 
-- (void)pickImageWithCompletion:(void (^)(NSData* imageData))completion;
+- (void)pickImageWithTitle:(NSString*)title completion:(void (^)(NSData* imageData))completion;
 
 @end

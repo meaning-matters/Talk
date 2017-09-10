@@ -1130,6 +1130,34 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 }
 
 
+// Title that appears on action sheet when getting address proof image.
+- (NSString*)addressProofTitle
+{
+    NSString* title = NSLocalizedString(@"Image of %@.\n\nYour (company's) name, your address, document "
+                                        @"date, and details of plus the details of issuing organisation "
+                                        @"must be readable.\n\nThe document must be less than 3 months old.\n\n"
+                                        @"Only you (or your company) must be able to have this document.",
+                                        @"");
+    title = [NSString stringWithFormat:title, self.proofTypes.localizedAddressProofsString];
+
+    return title;
+}
+
+
+// Title that appears on action sheet when getting identity proof image.
+- (NSString*)identityProofTitle
+{
+    NSString* title = NSLocalizedString(@"Image of %@.\n\nYour (company's) name, date & place of birth "
+                                        @"(or company creation), document date(s), identification number, and "
+                                        @"issuing organisation must be readable.\n\nThe document must be "
+                                        @"valid for at least 3 months.",
+                                        @"");
+    title = [NSString stringWithFormat:title, self.proofTypes.localizedIdentityProofsString];
+
+    return title;
+}
+
+
 #pragma mark - Table View Delegates
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
@@ -1374,22 +1402,6 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                               @"identity are legally required.",
                                               @"");
                 }
-
-                if (self.proofTypes.requiresAddressProofType)
-                {
-                    title = [NSString stringWithFormat:@"%@\n%@", title,
-                             @"• Address: Make sure that the document date, your (company's) name and address, "
-                             @"plus the details of the organisation that issued the document, are all present and clearly "
-                             @"visible on the image."];
-                }
-
-                if (self.proofTypes.requiresIdentityProofType)
-                {
-                    title = [NSString stringWithFormat:@"%@\n%@", title,
-                             @"• Identity: Make sure that the document date, your (company's) name, "
-                             @"date & place of birth (or company creation), and registration number, plus the details "
-                             @"of the organisation that issued the document, are all clearly visible on the image."];
-                }
             }
 
             break;
@@ -1441,7 +1453,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                         if ((self.isNew || self.isUpdatable) && self.address.hasAddressProof == NO)
                         {
                             __weak typeof(self) weakSelf = self;
-                            [self.imagePicker pickImageWithCompletion:^(NSData* imageData)
+                            [self.imagePicker pickImageWithTitle:[self addressProofTitle] completion:^(NSData* imageData)
                             {
                                 __strong typeof(weakSelf) strongSelf = weakSelf;
 
@@ -1465,6 +1477,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                             viewController = [[ProofImageViewController alloc] initWithAddress:self.address
                                                                                           type:ProofImageTypeAddress
                                                                                       editable:(self.isNew || self.isUpdatable)
+                                                                              actionSheetTitle:[self addressProofTitle]
                                                                                     completion:^(BOOL edited)
                             {
                                 if (self.isUpdatable && edited)
@@ -1485,7 +1498,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                         if ((self.isNew || self.isUpdatable) && self.address.hasIdentityProof == NO)
                         {
                             __weak typeof(self) weakSelf = self;
-                            [self.imagePicker pickImageWithCompletion:^(NSData* imageData)
+                            [self.imagePicker pickImageWithTitle:[self identityProofTitle] completion:^(NSData* imageData)
                             {
                                 __strong typeof(weakSelf) strongSelf = weakSelf;
 
@@ -1509,6 +1522,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                             viewController = [[ProofImageViewController alloc] initWithAddress:self.address
                                                                                           type:ProofImageTypeIdentity
                                                                                       editable:(self.isNew || self.isUpdatable)
+                                                                              actionSheetTitle:[self identityProofTitle]
                                                                                     completion:^(BOOL edited)
                             {
                                 if (self.isUpdatable && edited)
@@ -1764,8 +1778,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     {
         case TableRowsProofAddress:
         {
-            cell.textLabel.text = (self.proofTypes != nil) ? self.proofTypes.localizedAddressProofsString
-                                                           : NSLocalizedString(@"Address Proof", @"");
+            cell.textLabel.text = NSLocalizedString(@"Address Proof", @"");
 
             if ((self.isNew || self.isUpdatable) && self.address.hasAddressProof == NO)
             {
@@ -1775,15 +1788,14 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             else
             {
                 cell.detailTextLabel.text = nil;
-                cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
+                cell.accessoryType        = UITableViewCellAccessoryCheckmark;
             }
 
             break;
         }
         case TableRowsProofIdentity:
         {
-            cell.textLabel.text = (self.proofTypes != nil) ? self.proofTypes.localizedIdentityProofsString
-                                                           : NSLocalizedString(@"Identity Proof", @"");
+            cell.textLabel.text = NSLocalizedString(@"Identity Proof", @"");
 
             if ((self.isNew || self.isUpdatable) && self.address.hasIdentityProof == NO)
             {
@@ -1793,7 +1805,7 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
             else
             {
                 cell.detailTextLabel.text = nil;
-                cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
+                cell.accessoryType        = UITableViewCellAccessoryCheckmark;
             }
 
             break;

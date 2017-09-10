@@ -24,6 +24,7 @@
 @property (nonatomic, strong) ImagePicker*   imagePicker;
 @property (nonatomic, assign) ProofImageType type;
 @property (nonatomic, assign) BOOL           editable;
+@property (nonatomic, strong) NSString*      actionSheetTitle;
 @property (nonatomic, copy)   void (^completion)(BOOL edited);
 
 @end
@@ -34,14 +35,16 @@
 - (instancetype)initWithAddress:(AddressData*)address
                            type:(ProofImageType)type
                        editable:(BOOL)editable
+               actionSheetTitle:(NSString*)actionSheetTitle
                      completion:(void (^)(BOOL edited))completion
 {
     if (self = [super init])
     {
-        self.address    = address;
-        self.type       = type;
-        self.editable   = editable;
-        self.completion = completion;
+        self.address          = address;
+        self.type             = type;
+        self.editable         = editable;
+        self.actionSheetTitle = actionSheetTitle;
+        self.completion       = completion;
 
         self.imageView  = [[UIImageView alloc] init];
 
@@ -185,7 +188,7 @@
             self.imagePicker = [[ImagePicker alloc] initWithPresentingViewController:self];
         }
 
-        [self.imagePicker pickImageWithCompletion:^(NSData* imageData)
+        [self.imagePicker pickImageWithTitle:self.actionSheetTitle completion:^(NSData* imageData)
         {
             if (imageData != nil)
             {
