@@ -57,7 +57,9 @@
     if ([types containsObject:@"UTILITY"])
     {
         [strings addObject:NSLocalizedStringWithDefaultValue(@"ProofType Utility", nil, [NSBundle mainBundle],
-                                                             @"Utility Bill",
+                                                             @"GAS/ELECTRICITY/... BILL, BANK STATEMENT, or OTHER "
+                                                             @"DOCUMENT FROM A LARGE ORGANISATION THAT ONLY YOU "
+                                                             @"CAN RECEIVE",
                                                              @"\n"
                                                              @"[One line].")];
     }
@@ -65,7 +67,7 @@
     if ([types containsObject:@"COMPANY"])
     {
         [strings addObject:NSLocalizedStringWithDefaultValue(@"ProofType Company", nil, [NSBundle mainBundle],
-                                                             @"Company Registration",
+                                                             @"COMPANY REGISTRATION",
                                                              @"\n"
                                                              @"[One line].")];
     }
@@ -73,7 +75,7 @@
     if ([types containsObject:@"PASSPORT"])
     {
         [strings addObject:NSLocalizedStringWithDefaultValue(@"ProofType Passport", nil, [NSBundle mainBundle],
-                                                             @"Passport",
+                                                             @"PASSPORT",
                                                              @"\n"
                                                              @"[One line].")];
     }
@@ -81,7 +83,7 @@
     if ([types containsObject:@"ID_CARD"])
     {
         [strings addObject:NSLocalizedStringWithDefaultValue(@"ProofType ID Card", nil, [NSBundle mainBundle],
-                                                             @"ID Card",
+                                                             @"ID CARD",
                                                              @"\n"
                                                              @"[One line].")];
     }

@@ -1133,11 +1133,19 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 // Title that appears on action sheet when getting address proof image.
 - (NSString*)addressProofTitle
 {
-    NSString* title = NSLocalizedString(@"Image of %@.\n\nYour (company's) name, your address, document "
-                                        @"date, and details of plus the details of issuing organisation "
-                                        @"must be readable.\n\nThe document must be less than 3 months old.\n\n"
-                                        @"Only you (or your company) must be able to have this document.",
-                                        @"");
+    NSString* title;
+    if (self.salutation.isPerson)
+    {
+        title = NSLocalizedString(@"%@\n\nYour name, address, document date, and details of issuing "
+                                  @"organisation must be readable.\n\nDocument must be less than 3 months old.", @"");
+    }
+    else
+    {
+        title = NSLocalizedString(@"%@\n\nYour company name, address, document date, and details of the issuing "
+                                  @"organisation must be readable.\n\nDocument must be less than 3 months old.\n\n"
+                                  @"To prove it's your address, only you must be able to have this document.", @"");
+    }
+    
     title = [NSString stringWithFormat:title, self.proofTypes.localizedAddressProofsString];
 
     return title;
@@ -1147,11 +1155,20 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 // Title that appears on action sheet when getting identity proof image.
 - (NSString*)identityProofTitle
 {
-    NSString* title = NSLocalizedString(@"Image of %@.\n\nYour (company's) name, date & place of birth "
-                                        @"(or company creation), document date(s), identification number, and "
-                                        @"issuing organisation must be readable.\n\nThe document must be "
-                                        @"valid for at least 3 months.",
-                                        @"");
+    NSString* title;
+    if (self.salutation.isPerson)
+    {
+        title = NSLocalizedString(@"%@\n\nYour name, date & place of birth, document date(s), number, and "
+                                  @"issuing organisation must be readable.\n\nDocument must be valid for at least 3 "
+                                  @"months.", @"");
+    }
+    else
+    {
+        title = NSLocalizedString(@"%@\n\nYour company name, date & place of formation, registration number, "
+                                  @"document date(s), and issuing organisation must be readable.\n\nDocument must be "
+                                  @"valid for at least 3 months.", @"");
+    }
+
     title = [NSString stringWithFormat:title, self.proofTypes.localizedIdentityProofsString];
 
     return title;
