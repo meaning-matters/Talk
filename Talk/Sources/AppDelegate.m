@@ -682,6 +682,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     @[
         NSStringFromClass([CreditViewController        class]),
         NSStringFromClass([NBRecentsListViewController class]),
+        NSStringFromClass([SMSViewController           class]),
         NSStringFromClass([NBPeopleListViewController  class]),
         NSStringFromClass([KeypadViewController        class]),
         NSStringFromClass([PhonesViewController        class]),
