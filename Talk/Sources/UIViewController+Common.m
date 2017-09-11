@@ -103,7 +103,10 @@
 
     if (isLoading == YES && self.activityIndicator == nil)
     {
-        [self.navigationItem setHidesBackButton:YES animated:YES];
+        if ([self.navigationController.viewControllers indexOfObject:self] > 0)
+        {
+            [self.navigationItem setHidesBackButton:YES animated:YES];
+        }
 
         for (UITabBarItem* item in self.tabBarController.tabBar.items)
         {
@@ -172,7 +175,10 @@
             item.enabled = YES;
         }
 
-        [self.navigationItem setHidesBackButton:NO animated:YES];
+        if ([self.navigationController.viewControllers indexOfObject:self] > 0)
+        {
+            [self.navigationItem setHidesBackButton:NO animated:YES];
+        }
     }
 
     [self didSetIsLoading];
