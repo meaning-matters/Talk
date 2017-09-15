@@ -50,16 +50,15 @@
                                                               @"[1 line larger font].")];
     }
 
-    /* For default Destinations we don't want to show this.
     if (numbersArray.count > 0)
     {
         [useArray addObject:NSLocalizedStringWithDefaultValue(@"PhoneView CanNotDeleteNumberFooter", nil,
                                                               [NSBundle mainBundle],
-                                                              @"in one or more Destinations",
+                                                              @"in one or more Destinations (see Numbers > Destinations > "
+                                                              @"[Phone] > Used By Numbers)",
                                                               @"Table footer that ....\n"
                                                               @"[1 line larger font].")];
     }
-    */
 
     if (callable.callerIds.count == 1)
     {

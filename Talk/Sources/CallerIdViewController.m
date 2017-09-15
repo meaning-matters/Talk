@@ -482,10 +482,12 @@ typedef enum
 
 - (NSArray*)fetchNumbers
 {
-    return [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
-                                                     sortKeys:[Common sortKeys]
-                                                    predicate:nil
-                                         managedObjectContext:self.managedObjectContext];
+    NSArray* numbers = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
+                                                                 sortKeys:[Common sortKeys]
+                                                                predicate:nil
+                                                     managedObjectContext:self.managedObjectContext];
+
+    return [numbers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isPending == NO"]];
 }
 
 
