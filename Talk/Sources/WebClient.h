@@ -65,7 +65,8 @@
                            reply:(void (^)(NSError*  error,
                                            NSString* webUsername,
                                            NSString* webPassword,
-                                           NSString* accountId))reply;
+                                           NSString* accountId,
+                                           BOOL      mustUpdateApp))reply;
 
 // 2A. BEGIN NUMBER VERIFICATION
 - (void)beginPhoneVerificationForE164:(NSString*)e164 mode:(NSString*)mode

@@ -403,11 +403,12 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 {
     [self showMissedNotifications];
     [self checkCreditWithCompletion:nil];
+    [self handleMustUpdateApp];
 
     [self.nBPeopleListViewController callWhenContactsAreLoaded:^
     {
         NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:[Settings sharedSettings].synchronizeDate];
-        if ([Settings sharedSettings].synchronizeDate == nil || interval > 2 * 3600) // Longer than background fetch which is about 1 hour.
+        if ([Settings sharedSettings].synchronizeDate == nil || interval > 2 * 60 * 60) // Longer than background fetch which is about 1 hour.
         {
             // We delay to not interfere with UI animation triggered from `showMissedNotifications`.
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
@@ -415,7 +416,8 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
                 // This includes calling `retrieveCallRecordsWithSender`.
                 [self application:[UIApplication sharedApplication] performFetchWithCompletionHandler:^(UIBackgroundFetchResult result)
                 {
-                    // Do nothing.
+                    // The `mustUpdateApp` might be set caused by calling `updateAccount`.
+                    [self handleMustUpdateApp];
                 }];
             });
         }
@@ -562,6 +564,8 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     // Of course `haveAccount` will also return `NO` when there's no account at all.
     if ([Settings sharedSettings].haveAccount)
     {
+        [self updateAccount];
+
         [self.nBRecentsListViewController retrieveCallRecordsWithSender:nil completion:^(NSError* error)
         {
             if (error == nil)
@@ -1001,13 +1005,15 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
                                                      reply:^(NSError*  error,
                                                              NSString* webUsername,
                                                              NSString* webPassword,
-                                                             NSString* accountId)
+                                                             NSString* accountId,
+                                                             BOOL      mustUpdateApp)
         {
             if (error == nil)
             {
                 [Settings sharedSettings].webUsername = webUsername;
                 [Settings sharedSettings].webPassword = webPassword;
                 self.accountId                        = accountId;
+                self.mustUpdateApp                    = mustUpdateApp;
             }
             else
             {
@@ -1038,6 +1044,45 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
                 [[NSNotificationCenter defaultCenter] removeObserver:observer];
             }
         }];
+    }
+}
+
+
+- (void)handleMustUpdateApp
+{
+    NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:[Settings sharedSettings].updateAppDate];
+
+    if (self.mustUpdateApp && ([Settings sharedSettings].updateAppDate == nil || interval > 8 * 60 * 60)) // 8 hours.
+    {
+        NSString* title        = NSLocalizedString(@"Please Update App", @"");
+        NSString* message      = NSLocalizedString(@"There's a new version of NumberBay, please update.\n\n"
+                                                   @"If you don't update, some parts of the app may not work properly.", @"");
+        NSString* cancelButton = NSLocalizedString(@"Remind Me Later", @"");
+        NSString* updateButton = NSLocalizedString(@"Update App", @"");
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+        {
+            if (buttonIndex == 1)
+            {
+                [Common openAppStoreDetailsPage];
+            }
+        }
+                             cancelButtonTitle:cancelButton
+                             otherButtonTitles:updateButton, NULL];
+    }
+
+    if (self.mustUpdateApp)
+    {
+        // This resets the date each time the app is opened. So the alert is only shown when the user did not open the
+        // app for the set delay above (or when user kept the app open for that delay, which of course won't happen).
+        [Settings sharedSettings].updateAppDate = [NSDate date];
+    }
+    else
+    {
+        // Reset the date when no update is needed. This makes sure the user is informed without delay when
+        // `mustUpdateApp` becomes `YES`.
+        [Settings sharedSettings].updateAppDate = NULL;
     }
 }
 

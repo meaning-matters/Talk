@@ -25,6 +25,7 @@ NSString* const UseSimIsoCountryCodeKey   = @"UseSimIsoCountryCode";
 NSString* const LastDialedNumberKey       = @"LastDialedNumber";
 NSString* const RecentsCheckDateKey       = @"RecentsCheckDate";
 NSString* const SynchronizeDateKey        = @"SynchronizeDate";
+NSString* const UpdateAppDateKey          = @"UpdateAppDate";
 NSString* const WebUsernameKey            = @"WebUsername";            // Used as keychain 'username'.
 NSString* const WebPasswordKey            = @"WebPassword";            // Used as keychain 'username'.
 NSString* const DeviceTokenReplacementKey = @"DeviceTokenReplacement";
@@ -255,6 +256,18 @@ static NSUserDefaults* userDefaults;
 - (void)setSynchronizeDate:(NSDate*)synchronizeDate
 {
     [userDefaults setObject:synchronizeDate forKey:SynchronizeDateKey];
+}
+
+
+- (NSDate*)updateAppDate
+{
+    return [userDefaults objectForKey:UpdateAppDateKey];
+}
+
+
+- (void)setUpdateAppDate:(NSDate*)updateAppDate
+{
+    [userDefaults setObject:updateAppDate forKey:UpdateAppDateKey];
 }
 
 

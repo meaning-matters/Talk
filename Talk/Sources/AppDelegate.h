@@ -51,6 +51,7 @@ extern NSString* const AppDelegateRemoteNotification;
 
 @property (nonatomic, assign) BOOL                         doDtmfPhoneVerification; // If NO do voice Phone verification.
 @property (nonatomic, copy) NSString*                      accountId;
+@property (nonatomic, assign) BOOL                         mustUpdateApp;           // Indicates if app is incompatible with web API.
 
 
 + (AppDelegate*)appDelegate;

@@ -41,6 +41,8 @@ static const NSInteger CommonUseButton1Tag    = 30469;
 
 + (NSString*)appStoreUrlString;
 
++ (void)openAppStoreDetailsPage;
+
 + (void)openAppStoreReviewPage;
 
 + (UIViewController*)topViewController; // View controller from which to present a modal.

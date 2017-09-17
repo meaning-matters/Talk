@@ -18,18 +18,27 @@
 #import "GetStartedViewController.h"
 
 
-typedef enum
+typedef NS_ENUM(NSUInteger, TableSections)
 {
     TableSectionContactUs = 1UL << 0,
     TableSectionTexts     = 1UL << 1,
     TableSectionIntro     = 1UL << 2,
-} TableSections;
+} ;
+
+typedef NS_ENUM(NSUInteger, TableRowsContactUs)
+{
+    TableRowsContactUsChat     = 1UL << 0,
+    TableRowsContactUsEmail    = 1UL << 1,
+    TableRowsContactUsAppStore = 1UL << 2,
+    TableRowsContactUsCall     = 1UL << 3,  // Not used at the moment.
+};
 
 
 @interface HelpsViewController ()
 {
-    NSArray*      helpsArray;
-    TableSections sections;
+    NSArray*           helpsArray;
+    TableSections      sections;
+    TableRowsContactUs rowsContactUs;
 }
 
 @end
@@ -50,8 +59,12 @@ typedef enum
         NSData* data = [Common dataForResource:@"Helps" ofType:@"json"];
         helpsArray   = [Common objectWithJsonData:data];
 
-        sections |= TableSectionContactUs;
-        sections |= TableSectionTexts;
+        sections      |= TableSectionContactUs;
+        sections      |= TableSectionTexts;
+
+        rowsContactUs |= TableRowsContactUsChat;
+        rowsContactUs |= TableRowsContactUsEmail;
+        rowsContactUs |= TableRowsContactUsAppStore;
 
         [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
                                                           object:nil
@@ -107,9 +120,9 @@ typedef enum
 
     switch ([Common nthBitSet:section inValue:sections])
     {
-        case TableSectionContactUs: numberOfRows = 3;                break;
-        case TableSectionTexts:     numberOfRows = helpsArray.count; break;
-        case TableSectionIntro:     numberOfRows = 1;                break;
+        case TableSectionContactUs: numberOfRows = [Common bitsSetCount:rowsContactUs]; break;
+        case TableSectionTexts:     numberOfRows = helpsArray.count;                    break;
+        case TableSectionIntro:     numberOfRows = 1;                                   break;
     }
     
     return numberOfRows;
@@ -163,9 +176,9 @@ typedef enum
     {
         case TableSectionContactUs:
         {
-            switch (indexPath.row)
+            switch ([Common nthBitSet:indexPath.row inValue:rowsContactUs])
             {
-                case 0:
+                case TableRowsContactUsChat:
                 {
                     text = NSLocalizedStringWithDefaultValue(@"Helps MessageContactUsText", nil, [NSBundle mainBundle],
                                                              @"Chat With Us",
@@ -175,7 +188,7 @@ typedef enum
                     cell.textLabel.textColor = [UIColor blackColor];
                     break;
                 }
-                case 1:
+                case TableRowsContactUsEmail:
                 {
                     text = NSLocalizedStringWithDefaultValue(@"Helps EmailContactUsText", nil, [NSBundle mainBundle],
                                                              @"Send Email",
@@ -185,7 +198,7 @@ typedef enum
                     cell.textLabel.textColor = [Skinning tintColor];
                     break;
                 }
-                case 2:
+                case TableRowsContactUsAppStore:
                 {
                     text = NSLocalizedStringWithDefaultValue(@"Helps RateTheAppText", nil, [NSBundle mainBundle],
                                                              @"Write an App Store Review...",
@@ -195,7 +208,7 @@ typedef enum
                     cell.textLabel.textColor = [Skinning tintColor];
                     break;
                 }
-                case 3:
+                case TableRowsContactUsCall:
                 {
                     text = NSLocalizedStringWithDefaultValue(@"Helps CallContactUsText", nil, [NSBundle mainBundle],
                                                              @"Make Mobile Call",
@@ -244,9 +257,9 @@ typedef enum
     {
         case TableSectionContactUs:
         {
-            switch (indexPath.row)
+            switch ([Common nthBitSet:indexPath.row inValue:rowsContactUs])
             {
-                case 0:
+                case TableRowsContactUsChat:
                 {
                     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
@@ -254,7 +267,7 @@ typedef enum
                     [self.navigationController pushViewController:controller animated:YES];
                     break;
                 }
-                case 1:
+                case TableRowsContactUsEmail:
                 {
                     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
@@ -264,14 +277,14 @@ typedef enum
                              completion:nil];
                     break;
                 }
-                case 2:
+                case TableRowsContactUsAppStore:
                 {
                     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
                     [Common openAppStoreReviewPage];
                     break;
                 }
-                case 3:
+                case TableRowsContactUsCall:
                 {
                     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 

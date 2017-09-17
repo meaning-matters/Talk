@@ -103,9 +103,13 @@ static Common* sharedCommon;
 
 + (NSString*)appStoreUrlString
 {
-    NSString* appName = [[Common bundleName] stringByReplacingOccurrencesOfString:@" " withString:@""];
+    return [NSString stringWithFormat:@"https://itunes.apple.com/us/app/apple-store/id642013221?mt=8"];
+}
 
-    return [NSString stringWithFormat:@"http://itunes.com/apps/%@", appName];
+
++ (void)openAppStoreDetailsPage
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[self appStoreUrlString]]];
 }
 
 
