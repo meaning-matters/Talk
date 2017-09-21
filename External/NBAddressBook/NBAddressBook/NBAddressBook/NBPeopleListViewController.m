@@ -356,7 +356,7 @@
 
             //Get the first character of the contact
             NSString* sortingProperty = [NBContact getSortingProperty:(ABRecordRef)contactRef mustFormatNumber:NO];
-            NSString* firstChar = (sortingProperty == nil) ? @"#" : [[sortingProperty substringToIndex:1] uppercaseString];
+            NSString* firstChar = (sortingProperty.length == 0) ? @"#" : [[sortingProperty substringToIndex:1] uppercaseString];
             
             //Get the array this contact belongs to
             NSUInteger index = [SECTION_TITLES indexOfObject:firstChar];
