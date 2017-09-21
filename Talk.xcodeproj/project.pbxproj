@@ -111,12 +111,6 @@
 		4837AF7A18DDDD5500D3AEBC /* GetStarted4.png in Resources */ = {isa = PBXBuildFile; fileRef = 4837AF7718DDDD5500D3AEBC /* GetStarted4.png */; };
 		4837AF7B18DDDD5500D3AEBC /* GetStarted5.png in Resources */ = {isa = PBXBuildFile; fileRef = 4837AF7818DDDD5500D3AEBC /* GetStarted5.png */; };
 		4837AF7C18DDDD5500D3AEBC /* GetStarted6.png in Resources */ = {isa = PBXBuildFile; fileRef = 4837AF7918DDDD5500D3AEBC /* GetStarted6.png */; };
-		4837AF8518E24BF100D3AEBC /* Icon-40.png in Resources */ = {isa = PBXBuildFile; fileRef = 4837AF7F18E24BF100D3AEBC /* Icon-40.png */; };
-		4837AF8618E24BF100D3AEBC /* Icon-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 4837AF8018E24BF100D3AEBC /* Icon-60.png */; };
-		4837AF8718E24BF100D3AEBC /* Icon-76.png in Resources */ = {isa = PBXBuildFile; fileRef = 4837AF8118E24BF100D3AEBC /* Icon-76.png */; };
-		4837AF8818E24BF100D3AEBC /* Icon-80.png in Resources */ = {isa = PBXBuildFile; fileRef = 4837AF8218E24BF100D3AEBC /* Icon-80.png */; };
-		4837AF8918E24BF100D3AEBC /* Icon-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 4837AF8318E24BF100D3AEBC /* Icon-120.png */; };
-		4837AF8A18E24BF100D3AEBC /* Icon-152.png in Resources */ = {isa = PBXBuildFile; fileRef = 4837AF8418E24BF100D3AEBC /* Icon-152.png */; };
 		4837BB3C165D701F00E46C36 /* LibPhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837BB3B165D701F00E46C36 /* LibPhoneNumber.m */; };
 		4837BB3D165D701F00E46C36 /* LibPhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837BB3B165D701F00E46C36 /* LibPhoneNumber.m */; };
 		4837BB66165F726400E46C36 /* BlockAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837BB65165F726300E46C36 /* BlockAlertView.m */; };
@@ -590,6 +584,7 @@
 		48BD8BE81663E7A400F2CB45 /* CallBaseView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48BD8BE71663E7A400F2CB45 /* CallBaseView.xib */; };
 		48C1D3C517D31309004F910D /* ProofImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C1D3C417D31309004F910D /* ProofImageViewController.m */; };
 		48C1D3C617D31309004F910D /* ProofImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C1D3C417D31309004F910D /* ProofImageViewController.m */; };
+		48C3646D1F73DCA0002975B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48C3646C1F73DCA0002975B8 /* Assets.xcassets */; };
 		48C431A1189EDFB40008FE01 /* VerifyPhoneDtmfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C431A0189EDFB40008FE01 /* VerifyPhoneDtmfViewController.m */; };
 		48C431A2189EDFB40008FE01 /* VerifyPhoneDtmfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C431A0189EDFB40008FE01 /* VerifyPhoneDtmfViewController.m */; };
 		48C431A4189EE0310008FE01 /* VerifyPhoneCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48C431A3189EE0310008FE01 /* VerifyPhoneCodeView.xib */; };
@@ -843,12 +838,6 @@
 		4837AF7718DDDD5500D3AEBC /* GetStarted4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GetStarted4.png; sourceTree = "<group>"; };
 		4837AF7818DDDD5500D3AEBC /* GetStarted5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GetStarted5.png; sourceTree = "<group>"; };
 		4837AF7918DDDD5500D3AEBC /* GetStarted6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GetStarted6.png; sourceTree = "<group>"; };
-		4837AF7F18E24BF100D3AEBC /* Icon-40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-40.png"; sourceTree = "<group>"; };
-		4837AF8018E24BF100D3AEBC /* Icon-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-60.png"; sourceTree = "<group>"; };
-		4837AF8118E24BF100D3AEBC /* Icon-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-76.png"; sourceTree = "<group>"; };
-		4837AF8218E24BF100D3AEBC /* Icon-80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-80.png"; sourceTree = "<group>"; };
-		4837AF8318E24BF100D3AEBC /* Icon-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-120.png"; sourceTree = "<group>"; };
-		4837AF8418E24BF100D3AEBC /* Icon-152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-152.png"; sourceTree = "<group>"; };
 		4837BB3A165D701F00E46C36 /* LibPhoneNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibPhoneNumber.h; sourceTree = "<group>"; };
 		4837BB3B165D701F00E46C36 /* LibPhoneNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibPhoneNumber.m; sourceTree = "<group>"; };
 		4837BB64165F726300E46C36 /* BlockAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockAlertView.h; sourceTree = "<group>"; };
@@ -1397,6 +1386,7 @@
 		48BD8BE71663E7A400F2CB45 /* CallBaseView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallBaseView.xib; sourceTree = "<group>"; };
 		48C1D3C317D31308004F910D /* ProofImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProofImageViewController.h; sourceTree = "<group>"; };
 		48C1D3C417D31309004F910D /* ProofImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProofImageViewController.m; sourceTree = "<group>"; };
+		48C3646C1F73DCA0002975B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		48C4319F189EDFB40008FE01 /* VerifyPhoneDtmfViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerifyPhoneDtmfViewController.h; sourceTree = "<group>"; };
 		48C431A0189EDFB40008FE01 /* VerifyPhoneDtmfViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerifyPhoneDtmfViewController.m; sourceTree = "<group>"; };
 		48C431A3189EE0310008FE01 /* VerifyPhoneCodeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VerifyPhoneCodeView.xib; sourceTree = "<group>"; };
@@ -1879,12 +1869,6 @@
 		48338FB316170D8C0033F4C1 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				4837AF7F18E24BF100D3AEBC /* Icon-40.png */,
-				4837AF8018E24BF100D3AEBC /* Icon-60.png */,
-				4837AF8118E24BF100D3AEBC /* Icon-76.png */,
-				4837AF8218E24BF100D3AEBC /* Icon-80.png */,
-				4837AF8418E24BF100D3AEBC /* Icon-152.png */,
-				4837AF8318E24BF100D3AEBC /* Icon-120.png */,
 				48338FB416170D8C0033F4C1 /* Default-568h@2x.png */,
 				48338FB616170D8C0033F4C1 /* Default@2x.png */,
 			);
@@ -2386,6 +2370,7 @@
 		48884A7A1615CE920005AA79 /* Talk */ = {
 			isa = PBXGroup;
 			children = (
+				48C3646C1F73DCA0002975B8 /* Assets.xcassets */,
 				483ECFE817A4F54D0032B8FF /* NBAddressBook */,
 				48DD7284169F548600CD7080 /* External */,
 				48338F9E16170CA80033F4C1 /* Sources */,
@@ -2919,7 +2904,6 @@
 				485F6A781637270100D61365 /* BS@2x.png in Resources */,
 				485F6A7A1637270100D61365 /* BT@2x.png in Resources */,
 				485F6A7E1637270100D61365 /* BW@2x.png in Resources */,
-				4837AF8818E24BF100D3AEBC /* Icon-80.png in Resources */,
 				485F6A801637270100D61365 /* BY@2x.png in Resources */,
 				485F6A821637270100D61365 /* BZ@2x.png in Resources */,
 				4842D9FC1AADFB53008F35C9 /* editPhotoLeftButtonHighlighted.png in Resources */,
@@ -2928,7 +2912,6 @@
 				485F6A881637270100D61365 /* CD@2x.png in Resources */,
 				480E7A2E1BFDCA7800F655E8 /* AddressesTab@2x.png in Resources */,
 				485F6A8A1637270100D61365 /* CF@2x.png in Resources */,
-				4837AF8518E24BF100D3AEBC /* Icon-40.png in Resources */,
 				485F6A8C1637270100D61365 /* CG@2x.png in Resources */,
 				485F6A8E1637270100D61365 /* CH@2x.png in Resources */,
 				485F6A901637270100D61365 /* CI@2x.png in Resources */,
@@ -3094,7 +3077,6 @@
 				485F6B981637270100D61365 /* PG@2x.png in Resources */,
 				485F6B9A1637270100D61365 /* PH@2x.png in Resources */,
 				485F6B9C1637270100D61365 /* PK@2x.png in Resources */,
-				4837AF8718E24BF100D3AEBC /* Icon-76.png in Resources */,
 				480BEF9518D59ECA00C882E0 /* GetStartedView.xib in Resources */,
 				4898EC4B1DA021490010479D /* DollarCents@2x.png in Resources */,
 				485F6B9E1637270100D61365 /* PL@2x.png in Resources */,
@@ -3200,8 +3182,6 @@
 				48D0A6E61654D65200FA2D98 /* SipConfig.cfg in Resources */,
 				48D0A6EA1654D66200FA2D98 /* InfoPlist.strings in Resources */,
 				48BD8BE81663E7A400F2CB45 /* CallBaseView.xib in Resources */,
-				4837AF8618E24BF100D3AEBC /* Icon-60.png in Resources */,
-				4837AF8A18E24BF100D3AEBC /* Icon-152.png in Resources */,
 				48EDD20F1667652A007B89DA /* ColorCurves.png in Resources */,
 				48A26DDE18BA904100736CCB /* SearchTableView.xib in Resources */,
 				4888D51C166D1AEE00572566 /* Flip@2x.png in Resources */,
@@ -3220,6 +3200,7 @@
 				48367A2317247B2D001A02AF /* CuePauseWhite@2x.png in Resources */,
 				48367A2717247B2D001A02AF /* CuePlayBlack@2x.png in Resources */,
 				48CB2C4617E6539000E19C3D /* Target@2x.png in Resources */,
+				48C3646D1F73DCA0002975B8 /* Assets.xcassets in Resources */,
 				48367A2B17247B2D001A02AF /* CuePlayWhite@2x.png in Resources */,
 				48367A2F17247B2D001A02AF /* CueRecordRed@2x.png in Resources */,
 				48367A3317247B2D001A02AF /* CueRecordWhite@2x.png in Resources */,
@@ -3231,7 +3212,6 @@
 				48CA5036172AEEB100CB1B7B /* CueRecordBlack@2x.png in Resources */,
 				4846D8A5174170CF00C40713 /* Branding@2x.png in Resources */,
 				4846D8AB1743F47100C40713 /* Logo@2x.png in Resources */,
-				4837AF8918E24BF100D3AEBC /* Icon-120.png in Resources */,
 				484943B01753C44D00E1D5C4 /* ThanksView.xib in Resources */,
 				4864B3F6175668CA0006542F /* LogoFacebook.png in Resources */,
 				483B078F1908017900E8C42D /* Terms.json in Resources */,
@@ -3688,6 +3668,7 @@
 		48884AB81615CE920005AA79 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ATS_DISABLE = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
@@ -3710,7 +3691,7 @@
 					"\"$(SRCROOT)/External/HockeySDK-iOS-4.1.2/Classes\"",
 				);
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
@@ -3731,6 +3712,7 @@
 		48884AB91615CE920005AA79 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ATS_DISABLE = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
@@ -3753,7 +3735,7 @@
 					"\"$(SRCROOT)/External/HockeySDK-iOS-4.1.2/Classes\"",
 				);
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
@@ -3860,6 +3842,7 @@
 		488FBBD41700604C000ECC71 /* AdHoc */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ATS_DISABLE = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
@@ -3882,7 +3865,7 @@
 					"\"$(SRCROOT)/External/HockeySDK-iOS-4.1.2/Classes\"",
 				);
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
