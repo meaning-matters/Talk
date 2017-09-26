@@ -41,10 +41,11 @@
                                                            @"To access your NumberBay account, iOS may ask you to sign "
                                                            @"in with your Apple ID.\n\n"
                                                            @"You need to use the Apple ID you had when signing up.\n\n"
-                                                           @"Recents and Settings are per device, and won't be restored.\n\n"
-                                                           @"If you use the app on multiple devices, you'll be sharing "
-                                                           @"your Credit, verified Phones, purchased Numbers, incoming "
-                                                           @"call Destinations, and incoming call history.",
+                                                           @"Recents, Settings and Caller ID preferences are per device, "
+                                                           @"and won't be restored.\n\n"
+                                                           @"If using multiple devices, you'll be sharing your "
+                                                           @"Credit, verified Phones, purchased Numbers, incoming "
+                                                           @"call Destinations, and incoming Recents.",
                                                            @"....\n"
                                                            @"[iOS alert title size].");
 

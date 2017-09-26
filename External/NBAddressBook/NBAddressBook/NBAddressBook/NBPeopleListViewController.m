@@ -128,7 +128,7 @@
     dispatch_async(searchQueue, ^
     {
         // Added to prevent clashes -> crashes with loading and findContactsHavingNumber by different threads.
-        @synchronized(self)
+        @synchronized(self.tableView)
         {
            // for (int n = 0; n < 100; n++)
             [self loadContacts];
@@ -297,7 +297,7 @@
         if (allGroupsSelected)
         {
             //All contacts were selected
-            [contactsInSelectedSources addObjectsFromArray:(__bridge NSArray *)ABAddressBookCopyArrayOfAllPeople(addressBook)];
+            [contactsInSelectedSources addObjectsFromArray:(__bridge NSArray*)ABAddressBookCopyArrayOfAllPeople(addressBook)];
         }
         else //Load the contacts that are members of the selected groups
         {
@@ -645,8 +645,20 @@
 
 - (void)findContactsHavingNumber:(NSString*)number completion:(void(^)(NSArray* contactIds))completion
 {
-    // Force viewDidLoad to be called, as this fills the allContacts array.
-    self.view.hidden = NO;
+    dispatch_block_t block = ^
+    {
+        // Force viewDidLoad to be called, as this fills the allContacts array.
+        self.view.hidden = NO;
+    };
+
+    if ([NSThread isMainThread])
+    {
+        block();
+    }
+    else
+    {
+        dispatch_sync(dispatch_get_main_queue(), block);
+    }
 
     [self callWhenContactsAreLoaded:^
     {

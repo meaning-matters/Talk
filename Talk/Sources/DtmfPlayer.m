@@ -58,6 +58,10 @@
     NSString* path = [NSString stringWithFormat:@"/System/Library/Audio/UISounds/dtmf-%@.caf", name];
     NSData*   data = [NSData dataWithContentsOfFile:path options:NSDataReadingUncached error:&error] ;
 
+
+    NSArray * directoryContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:&error];
+
+
     if (error == nil && data != nil)
     {
         audioDataObjects[[NSString stringWithFormat:@"%c", character]] = data;

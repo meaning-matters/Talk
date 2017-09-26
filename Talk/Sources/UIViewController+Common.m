@@ -392,7 +392,10 @@
 
     if (self.footNoteIndexPath != nil)
     {
-        [tableView scrollToRowAtIndexPath:self.footNoteIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+        {
+            [tableView scrollToRowAtIndexPath:self.footNoteIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        });
     }
 
     self.footNoteIndexPath = nil;

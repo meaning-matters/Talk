@@ -154,10 +154,12 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     }
     else
     {
+        [self setUp];
+
         [Answers logCustomEventWithName:@"Abort"
                        customAttributes:@{}];
 
-        abort();
+        // abort();
     }
 
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"6abff73fa5eb64771ac8a5124ebc33f5" delegate:self];
@@ -1127,6 +1129,19 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 + (AppDelegate*)appDelegate
 {
     return (AppDelegate*)[UIApplication sharedApplication].delegate;
+}
+
+
+- (NSString*)deviceToken
+{
+    if (_deviceToken.length == 0)
+    {
+        return [Settings sharedSettings].deviceTokenReplacement;
+    }
+    else
+    {
+        return _deviceToken;
+    }
 }
 
 
