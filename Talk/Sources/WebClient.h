@@ -376,6 +376,17 @@
                                                float     callbackCost,
                                                float     callthruCost))reply;
 
+// Get all messages - /users/{user_id}/messages
+// 40A. GET ALL MESSAGES
+- (void)retrieveMessages:(void (^)(NSError* error, NSArray* messages))reply;
+
+// 40B. SEND SMS
+//- (void)createMessage:(NSString *)message
+//            destination:(NSString *)e164
+//                  reply:(void (^)(NSError * error, NSString* status))reply;
+
+
+
 #pragma mark - Cancel Methods
 
 // 0A.
@@ -506,5 +517,18 @@
 
 // 34.
 - (void)cancelAllRetrieveCallbackStateForUuid:(NSString*)uuid;
+
+// 40A.
+- (void)cancelAllRetrieveChats;
+
+// 40A
+- (void)cancelAllRetrieveMessages;
+
+// 40B.
+//- (void)cancelAllCreateMessageWithDestination:(NSString*)e164;
+
+
+
+
 
 @end

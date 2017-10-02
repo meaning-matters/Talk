@@ -1531,6 +1531,36 @@
 }
 
 
+// 40A. GET ALL MESSAGES
+- (void)retrieveMessages:(void (^)(NSError *, NSArray *))reply
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+    
+    [self getPath:[NSString stringWithFormat:@"/users/%@/messages", username]
+       parameters:nil
+            reply:reply];
+}
+
+
+// 40B. SEND SMS
+//- (void)createMessage:(NSString *)message destination:(NSString *)e164 reply:(void (^)(NSError * error, NSString* status))reply
+//{
+//    [self getPath:[NSString stringWithFormat:@"/users/%@/sms/v1/%@", [Settings sharedSettings].webUsername, e164]
+//       parameters:nil
+//            reply:^(NSError* error, id content)
+//     {
+//         if (error == nil)
+//         {
+//             reply(nil, content);
+//         }
+//         else
+//         {
+//             reply(error, nil);
+//         }
+//     }];
+//}
+
+
 #pragma mark - Public Utility
 
 // 0A.
@@ -1969,5 +1999,26 @@
                                                     path:[NSString stringWithFormat:@"/users/%@/callback/%@",
                                                           username, uuid]];
 }
+
+
+// 40A.
+- (void)cancelAllRetrieveMessages
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+    
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodGet
+                                                  path:[NSString stringWithFormat:@"/users/%@/messages",
+                                                        username]];
+}
+
+
+// 40B.
+//- (void)cancelAllCreateMessageWithDestination:(NSString*)e164
+//{
+//    NSString* username = [Settings sharedSettings].webUsername;
+//    
+//    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodPost
+//                                                  path:[NSString stringWithFormat:@"/users/%@/sms/v1/%@", username, e164]];
+//}
 
 @end

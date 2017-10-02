@@ -1,30 +1,26 @@
 //
-//  SMSViewController.m
+//  NewSmsViewController.m
 //  Talk
 //
-//  Created by Jeroen Kooiker on 11/9/17.
+//  Created by Jeroen Kooiker on 17/9/17.
 //  Copyright © 2017 NumberBay Ltd. All rights reserved.
 //
 
-#import "SMSViewController.h"
+#import "NewSmsViewController.h"
 
-@interface SMSViewController ()
+@interface NewSmsViewController ()
 
 @end
 
-@implementation SMSViewController
+@implementation NewSmsViewController
 
-- (instancetype)init
-{
-    if (self = [super initWithNibName:@"SearchTableView" bundle:nil])
-    {
-        self.edgesForExtendedLayout = UIRectEdgeNone;
-        
-        self.title = NSLocalizedString(@"SMS", @"SMS tab title");
-    }
-    
-    return self;
-}
+//- (instancetype)init
+//{
+//    if (self = [super init])
+//    {
+//        
+//    }
+//}
 
 - (void)viewDidLoad {
     [super viewDidLoad];

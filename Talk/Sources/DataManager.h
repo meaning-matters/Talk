@@ -14,6 +14,7 @@
 @class NumberData;
 @class AddressData;
 @class DestinationData;
+@class MessageData;
 
 
 @interface DataManager : NSObject

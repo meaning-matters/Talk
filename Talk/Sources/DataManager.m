@@ -20,6 +20,7 @@
 #import "NetworkStatus.h"
 #import "AddressStatus.h"
 #import "AddressUpdatesHandler.h"
+#import "MessageData.h"
 
 
 @interface DataManager ()
@@ -199,6 +200,7 @@
     [self fetchEntitiesWithName:@"Number"];
     [self fetchEntitiesWithName:@"Phone"];
     [self fetchEntitiesWithName:@"Recording"];
+    [self fetchEntitiesWithName:@"Message"];
 
     for (NSManagedObject* object in [self.managedObjectContext registeredObjects])
     {
@@ -506,28 +508,42 @@
                                     {
                                         if (error == nil)
                                         {
-                                            [self.managedObjectContext save:&error];
-                                            if (error == nil)
-                                            {
-                                                [self updateDefaultDestinations];
-
-                                                [self saveManagedObjectContext:nil];
-
-                                                dispatch_async(dispatch_get_main_queue(), ^
-                                                {
-                                                    completion ? completion(nil) : 0;
-
-                                                    isSynchronizing = NO;
-                                                });
-                                            }
-                                            else
-                                            {
-                                                [self handleError:error];
-
-                                                isSynchronizing = NO;
-
-                                                return;
-                                            }
+                                            [self synchronizeMessages:^(NSError* error)
+                                             {
+                                                 if (error == nil)
+                                                 {
+                                                     [self.managedObjectContext save:&error];
+                                                     if (error == nil)
+                                                     {
+                                                         [self updateDefaultDestinations];
+                                                         
+                                                         [self saveManagedObjectContext:nil];
+                                                         
+                                                         dispatch_async(dispatch_get_main_queue(), ^
+                                                                        {
+                                                                            completion ? completion(nil) : 0;
+                                                                            
+                                                                            isSynchronizing = NO;
+                                                                        });
+                                                     }
+                                                     else
+                                                     {
+                                                         [self handleError:error];
+                                                         
+                                                         isSynchronizing = NO;
+                                                         
+                                                         return;
+                                                     }
+                                                 }
+                                                 else
+                                                 {
+                                                     [self.managedObjectContext rollback];
+                                                     completion ? completion(error) : 0;
+                                                     
+                                                     isSynchronizing = NO;
+                                                 }
+                                             }];
+                                            
                                         }
                                         else
                                         {
@@ -1123,6 +1139,91 @@
             completion ? completion(error) : 0;
         }
     }];
+}
+
+
+- (void)synchronizeMessages:(void (^)(NSError* error))completion
+{
+    [[WebClient sharedClient] retrieveMessages:^(NSError* error, NSArray* messages)
+     {
+         if (error == nil)
+         {
+             // Delete Messages that are no longer on the server.
+             NSArray* uuids = [messages valueForKey:@"uuid"];
+             NSFetchRequest*  request     = [NSFetchRequest fetchRequestWithEntityName:@"Message"];
+             [request setPredicate:[NSPredicate predicateWithFormat:@"(NOT (uuid IN %@)) OR (uuid == nil)", uuids]];
+             NSArray*         deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
+             if (error == nil)
+             {
+                 for (NSManagedObject* object in deleteArray)
+                 {
+                     [self.managedObjectContext deleteObject:object]; // This notifies MessageUpdatesHandler.
+                 }
+             }
+             else
+             {
+                 [self handleError:error];
+                 
+                 return;
+             }
+             
+             if (messages.count == 0)
+             {
+                 dispatch_async(dispatch_get_main_queue(), ^
+                                {
+                                    completion ? completion(nil) : 0;
+                                });
+                 
+                 return;
+             }
+             
+             for (NSDictionary* dictionary in messages)
+             {
+                 NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Message"];
+                 [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", dictionary[@"uuid"]]];
+                 
+                 MessageData* object;
+                 object = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
+                 if (error == nil)
+                 {
+                     if (object == nil)
+                     {
+                         object = [NSEntityDescription insertNewObjectForEntityForName:@"Message"
+                                                                inManagedObjectContext:self.managedObjectContext];
+                     }
+                 }
+                 else
+                 {
+                     [self handleError:error];
+                     
+                     return;
+                 }
+                 
+                 object.uuid = dictionary[@"uuid"];
+                 object.direction = @"IN";// [dictionary[@"direction"] isEqualToString:@"1"] ? @"OUT" : @"IN";
+                 object.extern_e164 = dictionary[@"extern_e164"];
+                 object.number_e164 = dictionary[@"number_e164"];
+                 object.text = dictionary[@"text"];
+//                 object.timestamp = @"TIME>>";// dictionary[@"timestamp"];
+                 object.uuid = dictionary[@"uuid"];
+                
+                 
+                 if (object.changedValues.count == 0)
+                 {
+                     [object.managedObjectContext refreshObject:object mergeChanges:NO];
+                 }
+             }
+             
+             dispatch_async(dispatch_get_main_queue(), ^
+                            {
+                                completion ? completion(nil) : 0;
+                            });
+         }
+         else
+         {
+             completion ? completion(error) : 0;
+         }
+     }];
 }
 
 

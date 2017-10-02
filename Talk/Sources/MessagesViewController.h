@@ -1,5 +1,5 @@
 //
-//  SMSViewController.h
+//  MessagesViewController.h
 //  Talk
 //
 //  Created by Jeroen Kooiker on 11/9/17.
@@ -8,13 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "SearchTableViewController.h"
+#import "ItemsViewController.h"
 
-@class SMSData;
 
-@interface SMSViewController : SearchTableViewController
+@interface MessagesViewController : ItemsViewController
 
 @property (nonatomic, strong) NSString* headerTitle;
 @property (nonatomic, strong) NSString* footerTitle;
+
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 
 @end

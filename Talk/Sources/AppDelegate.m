@@ -682,7 +682,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     @[
         NSStringFromClass([CreditViewController        class]),
         NSStringFromClass([NBRecentsListViewController class]),
-        NSStringFromClass([SMSViewController           class]),
+        NSStringFromClass([MessagesViewController      class]),
         NSStringFromClass([NBPeopleListViewController  class]),
         NSStringFromClass([KeypadViewController        class]),
         NSStringFromClass([PhonesViewController        class]),
@@ -695,7 +695,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
     NSSet* preferredSet = [NSSet setWithArray:[Settings sharedSettings].tabBarClassNames];
     NSSet* defaultSet   = [NSSet setWithArray:tabBarClassNames];
-
+    
     if ([preferredSet isEqualToSet:defaultSet])
     {
         // No view controllers were added/deleted/renamed.  Safe to use preferred set.
