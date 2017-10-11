@@ -303,7 +303,18 @@ typedef enum
         }
         case TableSectionOptions:
         {
-            numberOfRows = 2;
+            NSComparisonResult order = [[UIDevice currentDevice].systemVersion compare: @"11" options: NSNumericSearch];
+            if (order == NSOrderedSame || order == NSOrderedDescending)
+            {
+                // No footnotes options as it does not work well yet with iOS 11.
+                numberOfRows = 1;
+                [Settings sharedSettings].showFootnotes = YES;
+            }
+            else
+            {
+                // < iOS 11, all good for footnotes.
+                numberOfRows = 2;
+            }
             break;
         }
         case TableSectionAccountData:
