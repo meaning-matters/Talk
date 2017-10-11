@@ -50,15 +50,15 @@
     if (self.freeAccount)
     {
         self.textView.text = NSLocalizedStringWithDefaultValue(@"GetStartedStart Text", nil, [NSBundle mainBundle],
-                                                               @"Receive some free credit and add your mobile number; "
+                                                               @"Receive free credit and add your mobile number; "
                                                                @"that's all you need to make calls.\n\n"
-                                                               @"Keep your mobile number private by buying a second "
-                                                               @"number, or as many you wish. Choose from up to "
-                                                               @"60 countries.\n\n"
-                                                               @"NumberBay uses your real phone, not Wi-Fi/mobile "
-                                                               @"internet calls. Means you can always be reached on the "
-                                                               @"numbers you'll buy. And to call, internet is used for a "
-                                                               @"second, then your real call starts.",
+                                                               @"Then, buy a second phone number. "
+                                                               @"Choose from local, mobile, toll-free or national numbers in "
+                                                               @"60+ countries.\n\n"
+                                                               @"NumberBay uses your real phone for calls, not internet/VoIP. "
+                                                               @"This guarantees you can always be reached and quality is good. "
+                                                               @"Because real calls cost real money, NumberBay is for "
+                                                               @"those who need real quality.",
                                                                @"....\n"
                                                                @"[iOS alert title size].");
     }
@@ -67,13 +67,13 @@
         self.textView.text = NSLocalizedStringWithDefaultValue(@"GetStartedStart Text", nil, [NSBundle mainBundle],
                                                                @"Get some credit and add your mobile number; "
                                                                @"that's all you need to make calls.\n\n"
-                                                               @"Keep your mobile number private by buying a second "
-                                                               @"number, or as many you wish. Choose from up to "
-                                                               @"60 countries.\n\n"
-                                                               @"NumberBay uses your real phone, not Wi-Fi/mobile "
-                                                               @"internet calls. Means you can always be reached on the "
-                                                               @"numbers you'll buy. And to call, internet is used for a "
-                                                               @"second, then your real call starts.",
+                                                               @"Then, buy a second phone number. "
+                                                               @"Choose from local, mobile, toll-free or national numbers in "
+                                                               @"60+ countries.\n\n"
+                                                               @"NumberBay uses your real phone for calls, not internet/VoIP. "
+                                                               @"This guarantees you can always be reached and quality is good. "
+                                                               @"Because real calls cost real money, NumberBay is for "
+                                                               @"those who need real quality.",
                                                                @"....\n"
                                                                @"[iOS alert title size].");
     }

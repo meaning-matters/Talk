@@ -38,14 +38,14 @@
                                                              @"[1 line large font].");
 
     self.textView.text = NSLocalizedStringWithDefaultValue(@"GetStartedRestore Text", nil, [NSBundle mainBundle],
-                                                           @"To access your NumberBay account, iOS may ask you to sign "
-                                                           @"in with your Apple ID.\n\n"
-                                                           @"You need to use the Apple ID you had when signing up.\n\n"
-                                                           @"Recents, Settings and Caller ID preferences are per device, "
-                                                           @"and won't be restored.\n\n"
+                                                           @"To access your data, iOS may ask you to sign "
+                                                           @"in with your App Store account. (Use the same App Store "
+                                                           @"account as when signing up with NumberBay.)\n\n"
                                                            @"If using multiple devices, you'll be sharing your "
                                                            @"Credit, verified Phones, purchased Numbers, incoming "
-                                                           @"call Destinations, and incoming Recents.",
+                                                           @"call Destinations, and incoming call Recents.\n\n"
+                                                           @"Outgoing call Recents, Settings and Caller ID preferences are per device, "
+                                                           @"and won't be restored nor shared.",
                                                            @"....\n"
                                                            @"[iOS alert title size].");
 
@@ -86,10 +86,9 @@
                                                         @"[iOS alert title size].");
             message = NSLocalizedStringWithDefaultValue(@"GetStartedRestore NothingToRestoreMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"No initial credit was purchased earlier with your "
-                                                        @"current App Store account (i.e. Apple ID).\n\nTap the Start "
-                                                        @"button to get some initial credit and have your "
-                                                        @"number verified.",
+                                                        @"You haven't signed up yet with your App Store account.\n\n"
+                                                        @"Tap the Sign Up button on the Get Started screen to get some "
+                                                        @"calling credit and have your mobile number verified.",
                                                         @"Alert message telling there is no account that could be restored.\n"
                                                         @"[iOS alert message size]");
             [BlockAlertView showAlertViewWithTitle:title
