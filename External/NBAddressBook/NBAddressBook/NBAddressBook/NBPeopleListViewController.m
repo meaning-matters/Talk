@@ -352,6 +352,12 @@
         CFIndex personCount = ABAddressBookGetPersonCount(addressBook);
         for (int i = 0; i < personCount; i++)
         {
+            //### Patch crash https://rink.hockeyapp.net/manage/apps/35762/app_versions/128/crash_reasons/189969838
+            if (i >= allContacts.count)
+            {
+                return;
+            }
+
             id contactRef = allContacts[i];
 
             //Get the first character of the contact

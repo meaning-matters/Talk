@@ -263,3 +263,6 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
     //     It's strange that doing a reloadData immediately does not work, while after a short delay it does.
 
 * A new missed call from same contact minutes later, is not always combined in Recents. This occurs when the app is restarted or returns from background I believe.
+
+* Really fix temporary patch in NBPeopleViewController.m for crash https://rink.hockeyapp.net/manage/apps/35762/app_versions/128/crash_reasons/189969838
+(Terminating app due to uncaught exception 'NSRangeException', reason: '*** -[__NSArrayM objectAtIndexedSubscript:]: index 636 beyond bounds [0 .. 635]')
