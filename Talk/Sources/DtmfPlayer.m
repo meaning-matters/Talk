@@ -55,13 +55,19 @@
 - (BOOL)initializeSound:(char)character name:(NSString*)name
 {
     NSError*  error = nil;
-    NSString* path = [NSString stringWithFormat:@"/System/Library/Audio/UISounds/dtmf-%@.caf", name];
-    NSData*   data = [NSData dataWithContentsOfFile:path options:NSDataReadingUncached error:&error] ;
+    NSString* path;
 
+    NSComparisonResult order = [[UIDevice currentDevice].systemVersion compare: @"11" options: NSNumericSearch];
+    if (order == NSOrderedSame || order == NSOrderedDescending)
+    {
+        path = [NSString stringWithFormat:@"/System/Library/Audio/UISounds/nano/dtmf-%@.caf", name];    // >= iOS 11
+    }
+    else
+    {
+        path  = [NSString stringWithFormat:@"/System/Library/Audio/UISounds/dtmf-%@.caf", name];        // < iOS 11
+    }
 
-    NSArray * directoryContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:&error];
-
-
+    NSData* data  = [NSData dataWithContentsOfFile:path options:NSDataReadingUncached error:&error];
     if (error == nil && data != nil)
     {
         audioDataObjects[[NSString stringWithFormat:@"%c", character]] = data;
