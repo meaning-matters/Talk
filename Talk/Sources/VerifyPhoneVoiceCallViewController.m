@@ -557,7 +557,7 @@ typedef enum
 
 - (void)cancelAction
 {
-    self.completion  = nil;
+    self.completion = nil;
 
     [self.codeTextField resignFirstResponder];
 
