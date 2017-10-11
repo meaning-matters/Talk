@@ -99,7 +99,7 @@ typedef enum
 
 - (void)textFieldDidChange:(UITextField*)textField
 {
-    if (self.phoneNumberTextFieldDelegate.phoneNumber.isValid)
+    if ([self isNumberValid])
     {
         [textField resignFirstResponder];
 
@@ -212,7 +212,7 @@ typedef enum
                 }
                 case NumberRowNumber:
                 {
-                    if (self.phoneNumberTextFieldDelegate.phoneNumber.isValid)
+                    if ([self isNumberValid])
                     {
                         [self pushCallViewController];
                     }
@@ -388,6 +388,16 @@ typedef enum
                              cancelButtonTitle:[Strings cancelString]
                              otherButtonTitles:nil];
     }];
+}
+
+
+- (BOOL)isNumberValid
+{
+    return self.phoneNumberTextFieldDelegate.phoneNumber.isValid &&
+           (self.phoneNumberTextFieldDelegate.phoneNumber.type == PhoneNumberTypeFixedLine         ||
+            self.phoneNumberTextFieldDelegate.phoneNumber.type == PhoneNumberTypeMobile            ||
+            self.phoneNumberTextFieldDelegate.phoneNumber.type == PhoneNumberTypeFixedLineOrMobile ||
+            self.phoneNumberTextFieldDelegate.phoneNumber.type == PhoneNumberTypeUnknown);
 }
 
 
