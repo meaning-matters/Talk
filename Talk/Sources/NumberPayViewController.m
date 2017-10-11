@@ -92,7 +92,7 @@
 }
 
 
-- (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+- (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
     return NSLocalizedString(@"Buy With Your Credit", @"");
 }

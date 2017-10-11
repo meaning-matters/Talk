@@ -332,4 +332,10 @@ typedef NS_ENUM(NSUInteger, TableRowsContactUs)
     }
 }
 
+
+- (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    return 45;
+}
+
 @end

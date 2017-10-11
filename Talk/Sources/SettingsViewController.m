@@ -841,6 +841,14 @@ typedef enum
 }
 
 
+#pragma mark - Table View Delegate
+
+- (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    return 45;
+}
+
+
 #pragma mark - UI Actions
 
 - (void)readFromSimSwitchAction:(id)sender

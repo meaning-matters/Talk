@@ -228,6 +228,12 @@
 }
 
 
+- (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    return 45;
+}
+
+
 #pragma mark - Helpers
 
 - (void)loadAreasForIsoCountryCode:(NSString*)isoCountryCode
