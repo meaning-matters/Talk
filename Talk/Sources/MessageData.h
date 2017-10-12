@@ -16,7 +16,7 @@
 @property (nonatomic, retain) NSString* extern_e164;
 @property (nonatomic, retain) NSString* number_e164;
 @property (nonatomic, retain) NSString* text;
-@property (nonatomic, retain) NSString* timestamp;
+@property (nonatomic, retain) NSDate*   timestamp;
 @property (nonatomic, retain) NSString* uuid;
 
 @end

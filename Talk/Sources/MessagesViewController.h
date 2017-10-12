@@ -10,12 +10,12 @@
 #import <UIKit/UIKit.h>
 #import "ItemsViewController.h"
 
+@class MessageData;
 
 @interface MessagesViewController : ItemsViewController
 
-@property (nonatomic, strong) NSString* headerTitle;
-@property (nonatomic, strong) NSString* footerTitle;
-
-- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext;
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
+                             selectedMessage:(MessageData*)selectedMessage
+                                  completion:(void (^)(MessageData* selectedMessage))completion;
 
 @end
