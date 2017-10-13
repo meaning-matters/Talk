@@ -170,4 +170,10 @@
     return NSLocalizedString(@"Select or deselect the Numbers whose calls you want to forward to this Destination.", @"");
 }
 
+
+- (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    return 45;
+}
+
 @end

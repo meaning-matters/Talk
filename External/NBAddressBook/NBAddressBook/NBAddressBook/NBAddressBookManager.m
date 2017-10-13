@@ -61,8 +61,11 @@
     {
         if (granted)
         {
-            NBPeopleListViewController* peopleViewController = [AppDelegate appDelegate].nBPeopleListViewController;
-            [peopleViewController addCompanyToAddressBook:addressBook]; // Will only add when not present in Contacts.
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                NBPeopleListViewController* peopleViewController = [AppDelegate appDelegate].nBPeopleListViewController;
+                [peopleViewController addCompanyToAddressBook:addressBook]; // Will only add when not present in Contacts.
+            });
         }
     });
 }

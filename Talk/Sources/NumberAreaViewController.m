@@ -618,6 +618,12 @@ typedef enum
 }
 
 
+- (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    return 45;
+}
+
+
 #pragma mark - Cell Methods
 
 - (UITableViewCell*)areaCellForRowAtIndexPath:(NSIndexPath*)indexPath

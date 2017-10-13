@@ -103,9 +103,13 @@ static Common* sharedCommon;
 
 + (NSString*)appStoreUrlString
 {
-    NSString* appName = [[Common bundleName] stringByReplacingOccurrencesOfString:@" " withString:@""];
+    return [NSString stringWithFormat:@"https://itunes.apple.com/us/app/apple-store/id642013221?mt=8"];
+}
 
-    return [NSString stringWithFormat:@"http://itunes.com/apps/%@", appName];
+
++ (void)openAppStoreDetailsPage
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[self appStoreUrlString]]];
 }
 
 
@@ -1127,7 +1131,7 @@ static Common* sharedCommon;
     static const int NumberLabelCellTag = 39562; // Some random value.
 
     NumberLabel* label = (NumberLabel*)[cell.contentView viewWithTag:NumberLabelCellTag];
-    CGRect       frame = CGRectMake(80, 7, 225, 30);
+    CGRect       frame = CGRectMake(80, 9, 225, 30);
 
     label = (label == nil) ? [[NumberLabel alloc] initWithFrame:frame] : label;
 
@@ -1148,7 +1152,9 @@ static Common* sharedCommon;
 + (UITextField*)addTextFieldToCell:(UITableViewCell*)cell delegate:(id<UITextFieldDelegate>)delegate
 {
     UITextField* textField;
-    CGRect       frame = CGRectMake(80, 2, 224, 42);
+    CGRect       frame = CGRectMake(80, 4, 224, 42);
+
+    textField.autoresizingMask = UIViewAutoresizingFlexibleHeight;
 
     textField = [[UITextField alloc] initWithFrame:frame];
 

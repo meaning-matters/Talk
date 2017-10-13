@@ -24,6 +24,7 @@
 @synthesize contact, allowsActions, displayedPerson, personViewDelegate;
 
 #pragma mark - Initialization
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -170,6 +171,7 @@
     [self.view setBackgroundColor:PERSON_BACKGROUND_COLOR];
 }
 
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -183,6 +185,7 @@
 
 
 #pragma mark - Reloading contact
+
 - (void)reloadContact
 {
     //Check if the contact still exists, if not, dismiss
@@ -204,7 +207,9 @@
     }
 }
 
+
 #pragma mark - Focussing on fields
+
 - (void)addKeyboardNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -216,6 +221,7 @@
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
 }
+
 
 - (void)keyboardWillShow:(NSNotification*)notification
 {

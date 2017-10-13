@@ -233,6 +233,12 @@
 }
 
 
+- (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    return 45;
+}
+
+
 - (void)setDestination:(DestinationData*)destination atIndexPath:(NSIndexPath*)indexPath
 {
     if (number.destination != destination)

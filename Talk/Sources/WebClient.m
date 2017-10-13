@@ -319,7 +319,8 @@
                            reply:(void (^)(NSError*  error,
                                            NSString* webUsername,
                                            NSString* webPassword,
-                                           NSString* accountId))reply
+                                           NSString* accountId,
+                                           BOOL      mustUpdateApp))reply
 {
     NSString*     username = [Settings sharedSettings].webUsername;
     NSDictionary* parameters;
@@ -360,7 +361,11 @@
        parameters:parameters
             reply:^(NSError *error, id content)
     {
-        reply(error, content[@"webUsername"], content[@"webPassword"], [content[@"accountId"] description]);
+        reply(error,
+              content[@"webUsername"],
+              content[@"webPassword"],
+              [content[@"accountId"] description],
+              [content[@"mustUpdateApp"] boolValue]);
     }];
 }
 

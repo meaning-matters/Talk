@@ -152,7 +152,7 @@ typedef enum
             {
                 case CallRowLanguage:
                 {
-                    return 44.0;
+                    return 45.0;
                 }
                 case CallRowCallMe:
                 {
@@ -162,7 +162,7 @@ typedef enum
         }
         case TableSectionCode:
         {
-            return 44.0;
+            return 45.0;
         }
         default:
         {
@@ -557,7 +557,7 @@ typedef enum
 
 - (void)cancelAction
 {
-    self.completion  = nil;
+    self.completion = nil;
 
     [self.codeTextField resignFirstResponder];
 

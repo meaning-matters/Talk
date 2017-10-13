@@ -368,4 +368,12 @@
     return NO;  // Need to return NO, because we've already changed textField.text.
 }
 
+
+#pragma mark - Table View Delegate
+
+- (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    return 45;
+}
+
 @end

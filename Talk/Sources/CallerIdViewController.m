@@ -389,6 +389,13 @@ typedef enum
     }
 }
 
+
+- (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    return 45;
+}
+
+
 #pragma Helpers
 
 - (void)cancelAction
