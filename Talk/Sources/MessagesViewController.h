@@ -14,8 +14,6 @@
 
 @interface MessagesViewController : ItemsViewController
 
-- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
-                             selectedMessage:(MessageData*)selectedMessage
-                                  completion:(void (^)(MessageData* selectedMessage))completion;
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 
 @end

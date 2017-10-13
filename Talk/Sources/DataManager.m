@@ -1148,10 +1148,11 @@
         if (error == nil)
         {
             // Delete Messages that are no longer on the server.
-            NSArray* uuids = [messages valueForKey:@"uuid"];
-            NSFetchRequest*  request     = [NSFetchRequest fetchRequestWithEntityName:@"Message"];
+            NSArray*        uuids       = [messages valueForKey:@"uuid"];
+            NSFetchRequest* request     = [NSFetchRequest fetchRequestWithEntityName:@"Message"];
             [request setPredicate:[NSPredicate predicateWithFormat:@"(NOT (uuid IN %@)) OR (uuid == nil)", uuids]];
-            NSArray*         deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
+            NSArray*        deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
+            
             if (error == nil)
             {
                 for (NSManagedObject* object in deleteArray)
@@ -1181,8 +1182,6 @@
                 NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Message"];
                 [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", dictionary[@"uuid"]]];
                 
-                NSLog(@"%@", request);
-                
                 MessageData* object;
                 object = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
                 if (error == nil)
@@ -1200,14 +1199,17 @@
                     return;
                 }
                 
-                object.uuid = dictionary[@"uuid"];
-                object.direction = @"IN";// [dictionary[@"direction"] isEqualToString:@"1"] ? @"OUT" : @"IN";
+                object.uuid        = dictionary[@"uuid"];
+                object.direction   = @"IN";// [dictionary[@"direction"] isEqualToString:@"1"] ? @"OUT" : @"IN";
                 object.extern_e164 = dictionary[@"extern_e164"];
                 object.number_e164 = dictionary[@"number_e164"];
-                object.text = dictionary[@"text"];
-                //                 object.timestamp = @"TIME>>";// dictionary[@"timestamp"];
-                object.timestamp = [[[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian] dateBySettingHour:10 minute:0 second:0 ofDate:[NSDate date] options:0];
-                object.uuid = dictionary[@"uuid"];
+                object.text        = dictionary[@"text"];
+                object.timestamp   = [[[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian] dateBySettingHour:10
+                                                                                                                                minute:0
+                                                                                                                                second:0
+                                                                                                                                ofDate:[NSDate date]
+                                                                                                                               options:0];
+                object.uuid        = dictionary[@"uuid"];
                 
                 if (object.changedValues.count == 0)
                 {
