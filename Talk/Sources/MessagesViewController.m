@@ -11,6 +11,7 @@
 #import "Settings.h"
 #import "MessageData.h"
 #import "Strings.h"
+#import "ConversationViewController.h"
 
 
 // @TODO:
@@ -158,9 +159,19 @@
 }
 
 
+// This hides the tabBar when pushed to next ViewController (Conversation)
+- (BOOL)hidesBottomBarWhenPushed
+{
+    return ![self.navigationController.visibleViewController isEqual:self];
+}
+
+
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    // @TODO: Go to the conversation of the clicked cell.
+    ConversationViewController* viewController = [ConversationViewController messagesViewController];
+    viewController.number_e164 = @"+632039507";
+    viewController.extern_e164 = @"+31683378285";
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 
