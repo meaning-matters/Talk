@@ -29,34 +29,38 @@
 {
     [super viewDidLoad];
     
-    //Create the contact, with actual addressbook if it is not unknown/new
-    if (displayedPerson != nil )
+    // Create the contact, with actual addressbook if it is not unknown/new
+    if (displayedPerson != nil)
+    {
         self.contact = [[NBContact alloc] initWithContact:displayedPerson];
+    }
     else
+    {
         self.contact = [[NBContact alloc] init];
+    }
     
     //Set the screen title
     self.navigationItem.title = NSLocalizedString(@"NCT_INFO", @"");
     
-    //Listen for keyboard popup
+    // Listen for keyboard popup
     [self addKeyboardNotifications];
 
-    //Set the bar frame and take both the navigation controller and tabbar into consideration
+    // Set the bar frame and take both the navigation controller and tabbar into consideration
     CGRect appFrame = self.view.bounds;
-    self.view.frame = CGRectMake( 0, 0, appFrame.size.width, appFrame.size.height);
+    self.view.frame = CGRectMake(0, 0, appFrame.size.width, appFrame.size.height);
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     [self.tableView setFrame:self.view.frame];
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
     [self.view addSubview:self.tableView];
     
-    //Set footer button text layout and text
-    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 80)];
+    // Set footer button text layout and text
+    UIView* footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 80)];
     
-    //If we allow for actions
+    // If we allow for actions
     if (allowsActions)
     {
-        //First button
+        // First button
         firstFooterButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [firstFooterButton setFrame:CGRectMake(8, 6, 94, 45)];
         [firstFooterButton.titleLabel setLineBreakMode:NSLineBreakByWordWrapping];
@@ -68,7 +72,7 @@
         [firstFooterButton addTarget:self action:@selector(firstFooterButtonPressed) forControlEvents:UIControlEventTouchUpInside];
         [footerView addSubview:firstFooterButton];
         
-        //Second button
+        // Second button
         secondFooterButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [secondFooterButton setFrame:CGRectMake(112, 6, 94, 45)];
         [secondFooterButton.titleLabel setLineBreakMode: NSLineBreakByWordWrapping];
@@ -80,7 +84,7 @@
         [secondFooterButton addTarget:self action:@selector(secondFooterButtonPressed) forControlEvents:UIControlEventTouchUpInside];
         [footerView addSubview:secondFooterButton];
 
-        //Third button
+        // Third button
         thirdFooterButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [thirdFooterButton setFrame:CGRectMake(217, 6, 94, 45)];
         [thirdFooterButton.titleLabel setLineBreakMode:NSLineBreakByWordWrapping];
@@ -93,17 +97,17 @@
         [footerView addSubview:thirdFooterButton];
     }
     
-    //Finally add the footer view
+    // Finally add the footer view
     [footerView setBackgroundColor:[UIColor clearColor]];
     [self.tableView setTableFooterView:footerView];
 
-    //Create the portrait graphics
+    // Create the portrait graphics
     portraitLine    = [UIImage imageNamed:@"portraitLine.png"];
     portraitNoPhoto = [UIImage imageNamed:@"noPictureImage.png"];
     portraitCompanyNoPhoto = [UIImage imageNamed:@"noPictureCompanyImage.png"];
     portraitBackground  = [UIImage imageNamed:@"portraitBackground"];
     
-    //Create the portrait edge for non-editing
+    // Create the portrait edge for non-editing
     portraitImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 68, 68)];
     [portraitImageView setImage:portraitBackground];
     [self.tableView addSubview:portraitImageView];
@@ -216,6 +220,7 @@
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
                                                object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
@@ -629,6 +634,7 @@
     return [personStructureManager.tableStructure count];
 }
 
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {    
     NSInteger numRows = 0;
@@ -636,7 +642,7 @@
     if (section == CC_FILLER)
     {
         //If we're editing, hide this filler
-        numRows = ( tableView.isEditing) ? 0 : 1;
+        numRows = (tableView.isEditing) ? 0 : 1;
     }
     //Rows for known contacts
     else if (section == CC_NAME)
@@ -663,8 +669,8 @@
     {
         numRows = [[personStructureManager getVisibleRows:YES forSection:section] count];
     }
-    
-    //Return the number of rows
+
+    // Return the number of rows
     return numRows;
 }
 
@@ -976,7 +982,7 @@
 }
 
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     //Remember the cell if we do not have it yet
     NBPersonCellInfo* cellInfo = [personStructureManager getVisibleCellForIndexPath:indexPath];
@@ -1227,56 +1233,59 @@
 }
 
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    //If we're editing, clear some space for the name label
+    // If we're editing, clear some space for the name label
     if (indexPath.section == CC_FILLER)
     {
         return tableHeaderSize;
     }
-    //If it's the notes-field, dynamically determine the height
+
+    // If it's the notes-field, dynamically determine the height
     else if (indexPath.section == CC_NOTES)
     {
-        //Resize the textfield based on editing or not
+        // Resize the textfield based on editing or not
         NBPersonCellInfo * cellInfo = [[personStructureManager.tableStructure objectAtIndex:CC_NOTES] objectAtIndex:0];
         int textViewSize = [self getNotesFieldSize];
         int cellheight = textViewSize < SIZE_CELL_HEIGHT ? SIZE_CELL_HEIGHT : textViewSize;
         cellheight += (SIZE_CELL_HEIGHT / 2);
 
-        //Get the textview
+        // Get the textview
         UITextView * textView = [cellInfo getNotesCell].cellTextview;
         if (textView != nil)
         {
-            //Resize based on tableview editing
+            // Resize based on tableview editing
             CGRect textFrame = textView.frame;
             CGSize textSize = textView.frame.size;
             textSize.width = SIZE_TEXTVIEW_WIDTH;
             
-            //Resize based on the content
+            // Resize based on the content
             textSize.height = textViewSize;
             textView.frame = CGRectMake(textFrame.origin.x, textFrame.origin.y, textSize.width, textSize.height);
             
-            //Resize the line as well (in case it exists)
+            // Resize the line as well (in case it exists)
             [UIView animateWithDuration:0.3f
                                   delay:0.0f
                                 options:UIViewAnimationOptionBeginFromCurrentState
-                             animations: ^(void){
-                                 NBNotesCell * notesCell = [cellInfo getNotesCell];
-                                 UIView * lineView = notesCell.lineView;
-                                 CGRect lineFrame = lineView.frame;
-                                 lineFrame.size.height = cellheight;
-                                 [lineView setFrame:lineFrame];
-                             }
+                             animations: ^(void)
+            {
+                NBNotesCell * notesCell = [cellInfo getNotesCell];
+                UIView * lineView = notesCell.lineView;
+                CGRect lineFrame = lineView.frame;
+                lineFrame.size.height = cellheight;
+                [lineView setFrame:lineFrame];
+            }
                              completion:nil];
         }
+
         return cellheight;
     }
     else if (indexPath.section == CC_IM || indexPath.section == CC_CALLER_ID)
     {
-        //Return double-size when editing to allow the user to change the IM-type
-        return self.tableView.isEditing ? 2*SIZE_CELL_HEIGHT : 1*SIZE_CELL_HEIGHT;
+        // Return double-size when editing to allow the user to change the IM-type
+        return self.tableView.isEditing ? 2 * SIZE_CELL_HEIGHT : 1 * SIZE_CELL_HEIGHT;
     }
-    //In case of address cells, the height is determined based on type and number of streets entered
+    // In case of address cells, the height is determined based on type and number of streets entered
     else if (indexPath.section == CC_ADDRESS)
     {
         NSArray * addressCells = [personStructureManager.tableStructure objectAtIndex:CC_ADDRESS];
@@ -1310,7 +1319,7 @@
         CGRect lineFrame = lineView.frame;
         lineFrame.size.height = cellHeight;
         lineView.frame = lineFrame;
-        
+
         return cellHeight;
     }
     //Else just return the default height]
@@ -1350,6 +1359,19 @@
         return UITableViewAutomaticDimension;
     }
 }
+
+
+- (UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
+{
+    return [[UIView alloc] init];
+}
+
+
+- (UIView*)tableView:(UITableView*)tableView viewForFooterInSection:(NSInteger)section
+{
+    return [[UIView alloc] init];
+}
+
 
 #pragma mark - Notes field size measurement
 - (int)getNotesFieldSize
