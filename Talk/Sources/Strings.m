@@ -538,7 +538,7 @@
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings FixedRate", nil, [NSBundle mainBundle],
                                              @"Fixed Per Minute",
-                                             @"Per minute price calling fixed line telephone\n"
+                                             @"Per minute price calling fixed-line telephone\n"
                                              @"....");
 }
 
@@ -547,7 +547,7 @@
 {
     return NSLocalizedStringWithDefaultValue(@"General:CommonStrings FixedSetup", nil, [NSBundle mainBundle],
                                              @"Fixed Setup Fee",
-                                             @"Setup fee calling fixed line telephone\n"
+                                             @"Setup fee calling fixed-line telephone\n"
                                              @"[Button size].");
 }
 
@@ -657,6 +657,12 @@
 + (NSString*)languageString
 {
     return NSLocalizedString(@"Language", @"Term for one language, for example English.");
+}
+
+
++ (NSString*)verifyString
+{
+    return NSLocalizedString(@"Verify", @"Used to label the action of checking a telephone number or an image.");
 }
 
 @end
