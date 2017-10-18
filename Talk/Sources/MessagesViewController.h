@@ -8,11 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "ItemsViewController.h"
+#import "SearchTableViewController.h"
+
 
 @class MessageData;
 
-@interface MessagesViewController : ItemsViewController
+@interface MessagesViewController : SearchTableViewController <NSFetchedResultsControllerDelegate>
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 

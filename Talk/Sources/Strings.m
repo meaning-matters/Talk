@@ -659,4 +659,13 @@
     return NSLocalizedString(@"Language", @"Term for one language, for example English.");
 }
 
+
++ (NSString*)messagesString
+{
+    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Messages", nil, [NSBundle mainBundle],
+                                             @"Messages",
+                                             @"Standard string to label messages\n"
+                                             @"[iOS standard size].");
+}
+
 @end

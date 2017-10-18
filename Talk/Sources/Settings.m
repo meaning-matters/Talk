@@ -586,7 +586,10 @@ static NSUserDefaults* userDefaults;
 
 - (NSString*)dnsSrvName
 {
-    return [NSString stringWithFormat:@"%@._tcp.numberbay.com", self.dnsSrvPrefix];
+#warning !!! CHANGE BACK !!!
+    // Change it back to the commented line for producten. Now it will always use _api3x.
+    // return [NSString stringWithFormat:@"%@._tcp.numberbay.com", self.dnsSrvPrefix];
+    return [NSString stringWithFormat:@"%@._tcp.numberbay.com", @"_api3x"];
 }
 
 

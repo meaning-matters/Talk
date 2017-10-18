@@ -677,7 +677,6 @@
 		48FD99E81618CC370061191B /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FD99E61618CC370061191B /* Common.m */; };
 		48FDF65D1DF9FE4900A2A7F6 /* UIView+LayerProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FDF65C1DF9FE4900A2A7F6 /* UIView+LayerProperties.m */; };
 		48FE4F591C8752C100CC0873 /* ImagePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FE4F581C8752C100CC0873 /* ImagePicker.m */; };
-		8202E92C1F6EAD72003BA247 /* NewSmsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8202E92B1F6EAD72003BA247 /* NewSmsViewController.m */; };
 		82B08B411F826C4400F07536 /* MessageData.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B08B401F826C4400F07536 /* MessageData.m */; };
 		82B7F0191F66EE7900CB5FFB /* MessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B7F0181F66EE7900CB5FFB /* MessagesViewController.m */; };
 		82B7F0211F66F3D200CB5FFB /* MessagesTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 82B7F0201F66F3D200CB5FFB /* MessagesTab@2x.png */; };
@@ -1515,8 +1514,6 @@
 		48FDF65C1DF9FE4900A2A7F6 /* UIView+LayerProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+LayerProperties.m"; sourceTree = "<group>"; };
 		48FE4F571C8752C100CC0873 /* ImagePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagePicker.h; sourceTree = "<group>"; };
 		48FE4F581C8752C100CC0873 /* ImagePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagePicker.m; sourceTree = "<group>"; };
-		8202E92A1F6EAD72003BA247 /* NewSmsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewSmsViewController.h; sourceTree = "<group>"; };
-		8202E92B1F6EAD72003BA247 /* NewSmsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewSmsViewController.m; sourceTree = "<group>"; };
 		82B08B3F1F826C4400F07536 /* MessageData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageData.h; sourceTree = "<group>"; };
 		82B08B401F826C4400F07536 /* MessageData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageData.m; sourceTree = "<group>"; };
 		82B7F0171F66EE7900CB5FFB /* MessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesViewController.h; sourceTree = "<group>"; };
@@ -2619,8 +2616,6 @@
 				4823C0CC1CBA7F3800030FC7 /* WebViewController.m */,
 				82B7F0171F66EE7900CB5FFB /* MessagesViewController.h */,
 				82B7F0181F66EE7900CB5FFB /* MessagesViewController.m */,
-				8202E92A1F6EAD72003BA247 /* NewSmsViewController.h */,
-				8202E92B1F6EAD72003BA247 /* NewSmsViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -3465,7 +3460,6 @@
 				485F93D21DEF6787006E31ED /* CallStateView.m in Sources */,
 				48B0C3F9174989F500DAB3BD /* Keychain.m in Sources */,
 				48A0CE781809BE3100B8A9F8 /* CallBaseViewController.m in Sources */,
-				8202E92C1F6EAD72003BA247 /* NewSmsViewController.m in Sources */,
 				4837AF7618D9DAF000D3AEBC /* GetStartedActionViewController.m in Sources */,
 				4816A0A01BF129A300817ED7 /* DataManager.m in Sources */,
 				48B8136C1AADF9B20019AF77 /* NBPersonCellAddressInfo.m in Sources */,

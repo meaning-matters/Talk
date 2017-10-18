@@ -159,4 +159,6 @@
 
 + (NSString*)languageString;
 
++ (NSString*)messagesString;
+
 @end
