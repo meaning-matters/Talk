@@ -12,7 +12,7 @@
 @interface MessageData : NSManagedObject
 
 @property (nonatomic)         float     billed;
-@property (nonatomic, retain) NSString* direction;
+@property (nonatomic, retain) NSString* direction; // @TODO: Change to NSInteger
 @property (nonatomic, retain) NSString* extern_e164;
 @property (nonatomic, retain) NSString* number_e164;
 @property (nonatomic, retain) NSString* text;

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "ConversationViewController.h"
+#import "MessageData.h"
 
 
 @interface ConversationViewController ()
@@ -21,12 +22,17 @@
 // - When navigating back from this view to the conversations-view, the inputToolbar shows a bit of black for a short time.
 //   Maybe because it's removed too early?
 //   For slow animations, pause debugger and execute: p [(CALayer *)[[[[UIApplication sharedApplication] windows] objectAtIndex:0] layer] setSpeed:.1f]
+// - Message bubbles are not displayed the right size. Is this an iPad issue? (everything stretched)
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
     self.inputToolbar.contentView.leftBarButtonItem = nil; // Disable the attachement button.
+    
+    // Set avatar-size to zero.
+    self.collectionView.collectionViewLayout.incomingAvatarViewSize = CGSizeZero;
+    self.collectionView.collectionViewLayout.outgoingAvatarViewSize = CGSizeZero;
     
     // GestureRecognizer for when the CollectionView is tapped.
     UITapGestureRecognizer* tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
@@ -53,54 +59,53 @@
 }
 
 
--(NSString*)senderDisplayName
+- (NSString*)senderDisplayName
 {
     return self.extern_e164;
 }
 
 
--(NSString*)senderId
+- (NSString*)senderId
 {
-    return self.extern_e164;
+    return self.number_e164;
 }
 
 
--(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 5;
+    return [[self getMessages] count];
+}
+
+
+- (NSArray*)getMessages
+{
+    // @TODO: Maybe it's bad to call this everytime. Should maybe only be done when it's known there are changes.
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"number_e164 == %@ AND extern_e164 = %@", [self number_e164], [self extern_e164]];
+    return [[self.fetchedMessagesController fetchedObjects] filteredArrayUsingPredicate:predicate];
 }
 
 
 - (id<JSQMessageData>)collectionView:(JSQMessagesCollectionView*)collectionView messageDataForItemAtIndexPath:(NSIndexPath*)indexPath
 {
-    JSQMessage* message = [[JSQMessage alloc] initWithSenderId:indexPath.row % 2 == 0 ? [self senderId] : @"sdffsd"
-                                             senderDisplayName:indexPath.row % 2 == 0 ? [self senderDisplayName] : @"sdffsd"
-                                                          date:[[[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian] dateBySettingHour:10
-                                                                                                                                                          minute:0
-                                                                                                                                                          second:0
-                                                                                                                                                          ofDate:[NSDate date]
-                                                                                                                                                         options:0] text:@"text.."];    
+    MessageData* message = [[self getMessages] objectAtIndex:indexPath.row];
     
-    return message;
+    return [[JSQMessage alloc] initWithSenderId:[message.direction isEqualToString:@"IN"] ? message.extern_e164 : message.number_e164
+                                             senderDisplayName:[NSString stringWithFormat:@"%@%@", @"name: ", message.extern_e164]
+                                                          date:message.timestamp
+                                                          text:message.text];
 }
 
 
 - (id<JSQMessageBubbleImageDataSource>)collectionView:(JSQMessagesCollectionView *)collectionView messageBubbleImageDataForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    JSQMessage* message = [[JSQMessage alloc] initWithSenderId:indexPath.row % 2 == 0 ? [self senderId] : @"sdffsd"
-                                             senderDisplayName:indexPath.row % 2 == 0 ? [self senderDisplayName] : @"sdffsd"
-                                                          date:[[[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian] dateBySettingHour:10
-                                                                                                                                                          minute:0
-                                                                                                                                                          second:0
-                                                                                                                                                          ofDate:[NSDate date]
-                                                                                                                                                         options:0] text:@"text.."];
+    MessageData* message = [[self getMessages] objectAtIndex:indexPath.row];
     
     JSQMessagesBubbleImageFactory *bubbleFactory = [[JSQMessagesBubbleImageFactory alloc] init];
-    if ([message.senderId isEqualToString:self.senderId]) {
-        return [bubbleFactory outgoingMessagesBubbleImageWithColor:[UIColor jsq_messageBubbleLightGrayColor]];
+    if ([message.direction isEqualToString:@"IN"]) {
+        return [bubbleFactory incomingMessagesBubbleImageWithColor:[UIColor jsq_messageBubbleGreenColor]];
     }
     
-    return [bubbleFactory incomingMessagesBubbleImageWithColor:[UIColor jsq_messageBubbleGreenColor]];
+    return [bubbleFactory outgoingMessagesBubbleImageWithColor:[UIColor jsq_messageBubbleLightGrayColor]];
 }
 
 
@@ -112,6 +117,24 @@
 {
     
 }
+
+- (NSAttributedString*)collectionView:(JSQMessagesCollectionView*)collectionView attributedTextForCellTopLabelAtIndexPath:(NSIndexPath*)indexPath
+{
+    return [[NSAttributedString alloc] initWithString:[[NSString alloc] initWithFormat:@"1-Indexpath: %d-%d", indexPath.section, indexPath.row]];
+}
+
+
+- (NSAttributedString*)collectionView:(JSQMessagesCollectionView*)collectionView attributedTextForMessageBubbleTopLabelAtIndexPath:(NSIndexPath*)indexPath
+{
+    return [[NSAttributedString alloc] initWithString:[[NSString alloc] initWithFormat:@"2-Indexpath: %d-%d", indexPath.section, indexPath.row]];
+}
+
+
+- (NSAttributedString*)collectionView:(JSQMessagesCollectionView*)collectionView attributedTextForCellBottomLabelAtIndexPath:(NSIndexPath*)indexPath
+{
+    return [[NSAttributedString alloc] initWithString:[[NSString alloc] initWithFormat:@"3-Indexpath: %d-%d", indexPath.section, indexPath.row]];
+}
+
 
 
 // Hides the keyboard when the CollectionView is tapped.

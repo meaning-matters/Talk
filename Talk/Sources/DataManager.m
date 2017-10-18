@@ -1200,7 +1200,7 @@
                 }
                 
                 object.uuid        = dictionary[@"uuid"];
-                object.direction   = @"IN";// [dictionary[@"direction"] isEqualToString:@"1"] ? @"OUT" : @"IN";
+                object.direction   = [[dictionary[@"direction"] stringValue] isEqualToString:@"1"] ? @"IN" : @"OUT"; // @TODO: Make shorter + check if this is correct.
                 object.extern_e164 = dictionary[@"extern_e164"];
                 object.number_e164 = dictionary[@"number_e164"];
                 object.text        = dictionary[@"text"];

@@ -169,8 +169,13 @@
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
     ConversationViewController* viewController = [ConversationViewController messagesViewController];
-    viewController.number_e164 = @"+632039507";
-    viewController.extern_e164 = @"+31683378285";
+    
+    viewController.managedObjectContext = self.managedObjectContext;
+    viewController.fetchedMessagesController = self.fetchedMessagesController;
+    
+    viewController.number_e164 = @"34668690178"; // @TODO: Remove.
+    viewController.extern_e164 = @"31683378285"; // @TODO: Remove.
+    
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
