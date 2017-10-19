@@ -871,7 +871,10 @@ static void JSQInstallWorkaroundForSheetPresentationIssue26295020(void) {
 
 - (void)jsq_setCollectionViewInsetsTopValue:(CGFloat)top bottomValue:(CGFloat)bottom
 {
-    UIEdgeInsets insets = UIEdgeInsetsMake(self.topLayoutGuide.length + top, 0.0f, bottom, 0.0f);
+    // self.topLayoutGuide.length replaced by 64. This fixes that messages start showing under the navigationBar.
+    // @TODO: Find a better way for this.
+    UIEdgeInsets insets = UIEdgeInsetsMake(64 + top, 0.0f, bottom, 0.0f);
+    
     self.collectionView.contentInset = insets;
     self.collectionView.scrollIndicatorInsets = insets;
 }

@@ -28,7 +28,8 @@
 {
     [super viewWillAppear:animated];
     
-    self.inputToolbar.contentView.leftBarButtonItem = nil; // Disable the attachement button.
+    // Disable the attachement button.
+    self.inputToolbar.contentView.leftBarButtonItem = nil;
     
     // Set avatar-size to zero.
     self.collectionView.collectionViewLayout.incomingAvatarViewSize = CGSizeZero;
@@ -52,21 +53,23 @@
 }
 
 
-// @TODO: Return the correct screen title (Contact name or correct number-format if not in contacts)
 - (NSString*)getTitle
 {
+    // @TODO: Return the correct screen title (Contact name or correct number-format if not in contacts)
     return self.extern_e164;
 }
 
 
 - (NSString*)senderDisplayName
 {
+    // @TODO: Return correct name for the sender. (This could be either the incoming or outgoing)
     return self.extern_e164;
 }
 
 
 - (NSString*)senderId
 {
+    // @TODO: What is senderId? Is this a contactId with which I can get the contact's name (and other info?)
     return self.number_e164;
 }
 
@@ -87,6 +90,7 @@
 
 - (id<JSQMessageData>)collectionView:(JSQMessagesCollectionView*)collectionView messageDataForItemAtIndexPath:(NSIndexPath*)indexPath
 {
+    // @TODO: Don't fetch messages every time again.
     MessageData* message = [[self getMessages] objectAtIndex:indexPath.row];
     
     return [[JSQMessage alloc] initWithSenderId:[message.direction isEqualToString:@"IN"] ? message.extern_e164 : message.number_e164
@@ -98,6 +102,7 @@
 
 - (id<JSQMessageBubbleImageDataSource>)collectionView:(JSQMessagesCollectionView *)collectionView messageBubbleImageDataForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    // @TODO: Don't fetch messages every time again.
     MessageData* message = [[self getMessages] objectAtIndex:indexPath.row];
     
     JSQMessagesBubbleImageFactory *bubbleFactory = [[JSQMessagesBubbleImageFactory alloc] init];
