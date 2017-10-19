@@ -35,6 +35,9 @@
     self.collectionView.collectionViewLayout.incomingAvatarViewSize = CGSizeZero;
     self.collectionView.collectionViewLayout.outgoingAvatarViewSize = CGSizeZero;
     
+    // Disable the QuickTyping bar (the 3 suggestions above the keyboard).
+    self.inputToolbar.contentView.textView.autocorrectionType = UITextAutocorrectionTypeNo;
+    
     // GestureRecognizer for when the CollectionView is tapped.
     UITapGestureRecognizer* tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                     action:@selector(handleCollectionTapRecognizer:)];
@@ -140,6 +143,31 @@
     return [[NSAttributedString alloc] initWithString:[[NSString alloc] initWithFormat:@"3-Indexpath: %d-%d", indexPath.section, indexPath.row]];
 }
 
+
+- (UICollectionViewCell*)collectionView:(JSQMessagesCollectionView*)collectionView cellForItemAtIndexPath:(NSIndexPath*)indexPath
+{
+    JSQMessagesCollectionViewCell* cell = (JSQMessagesCollectionViewCell*)[super collectionView:collectionView cellForItemAtIndexPath:indexPath];
+    
+    // Disables selection of text within a message.
+    cell.textView.selectable = NO;
+    cell.textView.userInteractionEnabled = NO;
+    
+    MessageData* message = [[self getMessages] objectAtIndex:indexPath.row];
+        
+    if ([message.direction isEqualToString:@"IN"]) {
+        cell.textView.textColor = [UIColor whiteColor];
+    }
+    else {
+        cell.textView.textColor = [UIColor blackColor];
+    }
+    
+    cell.textView.linkTextAttributes = @{ NSForegroundColorAttributeName : cell.textView.textColor,
+                                           NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle | NSUnderlinePatternSolid) };
+    
+    cell.accessoryButton.hidden = YES;
+    
+    return cell;
+}
 
 
 // Hides the keyboard when the CollectionView is tapped.
