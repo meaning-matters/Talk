@@ -64,6 +64,8 @@ static NSMutableSet *jsqMessagesCollectionViewCellActions = nil;
 
 @property (weak, nonatomic, readwrite) UITapGestureRecognizer *tapGestureRecognizer;
 
+@property (nonatomic, assign) CGRect menuTargetRect;
+
 - (void)jsq_handleTapGesture:(UITapGestureRecognizer *)tap;
 
 - (void)jsq_updateConstraint:(NSLayoutConstraint *)constraint withConstant:(CGFloat)constant;
@@ -138,10 +140,12 @@ static NSMutableSet *jsqMessagesCollectionViewCellActions = nil;
     self.cellTopLabelHeightConstraint.constant = topLabelFont.pointSize;
     self.messageBubbleTopLabelHeightConstraint.constant = messageBubbleTopLabelFont.pointSize;
     self.cellBottomLabelHeightConstraint.constant = bottomLabelFont.pointSize;
-    
+
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(jsq_handleTapGesture:)];
-    [self addGestureRecognizer:tap];
+    tap.cancelsTouchesInView = NO;
     self.tapGestureRecognizer = tap;
+    
+    [self.contentView addGestureRecognizer:tap];
 }
 
 - (void)configureAccessoryButton
@@ -264,8 +268,30 @@ static NSMutableSet *jsqMessagesCollectionViewCellActions = nil;
     // do nothing
 }
 
-- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    // do nothing
+- (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event
+{
+    UIMenuController* menu = [UIMenuController sharedMenuController];
+    [menu setMenuVisible:NO animated:NO];
+    
+    if (menu.isMenuVisible)
+    {
+        self.highlighted = NO;
+        [menu setMenuVisible:NO animated:YES];
+        [menu update];
+    }
+    else
+    {
+        if (CGRectIsEmpty(self.menuTargetRect) == YES)
+        {
+            [menu setTargetRect:self.frame inView:self.contentView];
+        }
+        else
+        {
+            [menu setTargetRect:self.frame inView:self.contentView];
+        }
+        
+        [menu setMenuVisible:YES animated:YES];
+    }
 }
 
 - (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
@@ -282,6 +308,43 @@ static NSMutableSet *jsqMessagesCollectionViewCellActions = nil;
     else {
         [super forwardInvocation:anInvocation];
     }
+}
+
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
+{
+    return action == @selector(copy:);
+    
+//    if ([self.text isEqualToString:[Strings pendingString]])
+//    {
+//        return NO;
+//    }
+//
+//    if (action == @selector(copy:))
+//    {
+//        return ([self.text length] > 0);
+//    }
+//    else if (self.hasPaste && action == @selector(paste:))
+//    {
+//        UIPasteboard* pasteboard = [UIPasteboard generalPasteboard];
+//
+//        if (pasteboard.string == nil)
+//        {
+//            return NO;
+//        }
+//        else
+//        {
+//            NSCharacterSet* stringSet  = [NSCharacterSet characterSetWithCharactersInString:pasteboard.string];
+//            NSCharacterSet* allowedSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789+#*()-. \u00a0\t\n\r"];
+//
+//            return [allowedSet isSupersetOfSet:stringSet];
+//        }
+//    }
+//    else
+//    {
+//        return NO;
+//    }
+    
+    return YES;
 }
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
@@ -389,26 +452,21 @@ static NSMutableSet *jsqMessagesCollectionViewCellActions = nil;
 {
     CGPoint touchPt = [tap locationInView:self];
 
-    if (CGRectContainsPoint(self.avatarContainerView.frame, touchPt)) {
-        [self.delegate messagesCollectionViewCellDidTapAvatar:self];
-    }
-    else if (CGRectContainsPoint(self.messageBubbleContainerView.frame, touchPt)) {
+    if (CGRectContainsPoint(self.messageBubbleContainerView.frame, touchPt))
+    {
+        // If the actual bubble is tapped.
         [self.delegate messagesCollectionViewCellDidTapMessageBubble:self];
     }
-    else {
+    else
+    {
+        // If the cell of the bubble is tapped, but not the bubble itself.
         [self.delegate messagesCollectionViewCellDidTapCell:self atPosition:touchPt];
     }
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
-    CGPoint touchPt = [touch locationInView:self];
-
-    if ([gestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]]) {
-        return CGRectContainsPoint(self.messageBubbleContainerView.frame, touchPt);
-    }
-    
-    return NO;
+    return YES;
 }
 
 - (IBAction)didTapAccessoryButton:(UIButton *)accessoryButton

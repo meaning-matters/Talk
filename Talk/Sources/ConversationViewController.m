@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "ConversationViewController.h"
 #import "MessageData.h"
+#import "CallManager.h"
+#import "PhoneNumber.h"
+#import "Settings.h"
 
 
 @interface ConversationViewController ()
@@ -148,9 +151,18 @@
 {
     JSQMessagesCollectionViewCell* cell = (JSQMessagesCollectionViewCell*)[super collectionView:collectionView cellForItemAtIndexPath:indexPath];
     
+    // Enables hyperlink highlighting.
+    cell.textView.editable = NO;
+    cell.textView.dataDetectorTypes = UIDataDetectorTypeAll;
+    
     // Disables selection of text within a message.
-    cell.textView.selectable = NO;
-    cell.textView.userInteractionEnabled = NO;
+    cell.textView.selectable = YES;
+    // @TODO: This doesn't work.
+    // - When cell.textView.userInteractionEnabled is NO, you can't select the text anymore, but you also can't click URLs.
+    // - When cell.textView.userInteractionEnabled is YES, you can select text, but you can click URLs.
+    cell.textView.userInteractionEnabled = YES;
+    
+    cell.textView.delegate = self;
     
     MessageData* message = [[self getMessages] objectAtIndex:indexPath.row];
         
@@ -167,6 +179,41 @@
     cell.accessoryButton.hidden = YES;
     
     return cell;
+}
+
+
+- (BOOL)textView:(UITextView*)textView shouldInteractWithURL:(NSURL*)URL inRange:(NSRange)characterRange
+{
+    // @TODO: When the number is not valid, you get a popup. If you still make the call, the inputToolbar is over the callView.
+    if ([URL.scheme isEqualToString:@"tel"])
+    {
+        PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:URL.resourceSpecifier];
+        [[CallManager sharedManager] callPhoneNumber:phoneNumber
+                                           contactId:nil // @TODO: Replace with contactId
+                                            callerId:nil // Determine the caller ID based on user preferences.
+                                          completion:^(Call *call)
+         {
+             if (call != nil)
+             {
+                 // CallView will be shown, or mobile call is made.
+                 [Settings sharedSettings].lastDialedNumber = phoneNumber.number;
+//                 phoneNumber = [[PhoneNumber alloc] init];
+//
+//                 [Common dispatchAfterInterval:0.5 onMain:^
+//                  {
+//                      // Clears UI fields.  This is done after a delay to make sure that
+//                      // a call related view is on screen; keeping it out of sight.
+//                      [self update];
+//                  }];
+             }
+         }];
+        
+        return NO;
+    }
+    else
+    {
+        return YES;
+    }
 }
 
 

@@ -637,7 +637,7 @@ static void JSQInstallWorkaroundForSheetPresentationIssue26295020(void) {
 
 #pragma mark - Collection view delegate
 
-- (BOOL)collectionView:(JSQMessagesCollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath
+- (BOOL)collectionView:(JSQMessagesCollectionView *)collectionView shouldShowMenuForItemAtIndexPath___:(NSIndexPath *)indexPath
 {
     //  disable menu for media messages
     id<JSQMessageData> messageItem = [collectionView.dataSource collectionView:collectionView messageDataForItemAtIndexPath:indexPath];
@@ -646,7 +646,10 @@ static void JSQInstallWorkaroundForSheetPresentationIssue26295020(void) {
         if ([[messageItem media] respondsToSelector:@selector(mediaDataType)]) {
             return YES;
         }
-        return NO;
+        else
+        {
+            return NO;
+        }
     }
 
     self.selectedIndexPathForMenu = indexPath;
