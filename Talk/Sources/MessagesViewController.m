@@ -11,6 +11,7 @@
 #import "Settings.h"
 #import "MessageData.h"
 #import "Strings.h"
+#import "ConversationCell.h"
 
 
 // @TODO:
@@ -137,6 +138,12 @@
 }
 
 
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 70;
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
     // @TODO: Leave it like this? (We probably have only 1 section, but maybe when the table is still empty ... ?)
@@ -166,25 +173,86 @@
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    // @TODO: Rebuild this function. Maybe use another cell, etc...
-    UITableViewCell* cell;
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"SubtitleCell"];
+    ConversationCell* cell;
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"ConversationCell"];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"SubtitleCell"];
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"ConversationCell" owner:nil options:nil] objectAtIndex:0];
+//        cell = [[ConversationCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"ConversationCell"];
     }
     
-    [self configureCell:cell onResultsController:self.fetchedMessagesController atIndexPath:indexPath];
+    MessageData* message = [self.fetchedMessagesController objectAtIndexPath:indexPath];
+    
+    cell.nameNumberLabel.text = message.extern_e164;
+    cell.textPreviewLabel.text = [message.text stringByAppendingString:@"\nfgdfds gfds gfdas"];
+    cell.timestampLabel.text = @"Yesterday";
     
     return cell;
 }
 
+@end
 
-- (void)configureCell:(UITableViewCell*)cell onResultsController:(NSFetchedResultsController*)controller atIndexPath:(NSIndexPath*)indexPath
+
+
+/*
+ @TODO: Use this for displaying the date / time of a conversation:
+ (from NSRecentsListViewController.m -> cellForRowAtIndexPath)
+ 
+// Set the time and (yesterday/day name in case of less than a week ago/date)
+NSString*         dayOrDate;
+NSCalendar*       cal         = [NSCalendar currentCalendar];
+NSDateComponents* components  = [cal components:(NSCalendarUnitYear       | NSCalendarUnitMonth |
+                                                 NSCalendarUnitWeekOfYear | NSCalendarUnitDay)
+                                       fromDate:latestEntry.date];
+NSDate*           entryDate   = [cal dateFromComponents:components];
+components                    = [cal components:(NSCalendarUnitYear       | NSCalendarUnitMonth |
+                                                 NSCalendarUnitWeekOfYear | NSCalendarUnitDay)
+                                       fromDate:[NSDate date]];
+NSDate*           currentDate = [cal dateFromComponents:components];
+int               timeDelta   = [currentDate timeIntervalSinceDate:entryDate];
+
+if (timeDelta < 60 * 60 * 24 * 7)
 {
-    // @TODO: Rebuild this function. Currently this is just to show _something_.
-    MessageData* message = [controller objectAtIndexPath:indexPath];
-    cell.textLabel.text = [message text];
+    if (timeDelta == 0)
+    {
+        dayOrDate = NSLocalizedString(@"CNT_TODAY", @"");
+    }
+    else if (timeDelta == 60 * 60 * 24)
+    {
+        dayOrDate = NSLocalizedString(@"CNT_YESTERDAY", @"");
+    }
+    else
+    {
+        //Determine the day in the week
+        NSCalendar*       calendar = [NSCalendar currentCalendar];
+        NSDateComponents* comps    = [calendar components:NSWeekdayCalendarUnit fromDate:latestEntry.date];
+        int               weekday  = (int)[comps weekday] - 1;
+        
+        NSDateFormatter* df = [[NSDateFormatter alloc] init];
+        [df setLocale: [NSLocale currentLocale]];
+        NSArray* weekdays = [df weekdaySymbols];
+        dayOrDate = [weekdays objectAtIndex:weekday];
+    }
+}
+else
+{
+    dayOrDate = [NSString formatToSlashSeparatedDate:latestEntry.date];
 }
 
-@end
+//Set the attributed text (bold time and regular day)
+NSString*                  detailText;;
+NSMutableAttributedString* attributedText;
+
+detailText     = [NSString stringWithFormat:@"%@\n%@", [NSString formatToTime:latestEntry.date], dayOrDate];
+attributedText = [[NSMutableAttributedString alloc] initWithString:detailText
+                                                        attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14]}];
+
+[attributedText setAttributes:@{NSFontAttributeName            : [UIFont boldSystemFontOfSize:14],
+                                NSForegroundColorAttributeName : FONT_COLOR_MY_NUMBER}
+                        range:NSMakeRange(0, [detailText rangeOfString:@"\n"].location)];
+
+[cell.detailTextLabel setAttributedText:attributedText];
+[cell.detailTextLabel setTextAlignment:NSTextAlignmentRight];
+[cell.detailTextLabel setNumberOfLines:2];
+[cell.detailTextLabel setTextColor:[[NBAddressBookManager sharedManager].delegate valueColor]];
+*/

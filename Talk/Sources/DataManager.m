@@ -1204,11 +1204,11 @@
                 object.extern_e164 = dictionary[@"extern_e164"];
                 object.number_e164 = dictionary[@"number_e164"];
                 object.text        = dictionary[@"text"];
-                object.timestamp   = [[[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian] dateBySettingHour:10
-                                                                                                                                minute:0
-                                                                                                                                second:0
-                                                                                                                                ofDate:[NSDate date]
-                                                                                                                               options:0];
+                
+                NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+                [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
+                object.timestamp = [dateFormatter dateFromString:dictionary[@"timestamp"]];
+                
                 object.uuid        = dictionary[@"uuid"];
                 
                 if (object.changedValues.count == 0)
