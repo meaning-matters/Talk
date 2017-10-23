@@ -312,39 +312,14 @@ static NSMutableSet *jsqMessagesCollectionViewCellActions = nil;
 
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-    return action == @selector(copy:);
-    
-//    if ([self.text isEqualToString:[Strings pendingString]])
-//    {
-//        return NO;
-//    }
-//
-//    if (action == @selector(copy:))
-//    {
-//        return ([self.text length] > 0);
-//    }
-//    else if (self.hasPaste && action == @selector(paste:))
-//    {
-//        UIPasteboard* pasteboard = [UIPasteboard generalPasteboard];
-//
-//        if (pasteboard.string == nil)
-//        {
-//            return NO;
-//        }
-//        else
-//        {
-//            NSCharacterSet* stringSet  = [NSCharacterSet characterSetWithCharactersInString:pasteboard.string];
-//            NSCharacterSet* allowedSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789+#*()-. \u00a0\t\n\r"];
-//
-//            return [allowedSet isSupersetOfSet:stringSet];
-//        }
-//    }
-//    else
-//    {
-//        return NO;
-//    }
-    
-    return YES;
+    if (action == @selector(copy:))
+    {
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
 }
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
