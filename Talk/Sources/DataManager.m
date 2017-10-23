@@ -1199,17 +1199,35 @@
                     return;
                 }
                 
+                
                 object.uuid        = dictionary[@"uuid"];
                 object.direction   = [[dictionary[@"direction"] stringValue] isEqualToString:@"1"] ? @"IN" : @"OUT"; // @TODO: Make shorter + check if this is correct.
-                object.extern_e164 = dictionary[@"extern_e164"];
-                object.number_e164 = dictionary[@"number_e164"];
+                
                 object.text        = dictionary[@"text"];
+                // @TODO: Get the actual timestamp the server returns to us.
                 object.timestamp   = [[[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian] dateBySettingHour:10
                                                                                                                                 minute:0
                                                                                                                                 second:0
                                                                                                                                 ofDate:[NSDate date]
                                                                                                                                options:0];
                 object.uuid        = dictionary[@"uuid"];
+                
+                // @TODO: Save all the numbers in DB with the leading +, or just return the with this.
+                PhoneNumber* number_e164 = [[PhoneNumber alloc] initWithNumber:dictionary[@"number_e164"]];
+                object.number_e164 = [number_e164 internationalFormat];
+                
+                PhoneNumber* extern_e164 = [[PhoneNumber alloc] initWithNumber:dictionary[@"extern_e164"]];
+                object.extern_e164 = [extern_e164 internationalFormat];
+                
+                // Get the contactId for the external number.
+                [[AppDelegate appDelegate] findContactsHavingNumber:[extern_e164 nationalDigits]
+                                                         completion:^(NSArray* contactIds)
+                {
+                    if (contactIds.count > 0)
+                    {
+                        object.contactId = [contactIds firstObject];
+                    }
+                }];
                 
                 if (object.changedValues.count == 0)
                 {

@@ -12,6 +12,8 @@
 #import "MessageData.h"
 #import "Strings.h"
 #import "ConversationViewController.h"
+#import "AppDelegate.h"
+#import "PhoneNumber.h"
 
 
 // @TODO:
@@ -168,13 +170,21 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
+    MessageData* message = [self.objectsArray objectAtIndex:indexPath.row];
+ 
     ConversationViewController* viewController = [ConversationViewController messagesViewController];
-    
     viewController.managedObjectContext = self.managedObjectContext;
     viewController.fetchedMessagesController = self.fetchedMessagesController;
     
-    viewController.number_e164 = @"34668690178"; // @TODO: Remove.
-    viewController.extern_e164 = @"31683378285"; // @TODO: Remove.
+    PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:message.extern_e164];
+    viewController.extern_e164 = [phoneNumber internationalFormat];
+    
+    [phoneNumber setNumber:message.number_e164];
+    viewController.number_e164 = [phoneNumber internationalFormat];
+    
+//    viewController.number_e164 = @"34668690178"; // @TODO: Remove.
+//    viewController.extern_e164 = @"31683378285"; // @TODO: Remove.
+    viewController.contactId = message.contactId;
     
     [self.navigationController pushViewController:viewController animated:YES];
 }

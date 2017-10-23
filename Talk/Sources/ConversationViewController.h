@@ -16,5 +16,6 @@
 
 @property (nonatomic, strong) NSString*                   number_e164;
 @property (nonatomic, strong) NSString*                   extern_e164;
+@property (nonatomic, strong) NSString*                   contactId;
 
 @end
