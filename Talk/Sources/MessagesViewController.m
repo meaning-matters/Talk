@@ -12,10 +12,11 @@
 #import "MessageData.h"
 #import "Strings.h"
 #import "ConversationCell.h"
+#import "AppDelegate.h"
 
 
 // @TODO:
-// - Display a message when there are no messages yet.
+// - Tell the user when there are no messages yet.
 // - Make the search function work.
 // - Change the icon of this tab.
 
@@ -26,6 +27,7 @@
 @property (nonatomic, strong) UIBarButtonItem*            addButton;
 @property (nonatomic, strong) NSManagedObjectContext*     managedObjectContext;
 @property (nonatomic, strong) UIRefreshControl*           refreshControl;
+@property (nonatomic, strong) NSArray*                    conversations;
 
 @end
 
@@ -55,12 +57,13 @@
     [super viewDidLoad];
     
     self.fetchedMessagesController = [[DataManager sharedManager] fetchResultsForEntityName:@"Message"
-                                                                               withSortKeys:@[@"uuid"]
+                                                                               withSortKeys:@[@"extern_e164"]
                                                                        managedObjectContext:self.managedObjectContext];
     
     self.fetchedMessagesController.delegate = self;
     
     self.objectsArray = [self.fetchedMessagesController fetchedObjects];
+    [self orderByConversation];
     [self createIndexOfWidth:0];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
@@ -101,6 +104,7 @@
         [[DataManager sharedManager] synchronizeWithServer:^(NSError* error)
         {
             self.objectsArray = [self.fetchedMessagesController fetchedObjects];
+            [self orderByConversation];
             [self createIndexOfWidth:0];
              
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -114,6 +118,60 @@
     {
         [sender endRefreshing];
     }
+}
+
+
+// Groups messages by conversation:
+// - A group contains all messages with the same extern_e164.
+// - Within this group, the messages are sorted by its timestamp.
+// - All groups are sorted by the timestamp of the last message of that group.
+- (void)orderByConversation
+{
+    NSMutableDictionary* conversationGroups = [NSMutableDictionary dictionary];
+    
+    // Group messages by extern_e164.
+    [self.objectsArray enumerateObjectsUsingBlock:^(MessageData* message, NSUInteger index, BOOL* stop)
+    {
+        // Check if this extern_e164 already exists in the dictionary.
+        NSMutableArray *messages = [conversationGroups objectForKey:message.extern_e164];
+        
+        // If not, create this entry.
+        if (messages == nil || (id)messages == [NSNull null])
+        {
+            messages = [NSMutableArray arrayWithCapacity:1];
+            [conversationGroups setObject:messages forKey:message.extern_e164];
+        }
+        
+        // Add the message to the array.
+        [messages addObject:message];
+    }];
+    
+    // Order the messages in the groups by timestamp.
+    [conversationGroups enumerateKeysAndObjectsUsingBlock:^(NSString* extern_e164, NSMutableArray* messages, BOOL* stop)
+    {
+        NSArray* sortedMessages = [messages sortedArrayUsingComparator:^NSComparisonResult(id a, id b)
+                                  {
+                                      NSDate *first = [(MessageData*)a timestamp];
+                                      NSDate *second = [(MessageData*)b timestamp];
+                                      return [first compare:second];
+                                  }];
+        
+        [conversationGroups setValue:sortedMessages forKey:extern_e164];
+    }];
+    
+    // Order the groups by the most current timestamp of the contained messages.
+    self.conversations = [[NSArray arrayWithArray:[conversationGroups allValues]] sortedArrayUsingComparator:^(id a, id b)
+                         {
+                             NSDate* first = [(MessageData*)[(NSMutableArray*)a lastObject] timestamp];
+                             NSDate* second = [(MessageData*)[(NSMutableArray*)b lastObject] timestamp];
+                             
+                             return [first compare:second];
+                         }];
+    
+    // Reverse the array -> groups with newest messages should come first.
+    self.conversations = [[self.conversations reverseObjectEnumerator] allObjects];
+    
+    [self.tableView reloadData];
 }
 
 
@@ -138,11 +196,11 @@
 }
 
 
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 70;
 }
+
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
@@ -153,15 +211,7 @@
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if ([[self.fetchedMessagesController sections] count] > 0)
-    {
-        id<NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedMessagesController sections] objectAtIndex:section];
-        return [sectionInfo numberOfObjects];
-    }
-    else
-    {
-        return 0;
-    }
+    return [self.conversations count];
 }
 
 
@@ -175,84 +225,69 @@
 {
     ConversationCell* cell;
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"ConversationCell"];
+    
     if (cell == nil)
     {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"ConversationCell" owner:nil options:nil] objectAtIndex:0];
-//        cell = [[ConversationCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"ConversationCell"];
     }
     
-    MessageData* message = [self.fetchedMessagesController objectAtIndexPath:indexPath];
+    // Last message of the conversation.
+    MessageData* message = [self.conversations[indexPath.row] lastObject];
     
-    cell.nameNumberLabel.text = message.extern_e164;
+    cell.nameNumberLabel.text = message.contactId ? [[AppDelegate appDelegate] contactNameForId:message.contactId] : message.extern_e164;
     cell.textPreviewLabel.text = [message.text stringByAppendingString:@"\nfgdfds gfds gfdas"];
-    cell.timestampLabel.text = @"Yesterday";
+    cell.timestampLabel.text = [self timestampOrDayForDate:message.timestamp];
     
     return cell;
 }
 
-@end
 
-
-
-/*
- @TODO: Use this for displaying the date / time of a conversation:
- (from NSRecentsListViewController.m -> cellForRowAtIndexPath)
- 
-// Set the time and (yesterday/day name in case of less than a week ago/date)
-NSString*         dayOrDate;
-NSCalendar*       cal         = [NSCalendar currentCalendar];
-NSDateComponents* components  = [cal components:(NSCalendarUnitYear       | NSCalendarUnitMonth |
-                                                 NSCalendarUnitWeekOfYear | NSCalendarUnitDay)
-                                       fromDate:latestEntry.date];
-NSDate*           entryDate   = [cal dateFromComponents:components];
-components                    = [cal components:(NSCalendarUnitYear       | NSCalendarUnitMonth |
-                                                 NSCalendarUnitWeekOfYear | NSCalendarUnitDay)
-                                       fromDate:[NSDate date]];
-NSDate*           currentDate = [cal dateFromComponents:components];
-int               timeDelta   = [currentDate timeIntervalSinceDate:entryDate];
-
-if (timeDelta < 60 * 60 * 24 * 7)
+- (NSString*)timestampOrDayForDate:(NSDate*)date
 {
-    if (timeDelta == 0)
+    NSString*         dayOrDate;
+    NSCalendar*       cal         = [NSCalendar currentCalendar];
+    NSDateComponents* components  = [cal components:(NSCalendarUnitYear       | NSCalendarUnitMonth |
+                                                     NSCalendarUnitWeekOfYear | NSCalendarUnitDay)
+                                           fromDate:date];
+    NSDate*           entryDate   = [cal dateFromComponents:components];
+    components                    = [cal components:(NSCalendarUnitYear       | NSCalendarUnitMonth |
+                                                     NSCalendarUnitWeekOfYear | NSCalendarUnitDay)
+                                           fromDate:[NSDate date]];
+    NSDate*           currentDate = [cal dateFromComponents:components];
+    int               timeDelta   = [currentDate timeIntervalSinceDate:entryDate];
+
+    // @TODO: When to display --only time-- OR --time with day/date-- OR --only day/date--
+    if (timeDelta < 60 * 60 * 24 * 7)
     {
-        dayOrDate = NSLocalizedString(@"CNT_TODAY", @"");
-    }
-    else if (timeDelta == 60 * 60 * 24)
-    {
-        dayOrDate = NSLocalizedString(@"CNT_YESTERDAY", @"");
+        if (timeDelta == 0)
+        {
+//            dayOrDate = NSLocalizedString(@"CNT_TODAY", @"");
+//            [NSString stringWithFormat:@"%@\n%@", [NSString formatToTime:latestEntry.date], dayOrDate]
+            dayOrDate = [NSString formatToTime:date];
+        }
+        else if (timeDelta == 60 * 60 * 24)
+        {
+            dayOrDate = NSLocalizedString(@"CNT_YESTERDAY", @"");
+        }
+        else
+        {
+            //Determine the day in the week
+            NSCalendar*       calendar = [NSCalendar currentCalendar];
+            NSDateComponents* comps    = [calendar components:NSWeekdayCalendarUnit fromDate:date];
+            int               weekday  = (int)[comps weekday] - 1;
+            
+            NSDateFormatter* df = [[NSDateFormatter alloc] init];
+            [df setLocale: [NSLocale currentLocale]];
+            NSArray* weekdays = [df weekdaySymbols];
+            dayOrDate = [weekdays objectAtIndex:weekday];
+        }
     }
     else
     {
-        //Determine the day in the week
-        NSCalendar*       calendar = [NSCalendar currentCalendar];
-        NSDateComponents* comps    = [calendar components:NSWeekdayCalendarUnit fromDate:latestEntry.date];
-        int               weekday  = (int)[comps weekday] - 1;
-        
-        NSDateFormatter* df = [[NSDateFormatter alloc] init];
-        [df setLocale: [NSLocale currentLocale]];
-        NSArray* weekdays = [df weekdaySymbols];
-        dayOrDate = [weekdays objectAtIndex:weekday];
+        dayOrDate = [NSString formatToSlashSeparatedDate:date];
     }
-}
-else
-{
-    dayOrDate = [NSString formatToSlashSeparatedDate:latestEntry.date];
+    
+    return dayOrDate;
 }
 
-//Set the attributed text (bold time and regular day)
-NSString*                  detailText;;
-NSMutableAttributedString* attributedText;
-
-detailText     = [NSString stringWithFormat:@"%@\n%@", [NSString formatToTime:latestEntry.date], dayOrDate];
-attributedText = [[NSMutableAttributedString alloc] initWithString:detailText
-                                                        attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14]}];
-
-[attributedText setAttributes:@{NSFontAttributeName            : [UIFont boldSystemFontOfSize:14],
-                                NSForegroundColorAttributeName : FONT_COLOR_MY_NUMBER}
-                        range:NSMakeRange(0, [detailText rangeOfString:@"\n"].location)];
-
-[cell.detailTextLabel setAttributedText:attributedText];
-[cell.detailTextLabel setTextAlignment:NSTextAlignmentRight];
-[cell.detailTextLabel setNumberOfLines:2];
-[cell.detailTextLabel setTextColor:[[NBAddressBookManager sharedManager].delegate valueColor]];
-*/
+@end

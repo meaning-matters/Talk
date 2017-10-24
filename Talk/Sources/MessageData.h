@@ -18,5 +18,6 @@
 @property (nonatomic, retain) NSString* text;
 @property (nonatomic, retain) NSDate*   timestamp;
 @property (nonatomic, retain) NSString* uuid;
+@property (nonatomic, retain) NSString* contactId;
 
 @end

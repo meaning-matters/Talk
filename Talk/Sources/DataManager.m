@@ -1200,9 +1200,8 @@
                 }
                 
                 object.uuid        = dictionary[@"uuid"];
-                object.direction   = @"IN";// [dictionary[@"direction"] isEqualToString:@"1"] ? @"OUT" : @"IN";
-                object.extern_e164 = dictionary[@"extern_e164"];
-                object.number_e164 = dictionary[@"number_e164"];
+                object.direction   = [[dictionary[@"direction"] stringValue] isEqualToString:@"1"] ? @"IN" : @"OUT"; // @TODO: Make shorter + check if this is correct.
+                
                 object.text        = dictionary[@"text"];
                 
                 NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
@@ -1210,6 +1209,22 @@
                 object.timestamp = [dateFormatter dateFromString:dictionary[@"timestamp"]];
                 
                 object.uuid        = dictionary[@"uuid"];
+                
+                PhoneNumber* number_e164 = [[PhoneNumber alloc] initWithNumber:dictionary[@"number_e164"]];
+                object.number_e164 = [number_e164 internationalFormat];
+                
+                PhoneNumber* extern_e164 = [[PhoneNumber alloc] initWithNumber:dictionary[@"extern_e164"]];
+                object.extern_e164 = [extern_e164 internationalFormat];
+                
+                // Get the contactId for the external number.
+                [[AppDelegate appDelegate] findContactsHavingNumber:[extern_e164 nationalDigits]
+                                                         completion:^(NSArray* contactIds)
+                 {
+                     if (contactIds.count > 0)
+                     {
+                         object.contactId = [contactIds firstObject];
+                     }
+                 }];
                 
                 if (object.changedValues.count == 0)
                 {
