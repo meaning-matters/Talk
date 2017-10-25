@@ -258,9 +258,9 @@
     // Last message of the conversation.
     MessageData* message = [self.conversations[indexPath.row] lastObject];
     
-    cell.nameNumberLabel.text = message.contactId ? [[AppDelegate appDelegate] contactNameForId:message.contactId] : message.extern_e164;
-    cell.textPreviewLabel.text = [message.text stringByAppendingString:@"\nfgdfds gfds gfdas"];
-    cell.timestampLabel.text = [self timestampOrDayForDate:message.timestamp];
+    cell.nameNumberLabel.text  = message.contactId ? [[AppDelegate appDelegate] contactNameForId:message.contactId] : message.extern_e164;
+    cell.textPreviewLabel.text = [message.text stringByAppendingString:@"\nsecond line of text will be here"]; // @TODO: Remove this.
+    cell.timestampLabel.text   = [self timestampOrDayForDate:message.timestamp];
     
     return cell;
 }

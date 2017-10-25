@@ -20,7 +20,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Contact name / number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dtY-0P-AZI">
-                        <rect key="frame" x="8" y="8" width="227" height="18"/>
+                        <rect key="frame" x="8" y="8" width="194" height="18"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -32,7 +32,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j9k-Ph-owk">
-                        <rect key="frame" x="8" y="28" width="227" height="34"/>
+                        <rect key="frame" x="8" y="28" width="271" height="34"/>
                         <string key="text">Line 1 preview text
 line 2 preview</string>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -42,11 +42,13 @@ line 2 preview</string>
                 </subviews>
                 <constraints>
                     <constraint firstItem="j9k-Ph-owk" firstAttribute="top" secondItem="dtY-0P-AZI" secondAttribute="bottom" constant="2" id="RPx-GE-4pB"/>
-                    <constraint firstItem="j9k-Ph-owk" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="UPY-vN-hgv"/>
+                    <constraint firstItem="j9k-Ph-owk" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="UPY-vN-hgv"/>
                     <constraint firstAttribute="trailing" secondItem="Ip4-gI-PZT" secondAttribute="trailing" constant="8" id="Wk9-N0-2gT"/>
                     <constraint firstItem="dtY-0P-AZI" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="apE-Rn-F9K"/>
                     <constraint firstItem="Ip4-gI-PZT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="eHn-PI-AOy"/>
-                    <constraint firstItem="dtY-0P-AZI" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="qug-Jg-7Hc"/>
+                    <constraint firstAttribute="trailing" secondItem="j9k-Ph-owk" secondAttribute="trailing" constant="8" id="nnf-Ao-gRR"/>
+                    <constraint firstItem="dtY-0P-AZI" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="qug-Jg-7Hc"/>
+                    <constraint firstItem="Ip4-gI-PZT" firstAttribute="leading" secondItem="dtY-0P-AZI" secondAttribute="trailing" constant="8" id="z4g-Vv-kgm"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
