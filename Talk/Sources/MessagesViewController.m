@@ -28,6 +28,7 @@
 @property (nonatomic, strong) NSManagedObjectContext*     managedObjectContext;
 @property (nonatomic, strong) UIRefreshControl*           refreshControl;
 @property (nonatomic, strong) NSArray*                    conversations;
+@property (nonatomic, strong) UILabel*                    noConversationsLabel;
 
 @end
 
@@ -66,11 +67,17 @@
     [self orderByConversation];
     [self createIndexOfWidth:0];
     
-    self.refreshControl = [[UIRefreshControl alloc] init];
+    self.refreshControl                 = [[UIRefreshControl alloc] init];
     self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:[Strings synchronizeWithServerString]];
     [self.refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:self.refreshControl];
     [self.tableView sendSubviewToBack:self.refreshControl];
+    
+    // Label that is shown when there are no conversations.
+    self.noConversationsLabel               = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, self.tableView.bounds.size.height)];
+    self.noConversationsLabel.text          = @"There are no messages."; // @TODO: Use NSLocalizedString.
+    self.noConversationsLabel.textColor     = [UIColor blackColor];
+    self.noConversationsLabel.textAlignment = NSTextAlignmentCenter;
 }
 
 
@@ -90,9 +97,10 @@
     
     dispatch_async(dispatch_get_main_queue(), ^
     {
-        // @TODO: Is this a good way for the initial synchronize, or just put the actual synchronize-code here?
         [self.refreshControl beginRefreshing];
         [self.refreshControl endRefreshing];
+        
+        [self showOrHideNoConversationsLabel];
     });
 }
 
@@ -104,19 +112,35 @@
         [[DataManager sharedManager] synchronizeWithServer:^(NSError* error)
         {
             self.objectsArray = [self.fetchedMessagesController fetchedObjects];
+            
             [self orderByConversation];
             [self createIndexOfWidth:0];
              
             dispatch_async(dispatch_get_main_queue(), ^{
-                // @TODO: Fix this
-                // RefreshControl doesn't hide (table stays down) when outside of this block.
                 [sender endRefreshing];
+                [self showOrHideNoConversationsLabel];
             });
         }];
     }
     else
     {
         [sender endRefreshing];
+        
+        [self showOrHideNoConversationsLabel];
+    }
+}
+
+
+// Shows or hides the noConversationsLabel depending on if there are conversations.
+- (void)showOrHideNoConversationsLabel
+{
+    if ([self.conversations count] == 0)
+    {
+        self.tableView.backgroundView = self.noConversationsLabel;
+    }
+    else
+    {
+        self.tableView.backgroundView = nil;
     }
 }
 
@@ -151,7 +175,7 @@
     {
         NSArray* sortedMessages = [messages sortedArrayUsingComparator:^NSComparisonResult(id a, id b)
                                   {
-                                      NSDate *first = [(MessageData*)a timestamp];
+                                      NSDate *first  = [(MessageData*)a timestamp];
                                       NSDate *second = [(MessageData*)b timestamp];
                                       return [first compare:second];
                                   }];
@@ -162,7 +186,7 @@
     // Order the groups by the most current timestamp of the contained messages.
     self.conversations = [[NSArray arrayWithArray:[conversationGroups allValues]] sortedArrayUsingComparator:^(id a, id b)
                          {
-                             NSDate* first = [(MessageData*)[(NSMutableArray*)a lastObject] timestamp];
+                             NSDate* first  = [(MessageData*)[(NSMutableArray*)a lastObject] timestamp];
                              NSDate* second = [(MessageData*)[(NSMutableArray*)b lastObject] timestamp];
                              
                              return [first compare:second];
