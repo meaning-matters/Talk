@@ -12,10 +12,10 @@
 @interface ConversationViewController : JSQMessagesViewController
 
 @property (nonatomic, strong) NSManagedObjectContext*     managedObjectContext;
-@property (nonatomic, weak)   NSFetchedResultsController* fetchedMessagesController;
+@property (nonatomic, strong) NSFetchedResultsController* fetchedMessagesController;
 
-@property (nonatomic, strong) NSString*                   number_e164;
-@property (nonatomic, strong) NSString*                   extern_e164;
+@property (nonatomic, strong) NSString*                   numberE164;
+@property (nonatomic, strong) NSString*                   externE164;
 @property (nonatomic, strong) NSString*                   contactId;
 
 @end

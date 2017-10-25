@@ -17,16 +17,14 @@
 
 @interface ConversationViewController ()
 
-@property (strong, nonatomic) NSMutableArray* messages;
+@property (nonatomic, strong) NSMutableArray*                fetchedMessages;
+@property (nonatomic, strong) NSArray*                       messages;
+@property (nonatomic, strong) JSQMessagesBubbleImageFactory* bubbleFactory;
 
 @end
 
 
 @implementation ConversationViewController
-
-// @TODO:
-// - When navigating back from this view to the conversations-view, the inputToolbar shows a bit of black for a short time.
-//   Maybe because it's removed too early?
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -39,10 +37,10 @@
     self.collectionView.collectionViewLayout.incomingAvatarViewSize = CGSizeZero;
     self.collectionView.collectionViewLayout.outgoingAvatarViewSize = CGSizeZero;
     
-    // Disable the QuickTyping bar (the 3 suggestions above the keyboard).
+    // Hide the QuickType bar (the 3 suggestions above the keyboard).
     self.inputToolbar.contentView.textView.autocorrectionType = UITextAutocorrectionTypeNo;
     
-    // GestureRecognizer for when the CollectionView is tapped (close the keyboard).
+    // When the CollectionView is tapped.
     UITapGestureRecognizer* tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                     action:@selector(handleCollectionTapRecognizer:)];
     [self.collectionView addGestureRecognizer:tapRecognizer];
@@ -53,7 +51,9 @@
 {
     [super viewDidLoad];
     
-    self.collectionView.delegate = self;
+    self.bubbleFactory = [[JSQMessagesBubbleImageFactory alloc] init];
+    
+    self.collectionView.delegate   = self;
     self.collectionView.dataSource = self;
     
     if (self.contactId != nil)
@@ -62,33 +62,40 @@
     }
     else
     {
-        self.title = self.extern_e164;
+        self.title = self.externE164;
     }
 }
 
 
+// Must be overriden for JSQMessagesViewController.
 - (NSString*)senderId
 {
-    // senderId is used to determine the direction of the message (where to draw it, left or right).
-    return self.number_e164;
+    return nil;
 }
 
 
-- (NSArray*)getMessages
+// Used by JSQMessagesViewController to determine where to draw the message (left / right).
+- (BOOL)isOutgoingMessage:(id<JSQMessageData>)messageItem
 {
-    if (self.messages == nil)
+    return !((JSQMessage*)messageItem).isIncoming;
+}
+
+
+- (NSArray*)messages
+{
+    if (self.fetchedMessages == nil)
     {
-        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"number_e164 == %@ AND extern_e164 = %@", [self number_e164], [self extern_e164]];
-        self.messages = [[NSMutableArray alloc] initWithArray:[[self.fetchedMessagesController fetchedObjects] filteredArrayUsingPredicate:predicate]];
+        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"numberE164 == %@ AND externE164 = %@", [self numberE164], [self externE164]];
+        self.fetchedMessages = [[NSMutableArray alloc] initWithArray:[[self.fetchedMessagesController fetchedObjects] filteredArrayUsingPredicate:predicate]];
     }
     
-    return self.messages;
+    return self.fetchedMessages;
 }
 
 
-- (MessageData*)getMessageAtIndex:(NSIndexPath*)indexPath
+- (MessageData*)messageAtIndexPath:(NSIndexPath*)indexPath
 {
-    return [[self getMessages] objectAtIndex:indexPath.row];
+    return [self.messages objectAtIndex:indexPath.row];
 }
 
 
@@ -96,18 +103,19 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return [[self getMessages] count];
+    return self.messages.count;
 }
 
 
 - (id<JSQMessageData>)collectionView:(JSQMessagesCollectionView*)collectionView messageDataForItemAtIndexPath:(NSIndexPath*)indexPath
 {
-    MessageData* message = [self getMessageAtIndex:indexPath];
-    
-    return [[JSQMessage alloc] initWithSenderId:[message.direction isEqualToString:@"IN"] ? message.extern_e164 : message.number_e164
-                                             senderDisplayName:[NSString stringWithFormat:@"%@%@", @"name: ", message.extern_e164]
+    MessageData* message = [self messageAtIndexPath:indexPath];
+
+    return [[JSQMessage alloc] initWithSenderId:message.directionRaw == MessageDirectionInbound ? message.externE164 : message.numberE164
+                                             senderDisplayName:[NSString stringWithFormat:@"%@%@", @"name: ", message.externE164]
                                                           date:message.timestamp
-                                                          text:message.text];
+                                                          text:message.text
+                                                      incoming:message.directionRaw == MessageDirectionInbound];
 }
 
 
@@ -115,20 +123,22 @@
 {
     JSQMessagesCollectionViewCell* cell = (JSQMessagesCollectionViewCell*)[super collectionView:collectionView cellForItemAtIndexPath:indexPath];
     
-    // Enables hyperlink highlighting + selection of text.
-    cell.textView.editable = NO;
-    cell.textView.dataDetectorTypes = UIDataDetectorTypeAll;
-    cell.textView.selectable = YES;
+    // Enable hyperlink highlighting + selection of text.
+    cell.textView.editable               = NO;
+    cell.textView.dataDetectorTypes      = UIDataDetectorTypeAll;
+    cell.textView.selectable             = YES;
     cell.textView.userInteractionEnabled = YES;
     
     cell.textView.delegate = self;
     
-    MessageData* message = [self getMessageAtIndex:indexPath];
+    MessageData* message = [self messageAtIndexPath:indexPath];
     
-    if ([message.direction isEqualToString:@"IN"]) {
+    if (message.directionRaw == MessageDirectionInbound)
+    {
         cell.textView.textColor = [UIColor whiteColor];
     }
-    else {
+    else
+    {
         cell.textView.textColor = [UIColor blackColor];
     }
     
@@ -141,89 +151,64 @@
 }
 
 
-- (id<JSQMessageBubbleImageDataSource>)collectionView:(JSQMessagesCollectionView *)collectionView messageBubbleImageDataForItemAtIndexPath:(NSIndexPath *)indexPath
+- (id<JSQMessageBubbleImageDataSource>)collectionView:(JSQMessagesCollectionView*)collectionView messageBubbleImageDataForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    MessageData* message = [self getMessageAtIndex:indexPath];
+    MessageData* message = [self messageAtIndexPath:indexPath];
     
-    JSQMessagesBubbleImageFactory *bubbleFactory = [[JSQMessagesBubbleImageFactory alloc] init];
-    if ([message.direction isEqualToString:@"IN"])
+    if (message.directionRaw == MessageDirectionInbound)
     {
-        return [bubbleFactory incomingMessagesBubbleImageWithColor:[UIColor jsq_messageBubbleGreenColor]];
+        return [self.bubbleFactory incomingMessagesBubbleImageWithColor:[UIColor jsq_messageBubbleGreenColor]];
     }
     else
     {
-        return [bubbleFactory outgoingMessagesBubbleImageWithColor:[UIColor jsq_messageBubbleLightGrayColor]];
+        return [self.bubbleFactory outgoingMessagesBubbleImageWithColor:[UIColor jsq_messageBubbleLightGrayColor]];
     }
 }
 
 
-- (id<JSQMessageAvatarImageDataSource>)collectionView:(JSQMessagesCollectionView *)collectionView avatarImageDataForItemAtIndexPath:(NSIndexPath *)indexPath
+// Mandatory to override.
+- (id<JSQMessageAvatarImageDataSource>)collectionView:(JSQMessagesCollectionView*)collectionView avatarImageDataForItemAtIndexPath:(NSIndexPath*)indexPath
 {
-    NSLog(@"--- [ Not Implemented ]: ConversationViewController.m -> avatarImageDataForItemAtIndexPath");
+    NBLog(@"--- [ Not Implemented ]: ConversationViewController.m -> avatarImageDataForItemAtIndexPath");
+    // Return nil to disable avatarImages next to the bubbles.
     return nil;
-}
-
-
-- (void)collectionView:(JSQMessagesCollectionView *)collectionView didDeleteMessageAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSLog(@"--- [ Not Implemented ]: ConversationViewController.m -> didDeleteMessageAtIndexPath");
-}
-
-
-- (NSAttributedString*)collectionView:(JSQMessagesCollectionView*)collectionView attributedTextForCellTopLabelAtIndexPath:(NSIndexPath*)indexPath
-{
-    NSLog(@"--- [ Not Implemented ]: ConversationViewController.m -> attributedTextForCellTopLabelAtIndexPath");
-    return [[NSAttributedString alloc] initWithString:[[NSString alloc] initWithFormat:@"Indexpath: %d-%d", indexPath.section, indexPath.row]];
-}
-
-
-- (NSAttributedString*)collectionView:(JSQMessagesCollectionView*)collectionView attributedTextForMessageBubbleTopLabelAtIndexPath:(NSIndexPath*)indexPath
-{
-    NSLog(@"--- [ Not Implemented ]: ConversationViewController.m -> attributedTextForMessageBubbleTopLabelAtIndexPath");
-    return [[NSAttributedString alloc] initWithString:[[NSString alloc] initWithFormat:@"Indexpath: %d-%d", indexPath.section, indexPath.row]];
-}
-
-
-- (NSAttributedString*)collectionView:(JSQMessagesCollectionView*)collectionView attributedTextForCellBottomLabelAtIndexPath:(NSIndexPath*)indexPath
-{
-    NSLog(@"--- [ Not Implemented ]: ConversationViewController.m -> attributedTextForCellBottomLabelAtIndexPath");
-    return [[NSAttributedString alloc] initWithString:[[NSString alloc] initWithFormat:@"Indexpath: %d-%d", indexPath.section, indexPath.row]];
 }
 
 
 - (BOOL)textView:(UITextView*)textView shouldInteractWithURL:(NSURL*)URL inRange:(NSRange)characterRange
 {
-    // @TODO: When the number is not valid, you get a popup. If you still make the call, the inputToolbar is over the callView.
+    // @TODO: (another user-story)
+    // - When the number is not valid, you get a popup. If you still make the call, the inputToolbar is over the callView.
+    // - When the number is invalid + there are spaces in it, the Keypad shows that as %20 instead of spaces.
+    // - What needs to be added here is an alert that allows selection of the number's home country (in case +xx is missing). Discuss with me.
+    //    - SMS' sender country-code
+    //    - App's country-code
+    //    - Choose country
     if ([URL.scheme isEqualToString:@"tel"])
     {
         PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:URL.resourceSpecifier];
-        
-        // @TODO: Now we wait till the contact is fetched, and then initiate the call. Is this OK?
-        // KeypadViewController.m:436 does the same.
-        
-        // @TODO: When the number is invalid + there are spaces in it, the Keypad shows that as %20 instead of spaces.
         
         // Get the contactId for the chosen number.
         [[AppDelegate appDelegate] findContactsHavingNumber:[phoneNumber nationalDigits]
                                                  completion:^(NSArray* contactIds)
         {
-            NSString* callContactId;
+            NSString* contactId;
             if (contactIds.count > 0)
             {
-                callContactId = [contactIds firstObject];
+                contactId = [contactIds firstObject];
             }
             
             // Initiate the call.
             [[CallManager sharedManager] callPhoneNumber:phoneNumber
-                                               contactId:callContactId
+                                               contactId:contactId
                                                 callerId:nil // Determine the caller ID based on user preferences.
-                                              completion:^(Call *call)
-             {
-                 if (call != nil)
-                 {
-                     [Settings sharedSettings].lastDialedNumber = phoneNumber.number;
-                 }
-             }];
+                                              completion:^(Call* call)
+            {
+                if (call != nil)
+                {
+                    [Settings sharedSettings].lastDialedNumber = phoneNumber.number;
+                }
+            }];
         }];
         
         return NO;
@@ -241,7 +226,7 @@
     if (recognizer.state == UIGestureRecognizerStateEnded)
     {
         if ([self.inputToolbar.contentView.textView isFirstResponder])
-        {
+        {    
             [self.inputToolbar.contentView.textView resignFirstResponder];
         }
     }

@@ -12,11 +12,23 @@
 
 @dynamic billed;
 @dynamic direction;
-@dynamic extern_e164;
-@dynamic number_e164;
+@dynamic externE164;
+@dynamic numberE164;
 @dynamic text;
 @dynamic timestamp;
 @dynamic uuid;
 @dynamic contactId;
+
+
+- (MessageDirectionEnum)directionRaw
+{
+    return (MessageDirectionEnum)[[self direction] intValue];
+}
+
+
+- (void)setDirectionRaw:(MessageDirectionEnum)direction
+{
+    [self setDirection:[NSNumber numberWithInt:direction]];
+}
 
 @end

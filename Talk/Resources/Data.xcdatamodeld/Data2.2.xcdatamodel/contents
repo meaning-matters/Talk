@@ -70,9 +70,9 @@
     <entity name="Message" representedClassName="MessageData" syncable="YES">
         <attribute name="billed" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="contactId" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="direction" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="extern_e164" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="number_e164" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="direction" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="externE164" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="numberE164" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>

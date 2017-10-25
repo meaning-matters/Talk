@@ -65,6 +65,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (copy, nonatomic, readonly, null_unspecified) id<JSQMessageMediaData> media;
 
+/**
+ *  Returns a boolean value indicating wether the message is incoming or not.
+ */
+@property (assign, nonatomic, readonly) BOOL isIncoming;
 
 #pragma mark - Initialization
 
@@ -75,6 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param senderId    The unique identifier for the user who sent the message. This value must not be `nil`.
  *  @param displayName The display name for the user who sent the message. This value must not be `nil`.
  *  @param text        The body text of the message. This value must not be `nil`.
+ *  @param incoming    Indicates if this message is incoming or not.
  *
  *  @discussion Initializing a `JSQMessage` with this method will set `isMediaMessage` to `NO`.
  *
@@ -82,7 +87,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (instancetype)messageWithSenderId:(NSString *)senderId
                         displayName:(NSString *)displayName
-                               text:(NSString *)text;
+                               text:(NSString *)text
+                           incoming:(BOOL)incoming;
 
 /**
  *  Initializes and returns a message object having the given senderId, senderDisplayName, date, and text.
@@ -91,6 +97,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param senderDisplayName The display name for the user who sent the message. This value must not be `nil`.
  *  @param date              The date that the message was sent. This value must not be `nil`.
  *  @param text              The body text of the message. This value must not be `nil`.
+ *  @param incoming          Indicates if this message is incoming or not.
  *
  *  @discussion Initializing a `JSQMessage` with this method will set `isMediaMessage` to `NO`.
  *
@@ -99,7 +106,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithSenderId:(NSString *)senderId
                senderDisplayName:(NSString *)senderDisplayName
                             date:(NSDate *)date
-                            text:(NSString *)text;
+                            text:(NSString *)text
+                        incoming:(BOOL)incoming;
 /**
  *  Initializes and returns a message object having the given senderId, displayName, media,
  *  and current system date.
@@ -107,6 +115,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param senderId    The unique identifier for the user who sent the message. This value must not be `nil`.
  *  @param displayName The display name for the user who sent the message. This value must not be `nil`.
  *  @param media       The media data for the message. This value must not be `nil`.
+ *  @param incoming    Indicates if this message is incoming or not.
  *
  *  @discussion Initializing a `JSQMessage` with this method will set `isMediaMessage` to `YES`.
  *
@@ -114,7 +123,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (instancetype)messageWithSenderId:(NSString *)senderId
                         displayName:(NSString *)displayName
-                              media:(id<JSQMessageMediaData>)media;
+                              media:(id<JSQMessageMediaData>)media
+                           incoming:(BOOL)incoming;
 
 /**
  *  Initializes and returns a message object having the given senderId, displayName, date, and media.
@@ -123,6 +133,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param senderDisplayName The display name for the user who sent the message. This value must not be `nil`.
  *  @param date              The date that the message was sent. This value must not be `nil`.
  *  @param media             The media data for the message. This value must not be `nil`.
+ *  @param incoming          Indicates if this message is incoming or not.
  *
  *  @discussion Initializing a `JSQMessage` with this method will set `isMediaMessage` to `YES`.
  *
@@ -131,7 +142,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithSenderId:(NSString *)senderId
                senderDisplayName:(NSString *)senderDisplayName
                             date:(NSDate *)date
-                           media:(id<JSQMessageMediaData>)media;
+                           media:(id<JSQMessageMediaData>)media
+                        incoming:(BOOL)incoming;
 
 /**
  *  Not a valid initializer.

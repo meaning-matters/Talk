@@ -723,6 +723,7 @@
 		8297693E1F97677800128A2C /* JSQMessagesTypingIndicatorFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 829769101F97677800128A2C /* JSQMessagesTypingIndicatorFooterView.xib */; };
 		8297693F1F97677800128A2C /* JSQMessagesTypingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 829769121F97677800128A2C /* JSQMessagesTypingView.m */; };
 		829769481F9767AC00128A2C /* ConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 829769471F9767AC00128A2C /* ConversationViewController.m */; };
+		82A6638A1F9F7C53001C481F /* MessageDirection.m in Sources */ = {isa = PBXBuildFile; fileRef = 82A663891F9F7C53001C481F /* MessageDirection.m */; };
 		82B08B411F826C4400F07536 /* MessageData.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B08B401F826C4400F07536 /* MessageData.m */; };
 		82B7F0191F66EE7900CB5FFB /* MessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B7F0181F66EE7900CB5FFB /* MessagesViewController.m */; };
 		82B7F0211F66F3D200CB5FFB /* MessagesTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 82B7F0201F66F3D200CB5FFB /* MessagesTab@2x.png */; };
@@ -1654,6 +1655,8 @@
 		829769121F97677800128A2C /* JSQMessagesTypingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSQMessagesTypingView.m; sourceTree = "<group>"; };
 		829769461F97679600128A2C /* ConversationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversationViewController.h; sourceTree = "<group>"; };
 		829769471F9767AC00128A2C /* ConversationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConversationViewController.m; sourceTree = "<group>"; };
+		82A663881F9F7C53001C481F /* MessageDirection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageDirection.h; sourceTree = "<group>"; };
+		82A663891F9F7C53001C481F /* MessageDirection.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageDirection.m; sourceTree = "<group>"; };
 		82B08B3F1F826C4400F07536 /* MessageData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageData.h; sourceTree = "<group>"; };
 		82B08B401F826C4400F07536 /* MessageData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageData.m; sourceTree = "<group>"; };
 		82B7F0171F66EE7900CB5FFB /* MessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesViewController.h; sourceTree = "<group>"; };
@@ -2612,6 +2615,8 @@
 				48FC30C41C2221360032387E /* ProofTypes.m */,
 				482881571C5F5E4C00210DF1 /* Salutation.h */,
 				482881581C5F5E4C00210DF1 /* Salutation.m */,
+				82A663881F9F7C53001C481F /* MessageDirection.h */,
+				82A663891F9F7C53001C481F /* MessageDirection.m */,
 			);
 			name = Enums;
 			sourceTree = "<group>";
@@ -3673,6 +3678,7 @@
 				488763F61C8893B300527723 /* BadgeHandler.m in Sources */,
 				48C431A1189EDFB40008FE01 /* VerifyPhoneDtmfViewController.m in Sources */,
 				485ECBE216525D3600364F08 /* KeypadView.m in Sources */,
+				82A6638A1F9F7C53001C481F /* MessageDirection.m in Sources */,
 				489765C41BCC4F4800D77FD7 /* WebStatus.m in Sources */,
 				485ECBE61652B9BE00364F08 /* KeypadButton.m in Sources */,
 				48D0A6F41654D6D700FA2D98 /* main.mm in Sources */,

@@ -25,7 +25,6 @@
 @interface MessagesViewController ()
 
 @property (nonatomic, strong) NSFetchedResultsController* fetchedMessagesController;
-@property (nonatomic, strong) UIBarButtonItem*            addButton;
 @property (nonatomic, strong) NSManagedObjectContext*     managedObjectContext;
 @property (nonatomic, strong) UIRefreshControl*           refreshControl;
 
@@ -119,7 +118,7 @@
 }
 
 
-// @TODO: Do we need this? (What is it for exactly? the search function?)
+// @TODO: Do we need this? (What is it for exactly? the search function?) (other user-story)
 - (NSString*)nameForObject:(id)object
 {
     return [(MessageData*)object text];
@@ -127,7 +126,6 @@
 
 
 // This needs to be overriden. If not, it will crash most of the time when there are changes to the content.
-// @TODO: Find out why and fix this.
 -(void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
     // Nothing to do ...
@@ -161,30 +159,28 @@
 }
 
 
-// This hides the tabBar when pushed to next ViewController (Conversation)
+// Indicate that the tabBar should hide when pushed to the next viewController.
 - (BOOL)hidesBottomBarWhenPushed
 {
-    return ![self.navigationController.visibleViewController isEqual:self];
+    return self.navigationController.visibleViewController != self;
 }
 
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    MessageData* message = [self.objectsArray objectAtIndex:indexPath.row];
+    MessageData* message = self.objectsArray[indexPath.row];
  
     ConversationViewController* viewController = [ConversationViewController messagesViewController];
-    viewController.managedObjectContext = self.managedObjectContext;
-    viewController.fetchedMessagesController = self.fetchedMessagesController;
+    viewController.managedObjectContext        = self.managedObjectContext;
+    viewController.fetchedMessagesController   = self.fetchedMessagesController;
     
-    PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:message.extern_e164];
-    viewController.extern_e164 = [phoneNumber internationalFormat];
+    PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:message.externE164];
+    viewController.externE164 = [phoneNumber e164Format];
     
-    [phoneNumber setNumber:message.number_e164];
-    viewController.number_e164 = [phoneNumber internationalFormat];
+    [phoneNumber setNumber:message.numberE164];
+    viewController.numberE164 = [phoneNumber e164Format];
     
-//    viewController.number_e164 = @"34668690178"; // @TODO: Remove.
-//    viewController.extern_e164 = @"31683378285"; // @TODO: Remove.
-    viewController.contactId = message.contactId;
+    viewController.contactId  = message.contactId;
     
     [self.navigationController pushViewController:viewController animated:YES];
 }

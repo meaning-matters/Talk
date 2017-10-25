@@ -21,6 +21,7 @@
 #import "AddressStatus.h"
 #import "AddressUpdatesHandler.h"
 #import "MessageData.h"
+#import "MessageDirection.h"
 
 
 @interface DataManager ()
@@ -1199,28 +1200,27 @@
                     return;
                 }
                 
-                
                 object.uuid        = dictionary[@"uuid"];
-                object.direction   = [[dictionary[@"direction"] stringValue] isEqualToString:@"1"] ? @"IN" : @"OUT"; // @TODO: Make shorter + check if this is correct.
-                
+                [object setDirectionRaw:[MessageDirection messageDirectionEnumForString:dictionary[@"direction"]]];
                 object.text        = dictionary[@"text"];
                 // @TODO: Get the actual timestamp the server returns to us.
+                // @TODO: In the other branch (conversations-overview): Make very sure that all times in our REST API and in the DB are in GMT!!! See existing parts of the app of how to handle dates!!!
                 object.timestamp   = [[[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian] dateBySettingHour:10
                                                                                                                                 minute:0
                                                                                                                                 second:0
                                                                                                                                 ofDate:[NSDate date]
                                                                                                                                options:0];
                 object.uuid        = dictionary[@"uuid"];
+
+                // @TODO: Append the '+' to the number here. Remove it when making requests to the server. (use the PhoneNumber-class to get the right format for the server?)
+                PhoneNumber* numberE164 = [[PhoneNumber alloc] initWithNumber:dictionary[@"number_e164"]];
+                object.numberE164 = [numberE164 e164Format];
                 
-                // @TODO: Save all the numbers in DB with the leading +, or just return the with this.
-                PhoneNumber* number_e164 = [[PhoneNumber alloc] initWithNumber:dictionary[@"number_e164"]];
-                object.number_e164 = [number_e164 internationalFormat];
-                
-                PhoneNumber* extern_e164 = [[PhoneNumber alloc] initWithNumber:dictionary[@"extern_e164"]];
-                object.extern_e164 = [extern_e164 internationalFormat];
+                PhoneNumber* externE164 = [[PhoneNumber alloc] initWithNumber:dictionary[@"extern_e164"]];
+                object.externE164 = [externE164 e164Format];
                 
                 // Get the contactId for the external number.
-                [[AppDelegate appDelegate] findContactsHavingNumber:[extern_e164 nationalDigits]
+                [[AppDelegate appDelegate] findContactsHavingNumber:[externE164 nationalDigits]
                                                          completion:^(NSArray* contactIds)
                 {
                     if (contactIds.count > 0)

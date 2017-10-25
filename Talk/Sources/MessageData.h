@@ -8,16 +8,20 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "MessageDirection.h"
 
 @interface MessageData : NSManagedObject
 
-@property (nonatomic)         float     billed;
-@property (nonatomic, retain) NSString* direction; // @TODO: Change to NSInteger
-@property (nonatomic, retain) NSString* extern_e164;
-@property (nonatomic, retain) NSString* number_e164;
-@property (nonatomic, retain) NSString* text;
-@property (nonatomic, retain) NSDate*   timestamp;
-@property (nonatomic, retain) NSString* uuid;
-@property (nonatomic, retain) NSString* contactId;
+@property (nonatomic)         float                billed;
+@property (nonatomic, retain) NSNumber*            direction;
+@property (nonatomic, retain) NSString*            externE164;
+@property (nonatomic, retain) NSString*            numberE164;
+@property (nonatomic, retain) NSString*            text;
+@property (nonatomic, retain) NSDate*              timestamp;
+@property (nonatomic, retain) NSString*            uuid;
+@property (nonatomic, retain) NSString*            contactId;
+
+- (MessageDirectionEnum)directionRaw;
+- (void)setDirectionRaw:(MessageDirectionEnum)direction;
 
 @end
