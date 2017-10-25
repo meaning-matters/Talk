@@ -16,7 +16,6 @@
 
 
 // @TODO:
-// - Tell the user when there are no messages yet.
 // - Make the search function work.
 // - Change the icon of this tab.
 
@@ -58,7 +57,7 @@
     [super viewDidLoad];
     
     self.fetchedMessagesController = [[DataManager sharedManager] fetchResultsForEntityName:@"Message"
-                                                                               withSortKeys:@[@"extern_e164"]
+                                                                               withSortKeys:nil
                                                                        managedObjectContext:self.managedObjectContext];
     
     self.fetchedMessagesController.delegate = self;
@@ -75,13 +74,12 @@
     
     // Label that is shown when there are no conversations.
     self.noConversationsLabel               = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, self.tableView.bounds.size.height)];
-    self.noConversationsLabel.text          = @"There are no messages."; // @TODO: Use NSLocalizedString.
+    self.noConversationsLabel.text          = [Strings noConversationsString];
     self.noConversationsLabel.textColor     = [UIColor blackColor];
     self.noConversationsLabel.textAlignment = NSTextAlignmentCenter;
 }
 
 
-// @TODO: Find a better solution for this.
 // The page needed to be pulled down almost halfway for the refreshcontrol to activate.
 // This is now fixed using https://stackoverflow.com/a/40461168/2399348
 - (void)viewDidAppear:(BOOL)animated
@@ -157,7 +155,7 @@
     [self.objectsArray enumerateObjectsUsingBlock:^(MessageData* message, NSUInteger index, BOOL* stop)
     {
         // Check if this extern_e164 already exists in the dictionary.
-        NSMutableArray *messages = [conversationGroups objectForKey:message.extern_e164];
+        NSMutableArray* messages = [conversationGroups objectForKey:message.extern_e164];
         
         // If not, create this entry.
         if (messages == nil || (id)messages == [NSNull null])
@@ -208,7 +206,7 @@
 
 // This needs to be overriden. If not, it will crash most of the time when there are changes to the content.
 // @TODO: Find out why and fix this.
--(void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+-(void)controllerWillChangeContent:(NSFetchedResultsController*)controller
 {
     // Nothing to do ...
 }
@@ -220,7 +218,7 @@
 }
 
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     return 70;
 }
@@ -228,7 +226,6 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    // @TODO: Leave it like this? (We probably have only 1 section, but maybe when the table is still empty ... ?)
     return [[self.fetchedMessagesController sections] count];
 }
 
@@ -259,7 +256,7 @@
     MessageData* message = [self.conversations[indexPath.row] lastObject];
     
     cell.nameNumberLabel.text  = message.contactId ? [[AppDelegate appDelegate] contactNameForId:message.contactId] : message.extern_e164;
-    cell.textPreviewLabel.text = [message.text stringByAppendingString:@"\nsecond line of text will be here"]; // @TODO: Remove this.
+    cell.textPreviewLabel.text = message.text;
     cell.timestampLabel.text   = [self timestampOrDayForDate:message.timestamp];
     
     return cell;
