@@ -12,8 +12,8 @@
 
 @dynamic billed;
 @dynamic direction;
-@dynamic extern_e164;
-@dynamic number_e164;
+@dynamic externE164;
+@dynamic numberE164;
 @dynamic text;
 @dynamic timestamp;
 @dynamic uuid;

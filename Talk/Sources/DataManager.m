@@ -22,6 +22,7 @@
 #import "AddressUpdatesHandler.h"
 #import "MessageData.h"
 #import "MessageUpdatesHandler.h"
+#import "MessageDirection.h"
 
 
 @interface DataManager ()
@@ -1209,35 +1210,31 @@
                 }
                 
                 object.uuid        = dictionary[@"uuid"];
-                object.direction   = dictionary[@"direction"];
-                
+                object.direction   = [MessageDirection messageDirectionEnumForString:dictionary[@"direction"]];
                 object.text        = dictionary[@"text"];
                 
                 NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
                 [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
                 object.timestamp = [dateFormatter dateFromString:dictionary[@"timestamp"]];
                 
-                object.uuid        = dictionary[@"uuid"];
+                // @TODO: Append the '+' to the number here. Remove it when making requests to the server. (use the PhoneNumber-class to get the right format for the server?)
+                PhoneNumber* numberE164 = [[PhoneNumber alloc] initWithNumber:dictionary[@"number_e164"]];
+                object.numberE164       = [numberE164 e164Format];
                 
-                PhoneNumber* number_e164 = [[PhoneNumber alloc] initWithNumber:dictionary[@"number_e164"]];
-                object.number_e164 = [number_e164 internationalFormat];
-                
-                PhoneNumber* extern_e164 = [[PhoneNumber alloc] initWithNumber:dictionary[@"extern_e164"]];
-                object.extern_e164 = [extern_e164 internationalFormat];
-                
-                
+                PhoneNumber* externE164 = [[PhoneNumber alloc] initWithNumber:dictionary[@"extern_e164"]];
+                object.externE164       = [externE164 e164Format];
                 
                 // Get the contactId for the external number.
-                [[AppDelegate appDelegate] findContactsHavingNumber:[extern_e164 nationalDigits]
+                [[AppDelegate appDelegate] findContactsHavingNumber:[externE164 e164Format]
                                                          completion:^(NSArray* contactIds)
-                 {
-                     if (contactIds.count > 0)
-                     {
-                         object.contactId = [contactIds firstObject];
-                     }
-                 }];
+                {
+                    if (contactIds.count > 0)
+                    {
+                        object.contactId = [contactIds firstObject];
+                    }
+                }];
                 
-                // If the uuid changed (so it's a new message), process the update of this message,
+                // If the uuid changed (so it's a new message), process the update of this message.
                 if ([object.changedValues objectForKey:@"uuid"] != nil)
                 {
                     [[MessageUpdatesHandler sharedHandler] processChangedMessage:object];
