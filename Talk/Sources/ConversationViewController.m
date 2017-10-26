@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "ConversationViewController.h"
+#import "MessageDirection.h"
 #import "MessageData.h"
 #import "CallManager.h"
 #import "PhoneNumber.h"
@@ -101,25 +102,28 @@
 
 #pragma mark - CollectionView DataSource methods
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+- (NSInteger)collectionView:(UICollectionView*)collectionView numberOfItemsInSection:(NSInteger)section
 {
     return self.messages.count;
 }
 
 
-- (id<JSQMessageData>)collectionView:(JSQMessagesCollectionView*)collectionView messageDataForItemAtIndexPath:(NSIndexPath*)indexPath
+- (id<JSQMessageData>)collectionView:(JSQMessagesCollectionView*)collectionView
+       messageDataForItemAtIndexPath:(NSIndexPath*)indexPath
 {
-    MessageData* message = [self messageAtIndexPath:indexPath];
+    MessageData* message  = [self messageAtIndexPath:indexPath];
+    NSString*    senderId = message.direction == MessageDirectionInbound ? message.externE164 : message.numberE164;
 
-    return [[JSQMessage alloc] initWithSenderId:message.directionRaw == MessageDirectionInbound ? message.externE164 : message.numberE164
-                                             senderDisplayName:[NSString stringWithFormat:@"%@%@", @"name: ", message.externE164]
-                                                          date:message.timestamp
-                                                          text:message.text
-                                                      incoming:message.directionRaw == MessageDirectionInbound];
+    return [[JSQMessage alloc] initWithSenderId:senderId
+                              senderDisplayName:[NSString stringWithFormat:@"%@%@", @"name: ", message.externE164]
+                                           date:message.timestamp
+                                           text:message.text
+                                       incoming:message.direction == MessageDirectionInbound];
 }
 
 
-- (UICollectionViewCell*)collectionView:(JSQMessagesCollectionView*)collectionView cellForItemAtIndexPath:(NSIndexPath*)indexPath
+- (UICollectionViewCell*)collectionView:(JSQMessagesCollectionView*)collectionView
+                 cellForItemAtIndexPath:(NSIndexPath*)indexPath
 {
     JSQMessagesCollectionViewCell* cell = (JSQMessagesCollectionViewCell*)[super collectionView:collectionView cellForItemAtIndexPath:indexPath];
     
@@ -133,17 +137,15 @@
     
     MessageData* message = [self messageAtIndexPath:indexPath];
     
-    if (message.directionRaw == MessageDirectionInbound)
+    switch (message.direction)
     {
-        cell.textView.textColor = [UIColor whiteColor];
+        case MessageDirectionInbound:  cell.textView.textColor = [UIColor whiteColor]; break;
+        case MessageDirectionOutbound: cell.textView.textColor = [UIColor blackColor]; break;
     }
-    else
-    {
-        cell.textView.textColor = [UIColor blackColor];
-    }
-    
+
     cell.textView.linkTextAttributes = @{ NSForegroundColorAttributeName : cell.textView.textColor,
-                                          NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle | NSUnderlinePatternSolid) };
+                                          NSUnderlineStyleAttributeName  : @(NSUnderlineStyleSingle |
+                                                                             NSUnderlinePatternSolid) };
     
     cell.accessoryButton.hidden = YES;
     
@@ -151,25 +153,36 @@
 }
 
 
-- (id<JSQMessageBubbleImageDataSource>)collectionView:(JSQMessagesCollectionView*)collectionView messageBubbleImageDataForItemAtIndexPath:(NSIndexPath *)indexPath
+- (id<JSQMessageBubbleImageDataSource>)collectionView:(JSQMessagesCollectionView*)collectionView
+             messageBubbleImageDataForItemAtIndexPath:(NSIndexPath*)indexPath
 {
-    MessageData* message = [self messageAtIndexPath:indexPath];
+    MessageData*                        message = [self messageAtIndexPath:indexPath];
+    id<JSQMessageBubbleImageDataSource> result  = nil;
     
-    if (message.directionRaw == MessageDirectionInbound)
+    switch (message.direction)
     {
-        return [self.bubbleFactory incomingMessagesBubbleImageWithColor:[UIColor jsq_messageBubbleGreenColor]];
+        case MessageDirectionInbound:
+        {
+            result = [self.bubbleFactory incomingMessagesBubbleImageWithColor:[UIColor jsq_messageBubbleGreenColor]];
+            break;
+        }
+        case MessageDirectionOutbound:
+        {
+            result = [self.bubbleFactory outgoingMessagesBubbleImageWithColor:[UIColor jsq_messageBubbleLightGrayColor]];
+            break;
+        }
     }
-    else
-    {
-        return [self.bubbleFactory outgoingMessagesBubbleImageWithColor:[UIColor jsq_messageBubbleLightGrayColor]];
-    }
+
+    return result;
 }
 
 
 // Mandatory to override.
-- (id<JSQMessageAvatarImageDataSource>)collectionView:(JSQMessagesCollectionView*)collectionView avatarImageDataForItemAtIndexPath:(NSIndexPath*)indexPath
+- (id<JSQMessageAvatarImageDataSource>)collectionView:(JSQMessagesCollectionView*)collectionView
+                    avatarImageDataForItemAtIndexPath:(NSIndexPath*)indexPath
 {
     NBLog(@"--- [ Not Implemented ]: ConversationViewController.m -> avatarImageDataForItemAtIndexPath");
+
     // Return nil to disable avatarImages next to the bubbles.
     return nil;
 }

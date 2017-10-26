@@ -12,16 +12,13 @@
 
 @interface MessageData : NSManagedObject
 
-@property (nonatomic)         float                billed;
-@property (nonatomic, retain) NSNumber*            direction;
-@property (nonatomic, retain) NSString*            externE164;
-@property (nonatomic, retain) NSString*            numberE164;
-@property (nonatomic, retain) NSString*            text;
-@property (nonatomic, retain) NSDate*              timestamp;
-@property (nonatomic, retain) NSString*            uuid;
-@property (nonatomic, retain) NSString*            contactId;
-
-- (MessageDirectionEnum)directionRaw;
-- (void)setDirectionRaw:(MessageDirectionEnum)direction;
+@property (nonatomic)         float     billed;
+@property (nonatomic, assign) int16_t   direction;
+@property (nonatomic, retain) NSString* externE164;
+@property (nonatomic, retain) NSString* numberE164;
+@property (nonatomic, retain) NSString* text;
+@property (nonatomic, retain) NSDate*   timestamp;
+@property (nonatomic, retain) NSString* uuid;
+@property (nonatomic, retain) NSString* contactId;
 
 @end

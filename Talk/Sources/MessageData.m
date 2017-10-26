@@ -19,16 +19,4 @@
 @dynamic uuid;
 @dynamic contactId;
 
-
-- (MessageDirectionEnum)directionRaw
-{
-    return (MessageDirectionEnum)[[self direction] intValue];
-}
-
-
-- (void)setDirectionRaw:(MessageDirectionEnum)direction
-{
-    [self setDirection:[NSNumber numberWithInt:direction]];
-}
-
 @end

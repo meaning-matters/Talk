@@ -50,7 +50,6 @@ typedef NS_ENUM(NSUInteger, RejectionReasonMask)
     RejectionReasonInfoMismatchAddressNotInAreaMask     = 1UL << 15,
     RejectionReasonInvalidDoctypeAddressNotPersonalMask = 1UL << 16,
     RejectionReasonInvalidDoctypeRequiredAddressMask    = 1UL << 17,
-
 };
 
 

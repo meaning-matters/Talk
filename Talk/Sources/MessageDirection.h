@@ -9,11 +9,11 @@
 #import <Foundation/Foundation.h>
 
 
-typedef enum
+typedef NS_ENUM(int16_t, MessageDirectionEnum)
 {
-    MessageDirectionInbound = 0,
-    MessageDirectionOutbound = 1
-} MessageDirectionEnum;
+    MessageDirectionInbound  = -1,
+    MessageDirectionOutbound =  1,
+};
 
 
 @interface MessageDirection : NSObject
