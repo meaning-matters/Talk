@@ -46,6 +46,8 @@ NSString* const NumberFilterKey           = @"NumberFilter";
 NSString* const AddressUpdatesKey         = @"AddressUpdates";
 NSString* const DnsSrvPrefixKey           = @"DnsSrvPrefix";
 
+NSString* const MessageUpdatesKey         = @"MessageUpdates";
+
 
 @interface Settings ()
 
@@ -479,9 +481,26 @@ static NSUserDefaults* userDefaults;
 }
 
 
+- (NSDictionary*)messageUpdates
+{
+    if ([userDefaults objectForKey:MessageUpdatesKey] == nil)
+    {
+        [self setMessageUpdates:@{}];
+    }
+    
+    return [userDefaults objectForKey:MessageUpdatesKey];
+}
+
+
 - (void)setAddressUpdates:(NSDictionary*)addressUpdates
 {
     [userDefaults setObject:addressUpdates forKey:AddressUpdatesKey];
+}
+
+
+- (void)setMessageUpdates:(NSDictionary*)messageUpdates
+{
+    [userDefaults setObject:messageUpdates forKey:MessageUpdatesKey];
 }
 
 

@@ -36,6 +36,7 @@
 #import "WebViewController.h"
 #import "NumberData.h"
 #import "DtmfPlayer.h"
+#import "MessageUpdatesHandler.h"
 
 NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification";
 
@@ -264,6 +265,12 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     NSUInteger count = [[AddressUpdatesHandler sharedHandler] badgeCount] +
                        unconnectedNumbers.count + sevenDaysNumbers.count + unverifiedCount;
     [[BadgeHandler sharedHandler] setBadgeCount:count forViewController:self.numbersViewController];
+}
+
+
+- (void)updateMessagesBadgeValue
+{
+    [[BadgeHandler sharedHandler] setBadgeCount:[[MessageUpdatesHandler sharedHandler] badgeCount] forViewController:self.messagesViewController];
 }
 
 
@@ -581,6 +588,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
                             if (error == nil)
                             {
                                 [self updateNumbersBadgeValue];
+                                [self updateMessagesBadgeValue];
                                 [self refreshLocalNotifications];
 
                                 [Settings sharedSettings].synchronizeDate = [NSDate date];

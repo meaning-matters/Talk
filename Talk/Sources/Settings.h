@@ -59,6 +59,7 @@
 @property (nonatomic, assign) NSDictionary*  numberFilter;          // Dictionary that defines which Number regions to show as being available.
 
 @property (nonatomic, strong) NSDictionary*  addressUpdates;        // Unseen address updates.
+@property (nonatomic, strong) NSDictionary*  messageUpdates;        // Unseen message updates;
 
 @property (nonatomic, readonly) NSString*    appId;                 // Used in rate-app URL.
 @property (nonatomic, readonly) NSString*    appVersion;

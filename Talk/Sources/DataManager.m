@@ -21,6 +21,7 @@
 #import "AddressStatus.h"
 #import "AddressUpdatesHandler.h"
 #import "MessageData.h"
+#import "MessageUpdatesHandler.h"
 
 
 @interface DataManager ()
@@ -1157,7 +1158,7 @@
             {
                 for (NSManagedObject* object in deleteArray)
                 {
-                    [self.managedObjectContext deleteObject:object];
+                    [self.managedObjectContext deleteObject:object]; // This notifies MessageUpdatesHandler.
                 }
             }
             else
@@ -1165,6 +1166,14 @@
                 [self handleError:error];
                 
                 return;
+            }
+            
+            // Delete Message Updates that are no longer on server.
+            NSMutableSet* complement = [NSMutableSet setWithArray:[[Settings sharedSettings].messageUpdates allKeys]];
+            [complement minusSet:[NSSet setWithArray:uuids]];
+            for (NSString* uuid in [complement allObjects])
+            {
+                [[MessageUpdatesHandler sharedHandler] removeMessageUpdateWithUuid:uuid];
             }
             
             if (messages.count == 0)
@@ -1216,6 +1225,8 @@
                 PhoneNumber* extern_e164 = [[PhoneNumber alloc] initWithNumber:dictionary[@"extern_e164"]];
                 object.extern_e164 = [extern_e164 internationalFormat];
                 
+                
+                
                 // Get the contactId for the external number.
                 [[AppDelegate appDelegate] findContactsHavingNumber:[extern_e164 nationalDigits]
                                                          completion:^(NSArray* contactIds)
@@ -1225,6 +1236,12 @@
                          object.contactId = [contactIds firstObject];
                      }
                  }];
+                
+                // If the uuid changed (so it's a new message), process the update of this message,
+                if ([object.changedValues objectForKey:@"uuid"] != nil)
+                {
+                    [[MessageUpdatesHandler sharedHandler] processChangedMessage:object];
+                }
                 
                 if (object.changedValues.count == 0)
                 {

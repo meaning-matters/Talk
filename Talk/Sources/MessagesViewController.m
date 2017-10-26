@@ -14,6 +14,8 @@
 #import "ConversationCell.h"
 #import "AppDelegate.h"
 #import "Common.h"
+#import "CellDotView.h"
+#import "MessageUpdatesHandler.h"
 
 
 // @TODO:
@@ -29,6 +31,8 @@
 @property (nonatomic, strong) UIRefreshControl*           refreshControl;
 @property (nonatomic, strong) NSArray*                    conversations;
 @property (nonatomic, strong) UILabel*                    noConversationsLabel;
+@property (nonatomic, weak) id<NSObject>                  observer;
+@property (nonatomic, weak) id<NSObject>                  messagesObserver;
 
 @end
 
@@ -49,13 +53,43 @@
         self.managedObjectContext = managedObjectContext;
     }
     
+    __weak typeof(self) weakSelf = self;
+    self.observer = [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
+                                                                      object:nil
+                                                                       queue:[NSOperationQueue mainQueue]
+                                                                  usingBlock:^(NSNotification* note)
+                    {
+                        [[AppDelegate appDelegate] updateMessagesBadgeValue];
+                        [weakSelf.tableView reloadData];
+                    }];
+    
+    self.messagesObserver = [[NSNotificationCenter defaultCenter] addObserverForName:MessageUpdatesNotification
+                                                                              object:nil
+                                                                               queue:[NSOperationQueue mainQueue]
+                                                                          usingBlock:^(NSNotification* note)
+                            {
+                                [[AppDelegate appDelegate] updateMessagesBadgeValue];
+                                NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
+                                [weakSelf.tableView reloadData];
+                                [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+                                [[self.tableView cellForRowAtIndexPath:selectedIndexPath] layoutIfNeeded];
+                            }];
+    
     return self;
+}
+
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self.observer];
 }
 
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [[AppDelegate appDelegate] updateMessagesBadgeValue];
     
     self.fetchedMessagesController = [[DataManager sharedManager] fetchResultsForEntityName:@"Message"
                                                                                withSortKeys:nil
@@ -251,10 +285,18 @@
     if (cell == nil)
     {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"ConversationCell" owner:nil options:nil] objectAtIndex:0];
+        
+        CellDotView* dotView = [[CellDotView alloc] init];
+        [dotView addToCell:cell];
     }
     
     // Last message of the conversation.
     MessageData* message = [self.conversations[indexPath.row] lastObject];
+    
+    // The dot on the left of the cell is shown if the last message of this conversation (the one used as preview)
+    // has an update on the property uuid (so if it's new, since uuid doesn't change).
+    CellDotView* dotView = [CellDotView getFromCell:cell];
+    dotView.hidden = [[MessageUpdatesHandler sharedHandler] messageUpdateWithUuid:message.uuid] == nil;
     
     cell.nameNumberLabel.text  = message.contactId ? [[AppDelegate appDelegate] contactNameForId:message.contactId] : message.extern_e164;
     cell.textPreviewLabel.text = message.text;

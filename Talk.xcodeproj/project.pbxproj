@@ -679,6 +679,7 @@
 		48FE4F591C8752C100CC0873 /* ImagePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FE4F581C8752C100CC0873 /* ImagePicker.m */; };
 		82A663841F9E7B79001C481F /* ConversationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 82A663821F9E7B79001C481F /* ConversationCell.m */; };
 		82A663851F9E7B79001C481F /* ConversationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 82A663831F9E7B79001C481F /* ConversationCell.xib */; };
+		82AA0B831FA1D8480079A53A /* MessageUpdatesHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 82AA0B821FA1D8480079A53A /* MessageUpdatesHandler.m */; };
 		82B08B411F826C4400F07536 /* MessageData.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B08B401F826C4400F07536 /* MessageData.m */; };
 		82B7F0191F66EE7900CB5FFB /* MessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B7F0181F66EE7900CB5FFB /* MessagesViewController.m */; };
 		82B7F0211F66F3D200CB5FFB /* MessagesTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 82B7F0201F66F3D200CB5FFB /* MessagesTab@2x.png */; };
@@ -1519,6 +1520,8 @@
 		82A663811F9E7B78001C481F /* ConversationCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConversationCell.h; sourceTree = "<group>"; };
 		82A663821F9E7B79001C481F /* ConversationCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConversationCell.m; sourceTree = "<group>"; };
 		82A663831F9E7B79001C481F /* ConversationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConversationCell.xib; sourceTree = "<group>"; };
+		82AA0B811FA1D8480079A53A /* MessageUpdatesHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageUpdatesHandler.h; sourceTree = "<group>"; };
+		82AA0B821FA1D8480079A53A /* MessageUpdatesHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageUpdatesHandler.m; sourceTree = "<group>"; };
 		82B08B3F1F826C4400F07536 /* MessageData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageData.h; sourceTree = "<group>"; };
 		82B08B401F826C4400F07536 /* MessageData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageData.m; sourceTree = "<group>"; };
 		82B7F0171F66EE7900CB5FFB /* MessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesViewController.h; sourceTree = "<group>"; };
@@ -1824,6 +1827,8 @@
 				48338FA016170CA80033F4C1 /* AppDelegate.m */,
 				4822B4301C9615FB004BD2F5 /* AddressUpdatesHandler.h */,
 				4822B4311C9615FB004BD2F5 /* AddressUpdatesHandler.m */,
+				82AA0B811FA1D8480079A53A /* MessageUpdatesHandler.h */,
+				82AA0B821FA1D8480079A53A /* MessageUpdatesHandler.m */,
 				488763F41C8893B300527723 /* BadgeHandler.h */,
 				488763F51C8893B300527723 /* BadgeHandler.m */,
 				48FE4F511C87525000CC0873 /* Calling */,
@@ -3480,6 +3485,7 @@
 				484943AD1753C00100E1D5C4 /* ThanksViewController.m in Sources */,
 				4856E5E91D96D796001F141F /* BadgeCell.m in Sources */,
 				48ADE7D2185C67EC00E39DA2 /* PhoneData.m in Sources */,
+				82AA0B831FA1D8480079A53A /* MessageUpdatesHandler.m in Sources */,
 				4865A9DF1792C8B70028785F /* NumberPayCell.m in Sources */,
 				4837AF6A18D9B6EC00D3AEBC /* GetStartedRestoreViewController.m in Sources */,
 				48B8133A1AADF8F10019AF77 /* NBPeopleTableViewCell.m in Sources */,
