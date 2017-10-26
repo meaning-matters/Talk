@@ -1217,12 +1217,14 @@
                 [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
                 object.timestamp = [dateFormatter dateFromString:dictionary[@"timestamp"]];
                 
-                // @TODO: Append the '+' to the number here. Remove it when making requests to the server. (use the PhoneNumber-class to get the right format for the server?)
-                PhoneNumber* numberE164 = [[PhoneNumber alloc] initWithNumber:dictionary[@"number_e164"]];
-                object.numberE164       = [numberE164 e164Format];
+                // The '+' is added to the numbers, then a PhoneNumber-object is made.
+                NSString* numberE164String = [NSString stringWithFormat:@"+%@", dictionary[@"number_e164"]];
+                PhoneNumber* numberE164    = [[PhoneNumber alloc] initWithNumber:numberE164String];
+                object.numberE164          = [numberE164 e164Format];
                 
-                PhoneNumber* externE164 = [[PhoneNumber alloc] initWithNumber:dictionary[@"extern_e164"]];
-                object.externE164       = [externE164 e164Format];
+                NSString* externE164String = [NSString stringWithFormat:@"+%@", dictionary[@"extern_e164"]];
+                PhoneNumber* externE164    = [[PhoneNumber alloc] initWithNumber:externE164String];
+                object.externE164          = [externE164 e164Format];
                 
                 // Get the contactId for the external number.
                 [[AppDelegate appDelegate] findContactsHavingNumber:[externE164 e164Format]
