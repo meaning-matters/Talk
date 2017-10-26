@@ -729,7 +729,7 @@
 		82AC378E1FA21E7D002AEB96 /* JSQMessagesTypingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 82AC37611FA21E7D002AEB96 /* JSQMessagesTypingView.m */; };
 		82B08B411F826C4400F07536 /* MessageData.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B08B401F826C4400F07536 /* MessageData.m */; };
 		82B7F0191F66EE7900CB5FFB /* ConversationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B7F0181F66EE7900CB5FFB /* ConversationsViewController.m */; };
-		82B7F0211F66F3D200CB5FFB /* MessagesTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 82B7F0201F66F3D200CB5FFB /* MessagesTab@2x.png */; };
+		82B7F0211F66F3D200CB5FFB /* ConversationsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 82B7F0201F66F3D200CB5FFB /* ConversationsTab@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1669,7 +1669,7 @@
 		82B08B401F826C4400F07536 /* MessageData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageData.m; sourceTree = "<group>"; };
 		82B7F0171F66EE7900CB5FFB /* ConversationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversationsViewController.h; sourceTree = "<group>"; };
 		82B7F0181F66EE7900CB5FFB /* ConversationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConversationsViewController.m; sourceTree = "<group>"; };
-		82B7F0201F66F3D200CB5FFB /* MessagesTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MessagesTab@2x.png"; sourceTree = "<group>"; };
+		82B7F0201F66F3D200CB5FFB /* ConversationsTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ConversationsTab@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2005,7 +2005,7 @@
 		48338FA916170CBA0033F4C1 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
-				82B7F0201F66F3D200CB5FFB /* MessagesTab@2x.png */,
+				82B7F0201F66F3D200CB5FFB /* ConversationsTab@2x.png */,
 				48AF451A1649788A00DFE3D8 /* AboutTab@2x.png */,
 				480E7A2D1BFDCA7800F655E8 /* AddressesTab@2x.png */,
 				48CB2C4917E6DB7700E19C3D /* NBPeopleListTab@2x.png */,
@@ -2688,6 +2688,10 @@
 				480CE126194DBEC40020F255 /* CallerIdViewController.m */,
 				486D4A2118F06BC8004699C9 /* CallRatesViewController.h */,
 				486D4A2218F06BC8004699C9 /* CallRatesViewController.m */,
+				82B7F0171F66EE7900CB5FFB /* ConversationsViewController.h */,
+				82B7F0181F66EE7900CB5FFB /* ConversationsViewController.m */,
+				829769461F97679600128A2C /* ConversationViewController.h */,
+				829769471F9767AC00128A2C /* ConversationViewController.m */,
 				48D60EF218B4D7A4000BE5D2 /* CountriesViewController.h */,
 				48D60EF318B4D7A4000BE5D2 /* CountriesViewController.m */,
 				48AF44EC164947B300DFE3D8 /* CreditViewController.h */,
@@ -2772,10 +2776,6 @@
 				48EEC7371E8ACBAB006759A3 /* VerifyPhoneVoiceEnterViewController.m */,
 				4823C0CB1CBA7F3800030FC7 /* WebViewController.h */,
 				4823C0CC1CBA7F3800030FC7 /* WebViewController.m */,
-				82B7F0171F66EE7900CB5FFB /* ConversationsViewController.h */,
-				82B7F0181F66EE7900CB5FFB /* ConversationsViewController.m */,
-				829769461F97679600128A2C /* ConversationViewController.h */,
-				829769471F9767AC00128A2C /* ConversationViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -3216,7 +3216,7 @@
 				485F6A5C1637270100D61365 /* BA@2x.png in Resources */,
 				485F6A5E1637270100D61365 /* BB@2x.png in Resources */,
 				82AC37881FA21E7D002AEB96 /* JSQMessagesLoadEarlierHeaderView.xib in Resources */,
-				82B7F0211F66F3D200CB5FFB /* MessagesTab@2x.png in Resources */,
+				82B7F0211F66F3D200CB5FFB /* ConversationsTab@2x.png in Resources */,
 				4842D9FF1AADFB53008F35C9 /* noPictureCompanyImage.png in Resources */,
 				485F6A601637270100D61365 /* BD@2x.png in Resources */,
 				485F6A621637270100D61365 /* BE@2x.png in Resources */,
