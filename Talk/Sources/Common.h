@@ -198,4 +198,8 @@ static const NSInteger CommonUseButton1Tag    = 30469;
 
 + (NSString*)languageNameForCode:(NSString*)languageCode;
 
++ (NSString*)dayOrDateForDate:(NSDate*)date;
+
++ (NSString*)timestampOrDayOrDateForDate:(NSDate*)date;
+
 @end

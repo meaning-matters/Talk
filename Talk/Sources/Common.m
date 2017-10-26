@@ -1694,4 +1694,79 @@ static Common* sharedCommon;
     return [locale displayNameForKey:NSLocaleIdentifier value:languageCode];
 }
 
+
+// Return [Yesterday] or weekday-name (if less than a week ago) or the date.
+// If timeForDay==YES: return time if it was today, else return [Today].
++ (NSString*)dayOrDateForDate:(NSDate*)date timeForToday:(BOOL)timeForToday
+{
+    NSString*         dayOrDate;
+    NSCalendar*       cal         = [NSCalendar currentCalendar];
+    NSDateComponents* components  = [cal components:(NSCalendarUnitYear       | NSCalendarUnitMonth |
+                                                     NSCalendarUnitWeekOfYear | NSCalendarUnitDay)
+                                           fromDate:date];
+    NSDate*           entryDate   = [cal dateFromComponents:components];
+    components                    = [cal components:(NSCalendarUnitYear       | NSCalendarUnitMonth |
+                                                     NSCalendarUnitWeekOfYear | NSCalendarUnitDay)
+                                           fromDate:[NSDate date]];
+    NSDate*           currentDate = [cal dateFromComponents:components];
+    int               timeDelta   = [currentDate timeIntervalSinceDate:entryDate];
+    
+    // If the timeDelta is less than a week.
+    if (timeDelta < 60 * 60 * 24 * 7)
+    {
+        if (timeDelta == 0)
+        {
+            if (timeForToday)
+            {
+                // If the timeDelta is 0 (today), return the time.
+                dayOrDate = [NSString formatToTime:date];
+            }
+            else
+            {
+                // If the timeDelta is 0 (today), return Today.
+                dayOrDate = NSLocalizedString(@"CNT_TODAY", @"");
+            }
+        }
+        else if (timeDelta == 60 * 60 * 24)
+        {
+            dayOrDate = NSLocalizedString(@"CNT_YESTERDAY", @"");
+        }
+        else
+        {
+            // If the timeDelta is between a day and a week, return the name of the day.
+            
+            // Determine the day in the week
+            NSCalendar*       calendar = [NSCalendar currentCalendar];
+            NSDateComponents* comps    = [calendar components:NSWeekdayCalendarUnit fromDate:date];
+            int               weekday  = (int)[comps weekday] - 1;
+            
+            NSDateFormatter* df = [[NSDateFormatter alloc] init];
+            [df setLocale: [NSLocale currentLocale]];
+            NSArray* weekdays = [df weekdaySymbols];
+            dayOrDate = [weekdays objectAtIndex:weekday];
+        }
+    }
+    else
+    {
+        // If the timeDelta is more than a week, return the date.
+        dayOrDate = [NSString formatToSlashSeparatedDate:date];
+    }
+    
+    return dayOrDate;
+}
+
+
+// Return [Today / Yesterday] or weekday-name (if less than a week ago) or the date.
++ (NSString*)dayOrDateForDate:(NSDate*)date
+{
+    return [Common dayOrDateForDate:date timeForToday:NO];
+}
+
+
+// Return time (if today) or [Yesterday] or weekday-name (if less than a week ago) or the date.
++ (NSString*)timestampOrDayOrDateForDate:(NSDate*)date
+{
+    return [Common dayOrDateForDate:date timeForToday:YES];
+}
+
 @end
