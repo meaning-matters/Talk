@@ -14,6 +14,7 @@
 #import "PhoneNumber.h"
 #import "Settings.h"
 #import "AppDelegate.h"
+#import "MessageUpdatesHandler.h"
 
 
 @interface ConversationViewController ()
@@ -91,6 +92,11 @@
                                   [self externE164]];
         self.fetchedMessages   = [[NSMutableArray alloc] initWithArray:[[self.fetchedMessagesController fetchedObjects]
                                                                         filteredArrayUsingPredicate:predicate]];
+        
+        for (MessageData* message in self.fetchedMessages)
+        {
+            [[MessageUpdatesHandler sharedHandler] removeMessageUpdateWithUuid:message.uuid];
+        }
     }
     
     return self.fetchedMessages;

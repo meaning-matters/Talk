@@ -58,20 +58,23 @@ NSString* const MessageUpdatesNotification = @"MessageUpdatesNotification";
     for (MessageData* message in messages)
     {
         NSDictionary* messageUpdate = [[MessageUpdatesHandler sharedHandler] messageUpdateWithUuid:message.uuid];
-        badgeCount++;
+        if (messageUpdate != nil)
+        {
+            badgeCount++;
+        }
     }
     
     return badgeCount;
 }
 
 
-- (NSDictionary *)messageUpdateWithUuid:(NSString *)uuid
+- (NSDictionary *)messageUpdateWithUuid:(NSString*)uuid
 {
     return [Settings sharedSettings].messageUpdates[uuid];
 }
 
 
-- (void)removeMessageUpdateWithUuid:(NSString *)uuid
+- (void)removeMessageUpdateWithUuid:(NSString*)uuid
 {
     NSMutableDictionary* messageUpdates = [[Settings sharedSettings].messageUpdates mutableCopy];
     

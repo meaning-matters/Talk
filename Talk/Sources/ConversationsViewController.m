@@ -204,7 +204,6 @@
             [conversationGroups setObject:messages forKey:message.externE164];
         }
         
-        // Add the message to the array.
         [messages addObject:message];
     }];
     
@@ -212,23 +211,24 @@
     [conversationGroups enumerateKeysAndObjectsUsingBlock:^(NSString* externE164, NSMutableArray* messages, BOOL* stop)
     {
         NSArray* sortedMessages = [messages sortedArrayUsingComparator:^NSComparisonResult(id a, id b)
-                                {
-                                    NSDate *first  = [(MessageData*)a timestamp];
-                                    NSDate *second = [(MessageData*)b timestamp];
-                                    return [first compare:second];
-                                }];
+        {
+            NSDate *first  = [(MessageData*)a timestamp];
+            NSDate *second = [(MessageData*)b timestamp];
+            
+            return [first compare:second];
+        }];
         
         [conversationGroups setValue:sortedMessages forKey:externE164];
     }];
     
     // Order the groups by the most current timestamp of the contained messages.
     self.conversations = [[NSArray arrayWithArray:[conversationGroups allValues]] sortedArrayUsingComparator:^(id a, id b)
-                        {
-                            NSDate* first  = [(MessageData*)[(NSMutableArray*)a lastObject] timestamp];
-                            NSDate* second = [(MessageData*)[(NSMutableArray*)b lastObject] timestamp];
-                             
-                            return [first compare:second];
-                        }];
+    {
+        NSDate* first  = [(MessageData*)[(NSMutableArray*)a lastObject] timestamp];
+        NSDate* second = [(MessageData*)[(NSMutableArray*)b lastObject] timestamp];
+        
+        return [first compare:second];
+    }];
     
     // Reverse the array -> groups with newest messages should come first.
     self.conversations = [[self.conversations reverseObjectEnumerator] allObjects];
@@ -277,7 +277,7 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    MessageData* message = self.objectsArray[indexPath.row];
+    MessageData* message = [self.conversations[indexPath.row] lastObject];
  
     ConversationViewController* viewController = [ConversationViewController messagesViewController];
     viewController.managedObjectContext        = self.managedObjectContext;
@@ -309,12 +309,19 @@
     }
     
     // Last message of the conversation.
-    MessageData* message = [self.conversations[indexPath.row] lastObject];
+    MessageData* message = [self.conversations[indexPath.row] firstObject];
     
-    // The dot on the left of the cell is shown if the last message of this conversation (the one used as preview)
-    // has an update on the property uuid (so if it's new, since uuid doesn't change).
-    CellDotView* dotView = [CellDotView getFromCell:cell];
-    dotView.hidden       = [[MessageUpdatesHandler sharedHandler] messageUpdateWithUuid:message.uuid] == nil;
+    // The dot on the left of the cell is shown if this conversation has an unread message.
+    CellDotView* dotView   = [CellDotView getFromCell:cell];
+    dotView.hidden         = YES;
+    for (MessageData* message in self.conversations[indexPath.row])
+    {
+        if ([[MessageUpdatesHandler sharedHandler] messageUpdateWithUuid:message.uuid] != nil)
+        {
+            dotView.hidden = NO;
+            break;
+        }
+    }
     
     cell.nameNumberLabel.text  = message.contactId ? [[AppDelegate appDelegate] contactNameForId:message.contactId] : message.externE164;
     cell.textPreviewLabel.text = message.text;
