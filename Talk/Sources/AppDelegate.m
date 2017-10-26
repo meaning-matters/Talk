@@ -270,7 +270,8 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
 - (void)updateMessagesBadgeValue
 {
-    [[BadgeHandler sharedHandler] setBadgeCount:[[MessageUpdatesHandler sharedHandler] badgeCount] forViewController:self.messagesViewController];
+    [[BadgeHandler sharedHandler] setBadgeCount:[[MessageUpdatesHandler sharedHandler] badgeCount]
+                              forViewController:self.conversationsViewController];
 }
 
 
@@ -696,7 +697,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     @[
         NSStringFromClass([CreditViewController        class]),
         NSStringFromClass([NBRecentsListViewController class]),
-        NSStringFromClass([MessagesViewController      class]),
+        NSStringFromClass([ConversationsViewController class]),
         NSStringFromClass([NBPeopleListViewController  class]),
         NSStringFromClass([KeypadViewController        class]),
         NSStringFromClass([PhonesViewController        class]),

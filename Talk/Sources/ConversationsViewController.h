@@ -1,5 +1,5 @@
 //
-//  MessagesViewController.h
+//  ConversationsViewController.h
 //  Talk
 //
 //  Created by Jeroen Kooiker on 11/9/17.
@@ -13,7 +13,7 @@
 
 @class MessageData;
 
-@interface MessagesViewController : SearchTableViewController <NSFetchedResultsControllerDelegate>
+@interface ConversationsViewController : SearchTableViewController <NSFetchedResultsControllerDelegate>
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 

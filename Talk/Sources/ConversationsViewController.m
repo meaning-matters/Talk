@@ -1,12 +1,12 @@
 //
-//  MessagesViewController.m
+//  ConversationsViewController.m
 //  Talk
 //
 //  Created by Jeroen Kooiker on 11/9/17.
 //  Copyright © 2017 NumberBay Ltd. All rights reserved.
 //
 
-#import "MessagesViewController.h"
+#import "ConversationsViewController.h"
 #import "DataManager.h"
 #import "Settings.h"
 #import "MessageData.h"
@@ -25,7 +25,7 @@
 // - Change the icon of this tab.
 
 
-@interface MessagesViewController ()
+@interface ConversationsViewController ()
 
 @property (nonatomic, strong) NSFetchedResultsController* fetchedMessagesController;
 @property (nonatomic, strong) NSManagedObjectContext*     managedObjectContext;
@@ -38,7 +38,7 @@
 @end
 
 
-@implementation MessagesViewController
+@implementation ConversationsViewController
 
 - (instancetype)init
 {

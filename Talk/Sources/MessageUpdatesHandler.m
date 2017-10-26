@@ -52,7 +52,7 @@ NSString* const MessageUpdatesNotification = @"MessageUpdatesNotification";
 - (NSUInteger)badgeCount
 {
     // @TODO: Rebuild this function so only the updated Conversations (instead of Messages) are counted.
-    // Should use the same logic as MessagesViewController (soon to be ConversationsViewController) to determine this.
+    // Should use the same logic as ConversationsViewController to determine this.
     NSUInteger badgeCount = 0;
     NSArray*   messages = [[DataManager sharedManager] fetchEntitiesWithName:@"Message"];
     for (MessageData* message in messages)

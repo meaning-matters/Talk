@@ -728,7 +728,7 @@
 		82AC378D1FA21E7D002AEB96 /* JSQMessagesTypingIndicatorFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 82AC375F1FA21E7D002AEB96 /* JSQMessagesTypingIndicatorFooterView.xib */; };
 		82AC378E1FA21E7D002AEB96 /* JSQMessagesTypingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 82AC37611FA21E7D002AEB96 /* JSQMessagesTypingView.m */; };
 		82B08B411F826C4400F07536 /* MessageData.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B08B401F826C4400F07536 /* MessageData.m */; };
-		82B7F0191F66EE7900CB5FFB /* MessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B7F0181F66EE7900CB5FFB /* MessagesViewController.m */; };
+		82B7F0191F66EE7900CB5FFB /* ConversationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B7F0181F66EE7900CB5FFB /* ConversationsViewController.m */; };
 		82B7F0211F66F3D200CB5FFB /* MessagesTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 82B7F0201F66F3D200CB5FFB /* MessagesTab@2x.png */; };
 /* End PBXBuildFile section */
 
@@ -1667,8 +1667,8 @@
 		82AC37611FA21E7D002AEB96 /* JSQMessagesTypingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSQMessagesTypingView.m; sourceTree = "<group>"; };
 		82B08B3F1F826C4400F07536 /* MessageData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageData.h; sourceTree = "<group>"; };
 		82B08B401F826C4400F07536 /* MessageData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageData.m; sourceTree = "<group>"; };
-		82B7F0171F66EE7900CB5FFB /* MessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesViewController.h; sourceTree = "<group>"; };
-		82B7F0181F66EE7900CB5FFB /* MessagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagesViewController.m; sourceTree = "<group>"; };
+		82B7F0171F66EE7900CB5FFB /* ConversationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversationsViewController.h; sourceTree = "<group>"; };
+		82B7F0181F66EE7900CB5FFB /* ConversationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConversationsViewController.m; sourceTree = "<group>"; };
 		82B7F0201F66F3D200CB5FFB /* MessagesTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MessagesTab@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -2772,8 +2772,8 @@
 				48EEC7371E8ACBAB006759A3 /* VerifyPhoneVoiceEnterViewController.m */,
 				4823C0CB1CBA7F3800030FC7 /* WebViewController.h */,
 				4823C0CC1CBA7F3800030FC7 /* WebViewController.m */,
-				82B7F0171F66EE7900CB5FFB /* MessagesViewController.h */,
-				82B7F0181F66EE7900CB5FFB /* MessagesViewController.m */,
+				82B7F0171F66EE7900CB5FFB /* ConversationsViewController.h */,
+				82B7F0181F66EE7900CB5FFB /* ConversationsViewController.m */,
 				829769461F97679600128A2C /* ConversationViewController.h */,
 				829769471F9767AC00128A2C /* ConversationViewController.m */,
 			);
@@ -3721,7 +3721,7 @@
 				482881591C5F5E4C00210DF1 /* Salutation.m in Sources */,
 				48B813571AADF9590019AF77 /* NBDetailLineSeparatedCell.m in Sources */,
 				48B8131C1AADF7390019AF77 /* CallRecordData.m in Sources */,
-				82B7F0191F66EE7900CB5FFB /* MessagesViewController.m in Sources */,
+				82B7F0191F66EE7900CB5FFB /* ConversationsViewController.m in Sources */,
 				48021B341C3A693200C40B58 /* UIViewController+Common.m in Sources */,
 				48DDF4C01E3A788900BDEC43 /* AFNetworkReachabilityManager.m in Sources */,
 				482608EE166A4707007F0844 /* NSTimer+Blocks.m in Sources */,
