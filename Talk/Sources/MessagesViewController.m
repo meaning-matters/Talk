@@ -11,6 +11,9 @@
 #import "Settings.h"
 #import "MessageData.h"
 #import "Strings.h"
+#import "ConversationViewController.h"
+#import "AppDelegate.h"
+#import "PhoneNumber.h"
 
 
 // @TODO:
@@ -22,7 +25,6 @@
 @interface MessagesViewController ()
 
 @property (nonatomic, strong) NSFetchedResultsController* fetchedMessagesController;
-@property (nonatomic, strong) UIBarButtonItem*            addButton;
 @property (nonatomic, strong) NSManagedObjectContext*     managedObjectContext;
 @property (nonatomic, strong) UIRefreshControl*           refreshControl;
 
@@ -116,7 +118,7 @@
 }
 
 
-// @TODO: Do we need this? (What is it for exactly? the search function?)
+// @TODO: Do we need this? (What is it for exactly? the search function?) (other user-story)
 - (NSString*)nameForObject:(id)object
 {
     return [(MessageData*)object text];
@@ -124,7 +126,6 @@
 
 
 // This needs to be overriden. If not, it will crash most of the time when there are changes to the content.
-// @TODO: Find out why and fix this.
 -(void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
     // Nothing to do ...
@@ -158,9 +159,30 @@
 }
 
 
+// Indicate that the tabBar should hide when pushed to the next viewController.
+- (BOOL)hidesBottomBarWhenPushed
+{
+    return self.navigationController.visibleViewController != self;
+}
+
+
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    // @TODO: Go to the conversation of the clicked cell.
+    MessageData* message = self.objectsArray[indexPath.row];
+ 
+    ConversationViewController* viewController = [ConversationViewController messagesViewController];
+    viewController.managedObjectContext        = self.managedObjectContext;
+    viewController.fetchedMessagesController   = self.fetchedMessagesController;
+    
+    PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:message.externE164];
+    viewController.externE164 = [phoneNumber e164Format];
+    
+    [phoneNumber setNumber:message.numberE164];
+    viewController.numberE164 = [phoneNumber e164Format];
+    
+    viewController.contactId  = message.contactId;
+    
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 
