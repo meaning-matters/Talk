@@ -1143,6 +1143,55 @@
 }
 
 
+- (void)synchronizeMessagesOnly:(void (^)(NSError* error))completion
+{
+    if (isSynchronizing == YES)
+    {
+        completion ? completion(nil) : 0;
+
+        return;
+    }
+
+    isSynchronizing = YES;
+
+    [self saveManagedObjectContext:nil];
+
+    [self synchronizeMessages:^(NSError* error)
+     {
+         if (error == nil)
+         {
+             [self.managedObjectContext save:&error];
+             if (error == nil)
+             {
+                 [self saveManagedObjectContext:nil];
+
+                 dispatch_async(dispatch_get_main_queue(), ^
+                                {
+                                    completion ? completion(nil) : 0;
+
+                                    isSynchronizing = NO;
+                                });
+             }
+             else
+             {
+                 [self handleError:error];
+
+                 isSynchronizing = NO;
+
+                 return;
+             }
+         }
+         else
+         {
+             [self.managedObjectContext rollback];
+             completion ? completion(error) : 0;
+
+             isSynchronizing = NO;
+         }
+     }];
+}
+
+
 - (void)synchronizeMessages:(void (^)(NSError* error))completion
 {
     [[WebClient sharedClient] retrieveMessages:^(NSError* error, NSArray* messages)

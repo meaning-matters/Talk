@@ -21,7 +21,6 @@
 
 
 // @TODO:
-// - Make the search function work.
 // - Change the icon of this tab.
 
 
@@ -147,7 +146,7 @@
 {
     if ([Settings sharedSettings].haveAccount == YES)
     {
-        [[DataManager sharedManager] synchronizeWithServer:^(NSError* error)
+        [[DataManager sharedManager] synchronizeMessagesOnly:^(NSError* error)
         {
             self.objectsArray = [self.fetchedMessagesController fetchedObjects];
             
