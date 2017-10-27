@@ -58,24 +58,19 @@
                                                                       object:nil
                                                                        queue:[NSOperationQueue mainQueue]
                                                                   usingBlock:^(NSNotification* note)
-                    {
-                        [[AppDelegate appDelegate] updateMessagesBadgeValue];
-                        [weakSelf.tableView reloadData];
-                    }];
+    {
+        [[AppDelegate appDelegate] updateMessagesBadgeValue];
+        [weakSelf.tableView reloadData];
+    }];
     
     self.messagesObserver = [[NSNotificationCenter defaultCenter] addObserverForName:MessageUpdatesNotification
                                                                               object:nil
                                                                                queue:[NSOperationQueue mainQueue]
                                                                           usingBlock:^(NSNotification* note)
-                            {
-                                [[AppDelegate appDelegate] updateMessagesBadgeValue];
-                                NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
-                                [weakSelf.tableView reloadData];
-                                [self.tableView selectRowAtIndexPath:selectedIndexPath
-                                                            animated:NO
-                                                      scrollPosition:UITableViewScrollPositionNone];
-                                [[self.tableView cellForRowAtIndexPath:selectedIndexPath] layoutIfNeeded];
-                            }];
+    {
+        [[AppDelegate appDelegate] updateMessagesBadgeValue];
+        [weakSelf.tableView reloadData];
+    }];
     
     return self;
 }
@@ -84,6 +79,7 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self.observer];
+    [[NSNotificationCenter defaultCenter] removeObserver:self.messagesObserver];
 }
 
 
@@ -96,7 +92,6 @@
     self.fetchedMessagesController = [[DataManager sharedManager] fetchResultsForEntityName:@"Message"
                                                                                withSortKeys:nil
                                                                        managedObjectContext:self.managedObjectContext];
-    
     self.fetchedMessagesController.delegate = self;
     
     self.objectsArray = [self.fetchedMessagesController fetchedObjects];
@@ -130,6 +125,9 @@
         
         [self showOrHideNoConversationsLabel];
     });
+    
+    // Synchronize messages every 30 seconds.
+    [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(refresh:) userInfo:nil repeats:YES];
 }
 
 
@@ -152,17 +150,24 @@
             
             [self orderByConversation];
             [self createIndexOfWidth:0];
-             
+            
             dispatch_async(dispatch_get_main_queue(),^
             {
-                [sender endRefreshing];
+                if (sender == self.refreshControl)
+                {
+                    [sender endRefreshing];
+                }
+                
                 [self showOrHideNoConversationsLabel];
             });
         }];
     }
     else
     {
-        [sender endRefreshing];
+        if (sender == self.refreshControl)
+        {
+            [sender endRefreshing];
+        }
         [self showOrHideNoConversationsLabel];
     }
 }
@@ -211,8 +216,8 @@
     {
         NSArray* sortedMessages = [messages sortedArrayUsingComparator:^NSComparisonResult(id a, id b)
         {
-            NSDate *first  = [(MessageData*)a timestamp];
-            NSDate *second = [(MessageData*)b timestamp];
+            NSDate* first  = [(MessageData*)a timestamp];
+            NSDate* second = [(MessageData*)b timestamp];
             
             return [first compare:second];
         }];
@@ -279,8 +284,6 @@
     MessageData* message = [self.conversations[indexPath.row] lastObject];
  
     ConversationViewController* viewController = [ConversationViewController messagesViewController];
-    
-    viewController.messages = self.conversations[indexPath.row];
     
     PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:message.externE164];
     viewController.externE164 = [phoneNumber e164Format];
