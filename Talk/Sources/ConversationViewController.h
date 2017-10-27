@@ -11,8 +11,7 @@
 
 @interface ConversationViewController : JSQMessagesViewController
 
-@property (nonatomic, strong) NSManagedObjectContext*     managedObjectContext;
-@property (nonatomic, strong) NSFetchedResultsController* fetchedMessagesController;
+@property (nonatomic, strong) NSArray*                    messages;
 
 @property (nonatomic, strong) NSString*                   numberE164;
 @property (nonatomic, strong) NSString*                   externE164;

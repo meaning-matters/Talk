@@ -19,8 +19,6 @@
 
 @interface ConversationViewController ()
 
-@property (nonatomic, strong) NSMutableArray*                fetchedMessages;
-@property (nonatomic, strong) NSArray*                       messages;
 @property (nonatomic, strong) JSQMessagesBubbleImageFactory* bubbleFactory;
 
 @end
@@ -58,6 +56,8 @@
     self.collectionView.delegate   = self;
     self.collectionView.dataSource = self;
     
+    [self removeUpdates];
+    
     if (self.contactId != nil)
     {
         self.title = [[AppDelegate appDelegate] contactNameForId:self.contactId];
@@ -83,29 +83,15 @@
 }
 
 
-- (NSArray*)messages
+- (void)removeUpdates
 {
-    if (self.fetchedMessages == nil)
+    for (MessageData* message in self.messages)
     {
-        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"numberE164 == %@ AND externE164 = %@",
-                                  [self numberE164],
-                                  [self externE164]];
-        self.fetchedMessages   = [[NSMutableArray alloc] initWithArray:[[self.fetchedMessagesController fetchedObjects]
-                                                                        filteredArrayUsingPredicate:predicate]];
-        
-        for (MessageData* message in self.fetchedMessages)
+        if ([[MessageUpdatesHandler sharedHandler] messageUpdateWithUuid:message.uuid] != nil)
         {
             [[MessageUpdatesHandler sharedHandler] removeMessageUpdateWithUuid:message.uuid];
         }
     }
-    
-    return self.fetchedMessages;
-}
-
-
-- (MessageData*)messageAtIndexPath:(NSIndexPath*)indexPath
-{
-    return [self.messages objectAtIndex:indexPath.row];
 }
 
 
@@ -120,7 +106,7 @@
 - (id<JSQMessageData>)collectionView:(JSQMessagesCollectionView*)collectionView
        messageDataForItemAtIndexPath:(NSIndexPath*)indexPath
 {
-    MessageData* message  = [self messageAtIndexPath:indexPath];
+    MessageData* message  = self.messages[indexPath.row];
     NSString*    senderId = message.direction == MessageDirectionInbound ? message.externE164 : message.numberE164;
 
     return [[JSQMessage alloc] initWithSenderId:senderId
@@ -144,7 +130,7 @@ cellForItemAtIndexPath:(NSIndexPath*)indexPath
     
     cell.textView.delegate = self;
     
-    MessageData* message = [self messageAtIndexPath:indexPath];
+    MessageData* message = self.messages[indexPath.row];
     
     switch (message.direction)
     {
@@ -165,7 +151,7 @@ cellForItemAtIndexPath:(NSIndexPath*)indexPath
 - (id<JSQMessageBubbleImageDataSource>)collectionView:(JSQMessagesCollectionView*)collectionView
              messageBubbleImageDataForItemAtIndexPath:(NSIndexPath*)indexPath
 {
-    MessageData*                        message = [self messageAtIndexPath:indexPath];
+    MessageData*                        message = self.messages[indexPath.row];
     id<JSQMessageBubbleImageDataSource> result  = nil;
     
     switch (message.direction)

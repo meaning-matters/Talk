@@ -280,8 +280,8 @@
     MessageData* message = [self.conversations[indexPath.row] lastObject];
  
     ConversationViewController* viewController = [ConversationViewController messagesViewController];
-    viewController.managedObjectContext        = self.managedObjectContext;
-    viewController.fetchedMessagesController   = self.fetchedMessagesController;
+    
+    viewController.messages = self.conversations[indexPath.row];
     
     PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:message.externE164];
     viewController.externE164 = [phoneNumber e164Format];
@@ -309,7 +309,7 @@
     }
     
     // Last message of the conversation.
-    MessageData* message = [self.conversations[indexPath.row] firstObject];
+    MessageData* message = [self.conversations[indexPath.row] lastObject];
     
     // The dot on the left of the cell is shown if this conversation has an unread message.
     CellDotView* dotView   = [CellDotView getFromCell:cell];
