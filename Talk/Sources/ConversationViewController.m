@@ -25,6 +25,8 @@
 @property (nonatomic, weak) id<NSObject>                     messagesObserver;
 @property (nonatomic, strong) NSFetchedResultsController*    fetchedMessagesController;
 @property (nonatomic, strong) NSManagedObjectContext*        managedObjectContext;
+@property (nonatomic) NSInteger                              firstUnreadMessageIndex;
+@property (nonatomic) BOOL                                   hasFetchedMessages;
 
 @end
 
@@ -55,6 +57,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.hasFetchedMessages = NO;
+    self.firstUnreadMessageIndex = -1;
     
     self.bubbleFactory = [[JSQMessagesBubbleImageFactory alloc] init];
     
@@ -88,6 +93,19 @@
 }
 
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    // Scroll to first unread message.
+    if (self.firstUnreadMessageIndex >= 0)
+    {
+        NSIndexPath* indexPath = [NSIndexPath indexPathForItem:self.firstUnreadMessageIndex inSection:0];
+        [self scrollToIndexPath:indexPath animated:NO];
+    }
+}
+
+
 // Filters the messages to keep the ones where message.externE164 == self.externE164.
 // Sorts the messages on timestamp.
 // Removes the MessageUpdates for all those messages.
@@ -113,6 +131,23 @@
         
         return [first compare:second];
     }];
+    
+    // Determine if we have to scroll to the first unread message.
+    if (self.hasFetchedMessages == NO)
+    {
+        int index = 0;
+        for (MessageData* message in self.messages)
+        {
+            if ([[MessageUpdatesHandler sharedHandler] messageUpdateWithUuid:message.uuid] != nil)
+            {
+                self.firstUnreadMessageIndex = index;
+                break;
+            }
+            index++;
+        }
+        
+        self.hasFetchedMessages = YES;
+    }
     
     [self removeUpdates];
     [self.collectionView reloadData];
