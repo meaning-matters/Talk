@@ -1537,7 +1537,7 @@
 
 
 // 40A. GET ALL MESSAGES
-- (void)retrieveMessages:(void (^)(NSError *, NSArray *))reply
+- (void)retrieveMessages:(void (^)(NSError*, NSArray*))reply
 {
     NSString* username = [Settings sharedSettings].webUsername;
     
@@ -1546,6 +1546,62 @@
             reply:reply];
 }
 
+
+/*
+ account_id: scope.e164.account_id,
+ number_e164: scope.e164.e164,
+ extern_e164: req.body.to_number,
+ direction: 0, // 0=OUT, 1=IN
+ euros: null, // @TODO: Build this
+ curratio: null, // @TODO: Build this
+ deleted: null,
+ uuid: scope.uuid,
+ text: req.body.msg,
+ timestamp: new Date, // UTC
+ fragment_reference: scope.fragment_reference, // @TODO: Build this
+ fragment_count: scope.fragments.length, // @TODO: Build this
+ 
+ message_id: scope.message.id,
+ sequence_number: fragment.sequence_number,
+ text: fragment.text,
+ timestamp: new Date, // UTC
+ delivery_status: null,
+ status_code: null,
+ transaction_id: null,
+ 
+ from: scope.message.number_e164,
+ msg: fragment.text,
+ frag:
+ {
+ frag_ref: scope.fragment_reference,
+ frag_total: scope.fragments.length,
+ frag_num: fragment.sequence_number
+ },
+ delivery_report: 'all'
+ */
+
+// Send message - /users/{user_id}/messages - Body: {from_number, to_number, msg}
+- (void)sendMessage:(MessageData*)message reply:(void(^)(NSError*, NSArray*))reply
+{
+    NSString*     username   = [Settings sharedSettings].webUsername;
+    NSDictionary* parameters = @{@"from_number" : message.numberE164,
+                                 @"to_number" : message.externE164,
+                                 @"msg" : message.text};
+    
+    [self postPath:[NSString stringWithFormat:@"/users/%@/messages", username]
+        parameters:parameters
+             reply:^(NSError* error, id content)
+     {
+         if (error == nil)
+         {
+             reply(nil, content[@"uuid"]);
+         }
+         else
+         {
+             reply(error, nil);
+         }
+     }];
+}
 
 // 40B. SEND SMS
 //- (void)createMessage:(NSString *)message destination:(NSString *)e164 reply:(void (^)(NSError * error, NSString* status))reply

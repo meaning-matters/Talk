@@ -13,6 +13,7 @@
 #import "WebStatus.h"
 #import "AddressStatus.h"
 #import "AddressType.h"
+#import "MessageData.h"
 
 
 @interface WebClient : NSObject
@@ -381,10 +382,9 @@
 // 40A. GET ALL MESSAGES
 - (void)retrieveMessages:(void (^)(NSError* error, NSArray* messages))reply;
 
+
 // 40B. SEND SMS
-//- (void)createMessage:(NSString *)message
-//            destination:(NSString *)e164
-//                  reply:(void (^)(NSError * error, NSString* status))reply;
+- (void)sendMessage:(MessageData*)message: reply:(void(^)(NSError*, NSArray*))reply;
 
 
 
