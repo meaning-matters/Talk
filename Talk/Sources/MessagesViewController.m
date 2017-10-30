@@ -14,6 +14,7 @@
 #import "ConversationViewController.h"
 #import "AppDelegate.h"
 #import "PhoneNumber.h"
+#import "NewConversationViewController.h"
 
 
 // @TODO:
@@ -27,6 +28,7 @@
 @property (nonatomic, strong) NSFetchedResultsController* fetchedMessagesController;
 @property (nonatomic, strong) NSManagedObjectContext*     managedObjectContext;
 @property (nonatomic, strong) UIRefreshControl*           refreshControl;
+@property (nonatomic, strong) UIBarButtonItem*            writeMessageButton;
 
 @end
 
@@ -69,6 +71,12 @@
     [self.refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:self.refreshControl];
     [self.tableView sendSubviewToBack:self.refreshControl];
+    
+    self.writeMessageButton = [[UIBarButtonItem alloc] initWithTitle:@"Write" // @TODO: Make this an icon.
+                                                               style:UIBarButtonItemStylePlain
+                                                              target:self
+                                                              action:@selector(tappedWriteMessageButton:)];
+    self.navigationItem.rightBarButtonItem = self.writeMessageButton;
 }
 
 
@@ -115,6 +123,21 @@
     {
         [sender endRefreshing];
     }
+}
+
+- (void)tappedWriteMessageButton:(id)sender
+{
+    UINavigationController*        modalViewController;
+    NewConversationViewController* newConversationViewController;
+    
+    newConversationViewController = [[NewConversationViewController alloc] init];
+    
+    modalViewController = [[UINavigationController alloc] initWithRootViewController:newConversationViewController];
+    modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    
+    [AppDelegate.appDelegate.tabBarController presentViewController:modalViewController
+                                                           animated:YES
+                                                         completion:nil];
 }
 
 
