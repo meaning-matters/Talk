@@ -144,7 +144,9 @@
 {
     if ([Settings sharedSettings].haveAccount == YES)
     {
-        [[DataManager sharedManager] synchronizeMessagesOnly:^(NSError* error)
+        NSDate* date = [Settings sharedSettings].messagesCheckDate;
+        
+        [[DataManager sharedManager] synchronizeMessagesOnlyFromDate: date reply:^(NSError* error)
         {
             self.objectsArray = [self.fetchedMessagesController fetchedObjects];
             
