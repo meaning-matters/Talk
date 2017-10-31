@@ -1209,22 +1209,22 @@
                     return;
                 }
                 
-                object.uuid        = dictionary[@"uuid"];
-                object.direction   = [MessageDirection messageDirectionEnumForString:dictionary[@"direction"]];
-                object.text        = dictionary[@"text"];
+                object.uuid      = dictionary[@"uuid"];
+                object.direction = [MessageDirection messageDirectionEnumForString:dictionary[@"direction"]];
+                object.text      = dictionary[@"text"];
                 
                 NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
                 [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
                 object.timestamp = [dateFormatter dateFromString:dictionary[@"timestamp"]];
                 
                 // The '+' is added to the numbers, then a PhoneNumber-object is made.
-                NSString* numberE164String = [NSString stringWithFormat:@"+%@", dictionary[@"number_e164"]];
-                PhoneNumber* numberE164    = [[PhoneNumber alloc] initWithNumber:numberE164String];
-                object.numberE164          = [numberE164 e164Format];
+                NSString*    numberE164String = [NSString stringWithFormat:@"+%@", dictionary[@"number_e164"]];
+                PhoneNumber* numberE164       = [[PhoneNumber alloc] initWithNumber:numberE164String];
+                object.numberE164             = [numberE164 e164Format];
                 
-                NSString* externE164String = [NSString stringWithFormat:@"+%@", dictionary[@"extern_e164"]];
-                PhoneNumber* externE164    = [[PhoneNumber alloc] initWithNumber:externE164String];
-                object.externE164          = [externE164 e164Format];
+                NSString*    externE164String = [NSString stringWithFormat:@"+%@", dictionary[@"extern_e164"]];
+                PhoneNumber* externE164       = [[PhoneNumber alloc] initWithNumber:externE164String];
+                object.externE164             = [externE164 e164Format];
                 
                 // Get the contactId for the external number.
                 [[AppDelegate appDelegate] findContactsHavingNumber:[externE164 e164Format]

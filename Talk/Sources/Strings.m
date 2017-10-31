@@ -668,14 +668,4 @@
                                              @"[iOS standard size].");
 }
 
-
-+ (NSString*)noConversationsString
-{
-    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings NoConversations", nil, [NSBundle mainBundle],
-                                             @"There are no conversations yet.",
-                                             @"Standard label to tell the user there are no conversations....\n"
-                                             @"[No size constraint].");
-}
-
-
 @end

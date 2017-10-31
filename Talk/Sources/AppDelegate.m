@@ -267,7 +267,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 }
 
 
-- (void)updateMessagesBadgeValue
+- (void)updateConversationsBadgeValue
 {
     [[BadgeHandler sharedHandler] setBadgeCount:[[MessageUpdatesHandler sharedHandler] badgeCount]
                               forViewController:self.conversationsViewController];
@@ -588,7 +588,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
                             if (error == nil)
                             {
                                 [self updateNumbersBadgeValue];
-                                [self updateMessagesBadgeValue];
+                                [self updateConversationsBadgeValue];
                                 [self refreshLocalNotifications];
 
                                 [Settings sharedSettings].synchronizeDate = [NSDate date];
@@ -709,7 +709,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
     NSSet* preferredSet = [NSSet setWithArray:[Settings sharedSettings].tabBarClassNames];
     NSSet* defaultSet   = [NSSet setWithArray:tabBarClassNames];
-    
+
     if ([preferredSet isEqualToSet:defaultSet])
     {
         // No view controllers were added/deleted/renamed.  Safe to use preferred set.

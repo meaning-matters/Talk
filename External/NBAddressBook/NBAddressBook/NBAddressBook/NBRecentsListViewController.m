@@ -1188,7 +1188,7 @@ typedef enum
     NSString*                  detailText;;
     NSMutableAttributedString* attributedText;
 
-    detailText     = [NSString stringWithFormat:@"%@\n%@", [NSString formatToTime:latestEntry.date], [Common dayOrDateForDate:latestEntry.date]];
+    detailText     = [NSString stringWithFormat:@"%@\n%@", [NSString formatToTime:latestEntry.date], [Common historyStringForDate:latestEntry.date showTimeForToday:NO]];
     attributedText = [[NSMutableAttributedString alloc] initWithString:detailText
                                                             attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14]}];
 

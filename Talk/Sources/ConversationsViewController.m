@@ -32,7 +32,8 @@
 @property (nonatomic, strong) UIRefreshControl*           refreshControl;
 @property (nonatomic, strong) NSArray*                    conversations;
 @property (nonatomic, strong) UILabel*                    noConversationsLabel;
-@property (nonatomic, weak) id<NSObject>                  observer;
+@property (nonatomic, strong) ConversationCell*           conversationCell;
+@property (nonatomic, weak) id<NSObject>                  defaultsObserver;
 @property (nonatomic, weak) id<NSObject>                  messagesObserver;
 
 @end
@@ -55,28 +56,28 @@
     }
     
     __weak typeof(self) weakSelf = self;
-    self.observer = [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
-                                                                      object:nil
-                                                                       queue:[NSOperationQueue mainQueue]
-                                                                  usingBlock:^(NSNotification* note)
-                    {
-                        [[AppDelegate appDelegate] updateMessagesBadgeValue];
-                        [weakSelf.tableView reloadData];
-                    }];
+    self.defaultsObserver        = [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
+                                                                                     object:nil
+                                                                                      queue:[NSOperationQueue mainQueue]
+                                                                                 usingBlock:^(NSNotification* note)
+    {
+        [[AppDelegate appDelegate] updateConversationsBadgeValue];
+        [weakSelf.tableView reloadData];
+    }];
     
     self.messagesObserver = [[NSNotificationCenter defaultCenter] addObserverForName:MessageUpdatesNotification
                                                                               object:nil
                                                                                queue:[NSOperationQueue mainQueue]
                                                                           usingBlock:^(NSNotification* note)
-                            {
-                                [[AppDelegate appDelegate] updateMessagesBadgeValue];
-                                NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
-                                [weakSelf.tableView reloadData];
-                                [self.tableView selectRowAtIndexPath:selectedIndexPath
-                                                            animated:NO
-                                                      scrollPosition:UITableViewScrollPositionNone];
-                                [[self.tableView cellForRowAtIndexPath:selectedIndexPath] layoutIfNeeded];
-                            }];
+    {
+        [[AppDelegate appDelegate] updateConversationsBadgeValue];
+        NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
+        [weakSelf.tableView reloadData];
+        [self.tableView selectRowAtIndexPath:selectedIndexPath
+                                    animated:NO
+                              scrollPosition:UITableViewScrollPositionNone];
+        [[self.tableView cellForRowAtIndexPath:selectedIndexPath] layoutIfNeeded];
+    }];
     
     return self;
 }
@@ -84,7 +85,8 @@
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self.observer];
+    [[NSNotificationCenter defaultCenter] removeObserver:self.defaultsObserver];
+    [[NSNotificationCenter defaultCenter] removeObserver:self.messagesObserver];
 }
 
 
@@ -92,7 +94,7 @@
 {
     [super viewDidLoad];
     
-    [[AppDelegate appDelegate] updateMessagesBadgeValue];
+    [[AppDelegate appDelegate] updateConversationsBadgeValue];
     
     self.fetchedMessagesController = [[DataManager sharedManager] fetchResultsForEntityName:@"Message"
                                                                                withSortKeys:nil
@@ -110,13 +112,29 @@
     [self.tableView addSubview:self.refreshControl];
     [self.tableView sendSubviewToBack:self.refreshControl];
     
+    [self.tableView registerNib:[UINib nibWithNibName:@"ConversationCell" bundle:nil]
+         forCellReuseIdentifier:@"ConversationCell"];
+    self.conversationCell = [self.tableView dequeueReusableCellWithIdentifier:@"ConversationCell"];
+    CellDotView* dotView = [[CellDotView alloc] init];
+    [dotView addToCell:self.conversationCell];
+    
     // Label that is shown when there are no conversations.
-    self.noConversationsLabel               = [[UILabel alloc] initWithFrame:CGRectMake(0, 0,
-                                                                                        self.tableView.bounds.size.width,
-                                                                                        self.tableView.bounds.size.height)];
-    self.noConversationsLabel.text          = [Strings noConversationsString];
-    self.noConversationsLabel.textColor     = [UIColor blackColor];
+    self.noConversationsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0,
+                                                                          self.tableView.bounds.size.width,
+                                                                          self.tableView.bounds.size.height)];
+    
+    NSString* noConversationsLabelString = NSLocalizedStringWithDefaultValue(@"General:CommonStrings NoConversations",
+                                                                             nil,
+                                                                             [NSBundle mainBundle],
+                                                                             @"There are no conversations yet.",
+                                                                             @"Standard label to tell the user there are no conversations....\n"
+                                                                             @"[No size constraint].");
+    
+    self.noConversationsLabel.text          = noConversationsLabelString;
     self.noConversationsLabel.textAlignment = NSTextAlignmentCenter;
+    self.noConversationsLabel.font          = [UIFont fontWithName:@"SF UI Text-Regular"
+                                                              size:15];
+    self.noConversationsLabel.textColor     = [UIColor colorWithRed:0.427451 green:0.427451 blue:0.447059 alpha:1];
 }
 
 
@@ -129,7 +147,7 @@
         [self.refreshControl beginRefreshing];
         [self.refreshControl endRefreshing];
         
-        [self showOrHideNoConversationsLabel];
+        [self updateConversationsLabel];
     });
 }
 
@@ -157,35 +175,28 @@
             dispatch_async(dispatch_get_main_queue(),^
             {
                 [sender endRefreshing];
-                [self showOrHideNoConversationsLabel];
+                [self updateConversationsLabel];
             });
         }];
     }
     else
     {
         [sender endRefreshing];
-        [self showOrHideNoConversationsLabel];
+        [self updateConversationsLabel];
     }
 }
 
 
 // Shows or hides the noConversationsLabel depending on if there are conversations.
-- (void)showOrHideNoConversationsLabel
+- (void)updateConversationsLabel
 {
-    if ([self.conversations count] == 0)
-    {
-        self.tableView.backgroundView = self.noConversationsLabel;
-    }
-    else
-    {
-        self.tableView.backgroundView = nil;
-    }
+    self.tableView.backgroundView = (self.conversations.count == 0) ? self.noConversationsLabel : nil;
 }
 
 
 // Groups messages by conversation:
 // - A group contains all messages with the same externE164.
-// - Within this group, the messages are sorted by its timestamp.
+// - Within this group, the messages are sorted by timestamp.
 // - All groups are sorted by the timestamp of the last message of that group.
 - (void)orderByConversation
 {
@@ -212,8 +223,8 @@
     {
         NSArray* sortedMessages = [messages sortedArrayUsingComparator:^NSComparisonResult(id a, id b)
         {
-            NSDate *first  = [(MessageData*)a timestamp];
-            NSDate *second = [(MessageData*)b timestamp];
+            NSDate* first  = [(MessageData*)a timestamp];
+            NSDate* second = [(MessageData*)b timestamp];
             
             return [first compare:second];
         }];
@@ -245,7 +256,7 @@
 
 
 // This needs to be overriden. If not, it will crash most of the time when there are changes to the content.
--(void)controllerWillChangeContent:(NSFetchedResultsController*)controller
+- (void)controllerWillChangeContent:(NSFetchedResultsController*)controller
 {
     // Nothing to do ...
 }
@@ -259,7 +270,7 @@
 
 - (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    return 70;
+    return self.conversationCell.bounds.size.height;
 }
 
 
@@ -284,11 +295,10 @@
     viewController.messages = self.conversations[indexPath.row];
     
     PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:message.externE164];
-    viewController.externE164 = [phoneNumber e164Format];
+    viewController.externE164 = phoneNumber.e164Format;
     
     [phoneNumber setNumber:message.numberE164];
-    viewController.numberE164 = [phoneNumber e164Format];
-    
+    viewController.numberE164 = phoneNumber.e164Format;
     viewController.contactId  = message.contactId;
     
     [self.navigationController pushViewController:viewController animated:YES];
@@ -298,11 +308,10 @@
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     ConversationCell* cell;
-    cell = [self.tableView dequeueReusableCellWithIdentifier:@"ConversationCell"];
     
     if (cell == nil)
     {
-        cell = [[[NSBundle mainBundle] loadNibNamed:@"ConversationCell" owner:nil options:nil] objectAtIndex:0];
+        cell = [tableView dequeueReusableCellWithIdentifier:@"ConversationCell" forIndexPath:indexPath];
         
         CellDotView* dotView = [[CellDotView alloc] init];
         [dotView addToCell:cell];
@@ -312,8 +321,9 @@
     MessageData* message = [self.conversations[indexPath.row] lastObject];
     
     // The dot on the left of the cell is shown if this conversation has an unread message.
-    CellDotView* dotView   = [CellDotView getFromCell:cell];
-    dotView.hidden         = YES;
+    CellDotView* dotView = [CellDotView getFromCell:cell];
+    dotView.hidden       = YES;
+    
     for (MessageData* message in self.conversations[indexPath.row])
     {
         if ([[MessageUpdatesHandler sharedHandler] messageUpdateWithUuid:message.uuid] != nil)
@@ -325,13 +335,13 @@
     
     cell.nameNumberLabel.text  = message.contactId ? [[AppDelegate appDelegate] contactNameForId:message.contactId] : message.externE164;
     cell.textPreviewLabel.text = message.text;
-    cell.timestampLabel.text   = [Common timestampOrDayOrDateForDate:message.timestamp];
+    cell.timestampLabel.text   = [Common historyStringForDate:message.timestamp showTimeForToday:YES];
     
     return cell;
 }
 
 
-// Indicate that the tabBar should hide when pushed to the next viewController.
+// Indicates that the tabBar should hide when pushed to the next viewController.
 - (BOOL)hidesBottomBarWhenPushed
 {
     return self.navigationController.visibleViewController != self;

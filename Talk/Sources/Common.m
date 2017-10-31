@@ -1695,20 +1695,21 @@ static Common* sharedCommon;
 }
 
 
-// Return [Yesterday] or weekday-name (if less than a week ago) or the date.
-// If timeForDay==YES: return time if it was today, else return [Today].
-+ (NSString*)dayOrDateForDate:(NSDate*)date timeForToday:(BOOL)timeForToday
+// Return a string for the datetime.
+// "Today"/"Yesterday" or the weekday-name or the date.
+// If showTimeForToday is true, "Today" will be replaced with the time.
++ (NSString*)historyStringForDate:(NSDate*)date showTimeForToday:(BOOL)showTimeForToday
 {
     NSString*         dayOrDate;
-    NSCalendar*       cal         = [NSCalendar currentCalendar];
-    NSDateComponents* components  = [cal components:(NSCalendarUnitYear       | NSCalendarUnitMonth |
-                                                     NSCalendarUnitWeekOfYear | NSCalendarUnitDay)
-                                           fromDate:date];
-    NSDate*           entryDate   = [cal dateFromComponents:components];
-    components                    = [cal components:(NSCalendarUnitYear       | NSCalendarUnitMonth |
-                                                     NSCalendarUnitWeekOfYear | NSCalendarUnitDay)
-                                           fromDate:[NSDate date]];
-    NSDate*           currentDate = [cal dateFromComponents:components];
+    NSCalendar*       calendar    = [NSCalendar currentCalendar];
+    NSDateComponents* components  = [calendar components:(NSCalendarUnitYear       | NSCalendarUnitMonth |
+                                                          NSCalendarUnitWeekOfYear | NSCalendarUnitDay)
+                                                fromDate:date];
+    NSDate*           entryDate   = [calendar dateFromComponents:components];
+    components                    = [calendar components:(NSCalendarUnitYear       | NSCalendarUnitMonth |
+                                                          NSCalendarUnitWeekOfYear | NSCalendarUnitDay)
+                                                fromDate:[NSDate date]];
+    NSDate*           currentDate = [calendar dateFromComponents:components];
     int               timeDelta   = [currentDate timeIntervalSinceDate:entryDate];
     
     // If the timeDelta is less than a week.
@@ -1716,7 +1717,7 @@ static Common* sharedCommon;
     {
         if (timeDelta == 0)
         {
-            if (timeForToday)
+            if (showTimeForToday)
             {
                 // If the timeDelta is 0 (today), return the time.
                 dayOrDate = [NSString formatToTime:date];
@@ -1753,20 +1754,6 @@ static Common* sharedCommon;
     }
     
     return dayOrDate;
-}
-
-
-// Return [Today / Yesterday] or weekday-name (if less than a week ago) or the date.
-+ (NSString*)dayOrDateForDate:(NSDate*)date
-{
-    return [Common dayOrDateForDate:date timeForToday:NO];
-}
-
-
-// Return time (if today) or [Yesterday] or weekday-name (if less than a week ago) or the date.
-+ (NSString*)timestampOrDayOrDateForDate:(NSDate*)date
-{
-    return [Common dayOrDateForDate:date timeForToday:YES];
 }
 
 @end

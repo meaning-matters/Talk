@@ -161,6 +161,4 @@
 
 + (NSString*)messagesString;
 
-+ (NSString*)noConversationsString;
-
 @end

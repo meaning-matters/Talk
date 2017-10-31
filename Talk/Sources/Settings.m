@@ -481,6 +481,12 @@ static NSUserDefaults* userDefaults;
 }
 
 
+- (void)setAddressUpdates:(NSDictionary*)addressUpdates
+{
+    [userDefaults setObject:addressUpdates forKey:AddressUpdatesKey];
+}
+
+
 - (NSDictionary*)messageUpdates
 {
     if ([userDefaults objectForKey:MessageUpdatesKey] == nil)
@@ -489,12 +495,6 @@ static NSUserDefaults* userDefaults;
     }
     
     return [userDefaults objectForKey:MessageUpdatesKey];
-}
-
-
-- (void)setAddressUpdates:(NSDictionary*)addressUpdates
-{
-    [userDefaults setObject:addressUpdates forKey:AddressUpdatesKey];
 }
 
 
@@ -605,10 +605,7 @@ static NSUserDefaults* userDefaults;
 
 - (NSString*)dnsSrvName
 {
-#warning !!! CHANGE BACK !!!
-    // Change it back to the commented line for producten. Now it will always use _api3x.
-    // return [NSString stringWithFormat:@"%@._tcp.numberbay.com", self.dnsSrvPrefix];
-    return [NSString stringWithFormat:@"%@._tcp.numberbay.com", @"_api3x"];
+    return [NSString stringWithFormat:@"%@._tcp.numberbay.com", self.dnsSrvPrefix];
 }
 
 
