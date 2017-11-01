@@ -23,6 +23,7 @@
 @property (nonatomic, strong) JSQMessagesBubbleImageFactory* bubbleFactory;
 @property (nonatomic, strong) UISearchBar*                   contactSearchBar;
 @property (nonatomic, strong) PhoneNumber*                   phoneNumber;
+//@property (nonatomic, strong) NBPeopleListViewController*    peopleListViewController;
 
 @end
 
@@ -65,17 +66,15 @@
 
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    self.phoneNumber.number = searchText;
-    if (self.phoneNumber.isValid)
+    [[[AppDelegate appDelegate] nBPeopleListViewController] filterContactsWithSearchString:searchText completion:^(NSArray* contacts)
     {
-        [[AppDelegate appDelegate] findContactsHavingNumber:[self.phoneNumber nationalDigits] completion:^(NSArray* contactIds)
+        for (int i = 0; i < contacts.count; i++)
         {
-            for (NSString* contactId in contactIds)
-            {
-                NSLog(@"%@",[[AppDelegate appDelegate] contactNameForId:contactId]);
-            }
-        }];
-    }
+            ABRecordRef contact = (__bridge ABRecordRef)[contacts objectAtIndex:i];
+            NSString* contactId = [NSString stringWithFormat:@"%d", ABRecordGetRecordID(contact)];
+            NSLog(@"%@\n", contactId);
+        }
+    }];
 }
 
 
@@ -89,6 +88,8 @@
     self.collectionView.dataSource = self;
     
     self.phoneNumber = [[PhoneNumber alloc] init];
+    
+//    self.peopleListViewController = [[NBPeopleListViewController alloc] init];
     
     if (self.contactId != nil)
     {

@@ -269,6 +269,32 @@
 }
 
 
+- (void)filterContactsWithSearchString:(NSString*)searchStringParam completion:(void(^)(NSArray* contacts))completion
+{
+    dispatch_async(searchQueue, ^
+    {
+        if (searchStringParam.length > 0)
+        {
+            if (searchString.length > 0 &&
+                searchString.length < searchStringParam.length &&
+                [searchString rangeOfString:searchStringParam options:NSCaseInsensitiveSearch].location != 0)
+            {
+                [self filterArrayUsingKeyword:searchStringParam];
+            }
+            else
+            {
+                filteredContacts = [NSMutableArray arrayWithArray:allContacts];
+                [self filterArrayUsingKeyword:searchStringParam];
+            }
+            
+            completion(filteredContacts);
+        }
+        
+        searchString = searchStringParam;
+    });
+}
+
+
 #pragma mark - Loading contacts
 
 - (void)loadContacts
