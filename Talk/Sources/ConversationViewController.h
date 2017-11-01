@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "JSQMessages.h"
 
-@interface ConversationViewController : JSQMessagesViewController
+@interface ConversationViewController : JSQMessagesViewController <UISearchBarDelegate>
 
 @property (nonatomic, strong) NSManagedObjectContext*     managedObjectContext;
 @property (nonatomic, strong) NSFetchedResultsController* fetchedMessagesController;

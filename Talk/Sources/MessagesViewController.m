@@ -14,7 +14,6 @@
 #import "ConversationViewController.h"
 #import "AppDelegate.h"
 #import "PhoneNumber.h"
-#import "NewConversationViewController.h"
 
 
 // @TODO:
@@ -72,10 +71,9 @@
     [self.tableView addSubview:self.refreshControl];
     [self.tableView sendSubviewToBack:self.refreshControl];
     
-    self.writeMessageButton = [[UIBarButtonItem alloc] initWithTitle:@"Write" // @TODO: Make this an icon.
-                                                               style:UIBarButtonItemStylePlain
-                                                              target:self
-                                                              action:@selector(tappedWriteMessageButton:)];
+    self.writeMessageButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
+                                                                            target:self
+                                                                            action:@selector(tappedWriteMessageButton:)];
     self.navigationItem.rightBarButtonItem = self.writeMessageButton;
 }
 
@@ -127,17 +125,21 @@
 
 - (void)tappedWriteMessageButton:(id)sender
 {
-    UINavigationController*        modalViewController;
-    NewConversationViewController* newConversationViewController;
+    MessageData* message = self.objectsArray[0];
     
-    newConversationViewController = [[NewConversationViewController alloc] init];
+    ConversationViewController* viewController = [ConversationViewController messagesViewController];
+    viewController.managedObjectContext        = self.managedObjectContext;
+    viewController.fetchedMessagesController   = self.fetchedMessagesController;
     
-    modalViewController = [[UINavigationController alloc] initWithRootViewController:newConversationViewController];
-    modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:message.externE164];
+    viewController.externE164 = [phoneNumber e164Format];
     
-    [AppDelegate.appDelegate.tabBarController presentViewController:modalViewController
-                                                           animated:YES
-                                                         completion:nil];
+    [phoneNumber setNumber:message.numberE164];
+    viewController.numberE164 = [phoneNumber e164Format];
+    
+    viewController.contactId  = message.contactId;
+    
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 

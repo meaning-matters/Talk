@@ -724,8 +724,6 @@
 		8297693F1F97677800128A2C /* JSQMessagesTypingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 829769121F97677800128A2C /* JSQMessagesTypingView.m */; };
 		829769481F9767AC00128A2C /* ConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 829769471F9767AC00128A2C /* ConversationViewController.m */; };
 		82A6638A1F9F7C53001C481F /* MessageDirection.m in Sources */ = {isa = PBXBuildFile; fileRef = 82A663891F9F7C53001C481F /* MessageDirection.m */; };
-		82AC3BD91FA7837C002AEB96 /* NewConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82AC3BD81FA7837C002AEB96 /* NewConversationViewController.m */; };
-		82AC3BE31FA78963002AEB96 /* NewConversationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 82AC3BE21FA78963002AEB96 /* NewConversationView.xib */; };
 		82B08B411F826C4400F07536 /* MessageData.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B08B401F826C4400F07536 /* MessageData.m */; };
 		82B7F0191F66EE7900CB5FFB /* MessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B7F0181F66EE7900CB5FFB /* MessagesViewController.m */; };
 		82B7F0211F66F3D200CB5FFB /* MessagesTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 82B7F0201F66F3D200CB5FFB /* MessagesTab@2x.png */; };
@@ -1659,9 +1657,6 @@
 		829769471F9767AC00128A2C /* ConversationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConversationViewController.m; sourceTree = "<group>"; };
 		82A663881F9F7C53001C481F /* MessageDirection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageDirection.h; sourceTree = "<group>"; };
 		82A663891F9F7C53001C481F /* MessageDirection.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageDirection.m; sourceTree = "<group>"; };
-		82AC3BD71FA7837C002AEB96 /* NewConversationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewConversationViewController.h; sourceTree = "<group>"; };
-		82AC3BD81FA7837C002AEB96 /* NewConversationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewConversationViewController.m; sourceTree = "<group>"; };
-		82AC3BE21FA78963002AEB96 /* NewConversationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewConversationView.xib; sourceTree = "<group>"; };
 		82B08B3F1F826C4400F07536 /* MessageData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageData.h; sourceTree = "<group>"; };
 		82B08B401F826C4400F07536 /* MessageData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageData.m; sourceTree = "<group>"; };
 		82B7F0171F66EE7900CB5FFB /* MessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesViewController.h; sourceTree = "<group>"; };
@@ -2640,7 +2635,6 @@
 				485E38A217B7E1960089F0F1 /* HtmlView.xib */,
 				48C9A2261BF7C9EC00966F80 /* KeypadMainView.xib */,
 				48AF450A164948CD00DFE3D8 /* KeypadView.xib */,
-				82AC3BE21FA78963002AEB96 /* NewConversationView.xib */,
 				480CE120193C4D100020F255 /* NumberPayCell.xib */,
 				488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */,
 				483679FA17246977001A02AF /* RecordingControlsCell.xib */,
@@ -2715,8 +2709,6 @@
 				48E61AF41EAD1A33001E3A93 /* LanguagesViewController.m */,
 				4849432D1752263600E1D5C4 /* LicensesViewController.h */,
 				4849432E1752263600E1D5C4 /* LicensesViewController.m */,
-				82AC3BD71FA7837C002AEB96 /* NewConversationViewController.h */,
-				82AC3BD81FA7837C002AEB96 /* NewConversationViewController.m */,
 				4896D8FE16EBE612008A2354 /* NumberAreasViewController.h */,
 				4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */,
 				4830462216EE269D000F9B05 /* NumberAreaViewController.h */,
@@ -3322,7 +3314,6 @@
 				4818DB611CAB0D380044AFE6 /* CountryRegions.json in Resources */,
 				485F6B101637270100D61365 /* IR@2x.png in Resources */,
 				4842DA041AADFB53008F35C9 /* portraitLine.png in Resources */,
-				82AC3BE31FA78963002AEB96 /* NewConversationView.xib in Resources */,
 				485F6B121637270100D61365 /* IS@2x.png in Resources */,
 				485A609218D7AEC50055C176 /* GetStarted2.png in Resources */,
 				485F6B141637270100D61365 /* IT@2x.png in Resources */,
@@ -3781,7 +3772,6 @@
 				48E678C91C9DD89000471BDE /* AddressStatus.m in Sources */,
 				829769361F97677800128A2C /* JSQMessagesInputToolbar.m in Sources */,
 				4837AF6D18D9B89A00D3AEBC /* GetStartedStartViewController.m in Sources */,
-				82AC3BD91FA7837C002AEB96 /* NewConversationViewController.m in Sources */,
 				829769261F97677800128A2C /* JSQAudioMediaItem.m in Sources */,
 				48F157501CA3412C00A5CB4C /* CountryRegions.m in Sources */,
 				48F14EDE1BF9C62200541EEC /* AddressesViewController.m in Sources */,

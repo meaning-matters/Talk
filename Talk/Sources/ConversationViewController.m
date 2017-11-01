@@ -21,6 +21,8 @@
 @property (nonatomic, strong) NSMutableArray*                fetchedMessages;
 @property (nonatomic, strong) NSArray*                       messages;
 @property (nonatomic, strong) JSQMessagesBubbleImageFactory* bubbleFactory;
+@property (nonatomic, strong) UISearchBar*                   contactSearchBar;
+@property (nonatomic, strong) PhoneNumber*                   phoneNumber;
 
 @end
 
@@ -45,6 +47,35 @@
     UITapGestureRecognizer* tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                     action:@selector(handleCollectionTapRecognizer:)];
     [self.collectionView addGestureRecognizer:tapRecognizer];
+    
+    // Setup searchbar for selecting a contact or choosing a number.
+    self.contactSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, 40)];
+    self.contactSearchBar.delegate        = self;
+    self.contactSearchBar.searchBarStyle  = UISearchBarStyleMinimal;
+    self.contactSearchBar.tintColor       = [UIColor grayColor];
+    self.contactSearchBar.searchBarStyle  = UISearchBarStyleMinimal;
+    self.contactSearchBar.backgroundColor = [UIColor whiteColor]; // @TODO: Same color as navigationBar
+    self.contactSearchBar.placeholder = @"Contact or number"; // @TODO: Other text + localizedString
+    [self.view addSubview:self.contactSearchBar];
+    
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setDefaultTextAttributes:
+                                                                      @{NSForegroundColorAttributeName:[UIColor blackColor]}];
+}
+
+
+-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    self.phoneNumber.number = searchText;
+    if (self.phoneNumber.isValid)
+    {
+        [[AppDelegate appDelegate] findContactsHavingNumber:[self.phoneNumber nationalDigits] completion:^(NSArray* contactIds)
+        {
+            for (NSString* contactId in contactIds)
+            {
+                NSLog(@"%@",[[AppDelegate appDelegate] contactNameForId:contactId]);
+            }
+        }];
+    }
 }
 
 
@@ -56,6 +87,8 @@
     
     self.collectionView.delegate   = self;
     self.collectionView.dataSource = self;
+    
+    self.phoneNumber = [[PhoneNumber alloc] init];
     
     if (self.contactId != nil)
     {
