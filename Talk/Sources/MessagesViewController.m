@@ -14,6 +14,7 @@
 #import "ConversationViewController.h"
 #import "AppDelegate.h"
 #import "PhoneNumber.h"
+#import "NewConversationViewController.h"
 
 
 // @TODO:
@@ -125,19 +126,23 @@
 
 - (void)tappedWriteMessageButton:(id)sender
 {
-    MessageData* message = self.objectsArray[0];
+//    MessageData* message = self.objectsArray[0];
     
-    ConversationViewController* viewController = [ConversationViewController messagesViewController];
-    viewController.managedObjectContext        = self.managedObjectContext;
-    viewController.fetchedMessagesController   = self.fetchedMessagesController;
+//    ConversationViewController* viewController = [ConversationViewController messagesViewController];
+//    viewController.managedObjectContext        = self.managedObjectContext;
+//    viewController.fetchedMessagesController   = self.fetchedMessagesController;
     
-    PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:message.externE164];
-    viewController.externE164 = [phoneNumber e164Format];
+//    PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:message.externE164];
+//    viewController.externE164 = [phoneNumber e164Format];
     
-    [phoneNumber setNumber:message.numberE164];
-    viewController.numberE164 = [phoneNumber e164Format];
+//    [phoneNumber setNumber:message.numberE164];
+//    viewController.numberE164 = [phoneNumber e164Format];
     
-    viewController.contactId  = message.contactId;
+//    viewController.contactId  = message.contactId;
+    
+    NewConversationViewController* viewController = [[NewConversationViewController alloc] init];
+    viewController.managedObjectContext           = self.managedObjectContext;
+    viewController.fetchedMessagesController      = self.fetchedMessagesController;
     
     [self.navigationController pushViewController:viewController animated:YES];
 }

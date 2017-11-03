@@ -23,11 +23,6 @@
 @property (nonatomic, strong) JSQMessagesBubbleImageFactory* bubbleFactory;
 @property (nonatomic, strong) PhoneNumber*                   phoneNumber;
 
-@property (nonatomic, strong) NSMutableArray*                contactSearchResults;
-@property (nonatomic, strong) UISearchController*            contactsSearchController;
-@property (nonatomic, strong) UIViewController*              contactsSearchResultsController;
-@property (nonatomic, strong) UITableView*                   contactsSearchResultsView;
-
 @end
 
 
@@ -51,75 +46,6 @@
     UITapGestureRecognizer* tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                     action:@selector(handleCollectionTapRecognizer:)];
     [self.collectionView addGestureRecognizer:tapRecognizer];
-    
-    self.inputToolbar.hidden = YES;
-    
-    self.contactsSearchResultsView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 64) style:UITableViewStylePlain];
-    self.contactsSearchResultsView.delegate = self;
-    self.contactsSearchResultsView.dataSource = self;
-    
-    self.contactsSearchResultsController = [[UIViewController alloc] init];
-    self.contactsSearchResultsController.view = self.contactsSearchResultsView;
-    
-    [self.view addSubview:self.contactsSearchResultsView];
-    
-    self.contactsSearchController = [[UISearchController alloc] initWithSearchResultsController:nil];
-    self.contactsSearchController.searchResultsUpdater = self;
-    self.contactsSearchController.delegate = self;
-    self.contactsSearchController.searchBar.delegate = self;
-    
-    self.contactsSearchController.hidesNavigationBarDuringPresentation = NO;
-    self.contactsSearchController.dimsBackgroundDuringPresentation = NO;
-    self.navigationItem.titleView = self.contactsSearchController.searchBar;
-    self.definesPresentationContext = YES;
-}
-
-
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return self.contactSearchResults.count;
-}
-- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
-{
-    UITableViewCell* cell = [self.contactsSearchResultsView dequeueReusableCellWithIdentifier:@"ContactsSearchResultCell"];
-    
-    if (cell == nil)
-    {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ContactsSearchResultCell"];
-    }
-    
-    cell.textLabel.text = self.contactSearchResults[indexPath.row];
-    
-    return cell;
-}
-
--(void)updateSearchResultsForSearchController:(UISearchController *)searchController
-{
-    
-}
-
-
-- (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
-{
-    self.contactSearchResults = [[NSMutableArray alloc] init];
-    [[[AppDelegate appDelegate] nBPeopleListViewController] filterContactsWithSearchString:searchText completion:^(NSArray* contacts)
-    {
-        for (int i = 0; i < contacts.count; i++)
-        {
-            ABRecordRef contact = (__bridge ABRecordRef)[contacts objectAtIndex:i];
-            NSString* contactId = [NSString stringWithFormat:@"%d", ABRecordGetRecordID(contact)];
-            [self.contactSearchResults addObject:contactId];
-            NSString* contactName = [[AppDelegate appDelegate] contactNameForId:contactId];
-        }
-        dispatch_async(dispatch_get_main_queue(),^
-        {
-            [self.contactsSearchResultsView reloadData];
-        });
-    }];
 }
 
 

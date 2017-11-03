@@ -724,6 +724,7 @@
 		8297693F1F97677800128A2C /* JSQMessagesTypingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 829769121F97677800128A2C /* JSQMessagesTypingView.m */; };
 		829769481F9767AC00128A2C /* ConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 829769471F9767AC00128A2C /* ConversationViewController.m */; };
 		82A6638A1F9F7C53001C481F /* MessageDirection.m in Sources */ = {isa = PBXBuildFile; fileRef = 82A663891F9F7C53001C481F /* MessageDirection.m */; };
+		82AC3BEE1FAC966F002AEB96 /* NewConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82AC3BED1FAC966F002AEB96 /* NewConversationViewController.m */; };
 		82B08B411F826C4400F07536 /* MessageData.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B08B401F826C4400F07536 /* MessageData.m */; };
 		82B7F0191F66EE7900CB5FFB /* MessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B7F0181F66EE7900CB5FFB /* MessagesViewController.m */; };
 		82B7F0211F66F3D200CB5FFB /* MessagesTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 82B7F0201F66F3D200CB5FFB /* MessagesTab@2x.png */; };
@@ -1657,6 +1658,8 @@
 		829769471F9767AC00128A2C /* ConversationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConversationViewController.m; sourceTree = "<group>"; };
 		82A663881F9F7C53001C481F /* MessageDirection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageDirection.h; sourceTree = "<group>"; };
 		82A663891F9F7C53001C481F /* MessageDirection.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageDirection.m; sourceTree = "<group>"; };
+		82AC3BEC1FAC966F002AEB96 /* NewConversationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewConversationViewController.h; sourceTree = "<group>"; };
+		82AC3BED1FAC966F002AEB96 /* NewConversationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewConversationViewController.m; sourceTree = "<group>"; };
 		82B08B3F1F826C4400F07536 /* MessageData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageData.h; sourceTree = "<group>"; };
 		82B08B401F826C4400F07536 /* MessageData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageData.m; sourceTree = "<group>"; };
 		82B7F0171F66EE7900CB5FFB /* MessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesViewController.h; sourceTree = "<group>"; };
@@ -2763,6 +2766,8 @@
 				82B7F0181F66EE7900CB5FFB /* MessagesViewController.m */,
 				829769461F97679600128A2C /* ConversationViewController.h */,
 				829769471F9767AC00128A2C /* ConversationViewController.m */,
+				82AC3BEC1FAC966F002AEB96 /* NewConversationViewController.h */,
+				82AC3BED1FAC966F002AEB96 /* NewConversationViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -3772,6 +3777,7 @@
 				48E678C91C9DD89000471BDE /* AddressStatus.m in Sources */,
 				829769361F97677800128A2C /* JSQMessagesInputToolbar.m in Sources */,
 				4837AF6D18D9B89A00D3AEBC /* GetStartedStartViewController.m in Sources */,
+				82AC3BEE1FAC966F002AEB96 /* NewConversationViewController.m in Sources */,
 				829769261F97677800128A2C /* JSQAudioMediaItem.m in Sources */,
 				48F157501CA3412C00A5CB4C /* CountryRegions.m in Sources */,
 				48F14EDE1BF9C62200541EEC /* AddressesViewController.m in Sources */,
