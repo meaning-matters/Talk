@@ -384,7 +384,7 @@
 
 
 // 40B. SEND SMS
-- (void)sendMessage:(MessageData*)message: reply:(void(^)(NSError* error, NSArray* messages))reply;
+- (void)sendMessage:(MessageData*)message reply:(void(^)(NSError* error, NSString* uuid))reply;
 
 
 

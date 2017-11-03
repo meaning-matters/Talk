@@ -101,7 +101,7 @@
     {
         for (int i = 0; i < contacts.count; i++)
         {
-            ABRecordRef contact     = (__bridge ABRecordRef)[contacts objectAtIndex:i];
+            ABRecordRef contact = (__bridge ABRecordRef)[contacts objectAtIndex:i];
             NSString*   contactId   = [NSString stringWithFormat:@"%d", ABRecordGetRecordID(contact)];
             NSString*   contactName = [[AppDelegate appDelegate] contactNameForId:contactId];
             NSArray*    contactInfo = @[contactId, contactName];

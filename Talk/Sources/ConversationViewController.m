@@ -49,6 +49,19 @@
 }
 
 
+-(void)didPressSendButton:(UIButton*)button withMessageText:(NSString*)text senderId:(NSString*)senderId senderDisplayName:(NSString*)senderDisplayName date:(NSDate*)date
+{
+    MessageData* message = [NSEntityDescription insertNewObjectForEntityForName:@"Message"
+                                                         inManagedObjectContext:self.managedObjectContext];
+    [message.managedObjectContext refreshObject:message mergeChanges:NO];
+    
+    [message createForNumberE164:@"34668690178" externE164:@"31683378285" message:text datetime:date completion:^(NSError* error)
+    {
+        
+    }];
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -180,17 +193,6 @@
 }
 
 
-// Mandatory to override.
-- (id<JSQMessageAvatarImageDataSource>)collectionView:(JSQMessagesCollectionView*)collectionView
-                    avatarImageDataForItemAtIndexPath:(NSIndexPath*)indexPath
-{
-    NBLog(@"--- [ Not Implemented ]: ConversationViewController.m -> avatarImageDataForItemAtIndexPath");
-
-    // Return nil to disable avatarImages next to the bubbles.
-    return nil;
-}
-
-
 - (BOOL)textView:(UITextView*)textView shouldInteractWithURL:(NSURL*)URL inRange:(NSRange)characterRange
 {
     // @TODO: (another user-story)
@@ -247,5 +249,26 @@
         }
     }
 }
+
+#pragma mark Mandatory methods to override from JSQMessagesViewController
+
+- (id<JSQMessageAvatarImageDataSource>)collectionView:(JSQMessagesCollectionView*)collectionView
+                    avatarImageDataForItemAtIndexPath:(NSIndexPath*)indexPath
+{
+    NBLog(@"--- [ Not Implemented ]: ConversationViewController.m -> avatarImageDataForItemAtIndexPath");
+    
+    // Return nil to disable avatarImages next to the bubbles.
+    return nil;
+}
+
+
+- (NSString*)senderDisplayName
+{
+    return nil;
+}
+
+
+
+
 
 @end

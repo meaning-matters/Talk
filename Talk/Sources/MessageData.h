@@ -21,4 +21,10 @@
 @property (nonatomic, retain) NSString* uuid;
 @property (nonatomic, retain) NSString* contactId;
 
+- (void)createForNumberE164:(NSString*)numberE164
+                 externE164:(NSString*)externE164
+                    message:(NSString*)message
+                   datetime:(NSDate*)datetime
+                 completion:(void (^)(NSError* error))completion;
+
 @end

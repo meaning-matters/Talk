@@ -1548,7 +1548,7 @@
 
 
 // Send message - /users/{user_id}/messages - Body: {from_number, to_number, msg}
-- (void)sendMessage:(MessageData*)message: reply:(void(^)(NSError* error, NSArray* messages))reply
+- (void)sendMessage:(MessageData*)message reply:(void(^)(NSError* error, NSString* uuid))reply
 {
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSDictionary* parameters = @{@"from_number" : message.numberE164,
@@ -1569,6 +1569,8 @@
          }
      }];
 }
+
+
 
 // 40B. SEND SMS
 //- (void)createMessage:(NSString *)message destination:(NSString *)e164 reply:(void (^)(NSError * error, NSString* status))reply
