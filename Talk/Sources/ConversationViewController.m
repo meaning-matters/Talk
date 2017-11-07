@@ -78,39 +78,17 @@
 }
 
 
-- (void)didPressSendButton:(UIButton*)button
-           withMessageText:(NSString*)text
-                  senderId:(NSString*)senderId
-         senderDisplayName:(NSString*)senderDisplayName
-                      date:(NSDate*)date
+- (void)viewWillDisappear:(BOOL)animated
 {
-    self.sentMessage = [NSEntityDescription insertNewObjectForEntityForName:@"Message"
-                                                     inManagedObjectContext:self.managedObjectContext];
+    // @TODO: This still shows the 2nd viewController for a second ...
+    [super viewWillDisappear:animated];
     
-    // @TODO: Check which number-format is correct
-    // @TODO: Use correct timezone + format
-    [self.sentMessage createForNumberE164:[self.numberE164 internationalFormat]
-                               externE164:[self.externE164 internationalFormat] 
-                                     text:text
-                                 datetime:date
-                               completion:^(NSError* error)
+    // If there are messages, so the conversation already exists, go back to root.
+    // Otherwise go back one so the user can change the contact.
+    if (self.messages.count > 0)
     {
-        if (error == nil)
-        {
-            [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
-            NSManagedObjectContext* mainContext = [DataManager sharedManager].managedObjectContext;
-            self.sentMessage = [mainContext existingObjectWithID:self.sentMessage.objectID error:nil];
-            
-            [self.fetchedMessages addObject:self.sentMessage];
-            
-            [self finishSendingMessage];
-            // @TODO: "- (void)processMessages:(NSArray*)messages" (on branch receive-sms)
-        }
-        else
-        {
-            NBLog(@"Sending message failed..."); // @TODO: Handle this error.
-        }
-    }];
+        [self.navigationController popToRootViewControllerAnimated:animated];
+    }
 }
 
 
@@ -289,6 +267,42 @@
     {
         return YES;
     }
+}
+
+
+- (void)didPressSendButton:(UIButton*)button
+           withMessageText:(NSString*)text
+                  senderId:(NSString*)senderId
+         senderDisplayName:(NSString*)senderDisplayName
+                      date:(NSDate*)date
+{
+    self.sentMessage = [NSEntityDescription insertNewObjectForEntityForName:@"Message"
+                                                     inManagedObjectContext:self.managedObjectContext];
+    
+    // @TODO: Check which number-format is correct
+    // @TODO: Use correct timezone + format
+    [self.sentMessage createForNumberE164:[self.numberE164 internationalFormat]
+                               externE164:[self.externE164 internationalFormat]
+                                     text:text
+                                 datetime:date
+                               completion:^(NSError* error)
+    {
+        if (error == nil)
+        {
+            [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+            NSManagedObjectContext* mainContext = [DataManager sharedManager].managedObjectContext;
+            self.sentMessage = [mainContext existingObjectWithID:self.sentMessage.objectID error:nil];
+            
+            [self.fetchedMessages addObject:self.sentMessage];
+            
+            [self finishSendingMessage];
+            // @TODO: "- (void)processMessages:(NSArray*)messages" (on branch receive-sms)
+        }
+        else
+        {
+            NBLog(@"Sending message failed..."); // @TODO: Handle this error.
+        }
+    }];
 }
 
 
