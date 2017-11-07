@@ -45,7 +45,7 @@
 {
     if (self = [super init])
     {
-        self.managedObjectContext = managedObjectContext;
+        self.managedObjectContext      = managedObjectContext;
         self.fetchedMessagesController = fetchedMessagesController;
         
         self.numberE164 = numberE164;
@@ -206,7 +206,7 @@
 {
     MessageData*                        message = [self messageAtIndexPath:indexPath];
     id<JSQMessageBubbleImageDataSource> result  = nil;
-    
+
     switch (message.direction)
     {
         case MessageDirectionInbound:

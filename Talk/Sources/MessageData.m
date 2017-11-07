@@ -31,6 +31,7 @@
     self.externE164 = externE164;
     self.text = text;
     self.timestamp = datetime;
+    self.direction = MessageDirectionOutbound;
     
     [[WebClient sharedClient] sendMessage:self
                                     reply:^(NSError* error, NSString* uuid)
