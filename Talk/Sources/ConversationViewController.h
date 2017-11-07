@@ -8,14 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import "JSQMessages.h"
+#import "PhoneNumber.h"
 
 @interface ConversationViewController : JSQMessagesViewController
 
-@property (nonatomic, strong) NSManagedObjectContext*     managedObjectContext;
-@property (nonatomic, strong) NSFetchedResultsController* fetchedMessagesController;
-
-@property (nonatomic, strong) NSString*                   numberE164;
-@property (nonatomic, strong) NSString*                   externE164;
-@property (nonatomic, strong) NSString*                   contactId;
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
+                   fetchedMessagesController:(NSFetchedResultsController*)fetchedMessagesController
+                                  numberE164:(PhoneNumber*)numberE164
+                                  externE164:(PhoneNumber*)externE164
+                                   contactId:(NSString*)contactId;
 
 @end

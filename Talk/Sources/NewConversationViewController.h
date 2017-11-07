@@ -10,7 +10,7 @@
 
 @interface NewConversationViewController : SearchTableViewController
 
-@property (nonatomic, strong) NSManagedObjectContext*     managedObjectContext;
-@property (nonatomic, strong) NSFetchedResultsController* fetchedMessagesController;
+- (instancetype)initWithManagedObjectContact:(NSManagedObjectContext*)managedObjectContext
+                   fetchedMessagesController:(NSFetchedResultsController*)fetchedMessagesController;
 
 @end

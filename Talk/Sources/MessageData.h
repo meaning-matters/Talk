@@ -23,7 +23,7 @@
 
 - (void)createForNumberE164:(NSString*)numberE164
                  externE164:(NSString*)externE164
-                    message:(NSString*)message
+                       text:(NSString*)text
                    datetime:(NSDate*)datetime
                  completion:(void (^)(NSError* error))completion;
 

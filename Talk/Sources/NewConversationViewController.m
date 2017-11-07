@@ -12,12 +12,28 @@
 
 @interface NewConversationViewController ()
 
-@property (nonatomic, strong) NSMutableArray* contactSearchResults;
+@property (nonatomic, strong) NSManagedObjectContext*     managedObjectContext;
+@property (nonatomic, strong) NSFetchedResultsController* fetchedMessagesController;
+@property (nonatomic, strong) NSMutableArray*             contactSearchResults;
+@property (nonatomic, strong) NSString*                   searchBarContent;
 
 @end
 
 
 @implementation NewConversationViewController
+
+- (instancetype)initWithManagedObjectContact:(NSManagedObjectContext*)managedObjectContext
+                   fetchedMessagesController:(NSFetchedResultsController*)fetchedMessagesController
+{
+    if (self = [super init])
+    {
+        self.managedObjectContext      = managedObjectContext;
+        self.fetchedMessagesController = fetchedMessagesController;
+    }
+    
+    return self;
+}
+
 
 - (void)viewDidLoad
 {
@@ -78,9 +94,16 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    ConversationViewController* viewController = [ConversationViewController messagesViewController];
-    viewController.managedObjectContext        = self.managedObjectContext;
-    viewController.fetchedMessagesController   = self.fetchedMessagesController;
+    PhoneNumber* numberE164 = [[PhoneNumber alloc] initWithNumber:@"34668690178"]; // @TODO: Get default SMS number, or a selection-popup or something ???
+    PhoneNumber* externE164 = [[PhoneNumber alloc] initWithNumber:@"31683378285"]; // @TODO: Get number of selected contact (select of multiple?) or the typed number.
+    NSString*    contactId  = @"23"; // @TODO: Get contactId for selected contact or nil
+    
+    ConversationViewController* viewController = [[ConversationViewController alloc] initWithManagedObjectContext:self.managedObjectContext
+                                                                                        fetchedMessagesController:self.fetchedMessagesController
+                                                                                                       numberE164:numberE164
+                                                                                                       externE164:externE164
+                                                                                                        contactId:contactId];
+    
     
 //    PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:message.externE164];
 //    viewController.externE164 = [phoneNumber e164Format];
@@ -90,12 +113,28 @@
     
 //    viewController.contactId  = message.contactId;
     
+//    PhoneNumber* number = [[PhoneNumber alloc] initWithNumber:self.searchBarContent];
+//
+//    if (self.contactSearchResults.count > 0) // If there are search-results
+//    {
+//        // Get number for contact at indexPath
+//    }
+//    else if ([number isValid]) // If entered number is valid
+//    {
+//        // Use typed number
+//    }
+//    else
+//    {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//    }
+    
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
 
 - (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
 {
+    self.searchBarContent = searchText;
     self.contactSearchResults = [[NSMutableArray alloc] init];
     [[[AppDelegate appDelegate] nBPeopleListViewController] filterContactsWithSearchString:searchText completion:^(NSArray* contacts)
     {

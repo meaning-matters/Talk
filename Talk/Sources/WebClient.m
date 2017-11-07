@@ -1571,26 +1571,6 @@
 }
 
 
-
-// 40B. SEND SMS
-//- (void)createMessage:(NSString *)message destination:(NSString *)e164 reply:(void (^)(NSError * error, NSString* status))reply
-//{
-//    [self getPath:[NSString stringWithFormat:@"/users/%@/sms/v1/%@", [Settings sharedSettings].webUsername, e164]
-//       parameters:nil
-//            reply:^(NSError* error, id content)
-//     {
-//         if (error == nil)
-//         {
-//             reply(nil, content);
-//         }
-//         else
-//         {
-//             reply(error, nil);
-//         }
-//     }];
-//}
-
-
 #pragma mark - Public Utility
 
 // 0A.

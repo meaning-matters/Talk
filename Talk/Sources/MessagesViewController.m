@@ -60,7 +60,6 @@
     self.fetchedMessagesController = [[DataManager sharedManager] fetchResultsForEntityName:@"Message"
                                                                                withSortKeys:@[@"uuid"]
                                                                        managedObjectContext:self.managedObjectContext];
-    
     self.fetchedMessagesController.delegate = self;
     
     self.objectsArray = [self.fetchedMessagesController fetchedObjects];
@@ -95,7 +94,6 @@
     
     dispatch_async(dispatch_get_main_queue(), ^
     {
-        // @TODO: Is this a good way for the initial synchronize, or just put the actual synchronize-code here?
         [self.refreshControl beginRefreshing];
         [self.refreshControl endRefreshing];
     });
@@ -112,8 +110,6 @@
             [self createIndexOfWidth:0];
              
             dispatch_async(dispatch_get_main_queue(), ^{
-                // @TODO: Fix this
-                // RefreshControl doesn't hide (table stays down) when outside of this block.
                 [sender endRefreshing];
             });
         }];
@@ -126,23 +122,8 @@
 
 - (void)tappedWriteMessageButton:(id)sender
 {
-//    MessageData* message = self.objectsArray[0];
-    
-//    ConversationViewController* viewController = [ConversationViewController messagesViewController];
-//    viewController.managedObjectContext        = self.managedObjectContext;
-//    viewController.fetchedMessagesController   = self.fetchedMessagesController;
-    
-//    PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:message.externE164];
-//    viewController.externE164 = [phoneNumber e164Format];
-    
-//    [phoneNumber setNumber:message.numberE164];
-//    viewController.numberE164 = [phoneNumber e164Format];
-    
-//    viewController.contactId  = message.contactId;
-    
-    NewConversationViewController* viewController = [[NewConversationViewController alloc] init];
-    viewController.managedObjectContext           = self.managedObjectContext;
-    viewController.fetchedMessagesController      = self.fetchedMessagesController;
+    NewConversationViewController* viewController = [[NewConversationViewController alloc] initWithManagedObjectContact:self.managedObjectContext
+                                                                                              fetchedMessagesController:self.fetchedMessagesController];
     
     [self.navigationController pushViewController:viewController animated:YES];
 }
@@ -170,7 +151,6 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    // @TODO: Leave it like this? (We probably have only 1 section, but maybe when the table is still empty ... ?)
     return [[self.fetchedMessagesController sections] count];
 }
 
@@ -199,18 +179,15 @@
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
     MessageData* message = self.objectsArray[indexPath.row];
- 
-    ConversationViewController* viewController = [ConversationViewController messagesViewController];
-    viewController.managedObjectContext        = self.managedObjectContext;
-    viewController.fetchedMessagesController   = self.fetchedMessagesController;
     
-    PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:message.externE164];
-    viewController.externE164 = [phoneNumber e164Format];
+    PhoneNumber* numberE164 = [[PhoneNumber alloc] initWithNumber:message.numberE164];
+    PhoneNumber* externE164 = [[PhoneNumber alloc] initWithNumber:message.externE164];
     
-    [phoneNumber setNumber:message.numberE164];
-    viewController.numberE164 = [phoneNumber e164Format];
-    
-    viewController.contactId  = message.contactId;
+    ConversationViewController* viewController = [[ConversationViewController alloc] initWithManagedObjectContext:self.managedObjectContext
+                                                                                        fetchedMessagesController:self.fetchedMessagesController
+                                                                                                       numberE164:numberE164
+                                                                                                       externE164:externE164
+                                                                                                        contactId:message.contactId];
     
     [self.navigationController pushViewController:viewController animated:YES];
 }

@@ -14,19 +14,48 @@
 #import "PhoneNumber.h"
 #import "Settings.h"
 #import "AppDelegate.h"
+#import "DataManager.h"
 
 
 @interface ConversationViewController ()
 
+@property (nonatomic, strong) NSManagedObjectContext*        managedObjectContext;
+@property (nonatomic, strong) NSFetchedResultsController*    fetchedMessagesController;
+
 @property (nonatomic, strong) NSMutableArray*                fetchedMessages;
 @property (nonatomic, strong) NSArray*                       messages;
+
 @property (nonatomic, strong) JSQMessagesBubbleImageFactory* bubbleFactory;
-@property (nonatomic, strong) PhoneNumber*                   phoneNumber;
+@property (nonatomic, strong) MessageData*                   sentMessage;
+
+@property (nonatomic, strong) PhoneNumber*                   numberE164;
+@property (nonatomic, strong) PhoneNumber*                   externE164;
+@property (nonatomic, strong) NSString*                      contactId;
 
 @end
 
 
 @implementation ConversationViewController
+
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
+                   fetchedMessagesController:(NSFetchedResultsController*)fetchedMessagesController
+                                  numberE164:(PhoneNumber*)numberE164
+                                  externE164:(PhoneNumber*)externE164
+                                   contactId:(NSString *)contactId
+{
+    if (self = [super init])
+    {
+        self.managedObjectContext = managedObjectContext;
+        self.fetchedMessagesController = fetchedMessagesController;
+        
+        self.numberE164 = numberE164;
+        self.externE164 = externE164;
+        self.contactId  = contactId;
+    }
+    
+    return self;
+}
+
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -49,15 +78,38 @@
 }
 
 
--(void)didPressSendButton:(UIButton*)button withMessageText:(NSString*)text senderId:(NSString*)senderId senderDisplayName:(NSString*)senderDisplayName date:(NSDate*)date
+- (void)didPressSendButton:(UIButton*)button
+           withMessageText:(NSString*)text
+                  senderId:(NSString*)senderId
+         senderDisplayName:(NSString*)senderDisplayName
+                      date:(NSDate*)date
 {
-    MessageData* message = [NSEntityDescription insertNewObjectForEntityForName:@"Message"
-                                                         inManagedObjectContext:self.managedObjectContext];
-    [message.managedObjectContext refreshObject:message mergeChanges:NO];
+    self.sentMessage = [NSEntityDescription insertNewObjectForEntityForName:@"Message"
+                                                     inManagedObjectContext:self.managedObjectContext];
     
-    [message createForNumberE164:@"34668690178" externE164:@"31683378285" message:text datetime:date completion:^(NSError* error)
+    // @TODO: Check which number-format is correct
+    // @TODO: Use correct timezone + format
+    [self.sentMessage createForNumberE164:[self.numberE164 internationalFormat]
+                               externE164:[self.externE164 internationalFormat] 
+                                     text:text
+                                 datetime:date
+                               completion:^(NSError* error)
     {
-        
+        if (error == nil)
+        {
+            [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+            NSManagedObjectContext* mainContext = [DataManager sharedManager].managedObjectContext;
+            self.sentMessage = [mainContext existingObjectWithID:self.sentMessage.objectID error:nil];
+            
+            [self.fetchedMessages addObject:self.sentMessage];
+            
+            [self finishSendingMessage];
+            // @TODO: "- (void)processMessages:(NSArray*)messages" (on branch receive-sms)
+        }
+        else
+        {
+            NBLog(@"Sending message failed..."); // @TODO: Handle this error.
+        }
     }];
 }
 
@@ -71,15 +123,14 @@
     self.collectionView.delegate   = self;
     self.collectionView.dataSource = self;
     
-    self.phoneNumber = [[PhoneNumber alloc] init];
-    
     if (self.contactId != nil)
     {
         self.title = [[AppDelegate appDelegate] contactNameForId:self.contactId];
     }
     else
     {
-        self.title = self.externE164;
+        // @TODO: Contact-name or number
+        self.title = [self.externE164 internationalFormat];
     }
 }
 
@@ -102,8 +153,11 @@
 {
     if (self.fetchedMessages == nil)
     {
-        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"numberE164 == %@ AND externE164 = %@", [self numberE164], [self externE164]];
-        self.fetchedMessages = [[NSMutableArray alloc] initWithArray:[[self.fetchedMessagesController fetchedObjects] filteredArrayUsingPredicate:predicate]];
+        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"numberE164 == %@ AND externE164 = %@",
+                                  [self.numberE164 e164Format],
+                                  [self.externE164 e164Format]];
+        self.fetchedMessages   = [[NSMutableArray alloc] initWithArray:[[self.fetchedMessagesController fetchedObjects]
+                                                                        filteredArrayUsingPredicate:predicate]];
     }
     
     return self.fetchedMessages;
@@ -266,9 +320,5 @@
 {
     return nil;
 }
-
-
-
-
 
 @end
