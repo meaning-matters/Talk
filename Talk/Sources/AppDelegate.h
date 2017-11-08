@@ -22,7 +22,7 @@
 #import "SettingsViewController.h"
 #import "HelpsViewController.h"
 #import "AboutViewController.h"
-#import "MessagesViewController.h"
+#import "ConversationsViewController.h"
 
 extern NSString* const AppDelegateRemoteNotification;
 
@@ -49,7 +49,7 @@ extern NSString* const AppDelegateRemoteNotification;
 @property (nonatomic, strong) SettingsViewController*      settingsViewController;
 @property (nonatomic, strong) HelpsViewController*         helpsViewController;
 @property (nonatomic, strong) AboutViewController*         aboutViewController;
-@property (nonatomic, strong) MessagesViewController*      messagesViewController;
+@property (nonatomic, strong) ConversationsViewController* conversationsViewController;
 
 @property (nonatomic, assign) BOOL                         doDtmfPhoneVerification; // If NO do voice Phone verification.
 @property (nonatomic, copy) NSString*                      accountId;
@@ -71,6 +71,8 @@ extern NSString* const AppDelegateRemoteNotification;
 - (void)checkCreditWithCompletion:(void (^)(BOOL success, NSError* error))completion;
 
 - (void)updateNumbersBadgeValue;
+
+- (void)updateMessagesBadgeValue;
 
 - (void)showNumber:(NumberData*)number;
 

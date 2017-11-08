@@ -9,10 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "JSQMessages.h"
 
-@interface ConversationViewController : JSQMessagesViewController
-
-@property (nonatomic, strong) NSManagedObjectContext*     managedObjectContext;
-@property (nonatomic, strong) NSFetchedResultsController* fetchedMessagesController;
+@interface ConversationViewController : JSQMessagesViewController <NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, strong) NSString*                   numberE164;
 @property (nonatomic, strong) NSString*                   externE164;

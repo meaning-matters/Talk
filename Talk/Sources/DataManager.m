@@ -21,6 +21,7 @@
 #import "AddressStatus.h"
 #import "AddressUpdatesHandler.h"
 #import "MessageData.h"
+#import "MessageUpdatesHandler.h"
 #import "MessageDirection.h"
 
 
@@ -540,7 +541,7 @@
                                                 {
                                                     [self.managedObjectContext rollback];
                                                     completion ? completion(error) : 0;
-                                                     
+                                                    
                                                     isSynchronizing = NO;
                                                 }
                                             }];
@@ -1142,96 +1143,234 @@
 }
 
 
+- (void)synchronizeMessagesOnlyFromDate:(NSDate*)date reply:(void (^)(NSError* error))completion
+{
+    if (isSynchronizing == YES)
+    {
+        completion ? completion(nil) : 0;
+
+        return;
+    }
+
+    isSynchronizing = YES;
+
+    [self saveManagedObjectContext:nil];
+
+    [self synchronizeMessagesFromDate:date reply:^(NSError* error)
+     {
+         if (error == nil)
+         {
+             [self.managedObjectContext save:&error];
+             if (error == nil)
+             {
+                 [self saveManagedObjectContext:nil];
+
+                 dispatch_async(dispatch_get_main_queue(), ^
+                                {
+                                    completion ? completion(nil) : 0;
+
+                                    isSynchronizing = NO;
+                                });
+             }
+             else
+             {
+                 [self handleError:error];
+
+                 isSynchronizing = NO;
+
+                 return;
+             }
+         }
+         else
+         {
+             [self.managedObjectContext rollback];
+             completion ? completion(error) : 0;
+
+             isSynchronizing = NO;
+         }
+     }];
+}
+
+
 - (void)synchronizeMessages:(void (^)(NSError* error))completion
 {
     [[WebClient sharedClient] retrieveMessages:^(NSError* error, NSArray* messages)
+     {
+         if (error == nil)
+         {
+             // Delete Messages that are no longer on the server.
+             NSArray*        uuids       = [messages valueForKey:@"uuid"];
+             NSFetchRequest* request     = [NSFetchRequest fetchRequestWithEntityName:@"Message"];
+             [request setPredicate:[NSPredicate predicateWithFormat:@"(NOT (uuid IN %@)) OR (uuid == nil)", uuids]];
+             NSArray*        deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
+             
+             if (error == nil)
+             {
+                 for (NSManagedObject* object in deleteArray)
+                 {
+                     [self.managedObjectContext deleteObject:object]; // This notifies MessageUpdatesHandler.
+                 }
+             }
+             else
+             {
+                 [self handleError:error];
+                 
+                 return;
+             }
+             
+             // Delete Message Updates that are no longer on server.
+             NSMutableSet* complement = [NSMutableSet setWithArray:[[Settings sharedSettings].messageUpdates allKeys]];
+             [complement minusSet:[NSSet setWithArray:uuids]];
+             for (NSString* uuid in [complement allObjects])
+             {
+                 [[MessageUpdatesHandler sharedHandler] removeMessageUpdateWithUuid:uuid];
+             }
+             
+             if (messages.count == 0)
+             {
+                 dispatch_async(dispatch_get_main_queue(), ^
+                                {
+                                    completion ? completion(nil) : 0;
+                                });
+                 
+                 return;
+             }
+             
+             for (NSDictionary* dictionary in messages)
+             {
+                 NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Message"];
+                 [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", dictionary[@"uuid"]]];
+                 
+                 MessageData* object;
+                 object = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
+                 if (error == nil)
+                 {
+                     if (object == nil)
+                     {
+                         object = [NSEntityDescription insertNewObjectForEntityForName:@"Message"
+                                                                inManagedObjectContext:self.managedObjectContext];
+                     }
+                 }
+                 else
+                 {
+                     [self handleError:error];
+                     
+                     return;
+                 }
+                 
+                 object.uuid        = dictionary[@"uuid"];
+                 object.direction   = [MessageDirection messageDirectionEnumForString:dictionary[@"direction"]];
+                 object.text        = dictionary[@"text"];
+                 
+                 NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+                 [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
+                 object.timestamp = [dateFormatter dateFromString:dictionary[@"timestamp"]];
+                 
+                 // The '+' is added to the numbers, then a PhoneNumber-object is made.
+                 NSString* numberE164String = [NSString stringWithFormat:@"+%@", dictionary[@"number_e164"]];
+                 PhoneNumber* numberE164    = [[PhoneNumber alloc] initWithNumber:numberE164String];
+                 object.numberE164          = [numberE164 e164Format];
+                 
+                 NSString* externE164String = [NSString stringWithFormat:@"+%@", dictionary[@"extern_e164"]];
+                 PhoneNumber* externE164    = [[PhoneNumber alloc] initWithNumber:externE164String];
+                 object.externE164          = [externE164 e164Format];
+                 
+                 // Get the contactId for the external number.
+                 [[AppDelegate appDelegate] findContactsHavingNumber:[externE164 e164Format]
+                                                          completion:^(NSArray* contactIds)
+                  {
+                      if (contactIds.count > 0)
+                      {
+                          object.contactId = [contactIds firstObject];
+                      }
+                  }];
+                 
+                 // If the uuid changed (so it's a new message), process the update of this message.
+                 if ([object.changedValues objectForKey:@"uuid"] != nil)
+                 {
+                     [[MessageUpdatesHandler sharedHandler] processChangedMessage:object];
+                 }
+                 
+                 if (object.changedValues.count == 0)
+                 {
+                     [object.managedObjectContext refreshObject:object mergeChanges:NO];
+                 }
+             }
+             
+             dispatch_async(dispatch_get_main_queue(), ^
+                            {
+                                completion ? completion(nil) : 0;
+                            });
+         }
+         else
+         {
+             completion ? completion(error) : 0;
+         }
+     }];
+}
+
+
+- (void)synchronizeMessagesFromDate:(NSDate*)date reply:(void (^)(NSError* error))completion
+{
+    [[WebClient sharedClient] retrieveMessagesFromDate:date reply:^(NSError* error, NSArray* messages)
     {
         if (error == nil)
         {
-            // Delete Messages that are no longer on the server.
-            NSArray*        uuids       = [messages valueForKey:@"uuid"];
-            NSFetchRequest* request     = [NSFetchRequest fetchRequestWithEntityName:@"Message"];
-            [request setPredicate:[NSPredicate predicateWithFormat:@"(NOT (uuid IN %@)) OR (uuid == nil)", uuids]];
-            NSArray*        deleteArray = [self.managedObjectContext executeFetchRequest:request error:&error];
+            // Update last checkdate.
+            [Settings sharedSettings].messagesCheckDate = [NSDate date];
             
-            if (error == nil)
+            for (int index = 0; index < messages.count; index++)
             {
-                for (NSManagedObject* object in deleteArray)
-                {
-                    [self.managedObjectContext deleteObject:object];
-                }
-            }
-            else
-            {
-                [self handleError:error];
+                NSDictionary* message = messages[index];
                 
-                return;
-            }
-            
-            if (messages.count == 0)
-            {
-                dispatch_async(dispatch_get_main_queue(), ^
+                // Skip the messages we already have.
+                NSPredicate* predicate = [NSPredicate predicateWithFormat:@"uuid == %@", message[@"uuid"]];
+                if ([[DataManager sharedManager] fetchEntitiesWithName:@"Message" sortKeys:nil
+                                                             predicate:predicate
+                                                  managedObjectContext:nil].count != 0)
                 {
-                    completion ? completion(nil) : 0;
-                });
-                
-                return;
-            }
-            
-            for (NSDictionary* dictionary in messages)
-            {
-                NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Message"];
-                [request setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", dictionary[@"uuid"]]];
-                
-                MessageData* object;
-                object = [[self.managedObjectContext executeFetchRequest:request error:&error] lastObject];
-                if (error == nil)
-                {
-                    if (object == nil)
-                    {
-                        object = [NSEntityDescription insertNewObjectForEntityForName:@"Message"
-                                                               inManagedObjectContext:self.managedObjectContext];
-                    }
-                }
-                else
-                {
-                    [self handleError:error];
-                    
-                    return;
+                    continue;
                 }
                 
-                object.uuid      = dictionary[@"uuid"];
-                object.direction = [MessageDirection messageDirectionEnumForString:dictionary[@"direction"]];
-                object.text      = dictionary[@"text"];
-                // @TODO: Get the actual timestamp the server returns to us.
-                // @TODO: In the other branch (conversations-overview): Make very sure that all times in our REST API and in the DB are in GMT!!! See existing parts of the app of how to handle dates!!!
-                object.timestamp   = [[[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian] dateBySettingHour:10
-                                                                                                                                minute:0
-                                                                                                                                second:0
-                                                                                                                                ofDate:[NSDate date]
-                                                                                                                               options:0];
-                object.uuid        = dictionary[@"uuid"];
-                // @TODO: Append the '+' to the number here. Remove it when making requests to the server. (use the PhoneNumber-class to get the right format for the server?)
-                PhoneNumber* numberE164 = [[PhoneNumber alloc] initWithNumber:dictionary[@"number_e164"]];
-                object.numberE164 = [numberE164 e164Format];
+                MessageData* newMessage = [NSEntityDescription insertNewObjectForEntityForName:@"Message"
+                                                                        inManagedObjectContext:self.managedObjectContext];
                 
-                PhoneNumber* externE164 = [[PhoneNumber alloc] initWithNumber:dictionary[@"extern_e164"]];
-                object.externE164 = [externE164 e164Format];
+                newMessage.uuid      = message[@"uuid"];
+                newMessage.direction = [MessageDirection messageDirectionEnumForString:message[@"direction"]];
+                newMessage.text      = message[@"text"];
+                
+                NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+                [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
+                newMessage.timestamp = [dateFormatter dateFromString:message[@"timestamp"]];
+                
+                // The '+' is added to the numbers, then a PhoneNumber-object is made.
+                NSString* numberE164String = [NSString stringWithFormat:@"+%@", message[@"number_e164"]];
+                PhoneNumber* numberE164    = [[PhoneNumber alloc] initWithNumber:numberE164String];
+                newMessage.numberE164      = [numberE164 e164Format];
+                
+                NSString* externE164String = [NSString stringWithFormat:@"+%@", message[@"extern_e164"]];
+                PhoneNumber* externE164    = [[PhoneNumber alloc] initWithNumber:externE164String];
+                newMessage.externE164      = [externE164 e164Format];
                 
                 // Get the contactId for the external number.
-                [[AppDelegate appDelegate] findContactsHavingNumber:[externE164 nationalDigits]
+                [[AppDelegate appDelegate] findContactsHavingNumber:[externE164 e164Format]
                                                          completion:^(NSArray* contactIds)
-                {
-                    if (contactIds.count > 0)
-                    {
-                        object.contactId = [contactIds firstObject];
-                    }
-                }];
+                 {
+                     if (contactIds.count > 0)
+                     {
+                         newMessage.contactId = [contactIds firstObject];
+                     }
+                 }];
                 
-                if (object.changedValues.count == 0)
+                // If the uuid changed (so it's a new message), process the update of this message.
+                [[MessageUpdatesHandler sharedHandler] processChangedMessage:newMessage];
+                
+                if (newMessage.changedValues.count == 0)
                 {
-                    [object.managedObjectContext refreshObject:object mergeChanges:NO];
+                    [newMessage.managedObjectContext refreshObject:newMessage mergeChanges:NO];
                 }
+                
+                
             }
             
             dispatch_async(dispatch_get_main_queue(), ^

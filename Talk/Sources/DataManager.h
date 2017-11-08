@@ -47,6 +47,8 @@
 // Same as synchronizeAll: but with alert when something went wrong.
 - (void)synchronizeWithServer:(void (^)(NSError* error))completion;
 
+- (void)synchronizeMessagesOnlyFromDate:(NSDate*)date reply:(void (^)(NSError* error))completion;
+
 - (CallableData*)lookupCallableForE164:(NSString*)e164;
 
 - (PhoneData*)lookupPhoneForE164:(NSString*)e164;

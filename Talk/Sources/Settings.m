@@ -24,6 +24,7 @@ NSString* const HomeIsoCountryCodeKey     = @"HomeIsoCountryCode";
 NSString* const UseSimIsoCountryCodeKey   = @"UseSimIsoCountryCode";
 NSString* const LastDialedNumberKey       = @"LastDialedNumber";
 NSString* const RecentsCheckDateKey       = @"RecentsCheckDate";
+NSString* const MessagesCheckDateKey      = @"MessagesCheckDate";
 NSString* const SynchronizeDateKey        = @"SynchronizeDate";
 NSString* const UpdateAppDateKey          = @"UpdateAppDate";
 NSString* const WebUsernameKey            = @"WebUsername";            // Used as keychain 'username'.
@@ -45,6 +46,8 @@ NSString* const NumberFilterKey           = @"NumberFilter";
 
 NSString* const AddressUpdatesKey         = @"AddressUpdates";
 NSString* const DnsSrvPrefixKey           = @"DnsSrvPrefix";
+
+NSString* const MessageUpdatesKey         = @"MessageUpdates";
 
 
 @interface Settings ()
@@ -142,6 +145,7 @@ static NSUserDefaults* userDefaults;
 
         [dictionary setObject:@""                                                forKey:LastDialedNumberKey];
         [dictionary setObject:[NSDate date]                                      forKey:RecentsCheckDateKey];
+        [dictionary setObject:[NSDate date]                                      forKey:MessagesCheckDateKey];
         [dictionary setObject:@(YES)                                             forKey:ShowCallerIdKey];
         [dictionary setObject:@""                                                forKey:CallerIdE164Key];
         [dictionary setObject:@""                                                forKey:CallbackE164Key];
@@ -244,6 +248,18 @@ static NSUserDefaults* userDefaults;
 - (void)setRecentsCheckDate:(NSDate*)recentsCheckDate
 {
     [userDefaults setObject:recentsCheckDate forKey:RecentsCheckDateKey];
+}
+
+
+- (NSDate*)messagesCheckDate
+{
+    return [userDefaults objectForKey:MessagesCheckDateKey];
+}
+
+
+- (void)setMessagesCheckDate:(NSDate *)messagesCheckDate
+{
+    [userDefaults setObject:messagesCheckDate forKey:MessagesCheckDateKey];
 }
 
 
@@ -479,9 +495,26 @@ static NSUserDefaults* userDefaults;
 }
 
 
+- (NSDictionary*)messageUpdates
+{
+    if ([userDefaults objectForKey:MessageUpdatesKey] == nil)
+    {
+        [self setMessageUpdates:@{}];
+    }
+    
+    return [userDefaults objectForKey:MessageUpdatesKey];
+}
+
+
 - (void)setAddressUpdates:(NSDictionary*)addressUpdates
 {
     [userDefaults setObject:addressUpdates forKey:AddressUpdatesKey];
+}
+
+
+- (void)setMessageUpdates:(NSDictionary*)messageUpdates
+{
+    [userDefaults setObject:messageUpdates forKey:MessageUpdatesKey];
 }
 
 

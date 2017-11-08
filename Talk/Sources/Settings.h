@@ -33,6 +33,7 @@
 @property (nonatomic, strong) NSString*      lastDialedNumber;      // Most recent number called from keypad.
 
 @property (nonatomic, strong) NSDate*        recentsCheckDate;      // Date of last time recents were checked on server.
+@property (nonatomic, strong) NSDate*        messagesCheckDate;     // Date of last time messages were checked on server.
 @property (nonatomic, strong) NSDate*        synchronizeDate;       // Date of last synchronisation with server.
 @property (nonatomic, strong) NSDate*        updateAppDate;         // Date of previous request to update app.
 
@@ -59,6 +60,7 @@
 @property (nonatomic, assign) NSDictionary*  numberFilter;          // Dictionary that defines which Number regions to show as being available.
 
 @property (nonatomic, strong) NSDictionary*  addressUpdates;        // Unseen address updates.
+@property (nonatomic, strong) NSDictionary*  messageUpdates;        // Unseen message updates;
 
 @property (nonatomic, readonly) NSString*    appId;                 // Used in rate-app URL.
 @property (nonatomic, readonly) NSString*    appVersion;
