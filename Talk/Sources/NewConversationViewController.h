@@ -7,8 +7,12 @@
 //
 
 #import "SearchTableViewController.h"
+#import "ConversationViewController.h"
+#import "MessagesViewController.h"
 
 @interface NewConversationViewController : SearchTableViewController
+
+@property (nonatomic, strong) MessagesViewController* messagesViewController;
 
 - (instancetype)initWithManagedObjectContact:(NSManagedObjectContext*)managedObjectContext
                    fetchedMessagesController:(NSFetchedResultsController*)fetchedMessagesController;

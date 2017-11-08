@@ -15,6 +15,8 @@
 
 @interface MessagesViewController : SearchTableViewController <NSFetchedResultsControllerDelegate>
 
+@property (nonatomic, strong) UINavigationController* writeMessageNavigationController;
+
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 
 @end

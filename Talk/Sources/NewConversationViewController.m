@@ -8,7 +8,6 @@
 
 #import "NewConversationViewController.h"
 #import "AppDelegate.h"
-#import "ConversationViewController.h"
 
 @interface NewConversationViewController ()
 
@@ -16,6 +15,7 @@
 @property (nonatomic, strong) NSFetchedResultsController* fetchedMessagesController;
 @property (nonatomic, strong) NSMutableArray*             contactSearchResults;
 @property (nonatomic, strong) NSString*                   searchBarContent;
+@property (nonatomic, strong) UILabel*                    noSearchResultsLabel;
 
 @end
 
@@ -39,27 +39,41 @@
 {
     [super viewDidLoad];
     
-    self.title = @"new message"; // @TODO: Change...
+    self.title = @"New Message"; // @TODO: Change...
     
     self.contactSearchResults = [[NSMutableArray alloc] init];
     [self createIndexOfWidth:0];
     
     self.tableView = self.searchDisplayController.searchResultsTableView;
     self.searchDisplayController.searchBar.delegate = self;
+    
+    // Label that is shown when there are no search results.
+    self.noSearchResultsLabel               = [[UILabel alloc] initWithFrame:CGRectMake(0, 0,
+                                                                                        self.tableView.bounds.size.width,
+                                                                                        self.tableView.bounds.size.height)];
+    self.noSearchResultsLabel.text          = @"No contacts found"; // @TODO: LocalizedString
+    self.noSearchResultsLabel.textColor     = [UIColor blackColor];
+    self.noSearchResultsLabel.textAlignment = NSTextAlignmentCenter;
 }
 
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // If there are no results, return 1 so we can show a cell to write a message to this number.
-    // @TODO: add logic to check if there is actually a valid number to send a message to.
-    if (!self.contactSearchResults.count)
+    // If there are search results.
+    if (self.contactSearchResults.count)
+    {
+        return self.contactSearchResults.count;
+    }
+    // If there are no search results, but the entered number is valid.
+    else if (!self.contactSearchResults.count && false) // @TODO: check if entered number is valid.
     {
         return 1;
     }
+    // If there are no search results.
     else
     {
-        return self.contactSearchResults.count;
+        // @TODO: Insert label that there are no search results.
+        return 0;
     }
 }
 
@@ -99,67 +113,127 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    PhoneNumber* numberE164 = [[PhoneNumber alloc] initWithNumber:@"34668690178"]; // @TODO: Get default SMS number, or a selection-popup or something ???
-    PhoneNumber* externE164;
-
-    // @TODO: for all: make sure number supports SMS.
-    if (self.contactSearchResults.count > 0) // If there are search-results
+    // If there are search results.
+    if (self.contactSearchResults.count > 0)
     {
-        // @TODO: If contact doesn't have any numbers, show popup.
-        
         NSString* contactId = self.contactSearchResults[indexPath.row][0];
         
-        // Get all numbers for contact.
+        // Get all phonenumbers for the selected contact.
         ABRecordID      recordId     = [contactId intValue];
         ABRecordRef     contact      = ABAddressBookGetPersonWithRecordID([[NBAddressBookManager sharedManager] getAddressBook], recordId);
         ABMultiValueRef phones       = ABRecordCopyValue(contact, kABPersonPhoneProperty);
         NSArray*        phoneNumbers = (NSArray*)CFBridgingRelease(ABMultiValueCopyArrayOfAllValues(phones));
         
-        for (int i = 0; i < phoneNumbers.count; i++)
+        // If the contact doesn't have any phonenumbers -> show an alert saying this.
+        if ([phoneNumbers count] == 0)
         {
-            CFStringRef numberLabelRef = ABMultiValueCopyLabelAtIndex(phones, i);
-            NSString*   numberLabel    = (__bridge NSString*)ABAddressBookCopyLocalizedLabel(numberLabelRef);
-            NSLog(@"%@  %@", numberLabel, phoneNumbers[i]);
+            // @TODO: NSLocalizedStrings.??
+            UIAlertController* alertController = [UIAlertController alertControllerWithTitle:@"No numbers"
+                                                                                     message:@"This contact has no phone numbers. Please choose another one."
+                                                                              preferredStyle:UIAlertControllerStyleAlert];
+            // @TODO: NSLocalizedStrings
+            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK"
+                                                                    style:UIAlertActionStyleDefault
+                                                                  handler:^(UIAlertAction* action)
+            {
+                [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+            }];
+            
+            [alertController addAction:defaultAction];
+            [self presentViewController:alertController animated:YES completion:^(void){}];
         }
-        
-        // @TODO: Let user select number if there is more than one.
-        // @TODO: Make sure formatting always works, otherwise don't display the number.
-        externE164 = [[PhoneNumber alloc] initWithNumber:phoneNumbers[0]];
-        
-        ConversationViewController* viewController = [[ConversationViewController alloc] initWithManagedObjectContext:self.managedObjectContext
-                                                                                            fetchedMessagesController:self.fetchedMessagesController
-                                                                                                           numberE164:numberE164
-                                                                                                           externE164:externE164
-                                                                                                            contactId:contactId];
-        
-        [self.navigationController pushViewController:viewController animated:YES];
+        // If the contact has one phonenumber -> use this phonenumber.
+        else if ([phoneNumbers count] == 1)
+        {
+            PhoneNumber* externE164 = [[PhoneNumber alloc] initWithNumber:phoneNumbers[0]];
+            
+            [self pushToConversationViewControllerWithExternE164:externE164 contactId:contactId];
+        }
+        // If the contact has multiple phonenumbers -> show an actionsheet to choose one.
+        else if ([phoneNumbers count] > 1)
+        {
+            [self.searchBar resignFirstResponder];
+            
+            // @TODO: Localized strings
+            UIAlertController* alertController = [UIAlertController alertControllerWithTitle:self.contactSearchResults[indexPath.row][1]
+                                                                                     message:@"This contact has multiple numbers. Choose one"
+                                                                              preferredStyle:UIAlertControllerStyleActionSheet];
+            
+            UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                                   style:UIAlertActionStyleCancel
+                                                                 handler:^(UIAlertAction* action)
+            {
+                [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+            }];
+            
+            [alertController addAction:cancelAction];
+
+            for (int i = 0; i < [phoneNumbers count]; i++)
+            {
+                CFStringRef numberLabelRef = ABMultiValueCopyLabelAtIndex(phones, i);
+                NSString*   numberLabel    = (__bridge NSString*)ABAddressBookCopyLocalizedLabel(numberLabelRef);
+                
+                // @TODO: Format phone number
+                UIAlertAction* selectNumberAction = [UIAlertAction actionWithTitle:[NSString stringWithFormat:@"%@ (%@)", phoneNumbers[i], numberLabel]
+                                                                             style:UIAlertActionStyleDefault
+                                                                           handler:^(UIAlertAction* action)
+                {
+                    PhoneNumber* externE164 = [[PhoneNumber alloc] initWithNumber:phoneNumbers[i]];
+
+                    [self pushToConversationViewControllerWithExternE164:externE164 contactId:contactId];
+                }];
+                
+                [alertController addAction:selectNumberAction];
+            }
+            
+            [self presentViewController:alertController animated:YES completion:^(void){}];
+        }
     }
-    else if (true) // @TODO: Check if entered number is valid.
+    else if (true) // If there are no search results, but a valid number is entered.
     {
         // @TODO: Make sure typed number is valid and formatting works.
-        externE164 = [[PhoneNumber alloc] initWithNumber:self.searchBarContent];
+        PhoneNumber* externE164 = [[PhoneNumber alloc] initWithNumber:self.searchBarContent];
         
         NSString* contactId; // @TODO: What to do with contactId here, nil? (since not in contacts)
         
-        ConversationViewController* viewController = [[ConversationViewController alloc] initWithManagedObjectContext:self.managedObjectContext
-                                                                                            fetchedMessagesController:self.fetchedMessagesController
-                                                                                                           numberE164:numberE164
-                                                                                                           externE164:externE164
-                                                                                                            contactId:contactId];
-        
-        [self.navigationController pushViewController:viewController animated:YES];
+        [self pushToConversationViewControllerWithExternE164:externE164 contactId:contactId];
     }
-    else
+    else //  If there are no search results.
     {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
 
 
+- (void)pushToConversationViewControllerWithExternE164:(PhoneNumber*)externE164 contactId:(NSString*)contactId
+{
+    PhoneNumber* numberE164 = [[PhoneNumber alloc] initWithNumber:@"34668690178"]; // @TODO: Get default SMS number, or a selection-popup or something ???
+    
+    ConversationViewController* viewController = [[ConversationViewController alloc] initWithManagedObjectContext:self.managedObjectContext
+                                                                                        fetchedMessagesController:self.fetchedMessagesController
+                                                                                                       numberE164:numberE164
+                                                                                                       externE164:externE164
+                                                                                                        contactId:contactId];
+
+    // @TODO: In ConversationsViewController scroll to the right conversation (if the conversation already exists) before it's pushed to the new VC (in another branch, ConversationsViewController doesn't exist here)
+    
+    // Add the ConversationController to the ViewControllers array of ConversationsViewController.
+    NSMutableArray* viewControllers = [NSMutableArray arrayWithArray:self.messagesViewController.navigationController.viewControllers];
+    [viewControllers addObject:viewController];
+
+    // Dismiss the NavigationController in which the NewConversationController is embedded.
+    [self.messagesViewController.writeMessageNavigationController dismissViewControllerAnimated:YES completion:^(void)
+    {
+        // Set the ViewControllers array of ConversationsViewController, with the newly added ConversationViewcontroller.
+        [self.messagesViewController.navigationController setViewControllers:viewControllers animated:YES];
+    }];
+}
+
+
 - (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
 {
-    self.searchBarContent          = searchText;
-    self.contactSearchResults      = [[NSMutableArray alloc] init];
+    self.searchBarContent     = searchText;
+    self.contactSearchResults = [[NSMutableArray alloc] init];
     
     [[[AppDelegate appDelegate] nBPeopleListViewController] filterContactsWithSearchString:searchText completion:^(NSArray* contacts)
     {
@@ -177,5 +251,12 @@
         });
     }];
 }
+
+
+// @TODO:
+// - bij 1 nummer meteen doorgaan
+// - nieuwe conversation van onder (met cancel-button, volgende pagina gaat terug naar root viewcontroller)
+
+
 
 @end

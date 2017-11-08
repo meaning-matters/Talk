@@ -109,7 +109,8 @@
             self.objectsArray = [self.fetchedMessagesController fetchedObjects];
             [self createIndexOfWidth:0];
              
-            dispatch_async(dispatch_get_main_queue(), ^{
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
                 [sender endRefreshing];
             });
         }];
@@ -125,7 +126,21 @@
     NewConversationViewController* viewController = [[NewConversationViewController alloc] initWithManagedObjectContact:self.managedObjectContext
                                                                                               fetchedMessagesController:self.fetchedMessagesController];
     
-    [self.navigationController pushViewController:viewController animated:YES];
+    self.writeMessageNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    
+    [viewController.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                                      target:self
+                                                                                                      action:@selector(pressedCancelWriteMessage:)]];
+    
+    viewController.messagesViewController = self;
+    
+    [self.navigationController presentViewController:self.writeMessageNavigationController animated:YES completion:^(void){}];
+}
+
+
+- (void)pressedCancelWriteMessage:(id)sender
+{
+    [self.writeMessageNavigationController dismissViewControllerAnimated:YES completion:^(void){}];
 }
 
 
