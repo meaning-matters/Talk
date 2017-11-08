@@ -45,6 +45,7 @@ typedef enum
 @property (nonatomic, assign) BOOL             isCancelled;
 @property (nonatomic, assign) BOOL             isCalling;
 @property (nonatomic, assign) BOOL             canEnterCode;
+@property (nonatomic, assign) BOOL             allowCancel;
 
 @property (nonatomic, strong) UITextField*     codeTextField;
 @property (nonatomic, strong) CellButton*      callButton;
@@ -58,6 +59,7 @@ typedef enum
                                uuid:(NSString*)uuid
                       languageCodes:(NSArray*)languageCodes
                          codeLength:(NSUInteger)codeLength
+                        allowCancel:(BOOL)allowCancel
                          completion:(void (^)(BOOL isVerified))completion
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
@@ -67,6 +69,7 @@ typedef enum
         self.languageCodes = (languageCodes.count == 0) ? @[ @"en", @"nl" ] : languageCodes;
         self.languageCode  = self.languageCodes[0];
         self.codeLength    = codeLength;
+        self.allowCancel   = allowCancel;
         self.completion    = completion;
     }
 
@@ -78,12 +81,15 @@ typedef enum
 {
     [super viewDidLoad];
 
-    self.navigationItem.title = NSLocalizedString(@"Verify", @"");
+    self.navigationItem.title = [Strings verifyString];
 
-    UIBarButtonItem* buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                target:self
-                                                                                action:@selector(cancelAction)];
-    self.navigationItem.rightBarButtonItem = buttonItem;
+    if (self.allowCancel)
+    {
+        UIBarButtonItem* buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                    target:self
+                                                                                    action:@selector(cancelAction)];
+        self.navigationItem.rightBarButtonItem = buttonItem;
+    }
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -181,13 +187,39 @@ typedef enum
     {
         case TableSectionCall:
         {
-            title = NSLocalizedString(@"Receive call to hear %d-digit code", @"");
+            title = NSLocalizedString(@"1. Hear %d\u2011Digit Code", @"Contains non-breaking hyphen");
             title = [NSString stringWithFormat:title, self.codeLength];
             break;
         }
         case TableSectionCode:
         {
-            title = NSLocalizedString(@"Enter the code you heard", @"");
+            title = NSLocalizedString(@"2. Enter Code You Heard", @"");
+            break;
+        }
+    }
+
+    return title;
+}
+
+
+- (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
+{
+    NSString* title;
+
+    switch ([Common nthBitSet:section inValue:self.sections])
+    {
+        case TableSectionCall:
+        {
+            title = nil;
+            break;
+        }
+        case TableSectionCode:
+        {
+            title = NSLocalizedString(@"After tapping Call Me, you'll receive a phone call. "
+                                      @"During this call you'll hear a %d\u2011digit code. "
+                                      @"After the call, enter the code; this verifies your number. ",
+                                      @"Contains non-breaking hyphen");
+            title = [NSString stringWithFormat:title, self.codeLength];
             break;
         }
     }
@@ -301,8 +333,9 @@ typedef enum
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
-        cell.textLabel.text = NSLocalizedString(@"Code", @"");
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.textLabel.text    = NSLocalizedString(@"Code", @"");
+        cell.selectionStyle    = UITableViewCellSelectionStyleNone;
+        cell.textLabel.enabled = self.canEnterCode;
 
         self.codeTextField = [Common addTextFieldToCell:cell delegate:self];
         self.codeTextField.keyboardType = UIKeyboardTypeNumberPad;
@@ -396,6 +429,22 @@ typedef enum
 
 #pragma mark - Helpers
 
+- (void)setCanEnterCode:(BOOL)canEnterCode
+{
+    if (canEnterCode != _canEnterCode)
+    {
+        _canEnterCode = canEnterCode;
+
+        NSMutableIndexSet* indexSet = [NSMutableIndexSet indexSet];
+        [indexSet addIndex:[Common nOfBit:TableSectionCode inValue:self.sections]];
+
+        [self.tableView beginUpdates];
+        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView endUpdates];
+    }
+}
+
+
 - (void)cancel
 {
     self.isCancelled = YES;
@@ -412,13 +461,13 @@ typedef enum
 
 - (NSString*)callMeTitle
 {
-    return NSLocalizedString(@"Call Me", @"");
+    return [NSString stringWithFormat:NSLocalizedString(@"Call Me - %@", @""), self.phoneNumber.nationalFormat];
 }
 
 
-- (NSString*)callMeAgainTitle
+- (NSString*)callAgainTitle
 {
-    return NSLocalizedString(@"Hear Code Again", @"");
+    return [NSString stringWithFormat:NSLocalizedString(@"Call Again - %@", @""), self.phoneNumber.nationalFormat];
 }
 
 
@@ -449,7 +498,7 @@ typedef enum
             if (self.canEnterCode == YES)
             {
                 [self.codeTextField becomeFirstResponder];
-                [self.callButton setTitle:[self callMeAgainTitle] forState:UIControlStateNormal];
+                [self.callButton setTitle:[self callAgainTitle] forState:UIControlStateNormal];
             }
 
             if (isCalling == YES)
@@ -486,7 +535,14 @@ typedef enum
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
             {
-                [self cancelAction];
+                if (self.allowCancel)
+                {
+                    [self cancelAction];
+                }
+                else
+                {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
             }
                                  cancelButtonTitle:[Strings cancelString]
                                  otherButtonTitles:nil];
@@ -502,7 +558,7 @@ typedef enum
 
     title   = NSLocalizedString(@"Can't Enter Code Yet", @"");
     message = NSLocalizedString(@"First tap '%@' to receive an automatic phone call. During that short "
-                                @"call, you will hear the %d-digit code you must enter.", @"");
+                                @"call, you will hear the %d\u2011digit code you must enter.", @"Contains non-breaking hyphen");
     message = [NSString stringWithFormat:message, [self callMeTitle], self.codeLength];
     [BlockAlertView showAlertViewWithTitle:title
                                    message:message
@@ -546,7 +602,14 @@ typedef enum
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
             {
-                [self cancelAction];
+                if (self.allowCancel)
+                {
+                    [self cancelAction];
+                }
+                else
+                {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
             }
                                  cancelButtonTitle:[Strings cancelString]
                                  otherButtonTitles:nil];
