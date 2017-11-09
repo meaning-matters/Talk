@@ -72,7 +72,7 @@ extern NSString* const AppDelegateRemoteNotification;
 
 - (void)updateNumbersBadgeValue;
 
-- (void)updateMessagesBadgeValue;
+- (void)updateConversationsBadgeValue;
 
 - (void)showNumber:(NumberData*)number;
 

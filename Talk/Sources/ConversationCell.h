@@ -10,8 +10,8 @@
 
 @interface ConversationCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UILabel *nameNumberLabel;
-@property (weak, nonatomic) IBOutlet UILabel *textPreviewLabel;
-@property (weak, nonatomic) IBOutlet UILabel *timestampLabel;
+@property (weak, nonatomic) IBOutlet UILabel* nameNumberLabel;
+@property (weak, nonatomic) IBOutlet UILabel* textPreviewLabel;
+@property (weak, nonatomic) IBOutlet UILabel* timestampLabel;
 
 @end

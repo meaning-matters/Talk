@@ -37,7 +37,7 @@
 {
     [super viewWillAppear:animated];
     
-    // Disable the attachement button.
+    // Disable the attachment button.
     self.inputToolbar.contentView.leftBarButtonItem = nil;
     
     // Set avatar-size to zero, since it's not being used and takes up space next to the messages.
@@ -48,8 +48,9 @@
     self.inputToolbar.contentView.textView.autocorrectionType = UITextAutocorrectionTypeNo;
     
     // When the CollectionView is tapped.
-    UITapGestureRecognizer* tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                    action:@selector(handleCollectionTapRecognizer:)];
+    UITapGestureRecognizer* tapRecognizer;
+    tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                            action:@selector(handleCollectionTapRecognizer:)];
     [self.collectionView addGestureRecognizer:tapRecognizer];
 }
 
@@ -78,7 +79,8 @@
     }
     else
     {
-        self.title = self.externE164;
+        PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:self.externE164];
+        self.title = phoneNumber.e164Format;
     }
 
     __weak typeof(self) weakSelf = self;
@@ -180,7 +182,7 @@
        messageDataForItemAtIndexPath:(NSIndexPath*)indexPath
 {
     MessageData* message  = self.messages[indexPath.row];
-    NSString*    senderId = message.direction == MessageDirectionInbound ? message.externE164 : message.numberE164;
+    NSString*    senderId = (message.direction == MessageDirectionInbound) ? message.externE164 : message.numberE164;
 
     return [[JSQMessage alloc] initWithSenderId:senderId
                               senderDisplayName:@"" // This is not used.
@@ -191,9 +193,10 @@
 
 
 - (UICollectionViewCell*)collectionView:(JSQMessagesCollectionView*)collectionView
-cellForItemAtIndexPath:(NSIndexPath*)indexPath
+                 cellForItemAtIndexPath:(NSIndexPath*)indexPath
 {
-    JSQMessagesCollectionViewCell* cell = (JSQMessagesCollectionViewCell*)[super collectionView:collectionView cellForItemAtIndexPath:indexPath];
+    JSQMessagesCollectionViewCell* cell = (JSQMessagesCollectionViewCell*)[super collectionView:collectionView
+                                                                         cellForItemAtIndexPath:indexPath];
     
     // Enable hyperlink highlighting + selection of text.
     cell.textView.editable               = NO;
@@ -231,7 +234,7 @@ cellForItemAtIndexPath:(NSIndexPath*)indexPath
     {
         case MessageDirectionInbound:
         {
-            result = [self.bubbleFactory incomingMessagesBubbleImageWithColor:[UIColor jsq_messageBubbleGreenColor]];
+            result = [self.bubbleFactory incomingMessagesBubbleImageWithColor:[Skinning onTintColor]];
             break;
         }
         case MessageDirectionOutbound:
@@ -272,13 +275,7 @@ cellForItemAtIndexPath:(NSIndexPath*)indexPath
             [[CallManager sharedManager] callPhoneNumber:phoneNumber
                                                contactId:contactId
                                                 callerId:nil // Determine the caller ID based on user preferences.
-                                              completion:^(Call* call)
-            {
-                if (call != nil)
-                {
-                    [Settings sharedSettings].lastDialedNumber = phoneNumber.number;
-                }
-            }];
+                                              completion:nil];
         }];
         
         return NO;

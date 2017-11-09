@@ -515,17 +515,4 @@
 // 34.
 - (void)cancelAllRetrieveCallbackStateForUuid:(NSString*)uuid;
 
-// 40A.
-- (void)cancelAllRetrieveChats;
-
-// 40A
-- (void)cancelAllRetrieveMessages;
-
-// 40B.
-//- (void)cancelAllCreateMessageWithDestination:(NSString*)e164;
-
-
-
-
-
 @end

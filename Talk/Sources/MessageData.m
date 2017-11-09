@@ -10,7 +10,7 @@
 
 @implementation MessageData
 
-@dynamic billed;
+@dynamic cost;
 @dynamic direction;
 @dynamic externE164;
 @dynamic numberE164;

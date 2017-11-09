@@ -161,6 +161,6 @@
 
 + (NSString*)messagesString;
 
-+ (NSString*)noConversationsString;
++ (NSString*)verifyString;
 
 @end

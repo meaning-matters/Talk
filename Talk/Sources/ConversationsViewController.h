@@ -11,8 +11,6 @@
 #import "SearchTableViewController.h"
 
 
-@class MessageData;
-
 @interface ConversationsViewController : SearchTableViewController <NSFetchedResultsControllerDelegate>
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext;
