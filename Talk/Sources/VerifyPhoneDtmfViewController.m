@@ -46,7 +46,8 @@
 
 @implementation VerifyPhoneDtmfViewController
 
-- (instancetype)initWithCompletion:(void (^)(PhoneNumber* verifiedPhoneNumber, NSString* uuid))completion
+- (instancetype)initWithAllowCancel:(BOOL)allowCancel   //### Not implemented yet.
+                         completion:(void (^)(PhoneNumber* verifiedPhoneNumber, NSString* uuid))completion;
 {
     if (self = [super initWithNibName:@"VerifyPhoneCodeView" bundle:nil])
     {

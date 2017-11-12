@@ -161,4 +161,6 @@
 
 + (NSString*)messagesString;
 
++ (NSString*)verifyString;
+
 @end

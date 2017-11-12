@@ -178,8 +178,8 @@
                 }
 
                 UIViewController* viewController;
-                viewController = [[class alloc] initWithCompletion:^(PhoneNumber* verifiedPhoneNumber,
-                                                                     NSString*    uuid)
+                viewController = [[class alloc] initWithAllowCancel:NO
+                                                         completion:^(PhoneNumber* verifiedPhoneNumber, NSString* uuid)
                 {
                     if (verifiedPhoneNumber != nil)
                     {
