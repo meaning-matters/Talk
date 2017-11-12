@@ -151,7 +151,7 @@
         if (cancelled == NO && phoneNumber.number.length > 0)
         {
             // Check if this Phone already exists on the user's account.
-            [[WebClient sharedClient] beginPhoneVerificationForE164:[phoneNumber e164Format]
+            [[WebClient sharedClient] beginPhoneVerificationForE164:phoneNumber.e164Format
                                                                mode:@"dtmf"
                                                               reply:^(NSError*  error,
                                                                       NSString* uuid,    // This UUID ignored.
@@ -221,7 +221,7 @@
             self.codeTimer = nil;
             
             [self.codeActivityIndicator startAnimating];
-            [[WebClient sharedClient] beginPhoneVerificationForE164:[phoneNumber e164Format]
+            [[WebClient sharedClient] beginPhoneVerificationForE164:phoneNumber.e164Format
                                                                mode:@"dtmf"
                                                               reply:^(NSError*  error,
                                                                       NSString* uuid,

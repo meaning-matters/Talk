@@ -46,6 +46,8 @@ NSString* const NumberFilterKey           = @"NumberFilter";
 NSString* const AddressUpdatesKey         = @"AddressUpdates";
 NSString* const DnsSrvPrefixKey           = @"DnsSrvPrefix";
 
+NSString* const MessageUpdatesKey         = @"MessageUpdates";
+
 
 @interface Settings ()
 
@@ -485,6 +487,23 @@ static NSUserDefaults* userDefaults;
 }
 
 
+- (NSDictionary*)messageUpdates
+{
+    if ([userDefaults objectForKey:MessageUpdatesKey] == nil)
+    {
+        [self setMessageUpdates:@{}];
+    }
+    
+    return [userDefaults objectForKey:MessageUpdatesKey];
+}
+
+
+- (void)setMessageUpdates:(NSDictionary*)messageUpdates
+{
+    [userDefaults setObject:messageUpdates forKey:MessageUpdatesKey];
+}
+
+
 - (NSString*)appId
 {
     return @"642013221";
@@ -586,10 +605,7 @@ static NSUserDefaults* userDefaults;
 
 - (NSString*)dnsSrvName
 {
-#warning !!! CHANGE BACK !!!
-    // Change it back to the commented line for producten. Now it will always use _api3x.
-    // return [NSString stringWithFormat:@"%@._tcp.numberbay.com", self.dnsSrvPrefix];
-    return [NSString stringWithFormat:@"%@._tcp.numberbay.com", @"_api3x"];
+    return [NSString stringWithFormat:@"%@._tcp.numberbay.com", self.dnsSrvPrefix];
 }
 
 
