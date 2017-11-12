@@ -14,12 +14,11 @@
 #import "PhoneNumber.h"
 #import "Settings.h"
 #import "AppDelegate.h"
+#import "MessageUpdatesHandler.h"
 
 
 @interface ConversationViewController ()
 
-@property (nonatomic, strong) NSMutableArray*                fetchedMessages;
-@property (nonatomic, strong) NSArray*                       messages;
 @property (nonatomic, strong) JSQMessagesBubbleImageFactory* bubbleFactory;
 
 @end
@@ -31,7 +30,7 @@
 {
     [super viewWillAppear:animated];
     
-    // Disable the attachement button.
+    // Disable the attachment button.
     self.inputToolbar.contentView.leftBarButtonItem = nil;
     
     // Set avatar-size to zero, since it's not being used and takes up space next to the messages.
@@ -42,8 +41,9 @@
     self.inputToolbar.contentView.textView.autocorrectionType = UITextAutocorrectionTypeNo;
     
     // When the CollectionView is tapped.
-    UITapGestureRecognizer* tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                    action:@selector(handleCollectionTapRecognizer:)];
+    UITapGestureRecognizer* tapRecognizer;
+    tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                            action:@selector(handleCollectionTapRecognizer:)];
     [self.collectionView addGestureRecognizer:tapRecognizer];
 }
 
@@ -57,13 +57,16 @@
     self.collectionView.delegate   = self;
     self.collectionView.dataSource = self;
     
+    [self removeUpdates];
+    
     if (self.contactId != nil)
     {
         self.title = [[AppDelegate appDelegate] contactNameForId:self.contactId];
     }
     else
     {
-        self.title = self.externE164;
+        PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:self.externE164];
+        self.title = phoneNumber.e164Format;
     }
 }
 
@@ -82,21 +85,15 @@
 }
 
 
-- (NSArray*)messages
+- (void)removeUpdates
 {
-    if (self.fetchedMessages == nil)
+    for (MessageData* message in self.messages)
     {
-        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"numberE164 == %@ AND externE164 = %@", [self numberE164], [self externE164]];
-        self.fetchedMessages = [[NSMutableArray alloc] initWithArray:[[self.fetchedMessagesController fetchedObjects] filteredArrayUsingPredicate:predicate]];
+        if ([[MessageUpdatesHandler sharedHandler] messageUpdateWithUuid:message.uuid] != nil)
+        {
+            [[MessageUpdatesHandler sharedHandler] removeMessageUpdateWithUuid:message.uuid];
+        }
     }
-    
-    return self.fetchedMessages;
-}
-
-
-- (MessageData*)messageAtIndexPath:(NSIndexPath*)indexPath
-{
-    return [self.messages objectAtIndex:indexPath.row];
 }
 
 
@@ -111,8 +108,8 @@
 - (id<JSQMessageData>)collectionView:(JSQMessagesCollectionView*)collectionView
        messageDataForItemAtIndexPath:(NSIndexPath*)indexPath
 {
-    MessageData* message  = [self messageAtIndexPath:indexPath];
-    NSString*    senderId = message.direction == MessageDirectionInbound ? message.externE164 : message.numberE164;
+    MessageData* message  = self.messages[indexPath.row];
+    NSString*    senderId = (message.direction == MessageDirectionInbound) ? message.externE164 : message.numberE164;
 
     return [[JSQMessage alloc] initWithSenderId:senderId
                               senderDisplayName:[NSString stringWithFormat:@"%@%@", @"name: ", message.externE164]
@@ -125,7 +122,8 @@
 - (UICollectionViewCell*)collectionView:(JSQMessagesCollectionView*)collectionView
                  cellForItemAtIndexPath:(NSIndexPath*)indexPath
 {
-    JSQMessagesCollectionViewCell* cell = (JSQMessagesCollectionViewCell*)[super collectionView:collectionView cellForItemAtIndexPath:indexPath];
+    JSQMessagesCollectionViewCell* cell = (JSQMessagesCollectionViewCell*)[super collectionView:collectionView
+                                                                         cellForItemAtIndexPath:indexPath];
     
     // Enable hyperlink highlighting + selection of text.
     cell.textView.editable               = NO;
@@ -135,7 +133,7 @@
     
     cell.textView.delegate = self;
     
-    MessageData* message = [self messageAtIndexPath:indexPath];
+    MessageData* message = self.messages[indexPath.row];
     
     switch (message.direction)
     {
@@ -156,14 +154,14 @@
 - (id<JSQMessageBubbleImageDataSource>)collectionView:(JSQMessagesCollectionView*)collectionView
              messageBubbleImageDataForItemAtIndexPath:(NSIndexPath*)indexPath
 {
-    MessageData*                        message = [self messageAtIndexPath:indexPath];
+    MessageData*                        message = self.messages[indexPath.row];
     id<JSQMessageBubbleImageDataSource> result  = nil;
     
     switch (message.direction)
     {
         case MessageDirectionInbound:
         {
-            result = [self.bubbleFactory incomingMessagesBubbleImageWithColor:[UIColor jsq_messageBubbleGreenColor]];
+            result = [self.bubbleFactory incomingMessagesBubbleImageWithColor:[Skinning onTintColor]];
             break;
         }
         case MessageDirectionOutbound:
@@ -183,7 +181,7 @@
 {
     NBLog(@"--- [ Not Implemented ]: ConversationViewController.m -> avatarImageDataForItemAtIndexPath");
 
-    // Return nil to disable avatarImages next to the bubbles.
+    // Disable avatarImages next to the bubbles.
     return nil;
 }
 
@@ -215,13 +213,7 @@
             [[CallManager sharedManager] callPhoneNumber:phoneNumber
                                                contactId:contactId
                                                 callerId:nil // Determine the caller ID based on user preferences.
-                                              completion:^(Call* call)
-            {
-                if (call != nil)
-                {
-                    [Settings sharedSettings].lastDialedNumber = phoneNumber.number;
-                }
-            }];
+                                              completion:nil];
         }];
         
         return NO;

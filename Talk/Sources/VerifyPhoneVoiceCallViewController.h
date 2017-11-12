@@ -17,6 +17,7 @@
                                uuid:(NSString*)uuid
                       languageCodes:(NSArray*)languageCodes
                          codeLength:(NSUInteger)codeLength
+                        allowCancel:(BOOL)allowCancel
                          completion:(void (^)(BOOL isVerified))completion;
 
 @end

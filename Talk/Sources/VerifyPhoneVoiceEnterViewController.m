@@ -26,6 +26,7 @@
 typedef enum
 {
     TableSectionNumber = 1UL << 0,
+    TableSectionVerify = 1UL << 1,
 } TableSections;
 
 typedef enum
@@ -45,6 +46,7 @@ typedef enum
 @property (nonatomic, assign) NSUInteger   codeLength;
 @property (nonatomic, copy)   void       (^completion)(PhoneNumber* verifiedPhoneNumber, NSString* uuid);
 @property (nonatomic, assign) BOOL         isCancelled;
+@property (nonatomic, assign) BOOL         allowCancel;
 
 @property (nonatomic, strong) PhoneNumberTextFieldDelegate* phoneNumberTextFieldDelegate;
 @property (nonatomic, strong) NSString*                     isoCountryCode;
@@ -56,12 +58,13 @@ typedef enum
 
 @implementation VerifyPhoneVoiceEnterViewController
 
-- (instancetype)initWithCompletion:(void (^)(PhoneNumber* verifiedPhoneNumber, NSString* uuid))completion
+- (instancetype)initWithAllowCancel:(BOOL)allowCancel
+                         completion:(void (^)(PhoneNumber* verifiedPhoneNumber, NSString* uuid))completion
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
         self.completion     = completion;
-
+        self.allowCancel    = allowCancel;
         self.isoCountryCode = [Settings sharedSettings].homeIsoCountryCode;
     }
 
@@ -75,10 +78,13 @@ typedef enum
 
     self.navigationItem.title = [Strings numberString];
 
-    UIBarButtonItem* buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                target:self
-                                                                                action:@selector(cancelAction)];
-    self.navigationItem.rightBarButtonItem = buttonItem;
+    if (self.allowCancel)
+    {
+        UIBarButtonItem* buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                    target:self
+                                                                                    action:@selector(cancelAction)];
+        self.navigationItem.rightBarButtonItem = buttonItem;
+    }
 }
 
 
@@ -99,23 +105,20 @@ typedef enum
 
 - (void)textFieldDidChange:(UITextField*)textField
 {
-    if ([self isNumberValid])
+    static BOOL isValid;
+
+    if (isValid != [self isNumberValid])
     {
-        [textField resignFirstResponder];
+        isValid = [self isNumberValid];
 
-        // Add delay to prevent a ghost keybpard to appear briefly in case of error when the alert is closed and the
-        // view is dismissed.
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-        {
-            [self getVerificationData:^(NSString* uuid, NSArray* languages, NSUInteger codeLength)
-            {
-                self.uuid       = uuid;
-                self.languages  = languages;
-                self.codeLength = codeLength;
+        NSMutableIndexSet* indexSet = [NSMutableIndexSet indexSet];
+        [indexSet addIndex:[Common nOfBit:TableSectionVerify inValue:self.sections]];
 
-                [self pushCallViewController];
-            }];
-        });
+        [self.tableView beginUpdates];
+        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView endUpdates];
+
+        textField.textColor = isValid ? [Skinning tintColor] : [Skinning deleteTintColor];
     }
 }
 
@@ -125,6 +128,7 @@ typedef enum
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
     self.sections   |= TableSectionNumber;
+    self.sections   |= TableSectionVerify;
 
     self.numberRows |= NumberRowCountry;
     self.numberRows |= NumberRowNumber;
@@ -140,6 +144,7 @@ typedef enum
     switch ([Common nthBitSet:section inValue:self.sections])
     {
         case TableSectionNumber: numberOfRows = [Common bitsSetCount:self.numberRows]; break;
+        case TableSectionVerify: numberOfRows = 1;
     }
 
     return numberOfRows;
@@ -152,7 +157,22 @@ typedef enum
 
     switch ([Common nthBitSet:section inValue:self.sections])
     {
-        case TableSectionNumber: title = NSLocalizedString(@"Enter your phone number", @""); break;
+        case TableSectionNumber:
+        {
+            if (self.allowCancel)
+            {
+                title = NSLocalizedString(@"1. Enter Your Number", @"");
+            }
+            else
+            {
+                title = NSLocalizedString(@"1. Enter Your Mobile Number", @"");
+            }
+            break;
+        }
+        case TableSectionVerify:
+        {
+            title = NSLocalizedString(@"2. Verify Your Number", @""); break;
+        }
     }
 
     return title;
@@ -166,6 +186,7 @@ typedef enum
     switch ([Common nthBitSet:indexPath.section inValue:self.sections])
     {
         case TableSectionNumber: cell = [self numberCellForRowAtIndexPath:indexPath]; break;
+        case TableSectionVerify: cell = [self verifyCellForRowAtIndexPath:indexPath]; break;
     }
     
     return cell;
@@ -203,6 +224,8 @@ typedef enum
                             self.phoneNumberTextFieldDelegate.phoneNumber = [[PhoneNumber alloc] initWithNumber:number
                                                                                                  isoCountryCode:self.isoCountryCode];
                             [self.phoneNumberTextFieldDelegate update];
+
+                            [self textFieldDidChange:self.phoneNumberTextFieldDelegate.textField];
                         }
                     }];
 
@@ -224,6 +247,31 @@ typedef enum
                 }
             }
             break;
+        }
+        case TableSectionVerify:
+        {
+            if ([self isNumberValid])
+            {
+                [self.tableView endEditing:YES];
+
+                // Add delay to prevent a ghost keyboard to appear briefly in case of error when the alert is closed and the
+                // view is dismissed.
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                {
+                   [self getVerificationData:^(NSString* uuid, NSArray* languages, NSUInteger codeLength)
+                   {
+                       self.uuid       = uuid;
+                       self.languages  = languages;
+                       self.codeLength = codeLength;
+
+                       [self pushCallViewController];
+                   }];
+                });
+            }
+            else
+            {
+                [self showCantVerifyAlertWithIndexPath:indexPath];
+            }
         }
     }
 }
@@ -303,9 +351,30 @@ typedef enum
                 textField.tag          = CommonTextFieldCellTag;
             }
 
+            textField.textColor = [self isNumberValid] ? [Skinning tintColor] : [Skinning deleteTintColor];
+
             break;
         }
     }
+
+    return cell;
+}
+
+
+- (UITableViewCell*)verifyCellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell* cell;
+    NSString*        identifier = @"VerifyCell";
+
+    cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
+    }
+
+    cell.textLabel.text    = [Strings verifyString];
+    cell.accessoryType     = UITableViewCellAccessoryDisclosureIndicator;
+    cell.textLabel.enabled = [self isNumberValid];
 
     return cell;
 }
@@ -389,7 +458,10 @@ typedef enum
                                        message:message
                                     completion:^(BOOL cancelled, NSInteger buttonIndex)
         {
-            [self cancelAction];
+            if (self.allowCancel)
+            {
+                [self cancelAction];
+            }
         }
                              cancelButtonTitle:[Strings cancelString]
                              otherButtonTitles:nil];
@@ -399,11 +471,21 @@ typedef enum
 
 - (BOOL)isNumberValid
 {
-    return self.phoneNumberTextFieldDelegate.phoneNumber.isValid &&
-           (self.phoneNumberTextFieldDelegate.phoneNumber.type == PhoneNumberTypeFixedLine         ||
-            self.phoneNumberTextFieldDelegate.phoneNumber.type == PhoneNumberTypeMobile            ||
-            self.phoneNumberTextFieldDelegate.phoneNumber.type == PhoneNumberTypeFixedLineOrMobile ||
-            self.phoneNumberTextFieldDelegate.phoneNumber.type == PhoneNumberTypeUnknown);
+    if (self.allowCancel)
+    {
+        return self.phoneNumberTextFieldDelegate.phoneNumber.isValid &&
+               (self.phoneNumberTextFieldDelegate.phoneNumber.type == PhoneNumberTypeFixedLine         ||
+                self.phoneNumberTextFieldDelegate.phoneNumber.type == PhoneNumberTypeMobile            ||
+                self.phoneNumberTextFieldDelegate.phoneNumber.type == PhoneNumberTypeFixedLineOrMobile ||
+                self.phoneNumberTextFieldDelegate.phoneNumber.type == PhoneNumberTypeUnknown);
+    }
+    else
+    {
+        return self.phoneNumberTextFieldDelegate.phoneNumber.isValid &&
+               (self.phoneNumberTextFieldDelegate.phoneNumber.type == PhoneNumberTypeMobile            ||
+                self.phoneNumberTextFieldDelegate.phoneNumber.type == PhoneNumberTypeFixedLineOrMobile ||
+                self.phoneNumberTextFieldDelegate.phoneNumber.type == PhoneNumberTypeUnknown);
+    }
 }
 
 
@@ -414,6 +496,7 @@ typedef enum
                                                                                 uuid:self.uuid
                                                                            languageCodes:self.languages
                                                                           codeLength:self.codeLength
+                                                                         allowCancel:self.allowCancel
                                                                           completion:^(BOOL isVerified)
     {
         self.completion(self.phoneNumberTextFieldDelegate.phoneNumber, self.uuid);
@@ -423,6 +506,24 @@ typedef enum
     }];
 
     [self.navigationController pushViewController:viewController animated:YES];
+}
+
+
+- (void)showCantVerifyAlertWithIndexPath:(NSIndexPath*)indexPath
+{
+    NSString* title;
+    NSString* message;
+
+    title   = NSLocalizedString(@"Can't Verify Number Yet", @"");
+    message = NSLocalizedString(@"First enter your number above. When done, tap here again to verify your number.", @"");
+    [BlockAlertView showAlertViewWithTitle:title
+                                   message:message
+                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+    {
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
+                         cancelButtonTitle:[Strings closeString]
+                         otherButtonTitles:nil];
 }
 
 

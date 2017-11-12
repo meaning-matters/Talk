@@ -548,8 +548,8 @@ typedef enum
                 }
 
                 UIViewController* viewController;
-                viewController = [[class alloc] initWithCompletion:^(PhoneNumber* verifiedPhoneNumber,
-                                                                     NSString*    uuid)
+                viewController = [[class alloc] initWithAllowCancel:YES
+                                                         completion:^(PhoneNumber* verifiedPhoneNumber, NSString* uuid)
                 {
                     self.phoneNumber      = verifiedPhoneNumber;
                     self.phone.uuid       = uuid;
