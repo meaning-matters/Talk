@@ -662,10 +662,13 @@
 
 + (NSString*)messagesString
 {
-    return NSLocalizedStringWithDefaultValue(@"General:CommonStrings Messages", nil, [NSBundle mainBundle],
-                                             @"Messages",
-                                             @"Standard string to label messages\n"
-                                             @"[iOS standard size].");
+    return NSLocalizedString(@"Messages", @"Standard string to label messages.");
+}
+
+    
++ (NSString*)verifyString
+{
+    return NSLocalizedString(@"Verify", @"Used to label the action of checking a telephone number or an image.");
 }
 
 
