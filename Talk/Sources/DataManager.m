@@ -1355,12 +1355,12 @@
                 // Get the contactId for the external number.
                 [[AppDelegate appDelegate] findContactsHavingNumber:[externE164 e164Format]
                                                          completion:^(NSArray* contactIds)
-                 {
-                     if (contactIds.count > 0)
-                     {
-                         newMessage.contactId = [contactIds firstObject];
-                     }
-                 }];
+                {
+                    if (contactIds.count > 0)
+                    {
+                        newMessage.contactId = [contactIds firstObject];
+                    }
+                }];
                 
                 // If the uuid changed (so it's a new message), process the update of this message.
                 [[MessageUpdatesHandler sharedHandler] processChangedMessage:newMessage];

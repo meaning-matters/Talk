@@ -188,7 +188,7 @@
     NSString*    senderId = (message.direction == MessageDirectionInbound) ? message.externE164 : message.numberE164;
 
     return [[JSQMessage alloc] initWithSenderId:senderId
-                              senderDisplayName:@"" // This is not used.
+                              senderDisplayName:@"" // Not used.
                                            date:message.timestamp
                                            text:message.text
                                        incoming:message.direction == MessageDirectionInbound];

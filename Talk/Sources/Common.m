@@ -1700,7 +1700,7 @@ static Common* sharedCommon;
 // If showTimeForToday is true, "Today" will be replaced with the time.
 + (NSString*)historyStringForDate:(NSDate*)date showTimeForToday:(BOOL)showTimeForToday
 {
-    NSString*         dayOrDate;
+    NSString*         historyString;
     NSCalendar*       calendar    = [NSCalendar currentCalendar];
     NSDateComponents* components  = [calendar components:(NSCalendarUnitYear       | NSCalendarUnitMonth |
                                                           NSCalendarUnitWeekOfYear | NSCalendarUnitDay)
@@ -1720,17 +1720,17 @@ static Common* sharedCommon;
             if (showTimeForToday)
             {
                 // If the timeDelta is 0 (today), return the time.
-                dayOrDate = [NSString formatToTime:date];
+                historyString = [NSString formatToTime:date];
             }
             else
             {
                 // If the timeDelta is 0 (today), return Today.
-                dayOrDate = NSLocalizedString(@"CNT_TODAY", @"");
+                historyString = NSLocalizedString(@"CNT_TODAY", @"");
             }
         }
         else if (timeDelta == 60 * 60 * 24)
         {
-            dayOrDate = NSLocalizedString(@"CNT_YESTERDAY", @"");
+            historyString = NSLocalizedString(@"CNT_YESTERDAY", @"");
         }
         else
         {
@@ -1744,16 +1744,16 @@ static Common* sharedCommon;
             NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setLocale: [NSLocale currentLocale]];
             NSArray* weekdays = [dateFormatter weekdaySymbols];
-            dayOrDate         = [weekdays objectAtIndex:weekday];
+            historyString     = [weekdays objectAtIndex:weekday];
         }
     }
     else
     {
         // If the timeDelta is more than a week, return the date.
-        dayOrDate = [NSString formatToSlashSeparatedDate:date];
+        historyString = [NSString formatToSlashSeparatedDate:date];
     }
     
-    return dayOrDate;
+    return historyString;
 }
 
 @end

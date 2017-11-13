@@ -29,7 +29,7 @@ const NSInteger kCellDotViewTag = 123;
         self.tag = kCellDotViewTag;
 
         self.isSettingBackgroundColor = YES;
-        self.backgroundColor          = [Skinning cellBadgeColor];
+        self.backgroundColor          = [Skinning tintColor];
         self.isSettingBackgroundColor = NO;
         self.layer.cornerRadius       = self.frame.size.height / 2.0f;
     }
