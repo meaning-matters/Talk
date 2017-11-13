@@ -1,0 +1,28 @@
+
+- Change the icon of the Messages-tab.
+
+- Later: orderByConversation (use predicate of fetchedMessagesController + test performance)
+
+- All number-formats must be checked, in the entire app. What the app works with + how it is displayed to the user.
+- What happens with special cases such as "WeChat" etc?
+
+- You're sure this is GMT? All timestamps in DB and in API must be GMT. All dates/times shown to user must be their local time (see Number expiration/renewal). Did you make sure that all times/dates in all your work so far are according to these rules?
+- Check times everywhere in app and server and DB + formatting displayed to user.
+
+- All cancels for webrequests.
+
+- Searching contacts crashes the app when typing specific letters or numbers .....
+
+- Handle webrequest errors etc.
+
+- Messages jump when going into a conversations. This has to do with jumping to the first unread message.
+
+- CellDotView should be blue.
+
+- When selecting text in a message, the blue dot (the last one always, the first one only when moving) is not drawn outside of the bubble.
+- The edit/delete/etc menu is not always in the right place (try clicking somehwere after selecting text and you'll see)
+- No way to remove selection
+
+- Clicking in a chat should close the keyboard but this is only done when clicking between the bubbles (and the bubbles are internally the whole screen width ... )
+
+

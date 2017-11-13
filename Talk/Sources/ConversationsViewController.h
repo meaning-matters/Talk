@@ -1,5 +1,5 @@
 //
-//  MessagesViewController.h
+//  ConversationsViewController.h
 //  Talk
 //
 //  Created by Jeroen Kooiker on 11/9/17.
@@ -11,9 +11,7 @@
 #import "SearchTableViewController.h"
 
 
-@class MessageData;
-
-@interface MessagesViewController : SearchTableViewController <NSFetchedResultsControllerDelegate>
+@interface ConversationsViewController : SearchTableViewController <NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, strong) UINavigationController* writeMessageNavigationController;
 

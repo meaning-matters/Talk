@@ -178,8 +178,8 @@
                 }
 
                 UIViewController* viewController;
-                viewController = [[class alloc] initWithCompletion:^(PhoneNumber* verifiedPhoneNumber,
-                                                                     NSString*    uuid)
+                viewController = [[class alloc] initWithAllowCancel:NO
+                                                         completion:^(PhoneNumber* verifiedPhoneNumber, NSString* uuid)
                 {
                     if (verifiedPhoneNumber != nil)
                     {
@@ -247,7 +247,7 @@
     {
         if (error == nil)
         {
-            [self createDefaultDestinationWithE164:[phoneNumber e164Format] completion:^(NSError *error)
+            [self createDefaultDestinationWithE164:phoneNumber.e164Format completion:^(NSError *error)
             {
                 if (error == nil)
                 {
@@ -259,7 +259,7 @@
                                                                inManagedObjectContext:context];
                     phone.uuid = uuid;
                     phone.name = name;
-                    phone.e164 = [phoneNumber e164Format];
+                    phone.e164 = phoneNumber.e164Format;
 
                     [[DataManager sharedManager] saveManagedObjectContext:nil];
                     

@@ -1537,13 +1537,48 @@
 
 
 // 40A. GET ALL MESSAGES
-- (void)retrieveMessages:(void (^)(NSError*, NSArray*))reply
+- (void)retrieveMessages:(void (^)(NSError* error, NSArray* messages))reply
 {
-    NSString* username = [Settings sharedSettings].webUsername;
+    NSString* username       = [Settings sharedSettings].webUsername;
     
     [self getPath:[NSString stringWithFormat:@"/users/%@/messages", username]
        parameters:nil
-            reply:reply];
+            reply:^(NSError* error, NSArray* content)
+    {
+        if (error == nil)
+        {
+            reply(nil, content);
+        }
+        else
+        {
+            reply(error, nil);
+        }
+    }];
+}
+
+
+// 40A. GET ALL MESSAGES
+- (void)retrieveMessagesFromDate:(NSDate*)date reply:(void (^)(NSError*, NSArray*))reply
+{
+    NSString* username       = [Settings sharedSettings].webUsername;
+    NSString* fromDateString = [Common stringWithDate:date];
+    
+    fromDateString = [fromDateString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+    fromDateString = [fromDateString stringByReplacingOccurrencesOfString:@":" withString:@"%3A"];
+    
+    [self getPath:[NSString stringWithFormat:@"/users/%@/messages/updates/%@", username, fromDateString]
+       parameters:nil
+            reply:^(NSError* error, NSArray* content)
+    {
+        if (error == nil)
+        {
+            reply(nil, content);
+        }
+        else
+        {
+            reply(error, nil);
+        }
+    }];
 }
 
 
@@ -2010,26 +2045,5 @@
                                                     path:[NSString stringWithFormat:@"/users/%@/callback/%@",
                                                           username, uuid]];
 }
-
-
-// 40A.
-- (void)cancelAllRetrieveMessages
-{
-    NSString* username = [Settings sharedSettings].webUsername;
-    
-    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodGet
-                                                  path:[NSString stringWithFormat:@"/users/%@/messages",
-                                                        username]];
-}
-
-
-// 40B.
-//- (void)cancelAllCreateMessageWithDestination:(NSString*)e164
-//{
-//    NSString* username = [Settings sharedSettings].webUsername;
-//    
-//    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodPost
-//                                                  path:[NSString stringWithFormat:@"/users/%@/sms/v1/%@", username, e164]];
-//}
 
 @end

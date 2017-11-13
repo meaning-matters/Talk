@@ -13,6 +13,7 @@
 
 @interface VerifyPhoneVoiceEnterViewController : UITableViewController
 
-- (instancetype)initWithCompletion:(void (^)(PhoneNumber* verifiedPhoneNumber, NSString* uuid))completion;
+- (instancetype)initWithAllowCancel:(BOOL)allowCancel
+                         completion:(void (^)(PhoneNumber* verifiedPhoneNumber, NSString* uuid))completion;
 
 @end

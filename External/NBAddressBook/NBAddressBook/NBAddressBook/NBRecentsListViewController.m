@@ -1183,53 +1183,12 @@ typedef enum
     {
         [cell.imageView setTintColor:[[NBAddressBookManager sharedManager].delegate valueColor]];
     }
-
-    // Set the time and (yesterday/day name in case of less than a week ago/date)
-    NSString*         dayOrDate;
-    NSCalendar*       cal         = [NSCalendar currentCalendar];
-    NSDateComponents* components  = [cal components:(NSCalendarUnitYear       | NSCalendarUnitMonth |
-                                                     NSCalendarUnitWeekOfYear | NSCalendarUnitDay)
-                                           fromDate:latestEntry.date];
-    NSDate*           entryDate   = [cal dateFromComponents:components];
-    components                    = [cal components:(NSCalendarUnitYear       | NSCalendarUnitMonth |
-                                                     NSCalendarUnitWeekOfYear | NSCalendarUnitDay)
-                                           fromDate:[NSDate date]];
-    NSDate*           currentDate = [cal dateFromComponents:components];
-    int               timeDelta   = [currentDate timeIntervalSinceDate:entryDate];
-    
-    if (timeDelta < 60 * 60 * 24 * 7)
-    {
-        if (timeDelta == 0)
-        {
-            dayOrDate = NSLocalizedString(@"CNT_TODAY", @"");
-        }
-        else if (timeDelta == 60 * 60 * 24)
-        {
-            dayOrDate = NSLocalizedString(@"CNT_YESTERDAY", @"");
-        }
-        else
-        {
-            //Determine the day in the week
-            NSCalendar*       calendar = [NSCalendar currentCalendar];
-            NSDateComponents* comps    = [calendar components:NSWeekdayCalendarUnit fromDate:latestEntry.date];
-            int               weekday  = (int)[comps weekday] - 1;
-            
-            NSDateFormatter* df = [[NSDateFormatter alloc] init];
-            [df setLocale: [NSLocale currentLocale]];
-            NSArray* weekdays = [df weekdaySymbols];
-            dayOrDate = [weekdays objectAtIndex:weekday];
-        }
-    }
-    else
-    {
-        dayOrDate = [NSString formatToSlashSeparatedDate:latestEntry.date];
-    }
     
     //Set the attributed text (bold time and regular day)
     NSString*                  detailText;;
     NSMutableAttributedString* attributedText;
 
-    detailText     = [NSString stringWithFormat:@"%@\n%@", [NSString formatToTime:latestEntry.date], dayOrDate];
+    detailText     = [NSString stringWithFormat:@"%@\n%@", [NSString formatToTime:latestEntry.date], [Common historyStringForDate:latestEntry.date showTimeForToday:NO]];
     attributedText = [[NSMutableAttributedString alloc] initWithString:detailText
                                                             attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14]}];
 

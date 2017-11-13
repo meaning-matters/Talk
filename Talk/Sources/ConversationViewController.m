@@ -14,6 +14,7 @@
 #import "PhoneNumber.h"
 #import "Settings.h"
 #import "AppDelegate.h"
+#import "MessageUpdatesHandler.h"
 #import "DataManager.h"
 
 
@@ -21,7 +22,7 @@
 
 @property (nonatomic, strong) NSManagedObjectContext*        managedObjectContext;
 @property (nonatomic, strong) NSFetchedResultsController*    fetchedMessagesController;
-
+@property (nonatomic, weak) id<NSObject>                     messagesObserver;
 @property (nonatomic, strong) NSMutableArray*                fetchedMessages;
 @property (nonatomic, strong) NSArray*                       messages;
 
@@ -31,6 +32,9 @@
 @property (nonatomic, strong) PhoneNumber*                   numberE164;
 @property (nonatomic, strong) PhoneNumber*                   externE164;
 @property (nonatomic, strong) NSString*                      contactId;
+
+@property (nonatomic) NSInteger                              firstUnreadMessageIndex;
+@property (nonatomic) BOOL                                   hasFetchedMessages;
 
 @end
 
@@ -61,7 +65,7 @@
 {
     [super viewWillAppear:animated];
     
-    // Disable the attachement button.
+    // Disable the attachment button.
     self.inputToolbar.contentView.leftBarButtonItem = nil;
     
     // Set avatar-size to zero, since it's not being used and takes up space next to the messages.
@@ -72,8 +76,9 @@
     self.inputToolbar.contentView.textView.autocorrectionType = UITextAutocorrectionTypeNo;
     
     // When the CollectionView is tapped.
-    UITapGestureRecognizer* tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                    action:@selector(handleCollectionTapRecognizer:)];
+    UITapGestureRecognizer* tapRecognizer;
+    tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                            action:@selector(handleCollectionTapRecognizer:)];
     [self.collectionView addGestureRecognizer:tapRecognizer];
 }
 
@@ -96,10 +101,19 @@
 {
     [super viewDidLoad];
     
+    self.hasFetchedMessages      = NO;
+    self.firstUnreadMessageIndex = -1;
+    
     self.bubbleFactory = [[JSQMessagesBubbleImageFactory alloc] init];
     
     self.collectionView.delegate   = self;
     self.collectionView.dataSource = self;
+    
+    self.fetchedMessagesController = [[DataManager sharedManager] fetchResultsForEntityName:@"Message"
+                                                                               withSortKeys:nil
+                                                                       managedObjectContext:self.managedObjectContext];
+    
+    [self processMessages:self.fetchedMessagesController.fetchedObjects];
     
     if (self.contactId != nil)
     {
@@ -107,44 +121,97 @@
     }
     else
     {
-        // @TODO: Contact-name or number
         self.title = [self.externE164 internationalFormat];
     }
-}
 
-
-// Must be overriden for JSQMessagesViewController.
-- (NSString*)senderId
-{
-    return nil;
-}
-
-
-// Used by JSQMessagesViewController to determine where to draw the message (left / right).
-- (BOOL)isOutgoingMessage:(id<JSQMessageData>)messageItem
-{
-    return !((JSQMessage*)messageItem).isIncoming;
-}
-
-
-- (NSArray*)messages
-{
-    if (self.fetchedMessages == nil)
+    __weak typeof(self) weakSelf = self;
+    self.messagesObserver = [[NSNotificationCenter defaultCenter] addObserverForName:MessageUpdatesNotification
+                                                                              object:nil
+                                                                               queue:[NSOperationQueue mainQueue]
+                                                                          usingBlock:^(NSNotification* note)
     {
-        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"numberE164 == %@ AND externE164 = %@",
-                                  [self.numberE164 e164Format],
-                                  [self.externE164 e164Format]];
-        self.fetchedMessages   = [[NSMutableArray alloc] initWithArray:[[self.fetchedMessagesController fetchedObjects]
-                                                                        filteredArrayUsingPredicate:predicate]];
+        [weakSelf.fetchedMessagesController performFetch:nil];
+        [weakSelf processMessages:[weakSelf.fetchedMessagesController fetchedObjects]];
+    }];
+}
+
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    // @TODO: This makes the messages jump. Fix that.
+    // Scroll to first unread message.
+    if (self.firstUnreadMessageIndex >= 0)
+    {
+        NSIndexPath* indexPath = [NSIndexPath indexPathForItem:self.firstUnreadMessageIndex inSection:0];
+        [self scrollToIndexPath:indexPath animated:NO];
+    }
+}
+
+
+// self.messages will only contain messages where message.externE164 == self.externE164.
+// Sorts the messages on timestamp.
+// Removes the MessageUpdates for all those messages.
+// Reloads the collectionView.
+- (void)processMessages:(NSArray*)messages
+{
+    NSMutableArray* sortedMessages = [[NSMutableArray alloc] init];
+    
+    // Get the messages for this conversation.
+    [messages enumerateObjectsUsingBlock:^(MessageData* message, NSUInteger index, BOOL* stop)
+    {
+        // @TODO: Do message.externE164 and self.externE164.number have the exact same format??
+        if ([message.externE164 isEqualToString:self.externE164.number])
+        {
+            [sortedMessages addObject:message];
+        }
+    }];
+    
+    // Sort the messages by timestamp.
+    self.messages = [[NSArray arrayWithArray:sortedMessages] sortedArrayUsingComparator:^(id a, id b)
+    {
+        NSDate* first  = ((MessageData*)a).timestamp;
+        NSDate* second = ((MessageData*)b).timestamp;
+        
+        return [first compare:second];
+    }];
+    
+    // Determine if we have to scroll to the first unread message.
+    if (self.hasFetchedMessages == NO)
+    {
+        int index = 0;
+        for (MessageData* message in self.messages)
+        {
+            if ([[MessageUpdatesHandler sharedHandler] messageUpdateWithUuid:message.uuid] != nil)
+            {
+                self.firstUnreadMessageIndex = index;
+                
+                break;
+            }
+            
+            index++;
+        }
+        
+        self.hasFetchedMessages = YES;
     }
     
-    return self.fetchedMessages;
+    [self removeUpdates];
+    [self.collectionView reloadData];
 }
 
 
-- (MessageData*)messageAtIndexPath:(NSIndexPath*)indexPath
+// Remove the MessageUpdates for all messages in this conversation.
+// This decreases the badgeCount and makes the chat "read" (remove the dot on the left).
+- (void)removeUpdates
 {
-    return [self.messages objectAtIndex:indexPath.row];
+    for (MessageData* message in self.messages)
+    {
+        if ([[MessageUpdatesHandler sharedHandler] messageUpdateWithUuid:message.uuid] != nil)
+        {
+            [[MessageUpdatesHandler sharedHandler] removeMessageUpdateWithUuid:message.uuid];
+        }
+    }
 }
 
 
@@ -159,11 +226,11 @@
 - (id<JSQMessageData>)collectionView:(JSQMessagesCollectionView*)collectionView
        messageDataForItemAtIndexPath:(NSIndexPath*)indexPath
 {
-    MessageData* message  = [self messageAtIndexPath:indexPath];
-    NSString*    senderId = message.direction == MessageDirectionInbound ? message.externE164 : message.numberE164;
+    MessageData* message  = self.messages[indexPath.row];
+    NSString*    senderId = (message.direction == MessageDirectionInbound) ? message.externE164 : message.numberE164;
 
     return [[JSQMessage alloc] initWithSenderId:senderId
-                              senderDisplayName:[NSString stringWithFormat:@"%@%@", @"name: ", message.externE164]
+                              senderDisplayName:@"" // Not used.
                                            date:message.timestamp
                                            text:message.text
                                        incoming:message.direction == MessageDirectionInbound];
@@ -173,7 +240,8 @@
 - (UICollectionViewCell*)collectionView:(JSQMessagesCollectionView*)collectionView
                  cellForItemAtIndexPath:(NSIndexPath*)indexPath
 {
-    JSQMessagesCollectionViewCell* cell = (JSQMessagesCollectionViewCell*)[super collectionView:collectionView cellForItemAtIndexPath:indexPath];
+    JSQMessagesCollectionViewCell* cell = (JSQMessagesCollectionViewCell*)[super collectionView:collectionView
+                                                                         cellForItemAtIndexPath:indexPath];
     
     // Enable hyperlink highlighting + selection of text.
     cell.textView.editable               = NO;
@@ -183,7 +251,7 @@
     
     cell.textView.delegate = self;
     
-    MessageData* message = [self messageAtIndexPath:indexPath];
+    MessageData* message = self.messages[indexPath.row];
     
     switch (message.direction)
     {
@@ -204,19 +272,21 @@
 - (id<JSQMessageBubbleImageDataSource>)collectionView:(JSQMessagesCollectionView*)collectionView
              messageBubbleImageDataForItemAtIndexPath:(NSIndexPath*)indexPath
 {
-    MessageData*                        message = [self messageAtIndexPath:indexPath];
+    MessageData*                        message = self.messages[indexPath.row];
     id<JSQMessageBubbleImageDataSource> result  = nil;
 
     switch (message.direction)
     {
         case MessageDirectionInbound:
         {
-            result = [self.bubbleFactory incomingMessagesBubbleImageWithColor:[UIColor jsq_messageBubbleGreenColor]];
+            result = [self.bubbleFactory incomingMessagesBubbleImageWithColor:[Skinning onTintColor]];
+            
             break;
         }
         case MessageDirectionOutbound:
         {
             result = [self.bubbleFactory outgoingMessagesBubbleImageWithColor:[UIColor jsq_messageBubbleLightGrayColor]];
+            
             break;
         }
     }
@@ -252,13 +322,7 @@
             [[CallManager sharedManager] callPhoneNumber:phoneNumber
                                                contactId:contactId
                                                 callerId:nil // Determine the caller ID based on user preferences.
-                                              completion:^(Call* call)
-            {
-                if (call != nil)
-                {
-                    [Settings sharedSettings].lastDialedNumber = phoneNumber.number;
-                }
-            }];
+                                              completion:nil];
         }];
         
         return NO;
@@ -279,10 +343,11 @@
     self.sentMessage = [NSEntityDescription insertNewObjectForEntityForName:@"Message"
                                                      inManagedObjectContext:self.managedObjectContext];
     
-    // @TODO: Check which number-format is correct
+    // @TODO: Check which number-format is correct (at least remove the + (DataManager?))
     // @TODO: Use correct timezone + format
-    [self.sentMessage createForNumberE164:[self.numberE164 internationalFormat]
-                               externE164:[self.externE164 internationalFormat]
+    // @TODO: Format message (special chars, emojis, etc etc)
+    [self.sentMessage createForNumberE164:[self.numberE164 e164Format]
+                               externE164:[self.externE164 e164Format]
                                      text:text
                                  datetime:date
                                completion:^(NSError* error)
@@ -318,14 +383,26 @@
     }
 }
 
-#pragma mark Mandatory methods to override from JSQMessagesViewController
 
+// Used by JSQMessagesViewController to determine where to draw the message (left / right).
+- (BOOL)isOutgoingMessage:(id<JSQMessageData>)messageItem
+{
+    return !((JSQMessage*)messageItem).isIncoming;
+}
+
+
+// Mandatory to override.
 - (id<JSQMessageAvatarImageDataSource>)collectionView:(JSQMessagesCollectionView*)collectionView
                     avatarImageDataForItemAtIndexPath:(NSIndexPath*)indexPath
 {
-    NBLog(@"--- [ Not Implemented ]: ConversationViewController.m -> avatarImageDataForItemAtIndexPath");
-    
-    // Return nil to disable avatarImages next to the bubbles.
+    // Disable avatarImages next to the bubbles.
+    return nil;
+}
+
+
+// Must be overriden for JSQMessagesViewController.
+- (NSString*)senderId
+{
     return nil;
 }
 

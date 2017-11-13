@@ -12,7 +12,7 @@
 
 @interface MessageData : NSManagedObject
 
-@property (nonatomic)         float     billed;
+@property (nonatomic, assign) float     cost;
 @property (nonatomic, assign) int16_t   direction;
 @property (nonatomic, retain) NSString* externE164;
 @property (nonatomic, retain) NSString* numberE164;

@@ -32,4 +32,6 @@
 
 + (UIColor*)cellBadgeColor;
 
++ (UIColor*)noContentTextColor;
+
 @end

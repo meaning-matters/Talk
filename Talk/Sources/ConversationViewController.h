@@ -10,7 +10,8 @@
 #import "JSQMessages.h"
 #import "PhoneNumber.h"
 
-@interface ConversationViewController : JSQMessagesViewController
+
+@interface ConversationViewController : JSQMessagesViewController <NSFetchedResultsControllerDelegate>
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
                    fetchedMessagesController:(NSFetchedResultsController*)fetchedMessagesController

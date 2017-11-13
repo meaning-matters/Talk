@@ -218,14 +218,14 @@
     // @TODO: In ConversationsViewController scroll to the right conversation (if the conversation already exists) before it's pushed to the new VC (in another branch, ConversationsViewController doesn't exist here)
     
     // Add the ConversationController to the ViewControllers array of ConversationsViewController.
-    NSMutableArray* viewControllers = [NSMutableArray arrayWithArray:self.messagesViewController.navigationController.viewControllers];
+    NSMutableArray* viewControllers = [NSMutableArray arrayWithArray:self.conversationsViewcontroller.navigationController.viewControllers];
     [viewControllers addObject:viewController];
 
     // Dismiss the NavigationController in which the NewConversationController is embedded.
-    [self.messagesViewController.writeMessageNavigationController dismissViewControllerAnimated:YES completion:^(void)
+    [self.conversationsViewcontroller.writeMessageNavigationController dismissViewControllerAnimated:YES completion:^(void)
     {
         // Set the ViewControllers array of ConversationsViewController, with the newly added ConversationViewcontroller.
-        [self.messagesViewController.navigationController setViewControllers:viewControllers animated:YES];
+        [self.conversationsViewcontroller.navigationController setViewControllers:viewControllers animated:YES];
     }];
 }
 
