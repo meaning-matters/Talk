@@ -6,9 +6,6 @@
 - All number-formats must be checked, in the entire app. What the app works with + how it is displayed to the user.
 - What happens with special cases such as "WeChat" etc?
 
-
-- TODO: Wrong! Because nothing has been assigned yet to cell, so you'll see some random value from the stack. Please check my existing code for examples.
-
 - You're sure this is GMT? All timestamps in DB and in API must be GMT. All dates/times shown to user must be their local time (see Number expiration/renewal). Did you make sure that all times/dates in all your work so far are according to these rules?
 - Check times everywhere in app and server and DB + formatting displayed to user.
 
@@ -17,3 +14,6 @@
 - Searching contacts crashes the app when typing specific letters or numbers .....
 
 - Handle webrequest errors etc.
+
+- Messages jump when going into a conversations. This has to do with jumping to the first unread message.
+

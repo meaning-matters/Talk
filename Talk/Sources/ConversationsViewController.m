@@ -106,12 +106,8 @@
     [self.tableView addSubview:self.refreshControl];
     [self.tableView sendSubviewToBack:self.refreshControl];
     
-    [self.tableView registerNib:[UINib nibWithNibName:@"ConversationCell" bundle:nil]
-         forCellReuseIdentifier:@"ConversationCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"ConversationCell" bundle:nil] forCellReuseIdentifier:@"ConversationCell"];
     self.conversationCell = [self.tableView dequeueReusableCellWithIdentifier:@"ConversationCell"];
-    CellDotView* dotView  = [[CellDotView alloc] init];
-    dotView.hidden        = YES;
-    [dotView addToCell:self.conversationCell];
     
     // Label that is shown when there are no conversations.
     self.noConversationsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0,
@@ -311,15 +307,11 @@
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    ConversationCell* cell;
+    ConversationCell* cell = [self.tableView dequeueReusableCellWithIdentifier:@"ConversationCell"];
     
     if (cell == nil)
     {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"ConversationCell" forIndexPath:indexPath];
-        
-        CellDotView* dotView = [[CellDotView alloc] init];
-        [dotView addToCell:cell];
-        dotView.hidden = YES;
+        cell = [self.tableView dequeueReusableCellWithIdentifier:@"ConversationCell"];
     }
     
     // Last message of the conversation.
@@ -327,7 +319,14 @@
     
     // The dot on the left of the cell is shown if this conversation has an unread message.
     CellDotView* dotView = [CellDotView getFromCell:cell];
-    dotView.hidden       = YES;
+    
+    if (dotView == nil)
+    {
+        dotView = [[CellDotView alloc] init];
+        [dotView addToCell:cell];
+    }
+    
+    dotView.hidden = YES;
     
     for (MessageData* message in self.conversations[indexPath.row])
     {
