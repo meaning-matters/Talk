@@ -17,3 +17,4 @@
 
 - Messages jump when going into a conversations. This has to do with jumping to the first unread message.
 
+- CellDotView should be blue.
