@@ -244,17 +244,21 @@
     // Order the groups by the most current timestamp of the contained messages.
     self.conversations = [[NSArray arrayWithArray:[conversationGroups allValues]] sortedArrayUsingComparator:^(id a, id b)
     {
-        NSDate* first  = [(MessageData*)[(NSMutableArray*)a lastObject] timestamp];
-        NSDate* second = [(MessageData*)[(NSMutableArray*)b lastObject] timestamp];
+        NSDate* first  = ((MessageData*)[(NSMutableArray*)a lastObject]).timestamp;
+        NSDate* second = ((MessageData*)[(NSMutableArray*)b lastObject]).timestamp;
         
-        return [first compare:second];
+        return [second compare:first];
     }];
-    
-    // Reverse the array -> groups with newest messages should come first.
-    self.conversations = [[self.conversations reverseObjectEnumerator] allObjects];
     
     [self.tableView reloadData];
 }
+
+/*
+ hello dolly
+ 1incoming1
+ 26
+ 11incoming1
+ */
 
 
 // @TODO: Do we need this? (What is it for exactly? the search function?) (other user-story)
