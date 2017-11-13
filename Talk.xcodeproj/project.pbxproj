@@ -678,6 +678,7 @@
 		48FDF65D1DF9FE4900A2A7F6 /* UIView+LayerProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FDF65C1DF9FE4900A2A7F6 /* UIView+LayerProperties.m */; };
 		48FE4F591C8752C100CC0873 /* ImagePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FE4F581C8752C100CC0873 /* ImagePicker.m */; };
 		829769481F9767AC00128A2C /* ConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 829769471F9767AC00128A2C /* ConversationViewController.m */; };
+		82A342361FB9BAB700ADABAE /* TODO-Jeroen.txt in Resources */ = {isa = PBXBuildFile; fileRef = 82A342351FB9BAB700ADABAE /* TODO-Jeroen.txt */; };
 		82A663841F9E7B79001C481F /* ConversationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 82A663821F9E7B79001C481F /* ConversationCell.m */; };
 		82A663851F9E7B79001C481F /* ConversationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 82A663831F9E7B79001C481F /* ConversationCell.xib */; };
 		82A6638A1F9F7C53001C481F /* MessageDirection.m in Sources */ = {isa = PBXBuildFile; fileRef = 82A663891F9F7C53001C481F /* MessageDirection.m */; };
@@ -1569,6 +1570,7 @@
 		48FE4F581C8752C100CC0873 /* ImagePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagePicker.m; sourceTree = "<group>"; };
 		829769461F97679600128A2C /* ConversationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversationViewController.h; sourceTree = "<group>"; };
 		829769471F9767AC00128A2C /* ConversationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConversationViewController.m; sourceTree = "<group>"; };
+		82A342351FB9BAB700ADABAE /* TODO-Jeroen.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "TODO-Jeroen.txt"; sourceTree = "<group>"; };
 		82A663811F9E7B78001C481F /* ConversationCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConversationCell.h; sourceTree = "<group>"; };
 		82A663821F9E7B79001C481F /* ConversationCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConversationCell.m; sourceTree = "<group>"; };
 		82A663831F9E7B79001C481F /* ConversationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConversationCell.xib; sourceTree = "<group>"; };
@@ -2479,6 +2481,7 @@
 		48884A651615CE920005AA79 = {
 			isa = PBXGroup;
 			children = (
+				82A342351FB9BAB700ADABAE /* TODO-Jeroen.txt */,
 				48F3CE8E1D26A6D2000925EE /* Postcodes.json */,
 				488B8E5B17AFFD8E005C33A2 /* TODO.txt */,
 				485E38CF17C889350089F0F1 /* WORDS.txt */,
@@ -3569,6 +3572,7 @@
 				485F6C261637270100D61365 /* ZA@2x.png in Resources */,
 				4837AF6218D872D500D3AEBC /* GetStarted3.png in Resources */,
 				485F6C281637270100D61365 /* ZM@2x.png in Resources */,
+				82A342361FB9BAB700ADABAE /* TODO-Jeroen.txt in Resources */,
 				485F6C2A1637270100D61365 /* ZW@2x.png in Resources */,
 				48AF450B164948CD00DFE3D8 /* KeypadView.xib in Resources */,
 				48AF45171649494400DFE3D8 /* AboutView.xib in Resources */,

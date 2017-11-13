@@ -45,9 +45,9 @@ NSString* const NeedsServerSyncKey        = @"NeedsServerSync";
 NSString* const NumberFilterKey           = @"NumberFilter";
 
 NSString* const AddressUpdatesKey         = @"AddressUpdates";
-NSString* const DnsSrvPrefixKey           = @"DnsSrvPrefix";
-
 NSString* const MessageUpdatesKey         = @"MessageUpdates";
+
+NSString* const DnsSrvPrefixKey           = @"DnsSrvPrefix";
 
 
 @interface Settings ()
@@ -257,7 +257,7 @@ static NSUserDefaults* userDefaults;
 }
 
 
-- (void)setMessagesCheckDate:(NSDate *)messagesCheckDate
+- (void)setMessagesCheckDate:(NSDate*)messagesCheckDate
 {
     [userDefaults setObject:messagesCheckDate forKey:MessagesCheckDateKey];
 }

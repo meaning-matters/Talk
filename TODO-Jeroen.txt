@@ -1,0 +1,12 @@
+
+// - Change the icon of this tab.
+// - The noConversationsLabel does not appear if you come from another page while there are no messages (anymore)
+// - Results are not shown if you come from another page while there are no messages anymore.
+// - PR feedback on orderByConversation (predicate + performance)
+// - All number-formats must be checked, in the entire app.
+// - Wow, that's CPU-cycle expensive, can't you build this into the logic above?
+// - What happens with "WeChat" etc?
+// - Wrong! Because nothing has been assigned yet to cell, so you'll see some random value from the stack. Please check my existing code for examples.
+// - You're sure this is GMT? All timestamps in DB and in API must be GMT. All dates/times shown to user must be their local time (see Number expiration/renewal). Did you make sure that all times/dates in all your work so far are according to these rules?
+// - What's that, does that show up anywhere on the UI? If so, needs to be localized.
+// - All cancels for webrequests.

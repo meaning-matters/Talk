@@ -59,7 +59,7 @@
 {
     [super viewDidLoad];
     
-    self.hasFetchedMessages = NO;
+    self.hasFetchedMessages      = NO;
     self.firstUnreadMessageIndex = -1;
     
     self.bubbleFactory = [[JSQMessagesBubbleImageFactory alloc] init];
@@ -99,6 +99,7 @@
 {
     [super viewDidAppear:animated];
     
+    // @TODO: This makes the messages jump. Fix that.
     // Scroll to first unread message.
     if (self.firstUnreadMessageIndex >= 0)
     {
@@ -108,28 +109,28 @@
 }
 
 
-// Filters the messages to keep the ones where message.externE164 == self.externE164.
+// self.messages will only contain messages where message.externE164 == self.externE164.
 // Sorts the messages on timestamp.
 // Removes the MessageUpdates for all those messages.
 // Reloads the collectionView.
 - (void)processMessages:(NSArray*)messages
 {
-    NSMutableArray* sortingMessages = [[NSMutableArray alloc] init];
+    NSMutableArray* sortedMessages = [[NSMutableArray alloc] init];
     
     // Get the messages for this conversation.
     [messages enumerateObjectsUsingBlock:^(MessageData* message, NSUInteger index, BOOL* stop)
     {
         if ([message.externE164 isEqualToString:self.externE164])
         {
-            [sortingMessages addObject:message];
+            [sortedMessages addObject:message];
         }
     }];
     
     // Sort the messages by timestamp.
-    self.messages = [[NSArray arrayWithArray:sortingMessages] sortedArrayUsingComparator:^(id a, id b)
+    self.messages = [[NSArray arrayWithArray:sortedMessages] sortedArrayUsingComparator:^(id a, id b)
     {
-        NSDate* first  = [(MessageData*)a timestamp];
-        NSDate* second = [(MessageData*)b timestamp];
+        NSDate* first  = ((MessageData*)a).timestamp;
+        NSDate* second = ((MessageData*)b).timestamp;
         
         return [first compare:second];
     }];
@@ -143,8 +144,10 @@
             if ([[MessageUpdatesHandler sharedHandler] messageUpdateWithUuid:message.uuid] != nil)
             {
                 self.firstUnreadMessageIndex = index;
+                
                 break;
             }
+            
             index++;
         }
         
@@ -235,11 +238,13 @@
         case MessageDirectionInbound:
         {
             result = [self.bubbleFactory incomingMessagesBubbleImageWithColor:[Skinning onTintColor]];
+            
             break;
         }
         case MessageDirectionOutbound:
         {
             result = [self.bubbleFactory outgoingMessagesBubbleImageWithColor:[UIColor jsq_messageBubbleLightGrayColor]];
+            
             break;
         }
     }

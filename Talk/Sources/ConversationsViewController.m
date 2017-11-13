@@ -20,10 +20,6 @@
 #import "PhoneNumber.h"
 
 
-// @TODO:
-// - Change the icon of this tab.
-
-
 @interface ConversationsViewController ()
 
 @property (nonatomic, strong) NSFetchedResultsController* fetchedMessagesController;
@@ -55,7 +51,6 @@
     }
     
     __weak typeof(self) weakSelf = self;
-
     self.defaultsObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
                                                                               object:nil
                                                                                queue:[NSOperationQueue mainQueue]
@@ -71,12 +66,12 @@
                                                                           usingBlock:^(NSNotification* note)
     {
         [[AppDelegate appDelegate] updateConversationsBadgeValue];
-        NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
+        NSIndexPath* selectedIndexPath = weakSelf.tableView.indexPathForSelectedRow;
         [weakSelf.tableView reloadData];
-        [self.tableView selectRowAtIndexPath:selectedIndexPath
-                                    animated:NO
-                              scrollPosition:UITableViewScrollPositionNone];
-        [[self.tableView cellForRowAtIndexPath:selectedIndexPath] layoutIfNeeded];
+        [weakSelf.tableView selectRowAtIndexPath:selectedIndexPath
+                                        animated:NO
+                                  scrollPosition:UITableViewScrollPositionNone];
+        [[weakSelf.tableView cellForRowAtIndexPath:selectedIndexPath] layoutIfNeeded];
     }];
     
     return self;
@@ -132,9 +127,8 @@
     
     self.noConversationsLabel.text          = noConversationsLabelString;
     self.noConversationsLabel.textAlignment = NSTextAlignmentCenter;
-    self.noConversationsLabel.font          = [UIFont fontWithName:@"SF UI Text-Regular"
-                                                              size:15];
-    self.noConversationsLabel.textColor     = [UIColor colorWithRed:0.427451 green:0.427451 blue:0.447059 alpha:1];
+    self.noConversationsLabel.font          = [UIFont fontWithName:@"SF UI Text-Regular" size:15];
+    self.noConversationsLabel.textColor     = [Skinning noContentTextColor];
 }
 
 
@@ -221,13 +215,13 @@
     [self.objectsArray enumerateObjectsUsingBlock:^(MessageData* message, NSUInteger index, BOOL* stop)
     {
         // Check if this externE164 already exists in the dictionary.
-        NSMutableArray* messages = [conversationGroups objectForKey:message.externE164];
+        NSMutableArray* messages = conversationGroups[message.externE164];
         
         // If not, create this entry.
-        if (messages == nil || (id)messages == [NSNull null])
+        if (messages == nil)
         {
-            messages = [NSMutableArray arrayWithCapacity:1];
-            [conversationGroups setObject:messages forKey:message.externE164];
+            messages = [NSMutableArray array];
+            conversationGroups[message.externE164] = messages;
         }
         
         [messages addObject:message];
@@ -238,13 +232,13 @@
     {
         NSArray* sortedMessages = [messages sortedArrayUsingComparator:^NSComparisonResult(id a, id b)
         {
-            NSDate* first  = [(MessageData*)a timestamp];
-            NSDate* second = [(MessageData*)b timestamp];
+            NSDate* first  = ((MessageData*)a).timestamp;
+            NSDate* second = ((MessageData*)b).timestamp;
             
             return [first compare:second];
         }];
         
-        [conversationGroups setValue:sortedMessages forKey:externE164];
+        conversationGroups[externE164] = sortedMessages;
     }];
     
     // Order the groups by the most current timestamp of the contained messages.
@@ -266,7 +260,7 @@
 // @TODO: Do we need this? (What is it for exactly? the search function?) (other user-story)
 - (NSString*)nameForObject:(id)object
 {
-    return [(MessageData*)object text];
+    return ((MessageData*)object).text;
 }
 
 
@@ -291,20 +285,19 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return [[self.fetchedMessagesController sections] count];
+    return self.fetchedMessagesController.sections.count;
 }
 
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.conversations count];
+    return self.conversations.count;
 }
 
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    MessageData* message = [self.conversations[indexPath.row] lastObject];
- 
+    MessageData* message                       = [self.conversations[indexPath.row] lastObject];
     ConversationViewController* viewController = [ConversationViewController messagesViewController];
     
     PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:message.externE164];
@@ -343,6 +336,7 @@
         if ([[MessageUpdatesHandler sharedHandler] messageUpdateWithUuid:message.uuid] != nil)
         {
             dotView.hidden = NO;
+            
             break;
         }
     }

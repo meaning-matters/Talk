@@ -1543,16 +1543,16 @@
     [self getPath:[NSString stringWithFormat:@"/users/%@/messages", username]
        parameters:nil
             reply:^(NSError* error, NSArray* content)
-     {
-         if (error == nil)
-         {
-             reply(nil, content);
-         }
-         else
-         {
-             reply(error, nil);
-         }
-     }];
+    {
+        if (error == nil)
+        {
+            reply(nil, content);
+        }
+        else
+        {
+            reply(error, nil);
+        }
+    }];
 }
 
 
@@ -1568,16 +1568,16 @@
     [self getPath:[NSString stringWithFormat:@"/users/%@/messages/updates/%@", username, fromDateString]
        parameters:nil
             reply:^(NSError* error, NSArray* content)
-     {
-         if (error == nil)
-         {
-             reply(nil, content);
-         }
-         else
-         {
-             reply(error, nil);
-         }
-     }];
+    {
+        if (error == nil)
+        {
+            reply(nil, content);
+        }
+        else
+        {
+            reply(error, nil);
+        }
+    }];
 }
 
 

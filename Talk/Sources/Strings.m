@@ -671,10 +671,4 @@
     return NSLocalizedString(@"Verify", @"Used to label the action of checking a telephone number or an image.");
 }
 
-
-+ (NSString*)verifyString
-{
-    return NSLocalizedString(@"Verify", @"Used to label the action of checking a telephone number or an image.");
-}
-
 @end
