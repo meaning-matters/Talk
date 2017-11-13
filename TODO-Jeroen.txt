@@ -18,3 +18,5 @@
 - Messages jump when going into a conversations. This has to do with jumping to the first unread message.
 
 - CellDotView should be blue.
+
+- Change icon (both sides are cut of 1 or 2 pixels)
