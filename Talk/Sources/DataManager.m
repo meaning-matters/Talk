@@ -541,7 +541,7 @@
                                                 {
                                                     [self.managedObjectContext rollback];
                                                     completion ? completion(error) : 0;
-                                                     
+                                                    
                                                     isSynchronizing = NO;
                                                 }
                                             }];
@@ -1143,6 +1143,55 @@
 }
 
 
+- (void)synchronizeMessagesOnlyFromDate:(NSDate*)date reply:(void (^)(NSError* error))completion
+{
+    if (isSynchronizing == YES)
+    {
+        completion ? completion(nil) : 0;
+
+        return;
+    }
+
+    isSynchronizing = YES;
+
+    [self saveManagedObjectContext:nil];
+
+    [self synchronizeMessagesFromDate:date reply:^(NSError* error)
+    {
+        if (error == nil)
+        {
+            [self.managedObjectContext save:&error];
+            if (error == nil)
+            {
+                [self saveManagedObjectContext:nil];
+                
+                dispatch_async(dispatch_get_main_queue(), ^
+                {
+                    completion ? completion(nil) : 0;
+                    
+                    isSynchronizing = NO;
+                });
+            }
+            else
+            {
+                [self handleError:error];
+                
+                isSynchronizing = NO;
+                
+                return;
+            }
+        }
+        else
+        {
+            [self.managedObjectContext rollback];
+            completion ? completion(error) : 0;
+            
+            isSynchronizing = NO;
+        }
+    }];
+}
+
+
 - (void)synchronizeMessages:(void (^)(NSError* error))completion
 {
     [[WebClient sharedClient] retrieveMessages:^(NSError* error, NSArray* messages)
@@ -1218,13 +1267,13 @@
                 object.timestamp = [dateFormatter dateFromString:dictionary[@"timestamp"]];
                 
                 // The '+' is added to the numbers, then a PhoneNumber-object is made.
-                NSString*    numberE164String = [NSString stringWithFormat:@"+%@", dictionary[@"number_e164"]];
-                PhoneNumber* numberE164       = [[PhoneNumber alloc] initWithNumber:numberE164String];
-                object.numberE164             = [numberE164 e164Format];
+                NSString* numberE164String = [NSString stringWithFormat:@"+%@", dictionary[@"number_e164"]];
+                PhoneNumber* numberE164    = [[PhoneNumber alloc] initWithNumber:numberE164String];
+                object.numberE164          = [numberE164 e164Format];
                 
-                NSString*    externE164String = [NSString stringWithFormat:@"+%@", dictionary[@"extern_e164"]];
-                PhoneNumber* externE164       = [[PhoneNumber alloc] initWithNumber:externE164String];
-                object.externE164             = [externE164 e164Format];
+                NSString* externE164String = [NSString stringWithFormat:@"+%@", dictionary[@"extern_e164"]];
+                PhoneNumber* externE164    = [[PhoneNumber alloc] initWithNumber:externE164String];
+                object.externE164          = [externE164 e164Format];
                 
                 // Get the contactId for the external number.
                 [[AppDelegate appDelegate] findContactsHavingNumber:[externE164 e164Format]
@@ -1237,7 +1286,7 @@
                 }];
                 
                 // If the uuid changed (so it's a new message), process the update of this message.
-                if ([object.changedValues objectForKey:@"uuid"] != nil)
+                if (object.changedValues[@"uuid"] != nil)
                 {
                     [[MessageUpdatesHandler sharedHandler] processChangedMessage:object];
                 }
@@ -1245,6 +1294,80 @@
                 if (object.changedValues.count == 0)
                 {
                     [object.managedObjectContext refreshObject:object mergeChanges:NO];
+                }
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                completion ? completion(nil) : 0;
+            });
+        }
+        else
+        {
+            completion ? completion(error) : 0;
+        }
+    }];
+}
+
+
+- (void)synchronizeMessagesFromDate:(NSDate*)date reply:(void (^)(NSError* error))completion
+{
+    [[WebClient sharedClient] retrieveMessagesFromDate:date reply:^(NSError* error, NSArray* messages)
+    {
+        if (error == nil)
+        {
+            // Update last checkdate.
+            [Settings sharedSettings].messagesCheckDate = [NSDate date];
+            
+            for (int index = 0; index < messages.count; index++)
+            {
+                NSDictionary* message = messages[index];
+                
+                // Skip the messages we already have.
+                NSPredicate* predicate = [NSPredicate predicateWithFormat:@"uuid == %@", message[@"uuid"]];
+                if ([[DataManager sharedManager] fetchEntitiesWithName:@"Message" sortKeys:nil
+                                                             predicate:predicate
+                                                  managedObjectContext:nil].count != 0)
+                {
+                    continue;
+                }
+                
+                MessageData* newMessage = [NSEntityDescription insertNewObjectForEntityForName:@"Message"
+                                                                        inManagedObjectContext:self.managedObjectContext];
+                
+                newMessage.uuid      = message[@"uuid"];
+                newMessage.direction = [MessageDirection messageDirectionEnumForString:message[@"direction"]];
+                newMessage.text      = message[@"text"];
+                
+                NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+                [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
+                newMessage.timestamp           = [dateFormatter dateFromString:message[@"timestamp"]];
+                
+                // The '+' is added to the numbers, then a PhoneNumber-object is made.
+                NSString*    numberE164String = [NSString stringWithFormat:@"+%@", message[@"number_e164"]];
+                PhoneNumber* numberE164       = [[PhoneNumber alloc] initWithNumber:numberE164String];
+                newMessage.numberE164         = [numberE164 e164Format];
+                
+                NSString*    externE164String = [NSString stringWithFormat:@"+%@", message[@"extern_e164"]];
+                PhoneNumber* externE164       = [[PhoneNumber alloc] initWithNumber:externE164String];
+                newMessage.externE164         = [externE164 e164Format];
+                
+                // Get the contactId for the external number.
+                [[AppDelegate appDelegate] findContactsHavingNumber:[externE164 e164Format]
+                                                         completion:^(NSArray* contactIds)
+                 {
+                     if (contactIds.count > 0)
+                     {
+                         newMessage.contactId = [contactIds firstObject];
+                     }
+                 }];
+                
+                // If the uuid changed (so it's a new message), process the update of this message.
+                [[MessageUpdatesHandler sharedHandler] processChangedMessage:newMessage];
+                
+                if (newMessage.changedValues.count == 0)
+                {
+                    [newMessage.managedObjectContext refreshObject:newMessage mergeChanges:NO];
                 }
             }
             

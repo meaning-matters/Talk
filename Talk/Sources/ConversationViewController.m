@@ -15,11 +15,18 @@
 #import "Settings.h"
 #import "AppDelegate.h"
 #import "MessageUpdatesHandler.h"
+#import "DataManager.h"
 
 
 @interface ConversationViewController ()
 
+@property (nonatomic, strong) NSArray*                       messages;
 @property (nonatomic, strong) JSQMessagesBubbleImageFactory* bubbleFactory;
+@property (nonatomic, weak) id<NSObject>                     messagesObserver;
+@property (nonatomic, strong) NSFetchedResultsController*    fetchedMessagesController;
+@property (nonatomic, strong) NSManagedObjectContext*        managedObjectContext;
+@property (nonatomic) NSInteger                              firstUnreadMessageIndex;
+@property (nonatomic) BOOL                                   hasFetchedMessages;
 
 @end
 
@@ -52,12 +59,19 @@
 {
     [super viewDidLoad];
     
+    self.hasFetchedMessages      = NO;
+    self.firstUnreadMessageIndex = -1;
+    
     self.bubbleFactory = [[JSQMessagesBubbleImageFactory alloc] init];
     
     self.collectionView.delegate   = self;
     self.collectionView.dataSource = self;
     
-    [self removeUpdates];
+    self.fetchedMessagesController = [[DataManager sharedManager] fetchResultsForEntityName:@"Message"
+                                                                               withSortKeys:nil
+                                                                       managedObjectContext:self.managedObjectContext];
+    
+    [self processMessages:[self.fetchedMessagesController fetchedObjects]];
     
     if (self.contactId != nil)
     {
@@ -68,23 +82,85 @@
         PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:self.externE164];
         self.title = phoneNumber.e164Format;
     }
+
+    __weak typeof(self) weakSelf = self;
+    self.messagesObserver = [[NSNotificationCenter defaultCenter] addObserverForName:MessageUpdatesNotification
+                                                                              object:nil
+                                                                               queue:[NSOperationQueue mainQueue]
+                                                                          usingBlock:^(NSNotification* note)
+    {
+        [weakSelf.fetchedMessagesController performFetch:nil];
+        [weakSelf processMessages:[weakSelf.fetchedMessagesController fetchedObjects]];
+    }];
 }
 
 
-// Must be overriden for JSQMessagesViewController.
-- (NSString*)senderId
+- (void)viewDidAppear:(BOOL)animated
 {
-    return nil;
+    [super viewDidAppear:animated];
+    
+    // @TODO: This makes the messages jump. Fix that.
+    // Scroll to first unread message.
+    if (self.firstUnreadMessageIndex >= 0)
+    {
+        NSIndexPath* indexPath = [NSIndexPath indexPathForItem:self.firstUnreadMessageIndex inSection:0];
+        [self scrollToIndexPath:indexPath animated:NO];
+    }
 }
 
 
-// Used by JSQMessagesViewController to determine where to draw the message (left / right).
-- (BOOL)isOutgoingMessage:(id<JSQMessageData>)messageItem
+// self.messages will only contain messages where message.externE164 == self.externE164.
+// Sorts the messages on timestamp.
+// Removes the MessageUpdates for all those messages.
+// Reloads the collectionView.
+- (void)processMessages:(NSArray*)messages
 {
-    return !((JSQMessage*)messageItem).isIncoming;
+    NSMutableArray* sortedMessages = [[NSMutableArray alloc] init];
+    
+    // Get the messages for this conversation.
+    [messages enumerateObjectsUsingBlock:^(MessageData* message, NSUInteger index, BOOL* stop)
+    {
+        if ([message.externE164 isEqualToString:self.externE164])
+        {
+            [sortedMessages addObject:message];
+        }
+    }];
+    
+    // Sort the messages by timestamp.
+    self.messages = [[NSArray arrayWithArray:sortedMessages] sortedArrayUsingComparator:^(id a, id b)
+    {
+        NSDate* first  = ((MessageData*)a).timestamp;
+        NSDate* second = ((MessageData*)b).timestamp;
+        
+        return [first compare:second];
+    }];
+    
+    // Determine if we have to scroll to the first unread message.
+    if (self.hasFetchedMessages == NO)
+    {
+        int index = 0;
+        for (MessageData* message in self.messages)
+        {
+            if ([[MessageUpdatesHandler sharedHandler] messageUpdateWithUuid:message.uuid] != nil)
+            {
+                self.firstUnreadMessageIndex = index;
+                
+                break;
+            }
+            
+            index++;
+        }
+        
+        self.hasFetchedMessages = YES;
+    }
+    
+    [self removeUpdates];
+    [self.collectionView reloadData];
 }
 
 
+// Remove the MessageUpdates for all messages in this conversation.
+// This decreases the badgeCount and makes the chat "read" (remove the dot on the left).
 - (void)removeUpdates
 {
     for (MessageData* message in self.messages)
@@ -112,7 +188,7 @@
     NSString*    senderId = (message.direction == MessageDirectionInbound) ? message.externE164 : message.numberE164;
 
     return [[JSQMessage alloc] initWithSenderId:senderId
-                              senderDisplayName:[NSString stringWithFormat:@"%@%@", @"name: ", message.externE164]
+                              senderDisplayName:@"" // This is not used.
                                            date:message.timestamp
                                            text:message.text
                                        incoming:message.direction == MessageDirectionInbound];
@@ -162,27 +238,18 @@
         case MessageDirectionInbound:
         {
             result = [self.bubbleFactory incomingMessagesBubbleImageWithColor:[Skinning onTintColor]];
+            
             break;
         }
         case MessageDirectionOutbound:
         {
             result = [self.bubbleFactory outgoingMessagesBubbleImageWithColor:[UIColor jsq_messageBubbleLightGrayColor]];
+            
             break;
         }
     }
 
     return result;
-}
-
-
-// Mandatory to override.
-- (id<JSQMessageAvatarImageDataSource>)collectionView:(JSQMessagesCollectionView*)collectionView
-                    avatarImageDataForItemAtIndexPath:(NSIndexPath*)indexPath
-{
-    NBLog(@"--- [ Not Implemented ]: ConversationViewController.m -> avatarImageDataForItemAtIndexPath");
-
-    // Disable avatarImages next to the bubbles.
-    return nil;
 }
 
 
@@ -235,6 +302,29 @@
             [self.inputToolbar.contentView.textView resignFirstResponder];
         }
     }
+}
+
+
+// Used by JSQMessagesViewController to determine where to draw the message (left / right).
+- (BOOL)isOutgoingMessage:(id<JSQMessageData>)messageItem
+{
+    return !((JSQMessage*)messageItem).isIncoming;
+}
+
+
+// Mandatory to override.
+- (id<JSQMessageAvatarImageDataSource>)collectionView:(JSQMessagesCollectionView*)collectionView
+                    avatarImageDataForItemAtIndexPath:(NSIndexPath*)indexPath
+{
+    // Disable avatarImages next to the bubbles.
+    return nil;
+}
+
+
+// Must be overriden for JSQMessagesViewController.
+- (NSString*)senderId
+{
+    return nil;
 }
 
 @end

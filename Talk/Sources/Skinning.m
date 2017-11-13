@@ -84,4 +84,10 @@
     return [UIColor colorWithRed:0.67f green:0.67f blue:0.68f alpha:1.00f];
 }
 
+
++ (UIColor*)noContentTextColor
+{
+    return [UIColor colorWithRed:0.427451 green:0.427451 blue:0.447059 alpha:1];
+}
+
 @end

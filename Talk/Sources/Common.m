@@ -1741,10 +1741,10 @@ static Common* sharedCommon;
             NSDateComponents* comps    = [calendar components:NSWeekdayCalendarUnit fromDate:date];
             int               weekday  = (int)[comps weekday] - 1;
             
-            NSDateFormatter* df = [[NSDateFormatter alloc] init];
-            [df setLocale: [NSLocale currentLocale]];
-            NSArray* weekdays = [df weekdaySymbols];
-            dayOrDate = [weekdays objectAtIndex:weekday];
+            NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setLocale: [NSLocale currentLocale]];
+            NSArray* weekdays = [dateFormatter weekdaySymbols];
+            dayOrDate         = [weekdays objectAtIndex:weekday];
         }
     }
     else

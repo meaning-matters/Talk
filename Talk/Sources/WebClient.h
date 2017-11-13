@@ -377,15 +377,11 @@
                                                float     callbackCost,
                                                float     callthruCost))reply;
 
-// Get all messages - /users/{user_id}/messages
 // 40A. GET ALL MESSAGES
-- (void)retrieveMessages:(void (^)(NSError* error, NSArray* messages))reply;
+- (void)retrieveMessages:(void (^)(NSError*, NSArray*))reply;
 
-// 40B. SEND SMS
-//- (void)createMessage:(NSString *)message
-//            destination:(NSString *)e164
-//                  reply:(void (^)(NSError * error, NSString* status))reply;
-
+// 40B. GET ALL MESSAGES FROM DATE
+- (void)retrieveMessagesFromDate:(NSDate*)date reply:(void (^)(NSError *, NSArray *))reply;
 
 
 #pragma mark - Cancel Methods

@@ -20,11 +20,6 @@
 #import "PhoneNumber.h"
 
 
-// @TODO:
-// - Make the search function work.
-// - Change the icon of this tab.
-
-
 @interface ConversationsViewController ()
 
 @property (nonatomic, strong) NSFetchedResultsController* fetchedMessagesController;
@@ -56,10 +51,10 @@
     }
     
     __weak typeof(self) weakSelf = self;
-    self.defaultsObserver        = [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
-                                                                                     object:nil
-                                                                                      queue:[NSOperationQueue mainQueue]
-                                                                                 usingBlock:^(NSNotification* note)
+    self.defaultsObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
+                                                                              object:nil
+                                                                               queue:[NSOperationQueue mainQueue]
+                                                                          usingBlock:^(NSNotification* note)
     {
         [[AppDelegate appDelegate] updateConversationsBadgeValue];
         [weakSelf.tableView reloadData];
@@ -71,12 +66,12 @@
                                                                           usingBlock:^(NSNotification* note)
     {
         [[AppDelegate appDelegate] updateConversationsBadgeValue];
-        NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
+        NSIndexPath* selectedIndexPath = weakSelf.tableView.indexPathForSelectedRow;
         [weakSelf.tableView reloadData];
-        [self.tableView selectRowAtIndexPath:selectedIndexPath
-                                    animated:NO
-                              scrollPosition:UITableViewScrollPositionNone];
-        [[self.tableView cellForRowAtIndexPath:selectedIndexPath] layoutIfNeeded];
+        [weakSelf.tableView selectRowAtIndexPath:selectedIndexPath
+                                        animated:NO
+                                  scrollPosition:UITableViewScrollPositionNone];
+        [[weakSelf.tableView cellForRowAtIndexPath:selectedIndexPath] layoutIfNeeded];
     }];
     
     return self;
@@ -99,7 +94,6 @@
     self.fetchedMessagesController = [[DataManager sharedManager] fetchResultsForEntityName:@"Message"
                                                                                withSortKeys:nil
                                                                        managedObjectContext:self.managedObjectContext];
-    
     self.fetchedMessagesController.delegate = self;
     
     self.objectsArray = [self.fetchedMessagesController fetchedObjects];
@@ -112,11 +106,8 @@
     [self.tableView addSubview:self.refreshControl];
     [self.tableView sendSubviewToBack:self.refreshControl];
     
-    [self.tableView registerNib:[UINib nibWithNibName:@"ConversationCell" bundle:nil]
-         forCellReuseIdentifier:@"ConversationCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"ConversationCell" bundle:nil] forCellReuseIdentifier:@"ConversationCell"];
     self.conversationCell = [self.tableView dequeueReusableCellWithIdentifier:@"ConversationCell"];
-    CellDotView* dotView = [[CellDotView alloc] init];
-    [dotView addToCell:self.conversationCell];
     
     // Label that is shown when there are no conversations.
     self.noConversationsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0,
@@ -132,9 +123,11 @@
     
     self.noConversationsLabel.text          = noConversationsLabelString;
     self.noConversationsLabel.textAlignment = NSTextAlignmentCenter;
-    self.noConversationsLabel.font          = [UIFont fontWithName:@"SF UI Text-Regular"
-                                                              size:15];
-    self.noConversationsLabel.textColor     = [UIColor colorWithRed:0.427451 green:0.427451 blue:0.447059 alpha:1];
+    self.noConversationsLabel.font          = [UIFont fontWithName:@"SF UI Text-Regular" size:15];
+    self.noConversationsLabel.textColor     = [Skinning noContentTextColor];
+    
+    // Synchronize messages every 30 seconds.
+    [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(refresh:) userInfo:nil repeats:YES];
 }
 
 
@@ -147,6 +140,7 @@
         [self.refreshControl beginRefreshing];
         [self.refreshControl endRefreshing];
         
+        [self orderByConversation];
         [self updateConversationsLabel];
     });
 }
@@ -165,24 +159,34 @@
 {
     if ([Settings sharedSettings].haveAccount == YES)
     {
-        [[DataManager sharedManager] synchronizeWithServer:^(NSError* error)
+        NSDate* date = [Settings sharedSettings].messagesCheckDate;
+        
+        [[DataManager sharedManager] synchronizeMessagesOnlyFromDate: date reply:^(NSError* error)
         {
-            self.objectsArray = [self.fetchedMessagesController fetchedObjects];
-            
             [self orderByConversation];
             [self createIndexOfWidth:0];
-             
+            
             dispatch_async(dispatch_get_main_queue(),^
             {
-                [sender endRefreshing];
+                if (sender == self.refreshControl)
+                {
+                    [sender endRefreshing];
+                }
+                
                 [self updateConversationsLabel];
+                [self.tableView reloadData];
             });
         }];
     }
     else
     {
-        [sender endRefreshing];
+        if (sender == self.refreshControl)
+        {
+            [sender endRefreshing];
+        }
+        
         [self updateConversationsLabel];
+        [self.tableView reloadData];
     }
 }
 
@@ -200,19 +204,21 @@
 // - All groups are sorted by the timestamp of the last message of that group.
 - (void)orderByConversation
 {
+    self.objectsArray = [self.fetchedMessagesController fetchedObjects];
+    
     NSMutableDictionary* conversationGroups = [NSMutableDictionary dictionary];
     
     // Group messages by externE164.
     [self.objectsArray enumerateObjectsUsingBlock:^(MessageData* message, NSUInteger index, BOOL* stop)
     {
         // Check if this externE164 already exists in the dictionary.
-        NSMutableArray* messages = [conversationGroups objectForKey:message.externE164];
+        NSMutableArray* messages = conversationGroups[message.externE164];
         
         // If not, create this entry.
-        if (messages == nil || (id)messages == [NSNull null])
+        if (messages == nil)
         {
-            messages = [NSMutableArray arrayWithCapacity:1];
-            [conversationGroups setObject:messages forKey:message.externE164];
+            messages = [NSMutableArray array];
+            conversationGroups[message.externE164] = messages;
         }
         
         [messages addObject:message];
@@ -223,26 +229,23 @@
     {
         NSArray* sortedMessages = [messages sortedArrayUsingComparator:^NSComparisonResult(id a, id b)
         {
-            NSDate* first  = [(MessageData*)a timestamp];
-            NSDate* second = [(MessageData*)b timestamp];
+            NSDate* first  = ((MessageData*)a).timestamp;
+            NSDate* second = ((MessageData*)b).timestamp;
             
             return [first compare:second];
         }];
         
-        [conversationGroups setValue:sortedMessages forKey:externE164];
+        conversationGroups[externE164] = sortedMessages;
     }];
     
     // Order the groups by the most current timestamp of the contained messages.
     self.conversations = [[NSArray arrayWithArray:[conversationGroups allValues]] sortedArrayUsingComparator:^(id a, id b)
     {
-        NSDate* first  = [(MessageData*)[(NSMutableArray*)a lastObject] timestamp];
-        NSDate* second = [(MessageData*)[(NSMutableArray*)b lastObject] timestamp];
+        NSDate* first  = ((MessageData*)[(NSMutableArray*)a lastObject]).timestamp;
+        NSDate* second = ((MessageData*)[(NSMutableArray*)b lastObject]).timestamp;
         
-        return [first compare:second];
+        return [second compare:first];
     }];
-    
-    // Reverse the array -> groups with newest messages should come first.
-    self.conversations = [[self.conversations reverseObjectEnumerator] allObjects];
     
     [self.tableView reloadData];
 }
@@ -251,7 +254,7 @@
 // @TODO: Do we need this? (What is it for exactly? the search function?) (other user-story)
 - (NSString*)nameForObject:(id)object
 {
-    return [(MessageData*)object text];
+    return ((MessageData*)object).text;
 }
 
 
@@ -276,23 +279,20 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return [[self.fetchedMessagesController sections] count];
+    return self.fetchedMessagesController.sections.count;
 }
 
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.conversations count];
+    return self.conversations.count;
 }
 
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    MessageData* message = [self.conversations[indexPath.row] lastObject];
- 
+    MessageData* message                       = [self.conversations[indexPath.row] lastObject];
     ConversationViewController* viewController = [ConversationViewController messagesViewController];
-    
-    viewController.messages = self.conversations[indexPath.row];
     
     PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:message.externE164];
     viewController.externE164 = phoneNumber.e164Format;
@@ -307,14 +307,11 @@
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    ConversationCell* cell;
+    ConversationCell* cell = [self.tableView dequeueReusableCellWithIdentifier:@"ConversationCell"];
     
     if (cell == nil)
     {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"ConversationCell" forIndexPath:indexPath];
-        
-        CellDotView* dotView = [[CellDotView alloc] init];
-        [dotView addToCell:cell];
+        cell = [self.tableView dequeueReusableCellWithIdentifier:@"ConversationCell"];
     }
     
     // Last message of the conversation.
@@ -322,13 +319,21 @@
     
     // The dot on the left of the cell is shown if this conversation has an unread message.
     CellDotView* dotView = [CellDotView getFromCell:cell];
-    dotView.hidden       = YES;
+    
+    if (dotView == nil)
+    {
+        dotView = [[CellDotView alloc] init];
+        [dotView addToCell:cell];
+    }
+    
+    dotView.hidden = YES;
     
     for (MessageData* message in self.conversations[indexPath.row])
     {
         if ([[MessageUpdatesHandler sharedHandler] messageUpdateWithUuid:message.uuid] != nil)
         {
             dotView.hidden = NO;
+            
             break;
         }
     }

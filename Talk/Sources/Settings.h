@@ -33,6 +33,7 @@
 @property (nonatomic, strong) NSString*      lastDialedNumber;      // Most recent number called from keypad.
 
 @property (nonatomic, strong) NSDate*        recentsCheckDate;      // Date of last time recents were checked on server.
+@property (nonatomic, strong) NSDate*        messagesCheckDate;     // Date of last time messages were checked on server.
 @property (nonatomic, strong) NSDate*        synchronizeDate;       // Date of last synchronisation with server.
 @property (nonatomic, strong) NSDate*        updateAppDate;         // Date of previous request to update app.
 
