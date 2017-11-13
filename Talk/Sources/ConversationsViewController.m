@@ -129,6 +129,9 @@
     self.noConversationsLabel.textAlignment = NSTextAlignmentCenter;
     self.noConversationsLabel.font          = [UIFont fontWithName:@"SF UI Text-Regular" size:15];
     self.noConversationsLabel.textColor     = [Skinning noContentTextColor];
+    
+    // Synchronize messages every 30 seconds.
+    [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(refresh:) userInfo:nil repeats:YES];
 }
 
 
@@ -141,11 +144,9 @@
         [self.refreshControl beginRefreshing];
         [self.refreshControl endRefreshing];
         
+        [self orderByConversation];
         [self updateConversationsLabel];
     });
-    
-    // Synchronize messages every 30 seconds.
-    [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(refresh:) userInfo:nil repeats:YES];
 }
 
 
@@ -166,8 +167,6 @@
         
         [[DataManager sharedManager] synchronizeMessagesOnlyFromDate: date reply:^(NSError* error)
         {
-            self.objectsArray = [self.fetchedMessagesController fetchedObjects];
-            
             [self orderByConversation];
             [self createIndexOfWidth:0];
             
@@ -209,6 +208,8 @@
 // - All groups are sorted by the timestamp of the last message of that group.
 - (void)orderByConversation
 {
+    self.objectsArray = [self.fetchedMessagesController fetchedObjects];
+    
     NSMutableDictionary* conversationGroups = [NSMutableDictionary dictionary];
     
     // Group messages by externE164.
@@ -252,13 +253,6 @@
     
     [self.tableView reloadData];
 }
-
-/*
- hello dolly
- 1incoming1
- 26
- 11incoming1
- */
 
 
 // @TODO: Do we need this? (What is it for exactly? the search function?) (other user-story)

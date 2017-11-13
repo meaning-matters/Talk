@@ -33,7 +33,7 @@ NSString* const MessageUpdatesNotification = @"MessageUpdatesNotification";
 - (void)processChangedMessage:(MessageData*)message
 {
     NSMutableDictionary* messagesUpdates = [[Settings sharedSettings].messageUpdates mutableCopy];
-    messagesUpdates[message.uuid]        = @"new message";
+    messagesUpdates[message.uuid]        = message.uuid;
     [self saveMessageUpdates:messagesUpdates];
 }
 
