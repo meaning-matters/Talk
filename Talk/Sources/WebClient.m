@@ -1595,16 +1595,16 @@
     [self postPath:[NSString stringWithFormat:@"/users/%@/messages", username]
         parameters:parameters
              reply:^(NSError* error, id content)
-     {
-         if (error == nil)
-         {
-             reply(nil, content[@"uuid"]);
-         }
-         else
-         {
-             reply(error, nil);
-         }
-     }];
+    {
+        if (error == nil)
+        {
+            reply(nil, content[@"uuid"]);
+        }
+        else
+        {
+            reply(error, nil);
+        }
+    }];
 }
 
 

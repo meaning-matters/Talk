@@ -113,7 +113,7 @@
                                                                                withSortKeys:nil
                                                                        managedObjectContext:self.managedObjectContext];
     
-    [self processMessages:self.fetchedMessagesController.fetchedObjects];
+//    [self processMessages:self.fetchedMessagesController.fetchedObjects];
     
     if (self.contactId != nil)
     {
@@ -121,7 +121,7 @@
     }
     else
     {
-        self.title = [self.externE164 internationalFormat]; // @TODO: Is this the right formatting to use?
+        self.title = [self.externE164 internationalFormat];
     }
 
     __weak typeof(self) weakSelf = self;
@@ -140,6 +140,8 @@
 {
     [super viewDidAppear:animated];
     
+    [self processMessages:self.fetchedMessagesController.fetchedObjects];
+    
     // @TODO: This makes the messages jump. Fix that.
     // Scroll to first unread message.
     if (self.firstUnreadMessageIndex >= 0)
@@ -156,6 +158,7 @@
 // Reloads the collectionView.
 - (void)processMessages:(NSArray*)messages
 {
+    NSLog(@"-----PROCESSING-----");
     NSMutableArray* sortedMessages = [[NSMutableArray alloc] init];
     
     // Get the messages for this conversation.
@@ -344,7 +347,6 @@
     self.sentMessage = [NSEntityDescription insertNewObjectForEntityForName:@"Message"
                                                      inManagedObjectContext:self.managedObjectContext];
     
-    // @TODO: Check which number-format is correct (at least remove the + (DataManager?))
     // @TODO: Use correct timezone + format
     // @TODO: Format message (special chars, emojis, etc etc)
     [self.sentMessage createForNumberE164:[self.numberE164 e164Format]
