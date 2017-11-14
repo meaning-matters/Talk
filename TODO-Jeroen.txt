@@ -26,3 +26,5 @@
 - Clicking in a chat should close the keyboard but this is only done when clicking between the bubbles (and the bubbles are internally the whole screen width ... )
 
 - Change icon (both sides are cut of 1 or 2 pixels)
+
+- InputToolbar appears too late (maybe because of loading the messages first?)
