@@ -1267,16 +1267,16 @@
                 object.timestamp = [dateFormatter dateFromString:dictionary[@"timestamp"]];
                 
                 // The '+' is added to the numbers, then a PhoneNumber-object is made.
-                NSString* numberE164String = [NSString stringWithFormat:@"+%@", dictionary[@"number_e164"]];
+                NSString* numberE164String = [@"+" stringByAppendingString:dictionary[@"number_e164"]];
                 PhoneNumber* numberE164    = [[PhoneNumber alloc] initWithNumber:numberE164String];
-                object.numberE164          = [numberE164 e164Format];
+                object.numberE164          = numberE164.number;
                 
-                NSString* externE164String = [NSString stringWithFormat:@"+%@", dictionary[@"extern_e164"]];
+                NSString* externE164String = [@"+" stringByAppendingString:dictionary[@"extern_e164"]];
                 PhoneNumber* externE164    = [[PhoneNumber alloc] initWithNumber:externE164String];
-                object.externE164          = [externE164 e164Format];
-                
+                object.externE164          = externE164.number;
+                                
                 // Get the contactId for the external number.
-                [[AppDelegate appDelegate] findContactsHavingNumber:[externE164 e164Format]
+                [[AppDelegate appDelegate] findContactsHavingNumber:externE164.number
                                                          completion:^(NSArray* contactIds)
                 {
                     if (contactIds.count > 0)
@@ -1344,16 +1344,16 @@
                 newMessage.timestamp           = [dateFormatter dateFromString:message[@"timestamp"]];
                 
                 // The '+' is added to the numbers, then a PhoneNumber-object is made.
-                NSString*    numberE164String = [NSString stringWithFormat:@"+%@", message[@"number_e164"]];
+                NSString*    numberE164String = [@"+" stringByAppendingString:message[@"number_e164"]];
                 PhoneNumber* numberE164       = [[PhoneNumber alloc] initWithNumber:numberE164String];
-                newMessage.numberE164         = [numberE164 e164Format];
+                newMessage.numberE164         = numberE164.number;
                 
-                NSString*    externE164String = [NSString stringWithFormat:@"+%@", message[@"extern_e164"]];
+                NSString*    externE164String = [@"+" stringByAppendingString:message[@"extern_e164"]];
                 PhoneNumber* externE164       = [[PhoneNumber alloc] initWithNumber:externE164String];
-                newMessage.externE164         = [externE164 e164Format];
+                newMessage.externE164         = externE164.number;
                 
                 // Get the contactId for the external number.
-                [[AppDelegate appDelegate] findContactsHavingNumber:[externE164 e164Format]
+                [[AppDelegate appDelegate] findContactsHavingNumber:externE164.number
                                                          completion:^(NSArray* contactIds)
                 {
                     if (contactIds.count > 0)

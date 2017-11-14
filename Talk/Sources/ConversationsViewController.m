@@ -344,7 +344,7 @@
     }
     
     // Last message of the conversation.
-    MessageData* message = [self.conversations[indexPath.row] lastObject];
+    MessageData* lastMessage = [self.conversations[indexPath.row] lastObject];
     
     // The dot on the left of the cell is shown if this conversation has an unread message.
     CellDotView* dotView = [CellDotView getFromCell:cell];
@@ -367,9 +367,10 @@
         }
     }
     
-    cell.nameNumberLabel.text  = message.contactId ? [[AppDelegate appDelegate] contactNameForId:message.contactId] : message.externE164;
-    cell.textPreviewLabel.text = message.text;
-    cell.timestampLabel.text   = [Common historyStringForDate:message.timestamp showTimeForToday:YES];
+    PhoneNumber* number        = [[PhoneNumber alloc] initWithNumber:lastMessage.externE164];
+    cell.nameNumberLabel.text  = lastMessage.contactId ? [[AppDelegate appDelegate] contactNameForId:lastMessage.contactId] : [number internationalFormat];
+    cell.textPreviewLabel.text = lastMessage.text;
+    cell.timestampLabel.text   = [Common historyStringForDate:lastMessage.timestamp showTimeForToday:YES];
     
     return cell;
 }

@@ -127,11 +127,11 @@
         // If the contact doesn't have any phonenumbers -> show an alert saying this.
         if ([phoneNumbers count] == 0)
         {
-            // @TODO: NSLocalizedStrings.??
+            // @TODO: NSLocalizedString
             UIAlertController* alertController = [UIAlertController alertControllerWithTitle:@"No numbers"
                                                                                      message:@"This contact has no phone numbers. Please choose another one."
                                                                               preferredStyle:UIAlertControllerStyleAlert];
-            // @TODO: NSLocalizedStrings
+            // @TODO: NSLocalizedString
             UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK"
                                                                     style:UIAlertActionStyleDefault
                                                                   handler:^(UIAlertAction* action)
@@ -173,13 +173,13 @@
                 CFStringRef numberLabelRef = ABMultiValueCopyLabelAtIndex(phones, i);
                 NSString*   numberLabel    = (__bridge NSString*)ABAddressBookCopyLocalizedLabel(numberLabelRef);
                 
-                // @TODO: Format phone number
-                UIAlertAction* selectNumberAction = [UIAlertAction actionWithTitle:[NSString stringWithFormat:@"%@ (%@)", phoneNumbers[i], numberLabel]
+                PhoneNumber* externE164 = [[PhoneNumber alloc] initWithNumber:phoneNumbers[i]];
+                
+                // @TODO: Should we display the phonenumber like this, or in its original state (as is saved in the contacts)?
+                UIAlertAction* selectNumberAction = [UIAlertAction actionWithTitle:[NSString stringWithFormat:@"%@ (%@)", [externE164 internationalFormat], numberLabel]
                                                                              style:UIAlertActionStyleDefault
                                                                            handler:^(UIAlertAction* action)
                 {
-                    PhoneNumber* externE164 = [[PhoneNumber alloc] initWithNumber:phoneNumbers[i]];
-
                     [self pushToConversationViewControllerWithExternE164:externE164 contactId:contactId];
                 }];
                 
@@ -207,7 +207,8 @@
 
 - (void)pushToConversationViewControllerWithExternE164:(PhoneNumber*)externE164 contactId:(NSString*)contactId
 {
-    PhoneNumber* numberE164 = [[PhoneNumber alloc] initWithNumber:@"34668690178"]; // @TODO: Get default SMS number, or a selection-popup or something ???
+    // @TODO: In the next version this screen should get its own number from VoncerSationsViewController.!!!
+    PhoneNumber* numberE164 = [[PhoneNumber alloc] initWithNumber:@"34668690178"];
     
     ConversationViewController* viewController = [[ConversationViewController alloc] initWithManagedObjectContext:self.managedObjectContext
                                                                                         fetchedMessagesController:self.fetchedMessagesController

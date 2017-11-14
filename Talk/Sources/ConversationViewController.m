@@ -121,7 +121,7 @@
     }
     else
     {
-        self.title = [self.externE164 internationalFormat];
+        self.title = [self.externE164 internationalFormat]; // @TODO: Is this the right formatting to use?
     }
 
     __weak typeof(self) weakSelf = self;
@@ -162,7 +162,7 @@
     [messages enumerateObjectsUsingBlock:^(MessageData* message, NSUInteger index, BOOL* stop)
     {
         // @TODO: Do message.externE164 and self.externE164.number have the exact same format??
-        if ([message.externE164 isEqualToString:self.externE164.number])
+        if ([message.externE164 isEqualToString:[self.externE164 e164Format]])
         {
             [sortedMessages addObject:message];
         }
@@ -308,8 +308,9 @@
     {
         PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:URL.resourceSpecifier];
         
+        // @TODO: Check if number is valid?
         // Get the contactId for the chosen number.
-        [[AppDelegate appDelegate] findContactsHavingNumber:[phoneNumber nationalDigits]
+        [[AppDelegate appDelegate] findContactsHavingNumber:phoneNumber.number
                                                  completion:^(NSArray* contactIds)
         {
             NSString* contactId;
