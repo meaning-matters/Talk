@@ -27,3 +27,5 @@
 - When openening a long chat, first it's scrolled to the top, then to the bottom (not everything loaded or something??)
 
 - Messages jump when going into a conversations. This has to do with jumping to the first unread message.
+
+- A conversation without contactId (and contactname) is updated when this is added to contacts. But when this contact is removed the name stays there (same happens on recents). Is that ok?

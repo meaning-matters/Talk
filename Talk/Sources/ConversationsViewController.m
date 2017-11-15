@@ -33,7 +33,6 @@
 @property (nonatomic, weak) id<NSObject>                  messagesObserver;
 @property (nonatomic, strong) UIBarButtonItem*            writeMessageButton;
 
-
 @end
 
 
@@ -85,6 +84,7 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self.defaultsObserver];
     [[NSNotificationCenter defaultCenter] removeObserver:self.messagesObserver];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
@@ -136,6 +136,8 @@
     
     // Synchronize messages every 30 seconds.
     [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(refresh:) userInfo:nil repeats:YES];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(findContactsForAnonymousMessages) name:NF_RELOAD_CONTACTS object:nil];
 }
 
 
@@ -163,13 +165,43 @@
 }
 
 
+- (void)findContactsForAnonymousMessages
+{
+    dispatch_async(dispatch_get_main_queue(), ^
+    {
+        for (NSArray* conversation in self.conversations)
+        {
+            MessageData* lastMessage = [conversation lastObject];
+            
+            // If one message of a conversation has nog contactId, none do, because they are all with the same contact.
+            if (lastMessage.contactId == nil)
+            {
+                PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:lastMessage.externE164];
+                [[AppDelegate appDelegate] findContactsHavingNumber:[phoneNumber e164Format]
+                                                         completion:^(NSArray* contactIds)
+                {
+                    if (contactIds.count > 0)
+                    {
+                        // Give all those messages the same contactId.
+                        for (MessageData* message in conversation)
+                        {
+                            message.contactId = [contactIds firstObject];
+                        }
+                    }
+                }];
+            }
+        }
+    });
+}
+
+
 - (void)refresh:(id)sender
 {
     if ([Settings sharedSettings].haveAccount == YES)
     {
         NSDate* date = [Settings sharedSettings].messagesCheckDate;
         
-        [[DataManager sharedManager] synchronizeMessagesOnlyFromDate: date reply:^(NSError* error)
+        [[DataManager sharedManager] synchronizeMessagesOnlyFromDate:date reply:^(NSError* error)
         {
             [self orderByConversation];
             [self createIndexOfWidth:0];
