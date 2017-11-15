@@ -1,6 +1,3 @@
-
-- Change the icon of the Messages-tab.
-
 - Later: orderByConversation (use predicate of fetchedMessagesController + test performance)
 
 - All number-formats must be checked, in the entire app. What the app works with + how it is displayed to the user.
@@ -15,10 +12,6 @@
 
 - Handle webrequest errors etc.
 
-- Messages jump when going into a conversations. This has to do with jumping to the first unread message.
-
-- CellDotView should be blue.
-
 - When selecting text in a message, the blue dot (the last one always, the first one only when moving) is not drawn outside of the bubble.
 - The edit/delete/etc menu is not always in the right place (try clicking somehwere after selecting text and you'll see)
 - No way to remove selection
@@ -32,3 +25,5 @@
 - DataManager searches for contactIds with a phonenumber. If a contact is added later, the message won't know this ...
 
 - When openening a long chat, first it's scrolled to the top, then to the bottom (not everything loaded or something??)
+
+- Messages jump when going into a conversations. This has to do with jumping to the first unread message.

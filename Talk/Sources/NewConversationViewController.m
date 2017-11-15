@@ -176,7 +176,7 @@
                 PhoneNumber* externE164 = [[PhoneNumber alloc] initWithNumber:phoneNumbers[i]];
                 
                 // @TODO: Should we display the phonenumber like this, or in its original state (as is saved in the contacts)?
-                UIAlertAction* selectNumberAction = [UIAlertAction actionWithTitle:[NSString stringWithFormat:@"%@ (%@)", [externE164 internationalFormat], numberLabel]
+                UIAlertAction* selectNumberAction = [UIAlertAction actionWithTitle:[NSString stringWithFormat:@"%@ (%@)", phoneNumbers[i], numberLabel]
                                                                              style:UIAlertActionStyleDefault
                                                                            handler:^(UIAlertAction* action)
                 {
@@ -217,10 +217,7 @@
                                                                                                         contactId:contactId];
     
     // Scroll to the row with the existing chat.
-    int rowToScrollTo = [self.conversationsViewcontroller indexForChatWithExternE164:[externE164 e164Format]];
-    [self.conversationsViewcontroller.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:rowToScrollTo inSection:0]
-                                                      atScrollPosition:UITableViewScrollPositionMiddle
-                                                              animated:YES];
+    [self.conversationsViewcontroller scrollToChatWithExternE164:[externE164 e164Format]];
     
     // Add the ConversationController to the ViewControllers array of ConversationsViewController.
     NSMutableArray* viewControllers = [NSMutableArray arrayWithArray:self.conversationsViewcontroller.navigationController.viewControllers];

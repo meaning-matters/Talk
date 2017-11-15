@@ -80,8 +80,6 @@
     tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                             action:@selector(handleCollectionTapRecognizer:)];
     [self.collectionView addGestureRecognizer:tapRecognizer];
-    
-    [self processMessages:self.fetchedMessagesController.fetchedObjects];
 }
 
 
@@ -114,7 +112,7 @@
     self.fetchedMessagesController = [[DataManager sharedManager] fetchResultsForEntityName:@"Message"
                                                                                withSortKeys:nil
                                                                        managedObjectContext:self.managedObjectContext];
-    
+        
     if (self.contactId != nil)
     {
         self.title = [[AppDelegate appDelegate] contactNameForId:self.contactId];
@@ -139,6 +137,8 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    [self processMessages:self.fetchedMessagesController.fetchedObjects];
     
     // @TODO: This makes the messages jump. Fix that.
     // Scroll to first unread message.
@@ -361,7 +361,7 @@
             [self.fetchedMessages addObject:self.sentMessage];
             
             [self finishSendingMessage];
-            // @TODO: "- (void)processMessages:(NSArray*)messages" (on branch receive-sms)
+            [self processMessages:self.fetchedMessagesController.fetchedObjects];
         }
         else
         {
