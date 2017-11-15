@@ -198,7 +198,7 @@
         
         [self pushToConversationViewControllerWithExternE164:externE164 contactId:contactId];
     }
-    else //  If there are no search results.
+    else // If there are no search results.
     {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
@@ -215,8 +215,12 @@
                                                                                                        numberE164:numberE164
                                                                                                        externE164:externE164
                                                                                                         contactId:contactId];
-
-    // @TODO: In ConversationsViewController scroll to the right conversation (if the conversation already exists) before it's pushed to the new VC (in another branch, ConversationsViewController doesn't exist here)
+    
+    // Scroll to the row with the existing chat.
+    int rowToScrollTo = [self.conversationsViewcontroller indexForChatWithExternE164:[externE164 e164Format]];
+    [self.conversationsViewcontroller.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:rowToScrollTo inSection:0]
+                                                      atScrollPosition:UITableViewScrollPositionMiddle
+                                                              animated:YES];
     
     // Add the ConversationController to the ViewControllers array of ConversationsViewController.
     NSMutableArray* viewControllers = [NSMutableArray arrayWithArray:self.conversationsViewcontroller.navigationController.viewControllers];
@@ -240,7 +244,7 @@
     {
         for (int i = 0; i < contacts.count; i++)
         {
-            ABRecordRef contact = (__bridge ABRecordRef)[contacts objectAtIndex:i];
+            ABRecordRef contact     = (__bridge ABRecordRef)[contacts objectAtIndex:i];
             NSString*   contactId   = [NSString stringWithFormat:@"%d", ABRecordGetRecordID(contact)];
             NSString*   contactName = [[AppDelegate appDelegate] contactNameForId:contactId];
             NSArray*    contactInfo = [NSArray arrayWithObjects:contactId, contactName, nil];

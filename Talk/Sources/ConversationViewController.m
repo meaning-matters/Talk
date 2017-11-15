@@ -80,6 +80,8 @@
     tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                             action:@selector(handleCollectionTapRecognizer:)];
     [self.collectionView addGestureRecognizer:tapRecognizer];
+    
+    [self processMessages:self.fetchedMessagesController.fetchedObjects];
 }
 
 
@@ -113,8 +115,6 @@
                                                                                withSortKeys:nil
                                                                        managedObjectContext:self.managedObjectContext];
     
-//    [self processMessages:self.fetchedMessagesController.fetchedObjects];
-    
     if (self.contactId != nil)
     {
         self.title = [[AppDelegate appDelegate] contactNameForId:self.contactId];
@@ -140,8 +140,6 @@
 {
     [super viewDidAppear:animated];
     
-    [self processMessages:self.fetchedMessagesController.fetchedObjects];
-    
     // @TODO: This makes the messages jump. Fix that.
     // Scroll to first unread message.
     if (self.firstUnreadMessageIndex >= 0)
@@ -158,7 +156,6 @@
 // Reloads the collectionView.
 - (void)processMessages:(NSArray*)messages
 {
-    NSLog(@"-----PROCESSING-----");
     NSMutableArray* sortedMessages = [[NSMutableArray alloc] init];
     
     // Get the messages for this conversation.

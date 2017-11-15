@@ -1273,7 +1273,7 @@
                 object.externE164          = externE164.number;
                                 
                 // Get the contactId for the external number.
-                [[AppDelegate appDelegate] findContactsHavingNumber:externE164.number
+                [[AppDelegate appDelegate] findContactsHavingNumber:[externE164 e164Format]
                                                          completion:^(NSArray* contactIds)
                 {
                     if (contactIds.count > 0)
@@ -1347,7 +1347,7 @@
                 newMessage.externE164         = externE164.number;
                 
                 // Get the contactId for the external number.
-                [[AppDelegate appDelegate] findContactsHavingNumber:externE164.number
+                [[AppDelegate appDelegate] findContactsHavingNumber:[externE164 e164Format]
                                                          completion:^(NSArray* contactIds)
                 {
                     if (contactIds.count > 0)

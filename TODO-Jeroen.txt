@@ -27,4 +27,8 @@
 
 - Change icon (both sides are cut of 1 or 2 pixels)
 
-- InputToolbar appears too late (maybe because of loading the messages first?)
+- [FIXED?] InputToolbar appears too late (maybe because of loading the messages first?)
+
+- DataManager searches for contactIds with a phonenumber. If a contact is added later, the message won't know this ...
+
+- When openening a long chat, first it's scrolled to the top, then to the bottom (not everything loaded or something??)

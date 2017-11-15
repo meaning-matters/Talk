@@ -259,6 +259,20 @@
 }
 
 
+- (int)indexForChatWithExternE164:(NSString*)externE164
+{
+    for (int i = 0; i < self.conversations.count; i++)
+    {
+        if ([((MessageData*)[self.conversations[i] lastObject]).externE164 isEqualToString:externE164])
+        {
+            return i;
+        }
+    }
+    
+    return 0;
+}
+
+
 - (void)tappedWriteMessageButton:(id)sender
 {
     NewConversationViewController* viewController = [[NewConversationViewController alloc] initWithManagedObjectContact:self.managedObjectContext
