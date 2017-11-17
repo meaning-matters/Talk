@@ -103,6 +103,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
         // Restore the badges.
         [BadgeHandler          sharedHandler];
         [AddressUpdatesHandler sharedHandler];
+        [MessageUpdatesHandler sharedHandler];
 
         // Reset status bar style. Without this the status bar becomes white sometimes.
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];

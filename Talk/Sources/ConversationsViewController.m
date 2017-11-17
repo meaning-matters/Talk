@@ -45,7 +45,7 @@
         self.managedObjectContext = managedObjectContext;
         self.numberE164           = number.e164;
         self.numberName           = number.name;
-        self.title                = self.numberName; // @TODO: Should be number-name
+        self.title                = self.numberName;
     }
     
     __weak typeof(self) weakSelf = self;
@@ -64,12 +64,7 @@
                                                                           usingBlock:^(NSNotification* note)
     {
         [[AppDelegate appDelegate] updateConversationsBadgeValue];
-        NSIndexPath* selectedIndexPath = weakSelf.tableView.indexPathForSelectedRow;
         [weakSelf.tableView reloadData];
-        [weakSelf.tableView selectRowAtIndexPath:selectedIndexPath
-                                        animated:NO
-                                  scrollPosition:UITableViewScrollPositionNone];
-        [[weakSelf.tableView cellForRowAtIndexPath:selectedIndexPath] layoutIfNeeded];
     }];
     
     return self;
@@ -87,12 +82,9 @@
 {
     [super viewDidLoad];
     
-    [[AppDelegate appDelegate] updateConversationsBadgeValue];
-    
     self.fetchedMessagesController = [[DataManager sharedManager] fetchResultsForEntityName:@"Message"
                                                                                withSortKeys:nil
                                                                        managedObjectContext:self.managedObjectContext];
-    [self.fetchedMessagesController.fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"numberE164 = %@", self.numberE164]];
     
     self.fetchedMessagesController.delegate = self;
 
@@ -253,7 +245,6 @@
 }
 
 
-// @TODO: Do we need this? (What is it for exactly? the search function?) (other user-story)
 - (NSString*)nameForObject:(id)object
 {
     return ((MessageData*)object).text;

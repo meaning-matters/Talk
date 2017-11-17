@@ -20,3 +20,5 @@
 - CellDotView should be blue.
 
 - Change icon (both sides are cut of 1 or 2 pixels)
+
+- NumbersMessagesViewController + ConversationsViewController both do a refresh on an interval. Only the first one should do this, and the next one update the table using those results.

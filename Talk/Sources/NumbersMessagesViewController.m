@@ -30,36 +30,47 @@
 
 @property (nonatomic, strong) NSFetchedResultsController* fetchedNumbersController;
 @property (nonatomic, weak) id<NSObject>                  defaultsObserver;
+@property (nonatomic, weak) id<NSObject>                  messagesObserver;
 
 @end
 
 
 @implementation NumbersMessagesViewController
 
-// @TODO: Refreshing here should only get messages
-// @TODO: Check how messages should be passed to next VC, and refreshing etc...
 // @TODO: Only display numbers that are verified etc. (and that can send messages..)
+// @TODO: Chats from numbers that no longer exist / expired should still be available.. ?
 
 - (instancetype)init
 {
     if (self = [super init])
     {
-        self.title                = @"Messages"; // @TODO: Change + localizedString + emoji
+        // @TODO: Change emoji + other title (without emoji) in tabbar + emoji shouldn't appear in the back button on the next page.
+        self.title = NSLocalizedString(@"Numbers 💬", @"Standard string to label numbers-overview for messaging.");
         
         self.managedObjectContext = [DataManager sharedManager].managedObjectContext;
-        
-        __weak typeof(self) weakSelf = self;
-        self.defaultsObserver        = [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
-                                                                                         object:nil
-                                                                                          queue:[NSOperationQueue mainQueue]
-                                                                                     usingBlock:^(NSNotification* note)
-        {
-            if ([Settings sharedSettings].haveAccount)
-            {
-                [weakSelf.tableView reloadData];
-            }
-        }];
     }
+    
+    __weak typeof(self) weakSelf = self;
+    self.defaultsObserver        = [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
+                                                                                     object:nil
+                                                                                      queue:[NSOperationQueue mainQueue]
+                                                                                 usingBlock:^(NSNotification* note)
+    {
+        if ([Settings sharedSettings].haveAccount)
+        {
+            [[AppDelegate appDelegate] updateConversationsBadgeValue];
+            [weakSelf.tableView reloadData];
+        }
+    }];
+    
+    self.messagesObserver = [[NSNotificationCenter defaultCenter] addObserverForName:MessageUpdatesNotification
+                                                                              object:nil
+                                                                               queue:[NSOperationQueue mainQueue]
+                                                                          usingBlock:^(NSNotification* note)
+    {
+        [[AppDelegate appDelegate] updateConversationsBadgeValue];
+        [weakSelf.tableView reloadData];
+    }];
     
     return self;
 }
@@ -67,8 +78,8 @@
 
 - (void)dealloc
 {
-    [[Settings sharedSettings] removeObserver:self forKeyPath:@"sortSegment" context:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self.defaultsObserver];
+    [[NSNotificationCenter defaultCenter] removeObserver:self.messagesObserver];
 }
 
 
@@ -83,14 +94,12 @@
     self.fetchedNumbersController = [[DataManager sharedManager] fetchResultsForEntityName:@"Number"
                                                                               withSortKeys:[Common sortKeys]
                                                                       managedObjectContext:self.managedObjectContext];
-    self.fetchedNumbersController.delegate = self;
+    
+    self.fetchedNumbersController.delegate  = self;
     
     self.navigationItem.rightBarButtonItem = nil;
     
-    [[Settings sharedSettings] addObserver:self
-                                forKeyPath:@"sortSegment"
-                                   options:NSKeyValueObservingOptionNew
-                                   context:nil];
+    [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(refresh:) userInfo:nil repeats:YES];
 }
 
 
@@ -106,6 +115,33 @@
                 atIndexPath:selectedIndexPath];
         
         [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+    }
+}
+
+
+- (void)refresh:(id)sender
+{
+    if ([Settings sharedSettings].haveAccount == YES)
+    {
+        NSDate* date = [Settings sharedSettings].messagesCheckDate;
+        
+        [[DataManager sharedManager] synchronizeMessagesOnlyFromDate: date reply:^(NSError* error)
+        {
+            dispatch_async(dispatch_get_main_queue(),^
+            {
+                if (sender == self.refreshControl)
+                {
+                    [sender endRefreshing];
+                }
+            });
+        }];
+    }
+    else
+    {
+        if (sender == self.refreshControl)
+        {
+            [sender endRefreshing];
+        }
     }
 }
 
@@ -131,7 +167,7 @@
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return @"Numbers you can send SMS with"; // @TODO: Change + localizedstring
+    return NSLocalizedString(@"Your numbers available to use for SMS", @"Standard string to indicate these numbers can be used for SMS.");
 }
 
 
