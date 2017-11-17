@@ -270,7 +270,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 - (void)updateConversationsBadgeValue
 {
     [[BadgeHandler sharedHandler] setBadgeCount:[[MessageUpdatesHandler sharedHandler] badgeCount]
-                              forViewController:self.conversationsViewController];
+                              forViewController:self.numbersMessagesViewController];
 }
 
 
@@ -694,17 +694,17 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     // The order in this array defines the default tabs order.
     NSArray* tabBarClassNames =
     @[
-        NSStringFromClass([CreditViewController        class]),
-        NSStringFromClass([NBRecentsListViewController class]),
-        NSStringFromClass([ConversationsViewController class]),
-        NSStringFromClass([NBPeopleListViewController  class]),
-        NSStringFromClass([KeypadViewController        class]),
-        NSStringFromClass([PhonesViewController        class]),
-        NSStringFromClass([NumbersViewController       class]),
+        NSStringFromClass([CreditViewController          class]),
+        NSStringFromClass([NBRecentsListViewController   class]),
+        NSStringFromClass([NumbersMessagesViewController class]),
+        NSStringFromClass([NBPeopleListViewController    class]),
+        NSStringFromClass([KeypadViewController          class]),
+        NSStringFromClass([PhonesViewController          class]),
+        NSStringFromClass([NumbersViewController         class]),
         //NSStringFromClass([DestinationsViewController  class]),
-        NSStringFromClass([SettingsViewController      class]),
-        NSStringFromClass([HelpsViewController         class]),
-        NSStringFromClass([AboutViewController         class]),
+        NSStringFromClass([SettingsViewController        class]),
+        NSStringFromClass([HelpsViewController           class]),
+        NSStringFromClass([AboutViewController           class]),
     ];
 
     NSSet* preferredSet = [NSSet setWithArray:[Settings sharedSettings].tabBarClassNames];

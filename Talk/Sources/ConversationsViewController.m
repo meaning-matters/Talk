@@ -24,6 +24,8 @@
 
 @property (nonatomic, strong) NSFetchedResultsController* fetchedMessagesController;
 @property (nonatomic, strong) NSManagedObjectContext*     managedObjectContext;
+@property (nonatomic, strong) NSString*                   numberE164;
+@property (nonatomic, strong) NSString*                   numberName;
 @property (nonatomic, strong) UIRefreshControl*           refreshControl;
 @property (nonatomic, strong) NSArray*                    conversations;
 @property (nonatomic, strong) UILabel*                    noConversationsLabel;
@@ -36,18 +38,14 @@
 
 @implementation ConversationsViewController
 
-- (instancetype)init
-{
-    return [self initWithManagedObjectContext:[DataManager sharedManager].managedObjectContext];
-}
-
-
-- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
+- (instancetype)initWithNumber:(NumberData*)number managedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 {
     if (self = [super init])
     {
-        self.title                = [Strings messagesString];
+        self.title                = [Strings messagesString]; // @TODO: Should be number-name
         self.managedObjectContext = managedObjectContext;
+        self.numberE164           = number.e164;
+        self.numberName           = number.name;
     }
     
     __weak typeof(self) weakSelf = self;
@@ -94,8 +92,10 @@
     self.fetchedMessagesController = [[DataManager sharedManager] fetchResultsForEntityName:@"Message"
                                                                                withSortKeys:nil
                                                                        managedObjectContext:self.managedObjectContext];
-    self.fetchedMessagesController.delegate = self;
+    [self.fetchedMessagesController.fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"numberE164 = %@", self.numberE164]];
     
+    self.fetchedMessagesController.delegate = self;
+
     self.objectsArray = [self.fetchedMessagesController fetchedObjects];
     [self orderByConversation];
     [self createIndexOfWidth:0];
@@ -204,7 +204,9 @@
 // - All groups are sorted by the timestamp of the last message of that group.
 - (void)orderByConversation
 {
-    self.objectsArray = [self.fetchedMessagesController fetchedObjects];
+    // Filter to keep only the messages with the correct numberE164.
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"numberE164 = %@", self.numberE164];
+    self.objectsArray = [[self.fetchedMessagesController fetchedObjects] filteredArrayUsingPredicate:predicate];
     
     NSMutableDictionary* conversationGroups = [NSMutableDictionary dictionary];
     

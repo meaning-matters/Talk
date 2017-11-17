@@ -677,7 +677,8 @@
 		48FD99E81618CC370061191B /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FD99E61618CC370061191B /* Common.m */; };
 		48FDF65D1DF9FE4900A2A7F6 /* UIView+LayerProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FDF65C1DF9FE4900A2A7F6 /* UIView+LayerProperties.m */; };
 		48FE4F591C8752C100CC0873 /* ImagePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FE4F581C8752C100CC0873 /* ImagePicker.m */; };
-		820817541FBA170100691E05 /* ConversationsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 820817531FBA170000691E05 /* ConversationsTab@2x.png */; };
+		820817541FBA170100691E05 /* NumbersMessagesTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 820817531FBA170000691E05 /* NumbersMessagesTab@2x.png */; };
+		8208178C1FBCAA9400691E05 /* NumbersMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8208178B1FBCAA9400691E05 /* NumbersMessagesViewController.m */; };
 		829769481F9767AC00128A2C /* ConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 829769471F9767AC00128A2C /* ConversationViewController.m */; };
 		82A342361FB9BAB700ADABAE /* TODO-Jeroen.txt in Resources */ = {isa = PBXBuildFile; fileRef = 82A342351FB9BAB700ADABAE /* TODO-Jeroen.txt */; };
 		82A663841F9E7B79001C481F /* ConversationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 82A663821F9E7B79001C481F /* ConversationCell.m */; };
@@ -1568,7 +1569,9 @@
 		48FDF65C1DF9FE4900A2A7F6 /* UIView+LayerProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+LayerProperties.m"; sourceTree = "<group>"; };
 		48FE4F571C8752C100CC0873 /* ImagePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagePicker.h; sourceTree = "<group>"; };
 		48FE4F581C8752C100CC0873 /* ImagePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagePicker.m; sourceTree = "<group>"; };
-		820817531FBA170000691E05 /* ConversationsTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ConversationsTab@2x.png"; sourceTree = "<group>"; };
+		820817531FBA170000691E05 /* NumbersMessagesTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NumbersMessagesTab@2x.png"; sourceTree = "<group>"; };
+		8208178A1FBCAA9400691E05 /* NumbersMessagesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NumbersMessagesViewController.h; sourceTree = "<group>"; };
+		8208178B1FBCAA9400691E05 /* NumbersMessagesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NumbersMessagesViewController.m; sourceTree = "<group>"; };
 		829769461F97679600128A2C /* ConversationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversationViewController.h; sourceTree = "<group>"; };
 		829769471F9767AC00128A2C /* ConversationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConversationViewController.m; sourceTree = "<group>"; };
 		82A342351FB9BAB700ADABAE /* TODO-Jeroen.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "TODO-Jeroen.txt"; sourceTree = "<group>"; };
@@ -2016,7 +2019,7 @@
 		48338FA916170CBA0033F4C1 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
-				820817531FBA170000691E05 /* ConversationsTab@2x.png */,
+				820817531FBA170000691E05 /* NumbersMessagesTab@2x.png */,
 				48AF451A1649788A00DFE3D8 /* AboutTab@2x.png */,
 				480E7A2D1BFDCA7800F655E8 /* AddressesTab@2x.png */,
 				48CB2C4917E6DB7700E19C3D /* NBPeopleListTab@2x.png */,
@@ -2788,6 +2791,8 @@
 				48EEC7371E8ACBAB006759A3 /* VerifyPhoneVoiceEnterViewController.m */,
 				4823C0CB1CBA7F3800030FC7 /* WebViewController.h */,
 				4823C0CC1CBA7F3800030FC7 /* WebViewController.m */,
+				8208178A1FBCAA9400691E05 /* NumbersMessagesViewController.h */,
+				8208178B1FBCAA9400691E05 /* NumbersMessagesViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -3587,7 +3592,7 @@
 				48CB2C4417E6539000E19C3D /* Target.png in Resources */,
 				82A663851F9E7B79001C481F /* ConversationCell.xib in Resources */,
 				48AF455B1649794B00DFE3D8 /* ShareView.xib in Resources */,
-				820817541FBA170100691E05 /* ConversationsTab@2x.png in Resources */,
+				820817541FBA170100691E05 /* NumbersMessagesTab@2x.png in Resources */,
 				485ECBDA1651C3B700364F08 /* BQ@2x.png in Resources */,
 				48EC6DC016545B1F00394A4B /* AC@2x.png in Resources */,
 				48D0A6E61654D65200FA2D98 /* SipConfig.cfg in Resources */,
@@ -3837,6 +3842,7 @@
 				82AC3BA31FA76D87002AEB96 /* JSQMessagesCollectionViewLayoutAttributes.m in Sources */,
 				48F14EE61BF9C63A00541EEC /* AddressViewController.m in Sources */,
 				4823C0CD1CBA7F3800030FC7 /* WebViewController.m in Sources */,
+				8208178C1FBCAA9400691E05 /* NumbersMessagesViewController.m in Sources */,
 				82AC3BB51FA76D87002AEB96 /* JSQMessagesInputToolbar.m in Sources */,
 				48B813491AADF9380019AF77 /* NBContact.m in Sources */,
 				48FC54321C89EDA3007658FE /* CellDotView.m in Sources */,

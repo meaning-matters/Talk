@@ -115,19 +115,12 @@
 // Reloads the collectionView.
 - (void)processMessages:(NSArray*)messages
 {
-    NSMutableArray* sortedMessages = [[NSMutableArray alloc] init];
-    
-    // Get the messages for this conversation.
-    [messages enumerateObjectsUsingBlock:^(MessageData* message, NSUInteger index, BOOL* stop)
-    {
-        if ([message.externE164 isEqualToString:self.externE164])
-        {
-            [sortedMessages addObject:message];
-        }
-    }];
+    // Filter to keep only the messages with the correct number-combination.
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"numberE164 = %@ AND externE164 = %@", self.numberE164, self.externE164];
+    messages = [messages filteredArrayUsingPredicate:predicate];
     
     // Sort the messages by timestamp.
-    self.messages = [[NSArray arrayWithArray:sortedMessages] sortedArrayUsingComparator:^(id a, id b)
+    self.messages = [messages sortedArrayUsingComparator:^(id a, id b)
     {
         NSDate* first  = ((MessageData*)a).timestamp;
         NSDate* second = ((MessageData*)b).timestamp;

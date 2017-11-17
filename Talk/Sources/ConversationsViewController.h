@@ -9,10 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "SearchTableViewController.h"
+#import "NumberData.h"
 
 
 @interface ConversationsViewController : SearchTableViewController <NSFetchedResultsControllerDelegate>
 
-- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext;
+- (instancetype)initWithNumber:(NumberData*)number managedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 
 @end
