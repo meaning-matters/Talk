@@ -23,6 +23,7 @@
 #import "CellBadgeView.h"
 #import "BadgeCell.h"
 #import "ConversationsViewController.h"
+#import "MessageUpdatesHandler.h"
 
 
 @interface NumbersMessagesViewController ()
@@ -146,7 +147,7 @@
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell* cell;
+    BadgeCell* cell;
 
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
@@ -154,7 +155,6 @@
         cell = [[BadgeCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"DefaultCell"];
     }
 
-    
     return cell;
 }
 
@@ -191,35 +191,7 @@
         cell.detailTextLabel.text = [phoneNumber internationalFormat];
     }
     
-    cell.badgeCount  = (number.destination == nil) ? 1 : 0;
-    cell.badgeCount += [number isExpiryCritical]   ? 1 : 0;
-    cell.badgeCount += [AddressStatus isVerifiedAddressStatusMask:number.address.addressStatus] ? 0 : 1;
-    
-    [self addUseButtonWithNumber:number toCell:cell];
-}
-
-
-#pragma mark - Helpers
-
-- (void)addUseButtonWithNumber:(NumberData*)number toCell:(BadgeCell*)cell
-{
-    BOOL      isCallerId   = [number.e164 isEqualToString:[Settings sharedSettings].callerIdE164];
-    NSString* callerIdText = NSLocalizedStringWithDefaultValue(@"Numbers ...", nil, [NSBundle mainBundle],
-                                                               @"ID", @"Abbreviation for Caller ID");
-    
-    for (UIView* subview in cell.subviews)
-    {
-        if (subview.tag == CommonUseButton0Tag || subview.tag == CommonUseButton1Tag)
-        {
-            [subview removeFromSuperview];
-        }
-    }
-    
-    if (isCallerId)
-    {
-        UIButton* button   = [Common addUseButtonWithText:callerIdText toCell:cell atPosition:1];
-        [button addTarget:[Common class] action:@selector(showCallerIdAlert) forControlEvents:UIControlEventTouchUpInside];
-    }
+    cell.badgeCount = [[MessageUpdatesHandler sharedHandler] badgeCountForNumberE164:number.e164];
 }
 
 @end

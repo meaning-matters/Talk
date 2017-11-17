@@ -19,6 +19,8 @@ extern NSString* const MessageUpdatesNotification;
 
 - (void)processChangedMessage:(MessageData*)message;
 
+- (NSUInteger)badgeCountForNumberE164:(NSString*)numberE164;
+
 - (NSUInteger)badgeCount;
 
 - (NSDictionary*)messageUpdateWithUuid:(NSString*)uuid;

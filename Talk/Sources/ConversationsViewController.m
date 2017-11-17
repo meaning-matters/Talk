@@ -42,10 +42,10 @@
 {
     if (self = [super init])
     {
-        self.title                = [Strings messagesString]; // @TODO: Should be number-name
         self.managedObjectContext = managedObjectContext;
         self.numberE164           = number.e164;
         self.numberName           = number.name;
+        self.title                = self.numberName; // @TODO: Should be number-name
     }
     
     __weak typeof(self) weakSelf = self;
