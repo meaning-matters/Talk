@@ -44,11 +44,11 @@
 {
     if (self = [super init])
     {
-        // @TODO: Change emoji + other title (without emoji) in tabbar + emoji shouldn't appear in the back button on the next page.
-        self.title = NSLocalizedString(@"Numbers 💬", @"Standard string to label numbers-overview for messaging.");
-        
+        self.title = NSLocalizedString(@"Conversations", @"Standard string to label numbers-overview for messaging in tabbar.");
         self.managedObjectContext = [DataManager sharedManager].managedObjectContext;
     }
+    
+    [self.navigationItem setTitle:NSLocalizedString(@"Numbers", @"Standard string to label numbers-overview for messaging in navigationbar.")];
     
     __weak typeof(self) weakSelf = self;
     self.defaultsObserver        = [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
