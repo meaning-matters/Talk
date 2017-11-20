@@ -3,9 +3,6 @@
 - All number-formats must be checked, in the entire app. What the app works with + how it is displayed to the user.
 - What happens with special cases such as "WeChat" etc?
 
-- You're sure this is GMT? All timestamps in DB and in API must be GMT. All dates/times shown to user must be their local time (see Number expiration/renewal). Did you make sure that all times/dates in all your work so far are according to these rules?
-- Check times everywhere in app and server and DB + formatting displayed to user.
-
 - All cancels for webrequests.
 
 - Searching contacts crashes the app when typing specific letters or numbers .....
@@ -21,8 +18,6 @@
 - Change icon (both sides are cut of 1 or 2 pixels)
 
 - [FIXED?] InputToolbar appears too late (maybe because of loading the messages first?)
-
-- DataManager searches for contactIds with a phonenumber. If a contact is added later, the message won't know this ...
 
 - When openening a long chat, first it's scrolled to the top, then to the bottom (not everything loaded or something??)
 

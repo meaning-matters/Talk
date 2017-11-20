@@ -26,9 +26,18 @@
 @interface MessagesViewController ()
 
 @property (nonatomic, strong) NSFetchedResultsController* fetchedMessagesController;
+<<<<<<< Updated upstream
 @property (nonatomic, strong) NSManagedObjectContext*     managedObjectContext;
 @property (nonatomic, strong) UIRefreshControl*           refreshControl;
 @property (nonatomic, strong) UIBarButtonItem*            writeMessageButton;
+=======
+@property (nonatomic, strong) MessageData*                selectedMessage;
+@property (nonatomic, copy) void (^completion)(MessageData* selectedMessage);
+@property (nonatomic, strong) id<NSObject> defaultsObserver;
+@property (nonatomic, strong) UIBarButtonItem*            addButton;
+@property (nonatomic, strong) NSManagedObjectContext* managedObjectContext;
+@property (nonatomic, strong) UIRefreshControl* refreshControl;
+>>>>>>> Stashed changes
 
 @end
 
@@ -62,6 +71,7 @@
                                                                        managedObjectContext:self.managedObjectContext];
     self.fetchedMessagesController.delegate = self;
     
+<<<<<<< Updated upstream
     self.objectsArray = [self.fetchedMessagesController fetchedObjects];
     [self createIndexOfWidth:0];
     
@@ -85,6 +95,30 @@
 {
     [super viewDidAppear:animated];
     [self.refreshControl didMoveToSuperview];
+=======
+    [[Settings sharedSettings] addObserver:self forKeyPath:@"sortSegment" options:NSKeyValueObservingOptionNew context:nil];
+    
+    self.refreshControl = [[UIRefreshControl alloc]init];
+    [self.tableView addSubview:self.refreshControl];
+    [self.refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
+}
+
+
+- (void)refreshTable
+{
+    if ([Settings sharedSettings].haveAccount == YES)
+    {
+        [[DataManager sharedManager] synchronizeWithServer:^(NSError* error)
+         {
+             [self.refreshControl endRefreshing];
+             [self.tableView reloadData];
+         }];
+    }
+    else
+    {
+        [self.refreshControl endRefreshing];
+    }
+>>>>>>> Stashed changes
 }
 
 

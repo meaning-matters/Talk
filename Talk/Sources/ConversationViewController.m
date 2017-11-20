@@ -16,6 +16,7 @@
 #import "AppDelegate.h"
 #import "MessageUpdatesHandler.h"
 #import "DataManager.h"
+#import "BlockAlertView.h"
 
 
 @interface ConversationViewController ()
@@ -161,7 +162,6 @@
     // Get the messages for this conversation.
     [messages enumerateObjectsUsingBlock:^(MessageData* message, NSUInteger index, BOOL* stop)
     {
-        // @TODO: Do message.externE164 and self.externE164.number have the exact same format??
         if ([message.externE164 isEqualToString:[self.externE164 e164Format]])
         {
             [sortedMessages addObject:message];
@@ -344,7 +344,6 @@
     self.sentMessage = [NSEntityDescription insertNewObjectForEntityForName:@"Message"
                                                      inManagedObjectContext:self.managedObjectContext];
     
-    // @TODO: Use correct timezone + format
     // @TODO: Format message (special chars, emojis, etc etc)
     [self.sentMessage createForNumberE164:[self.numberE164 e164Format]
                                externE164:[self.externE164 e164Format]
@@ -365,7 +364,16 @@
         }
         else
         {
-            NBLog(@"Sending message failed..."); // @TODO: Handle this error.
+            NSString* title = NSLocalizedString(@"Sending message failed",
+                                                @"Alert-title that message could not be sent.");
+            NSString* message = NSLocalizedString(@"Make sure you have a working internet-connection. Please try again later.",
+                                                  @"Alert-message that message could not be sent.");
+            
+            [BlockAlertView showAlertViewWithTitle:title
+                                            message:message
+                                         completion:nil
+                                 cancelButtonTitle:NSLocalizedString(@"Ok", @"Button to close alertview indicating a message can't be sent";)
+                                  otherButtonTitles:nil];
         }
     }];
 }

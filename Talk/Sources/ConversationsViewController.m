@@ -415,7 +415,8 @@
     }
     
     PhoneNumber* number        = [[PhoneNumber alloc] initWithNumber:lastMessage.externE164];
-    cell.nameNumberLabel.text  = lastMessage.contactId ? [[AppDelegate appDelegate] contactNameForId:lastMessage.contactId] : [number internationalFormat];
+    cell.nameNumberLabel.text  = lastMessage.contactId ? [[AppDelegate appDelegate] contactNameForId:lastMessage.contactId]
+                                                       : [number internationalFormat];
     cell.textPreviewLabel.text = lastMessage.text;
     cell.timestampLabel.text   = [Common historyStringForDate:lastMessage.timestamp showTimeForToday:YES];
     
