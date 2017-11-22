@@ -16,6 +16,7 @@
 #import "AppDelegate.h"
 #import "MessageUpdatesHandler.h"
 #import "DataManager.h"
+#import "BlockAlertView.h"
 
 
 @interface ConversationViewController ()
@@ -264,24 +265,53 @@
     //    - Choose country
     if ([URL.scheme isEqualToString:@"tel"])
     {
-        PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:URL.resourceSpecifier];
+        NSString* number = [URL.resourceSpecifier stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         
-        // Get the contactId for the chosen number.
-        [[AppDelegate appDelegate] findContactsHavingNumber:[phoneNumber nationalDigits]
-                                                 completion:^(NSArray* contactIds)
+        PhoneNumber* phoneNumber = [[PhoneNumber alloc] init];
+        [phoneNumber setNumber:number isoCountryCode:@"ES"]; // @TODO: country code from self.externE164 (other branch)
+        
+        if (!([phoneNumber isValid] && [phoneNumber isPossible]))
         {
-            NSString* contactId;
-            if (contactIds.count > 0)
+            phoneNumber = [[PhoneNumber alloc] initWithNumber:number];
+        }
+        
+        if ([phoneNumber isValid] && [phoneNumber isPossible])
+        {
+            // Get the contactId for the chosen number.
+            [[AppDelegate appDelegate] findContactsHavingNumber:[phoneNumber nationalDigits]
+                                                     completion:^(NSArray* contactIds)
             {
-                contactId = [contactIds firstObject];
-            }
+                NSString* contactId;
+                if (contactIds.count > 0)
+                {
+                    contactId = [contactIds firstObject];
+                }
+                
+                // Initiate the call.
+                [[CallManager sharedManager] callPhoneNumber:phoneNumber
+                                                   contactId:contactId
+                                                    callerId:nil // Determine the caller ID based on user preferences.
+                                                  completion:nil];
+            }];
+        }
+        else
+        {
+            NSString* title;
+            NSString* message;
             
-            // Initiate the call.
-            [[CallManager sharedManager] callPhoneNumber:phoneNumber
-                                               contactId:contactId
-                                                callerId:nil // Determine the caller ID based on user preferences.
-                                              completion:nil];
-        }];
+            title   = NSLocalizedString(@"Number Invalid",
+                                        @"Alert title indicating the pressed number is invalid.");
+            
+            message = NSLocalizedString(@"The chosen number is invalid and cannot be used to make a call.",
+                                        @"Alert mesage indicating the pressed number is invalid.");
+            
+            
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:nil
+                                 cancelButtonTitle:NSLocalizedString(@"Ok", @"Button to close alertview indicating the number is invalid.";)
+                                 otherButtonTitles:nil];
+        }
         
         return NO;
     }

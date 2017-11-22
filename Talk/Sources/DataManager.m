@@ -1261,10 +1261,7 @@
                 object.uuid      = dictionary[@"uuid"];
                 object.direction = [MessageDirection messageDirectionEnumForString:dictionary[@"direction"]];
                 object.text      = dictionary[@"text"];
-                
-                NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-                [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
-                object.timestamp = [dateFormatter dateFromString:dictionary[@"timestamp"]];
+                object.timestamp = [Common dateWithString:dictionary[@"timestamp"]];
                 
                 // The '+' is added to the numbers, then a PhoneNumber-object is made.
                 NSString* numberE164String = [NSString stringWithFormat:@"+%@", dictionary[@"number_e164"]];
@@ -1338,10 +1335,7 @@
                 newMessage.uuid      = message[@"uuid"];
                 newMessage.direction = [MessageDirection messageDirectionEnumForString:message[@"direction"]];
                 newMessage.text      = message[@"text"];
-                
-                NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-                [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
-                newMessage.timestamp           = [dateFormatter dateFromString:message[@"timestamp"]];
+                newMessage.timestamp = [Common dateWithString:message[@"timestamp"]];
                 
                 // The '+' is added to the numbers, then a PhoneNumber-object is made.
                 NSString*    numberE164String = [NSString stringWithFormat:@"+%@", message[@"number_e164"]];

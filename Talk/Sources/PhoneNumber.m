@@ -77,6 +77,20 @@
 }
 
 
+- (void)setNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode
+{
+    _number = [PhoneNumber stripNumber:number];
+    
+    self.isoCountryCode = [[LibPhoneNumber sharedInstance] isoCountryCodeOfNumber:_number
+                                                                   isoCountryCode:isoCountryCode];
+    
+    if (self.isoCountryCode.length == 0)
+    {
+        self.isoCountryCode = self.defaultIsoCountryCode;
+    }
+}
+
+
 #pragma mark - Creation
 
 - (instancetype)init
