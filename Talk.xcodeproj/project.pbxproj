@@ -730,7 +730,6 @@
 		82AC3BBC1FA76D87002AEB96 /* JSQMessagesTypingIndicatorFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 82AC3B8B1FA76D87002AEB96 /* JSQMessagesTypingIndicatorFooterView.m */; };
 		82AC3BBD1FA76D87002AEB96 /* JSQMessagesTypingIndicatorFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 82AC3B8C1FA76D87002AEB96 /* JSQMessagesTypingIndicatorFooterView.xib */; };
 		82AC3BBE1FA76D87002AEB96 /* JSQMessagesTypingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 82AC3B8E1FA76D87002AEB96 /* JSQMessagesTypingView.m */; };
-		82AC3BBF1FA76D87002AEB96 /* JSQMessagesViewController-develop.zip in Resources */ = {isa = PBXBuildFile; fileRef = 82AC3B8F1FA76D87002AEB96 /* JSQMessagesViewController-develop.zip */; };
 		82B08B411F826C4400F07536 /* MessageData.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B08B401F826C4400F07536 /* MessageData.m */; };
 		82B7F0191F66EE7900CB5FFB /* ConversationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B7F0181F66EE7900CB5FFB /* ConversationsViewController.m */; };
 /* End PBXBuildFile section */
@@ -1672,7 +1671,6 @@
 		82AC3B8C1FA76D87002AEB96 /* JSQMessagesTypingIndicatorFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JSQMessagesTypingIndicatorFooterView.xib; sourceTree = "<group>"; };
 		82AC3B8D1FA76D87002AEB96 /* JSQMessagesTypingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSQMessagesTypingView.h; sourceTree = "<group>"; };
 		82AC3B8E1FA76D87002AEB96 /* JSQMessagesTypingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSQMessagesTypingView.m; sourceTree = "<group>"; };
-		82AC3B8F1FA76D87002AEB96 /* JSQMessagesViewController-develop.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "JSQMessagesViewController-develop.zip"; sourceTree = "<group>"; };
 		82B08B3F1F826C4400F07536 /* MessageData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageData.h; sourceTree = "<group>"; };
 		82B08B401F826C4400F07536 /* MessageData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageData.m; sourceTree = "<group>"; };
 		82B7F0171F66EE7900CB5FFB /* ConversationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversationsViewController.h; sourceTree = "<group>"; };
@@ -2917,7 +2915,6 @@
 			isa = PBXGroup;
 			children = (
 				82AC3B1E1FA76D87002AEB96 /* JSQMessagesViewController */,
-				82AC3B8F1FA76D87002AEB96 /* JSQMessagesViewController-develop.zip */,
 			);
 			name = JSQMessagesViewController;
 			path = External/JSQMessagesViewController;
@@ -3571,7 +3568,6 @@
 				48367A4317247B2D001A02AF /* CueStopWhite@2x.png in Resources */,
 				48CA5036172AEEB100CB1B7B /* CueRecordBlack@2x.png in Resources */,
 				4846D8A5174170CF00C40713 /* Branding@2x.png in Resources */,
-				82AC3BBF1FA76D87002AEB96 /* JSQMessagesViewController-develop.zip in Resources */,
 				4846D8AB1743F47100C40713 /* Logo@2x.png in Resources */,
 				484943B01753C44D00E1D5C4 /* ThanksView.xib in Resources */,
 				4864B3F6175668CA0006542F /* LogoFacebook.png in Resources */,
