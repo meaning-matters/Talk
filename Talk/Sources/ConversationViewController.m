@@ -17,6 +17,7 @@
 #import "MessageUpdatesHandler.h"
 #import "DataManager.h"
 #import "BlockAlertView.h"
+#import "Strings.h"
 
 
 @interface ConversationViewController ()
@@ -309,7 +310,7 @@
             [BlockAlertView showAlertViewWithTitle:title
                                            message:message
                                         completion:nil
-                                 cancelButtonTitle:NSLocalizedString(@"Ok", @"Button to close alertview indicating the number is invalid.";)
+                                 cancelButtonTitle:[Strings closeString]
                                  otherButtonTitles:nil];
         }
         
