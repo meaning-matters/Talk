@@ -167,7 +167,7 @@
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return NSLocalizedString(@"Your numbers available to use for SMS", @"Standard string to indicate these numbers can be used for SMS.");
+    return NSLocalizedString(@"Numbers that support SMS", @"Standard string to indicate these numbers can be used for SMS.");
 }
 
 
@@ -184,7 +184,6 @@
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     BadgeCell* cell;
-
     cell = [self.tableView dequeueReusableCellWithIdentifier:@"DefaultCell"];
     if (cell == nil)
     {

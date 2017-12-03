@@ -2748,6 +2748,8 @@
 				48081BD41ED402D9009C5BE0 /* NumberFilterAreasViewController.m */,
 				48081BCA1ED35FA1009C5BE0 /* NumberFilterViewController.h */,
 				48081BCB1ED35FA1009C5BE0 /* NumberFilterViewController.m */,
+				8208178A1FBCAA9400691E05 /* NumbersMessagesViewController.h */,
+				8208178B1FBCAA9400691E05 /* NumbersMessagesViewController.m */,
 				48931FF31D3CB0FF00A93456 /* NumberPayViewController.h */,
 				48931FF41D3CB0FF00A93456 /* NumberPayViewController.m */,
 				488AD1E816E799C3004D3A2A /* NumberStatesViewController.h */,
@@ -2782,8 +2784,6 @@
 				48EEC7371E8ACBAB006759A3 /* VerifyPhoneVoiceEnterViewController.m */,
 				4823C0CB1CBA7F3800030FC7 /* WebViewController.h */,
 				4823C0CC1CBA7F3800030FC7 /* WebViewController.m */,
-				8208178A1FBCAA9400691E05 /* NumbersMessagesViewController.h */,
-				8208178B1FBCAA9400691E05 /* NumbersMessagesViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
