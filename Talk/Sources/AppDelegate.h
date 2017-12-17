@@ -53,6 +53,8 @@ extern NSString* const AppDelegateRemoteNotification;
 @property (nonatomic, copy) NSString*                      accountId;
 @property (nonatomic, assign) BOOL                         mustUpdateApp;           // Indicates if app is incompatible with web API.
 
+@property(nonatomic, strong) id<GAITracker>                tracker;
+
 
 + (AppDelegate*)appDelegate;
 

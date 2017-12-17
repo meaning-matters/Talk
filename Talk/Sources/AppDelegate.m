@@ -614,6 +614,16 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 
 #pragma mark - Helpers
 
+- (void)initializeGoogleAnalytics
+{
+    [GAI sharedInstance].trackUncaughtExceptions = YES;
+    [GAI sharedInstance].logger.logLevel         = kGAILogLevelVerbose;
+    [GAI sharedInstance].dispatchInterval        = 20;
+
+    self.tracker = [[GAI sharedInstance] trackerWithTrackingId:@"UA-100692230-1"];
+}
+
+
 - (void)checkCreditWithCompletion:(void (^)(BOOL success, NSError* error))completion
 {
     [[WebClient sharedClient] retrieveCreditWithReply:^(NSError* error, float credit)

@@ -10,6 +10,7 @@
 #import "Strings.h"
 #import "Settings.h"
 #import "DataManager.h"
+#import "GAI+Tracking.h"
 
 
 @implementation ItemsViewController
@@ -27,6 +28,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [[GAI sharedInstance] trackScreenWithName:self.title];
 
     self.clearsSelectionOnViewWillAppear = YES;
 

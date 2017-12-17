@@ -14,7 +14,8 @@
     #import <CoreData/CoreData.h>
     #import <Fabric/Fabric.h>
     #import <Answers/Answers.h>
-
+    #import "GAI.h"
+    #import "GAIFields.h"
 
 #ifdef DEBUG
 #define NBLog(fmt, ...) NSLog(fmt, ##__VA_ARGS__)
