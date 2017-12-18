@@ -41,8 +41,6 @@ typedef enum
 
 + (BOOL)number:(NSString*)numberA isEqualToNumber:(NSString*)numberB;
 
-- (void)setNumber:(NSString*)number isoCountryCode:(NSString*)isoCountryCode;
-
 - (instancetype)init;
 
 - (instancetype)initWithNumber:(NSString*)number;

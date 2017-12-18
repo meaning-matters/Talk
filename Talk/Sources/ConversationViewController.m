@@ -268,15 +268,9 @@
     {
         NSString* number = [URL.resourceSpecifier stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         
-        PhoneNumber* phoneNumber = [[PhoneNumber alloc] init];
-        [phoneNumber setNumber:number isoCountryCode:@"ES"]; // @TODO: country code from self.externE164 (other branch)
+        PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:number isoCountryCode:@"ES"]; // @TODO: country code from self.externE164 (other branch)
         
-        if (!([phoneNumber isValid] && [phoneNumber isPossible]))
-        {
-            phoneNumber = [[PhoneNumber alloc] initWithNumber:number];
-        }
-        
-        if ([phoneNumber isValid] && [phoneNumber isPossible])
+        if ([phoneNumber isValid])
         {
             // Get the contactId for the chosen number.
             [[AppDelegate appDelegate] findContactsHavingNumber:[phoneNumber nationalDigits]
@@ -291,7 +285,7 @@
                 // Initiate the call.
                 [[CallManager sharedManager] callPhoneNumber:phoneNumber
                                                    contactId:contactId
-                                                    callerId:nil // Determine the caller ID based on user preferences.
+                                                    callerId:nil // @TODO: Use callerID of number used for SMS.
                                                   completion:nil];
             }];
         }
