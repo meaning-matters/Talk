@@ -16,6 +16,7 @@
 @property (nonatomic, strong) UINavigationController* writeMessageNavigationController;
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext;
+
 - (void)scrollToChatWithExternE164:(NSString*)externE164;
 
 @end

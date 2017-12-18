@@ -31,7 +31,7 @@
 @property (nonatomic, strong) ConversationCell*           conversationCell;
 @property (nonatomic, weak) id<NSObject>                  defaultsObserver;
 @property (nonatomic, weak) id<NSObject>                  messagesObserver;
-@property (nonatomic, strong) UIBarButtonItem*            writeMessageButton;
+@property (nonatomic, strong) UIBarButtonItem*            composeButtonItem;
 
 @end
 
@@ -129,10 +129,10 @@
     self.noConversationsLabel.font          = [UIFont fontWithName:@"SF UI Text-Regular" size:15];
     self.noConversationsLabel.textColor     = [Skinning noContentTextColor];
     
-    self.writeMessageButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
+    self.composeButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
                                                                             target:self
                                                                             action:@selector(tappedWriteMessageButton:)];
-    self.navigationItem.rightBarButtonItem = self.writeMessageButton;
+    self.navigationItem.rightBarButtonItem = self.composeButtonItem;
     
     // Synchronize messages every 30 seconds.
     [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(refresh:) userInfo:nil repeats:YES];

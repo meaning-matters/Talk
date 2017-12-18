@@ -17,6 +17,7 @@
 #import "MessageUpdatesHandler.h"
 #import "DataManager.h"
 #import "BlockAlertView.h"
+#import "Strings.h"
 
 
 @interface ConversationViewController ()
@@ -65,6 +66,16 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self processMessages:self.fetchedMessagesController.fetchedObjects];
+    
+    // @TODO: This makes the messages jump. Fix that.
+    // Scroll to first unread message.
+    if (self.firstUnreadMessageIndex >= 0)
+    {
+        NSIndexPath* indexPath = [NSIndexPath indexPathForItem:self.firstUnreadMessageIndex inSection:0];
+        [self scrollToIndexPath:indexPath animated:NO];
+    }
     
     // Disable the attachment button.
     self.inputToolbar.contentView.leftBarButtonItem = nil;
@@ -132,22 +143,6 @@
         [weakSelf.fetchedMessagesController performFetch:nil];
         [weakSelf processMessages:[weakSelf.fetchedMessagesController fetchedObjects]];
     }];
-}
-
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    [self processMessages:self.fetchedMessagesController.fetchedObjects];
-    
-    // @TODO: This makes the messages jump. Fix that.
-    // Scroll to first unread message.
-    if (self.firstUnreadMessageIndex >= 0)
-    {
-        NSIndexPath* indexPath = [NSIndexPath indexPathForItem:self.firstUnreadMessageIndex inSection:0];
-        [self scrollToIndexPath:indexPath animated:NO];
-    }
 }
 
 
@@ -364,15 +359,16 @@
         }
         else
         {
-            NSString* title = NSLocalizedString(@"Sending message failed",
-                                                @"Alert-title that message could not be sent.");
+            NSString* title   = NSLocalizedString(@"Sending Message Failed",
+                                                  @"Alert-title that message could not be sent.");
+            // @TODO: Implement different failures by accepting error-codes from server (to-implement)
             NSString* message = NSLocalizedString(@"Make sure you have a working internet-connection. Please try again later.",
                                                   @"Alert-message that message could not be sent.");
             
             [BlockAlertView showAlertViewWithTitle:title
                                             message:message
                                          completion:nil
-                                 cancelButtonTitle:NSLocalizedString(@"Ok", @"Button to close alertview indicating a message can't be sent";)
+                                 cancelButtonTitle:[Strings closeString]
                                   otherButtonTitles:nil];
         }
     }];
