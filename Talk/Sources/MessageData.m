@@ -23,15 +23,15 @@
 
 - (void)createForNumberE164:(NSString*)numberE164
                  externE164:(NSString*)externE164
-                    text:(NSString*)text
+                       text:(NSString*)text
                    datetime:(NSDate*)datetime
                  completion:(void (^)(NSError* error))completion
 {
     self.numberE164 = numberE164;
     self.externE164 = externE164;
-    self.text = text;
-    self.timestamp = datetime;
-    self.direction = MessageDirectionOutbound;
+    self.text       = text;
+    self.timestamp  = datetime;
+    self.direction  = MessageDirectionOutbound;
     
     [[WebClient sharedClient] sendMessage:self
                                     reply:^(NSError* error, NSString* uuid)

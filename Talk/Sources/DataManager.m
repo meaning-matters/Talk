@@ -1264,13 +1264,13 @@
                 object.timestamp = [Common dateWithString:dictionary[@"timestamp"]];
                 
                 // The '+' is added to the numbers, then a PhoneNumber-object is made.
-                NSString* numberE164String = [@"+" stringByAppendingString:dictionary[@"number_e164"]];
-                PhoneNumber* numberE164    = [[PhoneNumber alloc] initWithNumber:numberE164String];
-                object.numberE164          = numberE164.number;
+                NSString*    numberE164String = [@"+" stringByAppendingString:dictionary[@"number_e164"]];
+                PhoneNumber* numberE164       = [[PhoneNumber alloc] initWithNumber:numberE164String];
+                object.numberE164             = numberE164.number;
                 
-                NSString* externE164String = [@"+" stringByAppendingString:dictionary[@"extern_e164"]];
-                PhoneNumber* externE164    = [[PhoneNumber alloc] initWithNumber:externE164String];
-                object.externE164          = externE164.number;
+                NSString*    externE164String = [@"+" stringByAppendingString:dictionary[@"extern_e164"]];
+                PhoneNumber* externE164       = [[PhoneNumber alloc] initWithNumber:externE164String];
+                object.externE164             = externE164.number;
                                 
                 // Get the contactId for the external number.
                 [[AppDelegate appDelegate] findContactsHavingNumber:[externE164 e164Format]

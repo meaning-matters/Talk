@@ -82,8 +82,6 @@
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self.defaultsObserver];
-    [[NSNotificationCenter defaultCenter] removeObserver:self.messagesObserver];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -131,7 +129,7 @@
     
     self.composeButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
                                                                             target:self
-                                                                            action:@selector(tappedWriteMessageButton:)];
+                                                                            action:@selector(newConversationAction:)];
     self.navigationItem.rightBarButtonItem = self.composeButtonItem;
     
     // Synchronize messages every 30 seconds.
@@ -167,7 +165,7 @@
 
 - (void)findContactsForAnonymousMessages
 {
-    dispatch_async(dispatch_get_main_queue(), ^
+    dispatch_async(dispatch_queue_create("Contact Search New Conversation", DISPATCH_QUEUE_SERIAL), ^
     {
         for (NSArray* conversation in self.conversations)
         {
@@ -306,29 +304,28 @@
 }
 
 
-- (void)tappedWriteMessageButton:(id)sender
+- (void)newConversationAction:(id)sender
 {
     NewConversationViewController* viewController = [[NewConversationViewController alloc] initWithManagedObjectContact:self.managedObjectContext
                                                                                               fetchedMessagesController:self.fetchedMessagesController];
     
-    self.writeMessageNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    self.createConversationNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
     
     [viewController.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                                       target:self
-                                                                                                      action:@selector(pressedCancelWriteMessage:)]];
+                                                                                                      action:@selector(cancelAction:)]];
     
     viewController.conversationsViewcontroller = self;
-    [self.navigationController presentViewController:self.writeMessageNavigationController animated:YES completion:^(void){}];
+    [self.navigationController presentViewController:self.createConversationNavigationController animated:YES completion:nil];
 }
 
 
-- (void)pressedCancelWriteMessage:(id)sender
+- (void)cancelAction:(id)sender
 {
-    [self.writeMessageNavigationController dismissViewControllerAnimated:YES completion:^(void){}];
+    [self.createConversationNavigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 
-// @TODO: Do we need this? (What is it for exactly? the search function?) (other user-story)
 - (NSString*)nameForObject:(id)object
 {
     return ((MessageData*)object).text;

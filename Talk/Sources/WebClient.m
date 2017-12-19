@@ -1582,11 +1582,8 @@
 }
 
 
-// Send message - /users/{user_id}/messages - Body: {from_number, to_number, msg}
 - (void)sendMessage:(MessageData*)message reply:(void(^)(NSError* error, NSString* uuid))reply
 {
-    // @TODO: Change this, so the data is correct and in the same format as the server.
-    // @TODO: Is this the right place to remove the "+"
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSDictionary* parameters = @{@"from_number" : [message.numberE164 stringByReplacingOccurrencesOfString:@"+" withString:@""],
                                  @"to_number"   : [message.externE164 stringByReplacingOccurrencesOfString:@"+" withString:@""],

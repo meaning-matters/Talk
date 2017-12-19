@@ -13,7 +13,7 @@
 
 @interface ConversationsViewController : SearchTableViewController <NSFetchedResultsControllerDelegate>
 
-@property (nonatomic, strong) UINavigationController* writeMessageNavigationController;
+@property (nonatomic, strong) UINavigationController* createConversationNavigationController;
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 

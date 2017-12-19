@@ -69,7 +69,6 @@
     
     [self processMessages:self.fetchedMessagesController.fetchedObjects];
     
-    // @TODO: This makes the messages jump. Fix that.
     // Scroll to first unread message.
     if (self.firstUnreadMessageIndex >= 0)
     {

@@ -24,3 +24,11 @@
 - Messages jump when going into a conversations. This has to do with jumping to the first unread message.
 
 - A conversation without contactId (and contactname) is updated when this is added to contacts. But when this contact is removed the name stays there (same happens on recents). Is that ok?
+
+- Replace all underscores in property-names on server-side as well, then change DataManager that there are no underscores anymore.
+
+- Replace all alertcontrollers with BlockAlertView
+
+- Clean up functions in webclient + server.
+
+- See CDRs API: There should be just one method. Selection between all or from a date should be done in the same way as done for CDRs. Ergo, we don't want a separate API to get all message.
