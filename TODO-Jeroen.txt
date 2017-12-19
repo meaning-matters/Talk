@@ -32,3 +32,9 @@
 - Clean up functions in webclient + server.
 
 - See CDRs API: There should be just one method. Selection between all or from a date should be done in the same way as done for CDRs. Ergo, we don't want a separate API to get all message.
+
+- Act when the contact-name is too long as title for the conversation-screen
+
+- Act when the phonenumber-name is too long for the conversations-overview-screen
+
+- viewWill/DidAppear are called also when you navigate back (by a pop of another view controller on top). Please explain how you're sure that this sorting is called absolutely no more than needed.
