@@ -31,8 +31,8 @@
 @property (nonatomic, strong) JSQMessagesBubbleImageFactory* bubbleFactory;
 @property (nonatomic, strong) MessageData*                   sentMessage;
 
-@property (nonatomic, strong) PhoneNumber*                   numberE164;
-@property (nonatomic, strong) PhoneNumber*                   externE164;
+@property (nonatomic, strong) PhoneNumber*                   localPhoneNumber;
+@property (nonatomic, strong) PhoneNumber*                   externPhoneNumber;
 @property (nonatomic, strong) NSString*                      contactId;
 
 @property (nonatomic) NSInteger                              firstUnreadMessageIndex;
@@ -45,18 +45,18 @@
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
                    fetchedMessagesController:(NSFetchedResultsController*)fetchedMessagesController
-                                  numberE164:(PhoneNumber*)numberE164
-                                  externE164:(PhoneNumber*)externE164
-                                   contactId:(NSString *)contactId
+                            localPhoneNumber:(PhoneNumber*)localPhoneNumber
+                           externPhoneNumber:(PhoneNumber*)externPhoneNumber
+                                   contactId:(NSString*)contactId
 {
     if (self = [super init])
     {
         self.managedObjectContext      = managedObjectContext;
         self.fetchedMessagesController = fetchedMessagesController;
         
-        self.numberE164 = numberE164;
-        self.externE164 = externE164;
-        self.contactId  = contactId;
+        self.localPhoneNumber  = localPhoneNumber;
+        self.externPhoneNumber = externPhoneNumber;
+        self.contactId         = contactId;
     }
     
     return self;
@@ -130,7 +130,7 @@
     }
     else
     {
-        self.title = [self.externE164 internationalFormat];
+        self.title = [self.externPhoneNumber internationalFormat];
     }
 
     __weak typeof(self) weakSelf = self;
@@ -156,7 +156,7 @@
     // Get the messages for this conversation.
     [messages enumerateObjectsUsingBlock:^(MessageData* message, NSUInteger index, BOOL* stop)
     {
-        if ([message.externE164 isEqualToString:[self.externE164 e164Format]])
+        if ([message.externE164 isEqualToString:[self.externPhoneNumber e164Format]])
         {
             [sortedMessages addObject:message];
         }
@@ -339,8 +339,8 @@
                                                      inManagedObjectContext:self.managedObjectContext];
     
     // @TODO: Format message (special chars, emojis, etc etc)
-    [self.sentMessage createForNumberE164:[self.numberE164 e164Format]
-                               externE164:[self.externE164 e164Format]
+    [self.sentMessage createForNumberE164:[self.localPhoneNumber e164Format]
+                               externE164:[self.externPhoneNumber e164Format]
                                      text:text
                                  datetime:date
                                completion:^(NSError* error)

@@ -366,12 +366,12 @@
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
     MessageData* message                       = [self.conversations[indexPath.row] lastObject];
-    PhoneNumber* numberE164                    = [[PhoneNumber alloc] initWithNumber:message.numberE164];
-    PhoneNumber* externE164                    = [[PhoneNumber alloc] initWithNumber:message.externE164];
+    PhoneNumber* localPhoneNumber              = [[PhoneNumber alloc] initWithNumber:message.numberE164];
+    PhoneNumber* externPhoneNumber             = [[PhoneNumber alloc] initWithNumber:message.externE164];
     ConversationViewController* viewController = [[ConversationViewController alloc] initWithManagedObjectContext:self.managedObjectContext
                                                                                         fetchedMessagesController:self.fetchedMessagesController
-                                                                                                       numberE164:numberE164
-                                                                                                       externE164:externE164
+                                                                                                 localPhoneNumber:localPhoneNumber
+                                                                                                externPhoneNumber:externPhoneNumber
                                                                                                         contactId:message.contactId];
     
     [self.navigationController pushViewController:viewController animated:YES];

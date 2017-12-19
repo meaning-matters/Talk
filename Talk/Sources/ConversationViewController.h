@@ -15,8 +15,8 @@
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
                    fetchedMessagesController:(NSFetchedResultsController*)fetchedMessagesController
-                                  numberE164:(PhoneNumber*)numberE164
-                                  externE164:(PhoneNumber*)externE164
+                            localPhoneNumber:(PhoneNumber*)localPhoneNumber
+                           externPhoneNumber:(PhoneNumber*)externPhoneNumber
                                    contactId:(NSString*)contactId;
 
 @end

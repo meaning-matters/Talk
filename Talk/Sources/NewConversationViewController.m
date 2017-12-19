@@ -216,8 +216,8 @@
     
     ConversationViewController* viewController = [[ConversationViewController alloc] initWithManagedObjectContext:self.managedObjectContext
                                                                                         fetchedMessagesController:self.fetchedMessagesController
-                                                                                                       numberE164:numberE164
-                                                                                                       externE164:externE164
+                                                                                                       localPhoneNumber:numberE164
+                                                                                                       externPhoneNumber:externE164
                                                                                                         contactId:contactId];
     
     // Scroll to the row with the existing chat.
