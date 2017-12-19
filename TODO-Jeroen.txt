@@ -38,3 +38,6 @@
 - Act when the phonenumber-name is too long for the conversations-overview-screen
 
 - viewWill/DidAppear are called also when you navigate back (by a pop of another view controller on top). Please explain how you're sure that this sorting is called absolutely no more than needed.
+
+- Implement different failures by accepting error-codes from server (to-implement)    Look at existing API failure alerts and do something that matches the rest of the app.
+
