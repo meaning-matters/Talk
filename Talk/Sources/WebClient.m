@@ -1585,8 +1585,8 @@
 - (void)sendMessage:(MessageData*)message reply:(void(^)(NSError* error, NSString* uuid))reply
 {
     NSString*     username   = [Settings sharedSettings].webUsername;
-    NSDictionary* parameters = @{@"from_number" : [message.numberE164 stringByReplacingOccurrencesOfString:@"+" withString:@""],
-                                 @"to_number"   : [message.externE164 stringByReplacingOccurrencesOfString:@"+" withString:@""],
+    NSDictionary* parameters = @{@"fromNumber" : [message.numberE164 stringByReplacingOccurrencesOfString:@"+" withString:@""],
+                                 @"toNumber"   : [message.externE164 stringByReplacingOccurrencesOfString:@"+" withString:@""],
                                  @"msg"         : message.text};
     
     [self postPath:[NSString stringWithFormat:@"/users/%@/messages", username]
