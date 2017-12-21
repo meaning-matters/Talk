@@ -1262,13 +1262,14 @@
                 object.direction = [MessageDirection messageDirectionEnumForString:dictionary[@"direction"]];
                 object.text      = dictionary[@"text"];
                 object.timestamp = [Common dateWithString:dictionary[@"timestamp"]];
+                object.cost      = [dictionary[@"cost"] floatValue]; // @TODO: Does this work?
                 
                 // The '+' is added to the numbers, then a PhoneNumber-object is made.
-                NSString* numberE164String = [NSString stringWithFormat:@"+%@", dictionary[@"number_e164"]];
+                NSString* numberE164String = [NSString stringWithFormat:@"+%@", dictionary[@"numberE164"]];
                 PhoneNumber* numberE164    = [[PhoneNumber alloc] initWithNumber:numberE164String];
                 object.numberE164          = [numberE164 e164Format];
                 
-                NSString* externE164String = [NSString stringWithFormat:@"+%@", dictionary[@"extern_e164"]];
+                NSString* externE164String = [NSString stringWithFormat:@"+%@", dictionary[@"externE164"]];
                 PhoneNumber* externE164    = [[PhoneNumber alloc] initWithNumber:externE164String];
                 object.externE164          = [externE164 e164Format];
                 
@@ -1336,13 +1337,14 @@
                 newMessage.direction = [MessageDirection messageDirectionEnumForString:message[@"direction"]];
                 newMessage.text      = message[@"text"];
                 newMessage.timestamp = [Common dateWithString:message[@"timestamp"]];
+                newMessage.cost      = [message[@"cost"] floatValue]; // @TODO: Does this work?
                 
                 // The '+' is added to the numbers, then a PhoneNumber-object is made.
-                NSString*    numberE164String = [NSString stringWithFormat:@"+%@", message[@"number_e164"]];
+                NSString*    numberE164String = [NSString stringWithFormat:@"+%@", message[@"numberE164"]];
                 PhoneNumber* numberE164       = [[PhoneNumber alloc] initWithNumber:numberE164String];
                 newMessage.numberE164         = [numberE164 e164Format];
                 
-                NSString*    externE164String = [NSString stringWithFormat:@"+%@", message[@"extern_e164"]];
+                NSString*    externE164String = [NSString stringWithFormat:@"+%@", message[@"externE164"]];
                 PhoneNumber* externE164       = [[PhoneNumber alloc] initWithNumber:externE164String];
                 newMessage.externE164         = [externE164 e164Format];
                 
