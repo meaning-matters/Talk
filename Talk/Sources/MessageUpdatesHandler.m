@@ -49,10 +49,19 @@ NSString* const MessageUpdatesNotification = @"MessageUpdatesNotification";
 
 #pragma Public
 
-- (NSUInteger)badgeCount
+
+- (NSUInteger)badgeCountForNumberE164:(NSString*)numberE164
 {
     NSUInteger badgeCount = 0;
-    NSArray*   messages = [[DataManager sharedManager] fetchEntitiesWithName:@"Message"];
+    NSArray*   messages   = [[DataManager sharedManager] fetchEntitiesWithName:@"Message"];
+    
+    // If asked for the badgeCount for a specific number.
+    if (numberE164 != nil)
+    {
+        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"numberE164 = %@", numberE164];
+        messages = [messages filteredArrayUsingPredicate:predicate];
+    }
+    
     for (MessageData* message in messages)
     {
         NSDictionary* messageUpdate = [[MessageUpdatesHandler sharedHandler] messageUpdateWithUuid:message.uuid];
@@ -63,6 +72,12 @@ NSString* const MessageUpdatesNotification = @"MessageUpdatesNotification";
     }
     
     return badgeCount;
+}
+
+
+- (NSUInteger)badgeCount
+{
+    return [self badgeCountForNumberE164:nil];
 }
 
 

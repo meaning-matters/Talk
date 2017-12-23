@@ -151,19 +151,27 @@
 // Reloads the collectionView.
 - (void)processMessages:(NSArray*)messages
 {
-    NSMutableArray* sortedMessages = [[NSMutableArray alloc] init];
-    
-    // Get the messages for this conversation.
-    [messages enumerateObjectsUsingBlock:^(MessageData* message, NSUInteger index, BOOL* stop)
-    {
-        if ([message.externE164 isEqualToString:[self.externPhoneNumber e164Format]])
-        {
-            [sortedMessages addObject:message];
-        }
-    }];
+//<<<<<<< HEAD
+//    NSMutableArray* sortedMessages = [[NSMutableArray alloc] init];
+//
+//    // Get the messages for this conversation.
+//    [messages enumerateObjectsUsingBlock:^(MessageData* message, NSUInteger index, BOOL* stop)
+//    {
+//        if ([message.externE164 isEqualToString:[self.externPhoneNumber e164Format]])
+//        {
+//            [sortedMessages addObject:message];
+//        }
+//    }];
+//=======
+    // Filter to keep only the messages with the correct number-combination.
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"numberE164 = %@ AND externE164 = %@",
+                              [self.localPhoneNumber e164Format],
+                              [self.externPhoneNumber e164Format]];
+    messages = [messages filteredArrayUsingPredicate:predicate];
+//>>>>>>> messaging
     
     // Sort the messages by timestamp.
-    self.messages = [[NSArray arrayWithArray:sortedMessages] sortedArrayUsingComparator:^(id a, id b)
+    self.messages = [messages sortedArrayUsingComparator:^(id a, id b)
     {
         NSDate* first  = ((MessageData*)a).timestamp;
         NSDate* second = ((MessageData*)b).timestamp;
@@ -300,25 +308,54 @@
     //    - Choose country
     if ([URL.scheme isEqualToString:@"tel"])
     {
-        PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:URL.resourceSpecifier];
+        NSString* number = [URL.resourceSpecifier stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         
-        // @TODO: Check if number is valid?
-        // Get the contactId for the chosen number.
-        [[AppDelegate appDelegate] findContactsHavingNumber:phoneNumber.number
-                                                 completion:^(NSArray* contactIds)
+        PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:number isoCountryCode:@"ES"]; // @TODO: country code from self.externE164 (other branch)
+        
+//<<<<<<< HEAD
+//        // @TODO: Check if number is valid?
+//        // Get the contactId for the chosen number.
+//        [[AppDelegate appDelegate] findContactsHavingNumber:phoneNumber.number
+//                                                 completion:^(NSArray* contactIds)
+//=======
+        if ([phoneNumber isValid])
+//>>>>>>> messaging
         {
-            NSString* contactId;
-            if (contactIds.count > 0)
+            // Get the contactId for the chosen number.
+            [[AppDelegate appDelegate] findContactsHavingNumber:[phoneNumber nationalDigits]
+                                                     completion:^(NSArray* contactIds)
             {
-                contactId = [contactIds firstObject];
-            }
+                NSString* contactId;
+                if (contactIds.count > 0)
+                {
+                    contactId = [contactIds firstObject];
+                }
+                
+                // Initiate the call.
+                [[CallManager sharedManager] callPhoneNumber:phoneNumber
+                                                   contactId:contactId
+                                                    callerId:nil // @TODO: Use callerID of number used for SMS.
+                                                  completion:nil];
+            }];
+        }
+        else
+        {
+            NSString* title;
+            NSString* message;
             
-            // Initiate the call.
-            [[CallManager sharedManager] callPhoneNumber:phoneNumber
-                                               contactId:contactId
-                                                callerId:nil // Determine the caller ID based on user preferences.
-                                              completion:nil];
-        }];
+            title   = NSLocalizedString(@"Number Invalid",
+                                        @"Alert title indicating the pressed number is invalid.");
+            
+            message = NSLocalizedString(@"The chosen number is invalid and cannot be used to make a call.",
+                                        @"Alert mesage indicating the pressed number is invalid.");
+            
+            
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:nil
+                                 cancelButtonTitle:[Strings closeString]
+                                 otherButtonTitles:nil];
+        }
         
         return NO;
     }

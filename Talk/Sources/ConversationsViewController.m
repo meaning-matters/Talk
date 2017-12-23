@@ -25,6 +25,8 @@
 
 @property (nonatomic, strong) NSFetchedResultsController* fetchedMessagesController;
 @property (nonatomic, strong) NSManagedObjectContext*     managedObjectContext;
+@property (nonatomic, strong) NSString*                   numberE164;
+@property (nonatomic, strong) NSString*                   numberName;
 @property (nonatomic, strong) UIRefreshControl*           refreshControl;
 @property (nonatomic, strong) NSArray*                    conversations;
 @property (nonatomic, strong) UILabel*                    noConversationsLabel;
@@ -38,18 +40,14 @@
 
 @implementation ConversationsViewController
 
-- (instancetype)init
-{
-    return [self initWithManagedObjectContext:[DataManager sharedManager].managedObjectContext];
-}
-
-
-- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
+- (instancetype)initWithNumber:(NumberData*)number managedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 {
     if (self = [super init])
     {
-        self.title                = [Strings messagesString];
         self.managedObjectContext = managedObjectContext;
+        self.numberE164           = number.e164;
+        self.numberName           = number.name;
+        self.title                = self.numberName;
     }
     
     __weak typeof(self) weakSelf = self;
@@ -68,12 +66,7 @@
                                                                           usingBlock:^(NSNotification* note)
     {
         [[AppDelegate appDelegate] updateConversationsBadgeValue];
-        NSIndexPath* selectedIndexPath = weakSelf.tableView.indexPathForSelectedRow;
         [weakSelf.tableView reloadData];
-        [weakSelf.tableView selectRowAtIndexPath:selectedIndexPath
-                                        animated:NO
-                                  scrollPosition:UITableViewScrollPositionNone];
-        [[weakSelf.tableView cellForRowAtIndexPath:selectedIndexPath] layoutIfNeeded];
     }];
     
     return self;
@@ -90,13 +83,12 @@
 {
     [super viewDidLoad];
     
-    [[AppDelegate appDelegate] updateConversationsBadgeValue];
-    
     self.fetchedMessagesController = [[DataManager sharedManager] fetchResultsForEntityName:@"Message"
                                                                                withSortKeys:nil
                                                                        managedObjectContext:self.managedObjectContext];
-    self.fetchedMessagesController.delegate = self;
     
+    self.fetchedMessagesController.delegate = self;
+
     self.objectsArray = [self.fetchedMessagesController fetchedObjects];
     [self orderByConversation];
     [self createIndexOfWidth:0];
@@ -242,7 +234,9 @@
 // - All groups are sorted by the timestamp of the last message of that group.
 - (void)orderByConversation
 {
-    self.objectsArray = [self.fetchedMessagesController fetchedObjects];
+    // Filter to keep only the messages with the correct numberE164.
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"numberE164 = %@", self.numberE164];
+    self.objectsArray = [[self.fetchedMessagesController fetchedObjects] filteredArrayUsingPredicate:predicate];
     
     NSMutableDictionary* conversationGroups = [NSMutableDictionary dictionary];
     
@@ -289,6 +283,7 @@
 }
 
 
+//<<<<<<< HEAD
 - (void)scrollToChatWithExternE164:(NSString*)externE164
 {
     for (int i = 0; i < self.conversations.count; i++)
@@ -326,6 +321,8 @@
 }
 
 
+//=======
+//>>>>>>> messaging
 - (NSString*)nameForObject:(id)object
 {
     return ((MessageData*)object).text;
