@@ -13,7 +13,6 @@
 - The edit/delete/etc menu is not always in the right place (try clicking somehwere after selecting text and you'll see)
 - No way to remove selection
 
-<<<<<<< HEAD
 - Clicking in a chat should close the keyboard but this is only done when clicking between the bubbles (and the bubbles are internally the whole screen width ... )
 
 - Change icon (both sides are cut of 1 or 2 pixels)
@@ -42,8 +41,10 @@
 
 - Implement different failures by accepting error-codes from server (to-implement)    Look at existing API failure alerts and do something that matches the rest of the app.
 
-=======
 - Change icon (both sides are cut of 1 or 2 pixels)
 
 - NumbersMessagesViewController + ConversationsViewController both do a refresh on an interval. Only the first one should do this, and the next one update the table using those results.
->>>>>>> messaging
+
+- Don't show pending numbers as available for texting
+
+

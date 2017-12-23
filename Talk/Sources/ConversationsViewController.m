@@ -120,8 +120,8 @@
     self.noConversationsLabel.textColor     = [Skinning noContentTextColor];
     
     self.composeButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
-                                                                            target:self
-                                                                            action:@selector(newConversationAction:)];
+                                                                           target:self
+                                                                           action:@selector(newConversationAction:)];
     self.navigationItem.rightBarButtonItem = self.composeButtonItem;
     
     // Synchronize messages every 30 seconds.
@@ -163,7 +163,7 @@
         {
             MessageData* lastMessage = [conversation lastObject];
             
-            // If one message of a conversation has nog contactId, none do, because they are all with the same contact.
+            // If one message of a conversation has no contactId, none do, because they are all with the same contact.
             if (lastMessage.contactId == nil)
             {
                 PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:lastMessage.externE164];
@@ -283,7 +283,6 @@
 }
 
 
-//<<<<<<< HEAD
 - (void)scrollToChatWithExternE164:(NSString*)externE164
 {
     for (int i = 0; i < self.conversations.count; i++)
@@ -321,8 +320,6 @@
 }
 
 
-//=======
-//>>>>>>> messaging
 - (NSString*)nameForObject:(id)object
 {
     return ((MessageData*)object).text;

@@ -80,16 +80,9 @@
 }
 
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
-{
-    return 1;
-}
-
-
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell* cell = [self.tableView dequeueReusableCellWithIdentifier:@"ContactsSearchResultCell"];
-    
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ContactsSearchResultCell"];
@@ -126,8 +119,7 @@
         ABMultiValueRef phones       = ABRecordCopyValue(contact, kABPersonPhoneProperty);
         NSArray*        phoneNumbers = (NSArray*)CFBridgingRelease(ABMultiValueCopyArrayOfAllValues(phones));
         
-        // If the contact doesn't have any phonenumbers -> show an alert saying this.
-        if (phoneNumbers.count == 0)
+        if (phoneNumbers.count == 0) // If the contact doesn't have any phonenumbers -> show an alert saying this.
         {
             UIAlertController* alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"No Numbers",
                                                                                                                @"Title for alert that contact has no numbers.")
@@ -145,15 +137,13 @@
             [alertController addAction:defaultAction];
             [self presentViewController:alertController animated:YES completion:nil];
         }
-        // If the contact has one phonenumber -> use this phonenumber.
-        else if (phoneNumbers.count == 1)
+        else if (phoneNumbers.count == 1) // If the contact has one phonenumber -> use this phonenumber.
         {
             PhoneNumber* externE164 = [[PhoneNumber alloc] initWithNumber:phoneNumbers[0]];
             
             [self openConversationWithExternE164:externE164 contactId:contactId];
         }
-        // If the contact has multiple phonenumbers -> show an actionsheet to choose one.
-        else if (phoneNumbers.count > 1)
+        else if (phoneNumbers.count > 1) // If the contact has multiple phonenumbers -> show an actionsheet to choose one.
         {
             [self.searchBar resignFirstResponder];
             

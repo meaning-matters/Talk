@@ -94,20 +94,6 @@
 }
 
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    // @TODO: This still shows the 2nd viewController for a second ...
-    [super viewWillDisappear:animated];
-    
-    // If there are messages, so the conversation already exists, go back to root.
-    // Otherwise go back one so the user can change the contact.
-    if (self.messages.count > 0)
-    {
-        [self.navigationController popToRootViewControllerAnimated:animated];
-    }
-}
-
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -145,30 +131,20 @@
 }
 
 
-// self.messages will only contain messages where message.externE164 == self.externE164.
+// self.messages will only contain messages where:
+// - message.externE164 == [self.localPhoneNumber e164Format].
+// - message.numberE164 == [self.externPhoneNumber e164Format].
+//
 // Sorts the messages on timestamp.
 // Removes the MessageUpdates for all those messages.
 // Reloads the collectionView.
 - (void)processMessages:(NSArray*)messages
 {
-//<<<<<<< HEAD
-//    NSMutableArray* sortedMessages = [[NSMutableArray alloc] init];
-//
-//    // Get the messages for this conversation.
-//    [messages enumerateObjectsUsingBlock:^(MessageData* message, NSUInteger index, BOOL* stop)
-//    {
-//        if ([message.externE164 isEqualToString:[self.externPhoneNumber e164Format]])
-//        {
-//            [sortedMessages addObject:message];
-//        }
-//    }];
-//=======
     // Filter to keep only the messages with the correct number-combination.
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"numberE164 = %@ AND externE164 = %@",
                               [self.localPhoneNumber e164Format],
                               [self.externPhoneNumber e164Format]];
     messages = [messages filteredArrayUsingPredicate:predicate];
-//>>>>>>> messaging
     
     // Sort the messages by timestamp.
     self.messages = [messages sortedArrayUsingComparator:^(id a, id b)
@@ -312,14 +288,7 @@
         
         PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:number isoCountryCode:@"ES"]; // @TODO: country code from self.externE164 (other branch)
         
-//<<<<<<< HEAD
-//        // @TODO: Check if number is valid?
-//        // Get the contactId for the chosen number.
-//        [[AppDelegate appDelegate] findContactsHavingNumber:phoneNumber.number
-//                                                 completion:^(NSArray* contactIds)
-//=======
         if ([phoneNumber isValid])
-//>>>>>>> messaging
         {
             // Get the contactId for the chosen number.
             [[AppDelegate appDelegate] findContactsHavingNumber:[phoneNumber nationalDigits]
@@ -402,10 +371,10 @@
                                                   @"Alert-message that message could not be sent.");
             
             [BlockAlertView showAlertViewWithTitle:title
-                                            message:message
-                                         completion:nil
+                                           message:message
+                                        completion:nil
                                  cancelButtonTitle:[Strings closeString]
-                                  otherButtonTitles:nil];
+                                 otherButtonTitles:nil];
         }
     }];
 }
