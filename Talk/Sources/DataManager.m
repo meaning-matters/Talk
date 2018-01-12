@@ -1340,23 +1340,13 @@
                 newMessage.cost      = [message[@"cost"] floatValue]; // @TODO: Does this work?
                 
                 // The '+' is added to the numbers, then a PhoneNumber-object is made.
-<<<<<<< HEAD
-                NSString*    numberE164String = [NSString stringWithFormat:@"+%@", message[@"numberE164"]];
-                PhoneNumber* numberE164       = [[PhoneNumber alloc] initWithNumber:numberE164String];
-                newMessage.numberE164         = [numberE164 e164Format];
+                NSString*    numberE164String  = [NSString stringWithFormat:@"+%@", message[@"numberE164"]];
+                PhoneNumber* localPhoneNumber  = [[PhoneNumber alloc] initWithNumber:numberE164String];
+                newMessage.numberE164          = localPhoneNumber.number;
                 
-                NSString*    externE164String = [NSString stringWithFormat:@"+%@", message[@"externE164"]];
-                PhoneNumber* externE164       = [[PhoneNumber alloc] initWithNumber:externE164String];
-                newMessage.externE164         = [externE164 e164Format];
-=======
-                NSString*    numberE164String = [@"+" stringByAppendingString:message[@"number_e164"]];
-                PhoneNumber* localPhoneNumber = [[PhoneNumber alloc] initWithNumber:numberE164String];
-                newMessage.numberE164         = localPhoneNumber.number;
-                
-                NSString*    externE164String  = [@"+" stringByAppendingString:message[@"extern_e164"]];
+                NSString*    externE164String  = [NSString stringWithFormat:@"+%@", message[@"externE164"]];
                 PhoneNumber* externPhoneNumber = [[PhoneNumber alloc] initWithNumber:externE164String];
                 newMessage.externE164          = externPhoneNumber.number;
->>>>>>> messaging
                 
                 // Get the contactId for the external number.
                 [[AppDelegate appDelegate] findContactsHavingNumber:[externPhoneNumber e164Format]
