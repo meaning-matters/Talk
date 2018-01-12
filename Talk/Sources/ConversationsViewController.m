@@ -18,6 +18,7 @@
 #import "MessageUpdatesHandler.h"
 #import "ConversationViewController.h"
 #import "PhoneNumber.h"
+#import "NewConversationViewController.h"
 
 
 @interface ConversationsViewController ()
@@ -32,6 +33,7 @@
 @property (nonatomic, strong) ConversationCell*           conversationCell;
 @property (nonatomic, weak) id<NSObject>                  defaultsObserver;
 @property (nonatomic, weak) id<NSObject>                  messagesObserver;
+@property (nonatomic, strong) UIBarButtonItem*            composeButtonItem;
 
 @end
 
@@ -73,8 +75,7 @@
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self.defaultsObserver];
-    [[NSNotificationCenter defaultCenter] removeObserver:self.messagesObserver];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
@@ -118,8 +119,15 @@
     self.noConversationsLabel.font          = [UIFont fontWithName:@"SF UI Text-Regular" size:15];
     self.noConversationsLabel.textColor     = [Skinning noContentTextColor];
     
+    self.composeButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
+                                                                           target:self
+                                                                           action:@selector(newConversationAction:)];
+    self.navigationItem.rightBarButtonItem = self.composeButtonItem;
+    
     // Synchronize messages every 30 seconds.
     [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(refresh:) userInfo:nil repeats:YES];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(findContactsForAnonymousMessages) name:NF_RELOAD_CONTACTS object:nil];
 }
 
 
@@ -147,13 +155,43 @@
 }
 
 
+- (void)findContactsForAnonymousMessages
+{
+    dispatch_async(dispatch_queue_create("Contact Search New Conversation", DISPATCH_QUEUE_SERIAL), ^
+    {
+        for (NSArray* conversation in self.conversations)
+        {
+            MessageData* lastMessage = [conversation lastObject];
+            
+            // If one message of a conversation has no contactId, none do, because they are all with the same contact.
+            if (lastMessage.contactId == nil)
+            {
+                PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:lastMessage.externE164];
+                [[AppDelegate appDelegate] findContactsHavingNumber:[phoneNumber e164Format]
+                                                         completion:^(NSArray* contactIds)
+                {
+                    if (contactIds.count > 0)
+                    {
+                        // Give all those messages the same contactId.
+                        for (MessageData* message in conversation)
+                        {
+                            message.contactId = [contactIds firstObject];
+                        }
+                    }
+                }];
+            }
+        }
+    });
+}
+
+
 - (void)refresh:(id)sender
 {
     if ([Settings sharedSettings].haveAccount == YES)
     {
         NSDate* date = [Settings sharedSettings].messagesCheckDate;
         
-        [[DataManager sharedManager] synchronizeMessagesOnlyFromDate: date reply:^(NSError* error)
+        [[DataManager sharedManager] synchronizeMessagesOnlyFromDate:date reply:^(NSError* error)
         {
             [self orderByConversation];
             [self createIndexOfWidth:0];
@@ -245,6 +283,43 @@
 }
 
 
+- (void)scrollToChatWithExternE164:(NSString*)externE164
+{
+    for (int i = 0; i < self.conversations.count; i++)
+    {
+        if ([((MessageData*)[self.conversations[i] lastObject]).externE164 isEqualToString:externE164])
+        {
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]
+                                  atScrollPosition:UITableViewScrollPositionMiddle
+                                          animated:YES];
+            break;
+        }
+    }
+}
+
+
+- (void)newConversationAction:(id)sender
+{
+    NewConversationViewController* viewController = [[NewConversationViewController alloc] initWithManagedObjectContact:self.managedObjectContext
+                                                                                              fetchedMessagesController:self.fetchedMessagesController];
+    
+    self.createConversationNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    
+    [viewController.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                                      target:self
+                                                                                                      action:@selector(cancelAction:)]];
+    
+    viewController.conversationsViewcontroller = self;
+    [self.navigationController presentViewController:self.createConversationNavigationController animated:YES completion:nil];
+}
+
+
+- (void)cancelAction:(id)sender
+{
+    [self.createConversationNavigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
+
 - (NSString*)nameForObject:(id)object
 {
     return ((MessageData*)object).text;
@@ -285,14 +360,13 @@
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
     MessageData* message                       = [self.conversations[indexPath.row] lastObject];
-    ConversationViewController* viewController = [ConversationViewController messagesViewController];
-    
-    PhoneNumber* phoneNumber  = [[PhoneNumber alloc] initWithNumber:message.externE164];
-    viewController.externE164 = phoneNumber.e164Format;
-    
-    [phoneNumber setNumber:message.numberE164];
-    viewController.numberE164 = phoneNumber.e164Format;
-    viewController.contactId  = message.contactId;
+    PhoneNumber* localPhoneNumber              = [[PhoneNumber alloc] initWithNumber:message.numberE164];
+    PhoneNumber* externPhoneNumber             = [[PhoneNumber alloc] initWithNumber:message.externE164];
+    ConversationViewController* viewController = [[ConversationViewController alloc] initWithManagedObjectContext:self.managedObjectContext
+                                                                                        fetchedMessagesController:self.fetchedMessagesController
+                                                                                                 localPhoneNumber:localPhoneNumber
+                                                                                                externPhoneNumber:externPhoneNumber
+                                                                                                        contactId:message.contactId];
     
     [self.navigationController pushViewController:viewController animated:YES];
 }
@@ -308,7 +382,7 @@
     }
     
     // Last message of the conversation.
-    MessageData* message = [self.conversations[indexPath.row] lastObject];
+    MessageData* lastMessage = [self.conversations[indexPath.row] lastObject];
     
     // The dot on the left of the cell is shown if this conversation has an unread message.
     CellDotView* dotView = [CellDotView getFromCell:cell];
@@ -331,9 +405,11 @@
         }
     }
     
-    cell.nameNumberLabel.text  = message.contactId ? [[AppDelegate appDelegate] contactNameForId:message.contactId] : message.externE164;
-    cell.textPreviewLabel.text = message.text;
-    cell.timestampLabel.text   = [Common historyStringForDate:message.timestamp showTimeForToday:YES];
+    PhoneNumber* number        = [[PhoneNumber alloc] initWithNumber:lastMessage.externE164];
+    cell.nameNumberLabel.text  = lastMessage.contactId ? [[AppDelegate appDelegate] contactNameForId:lastMessage.contactId]
+                                                       : [number internationalFormat];
+    cell.textPreviewLabel.text = lastMessage.text;
+    cell.timestampLabel.text   = [Common historyStringForDate:lastMessage.timestamp showTimeForToday:YES];
     
     return cell;
 }

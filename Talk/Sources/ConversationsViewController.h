@@ -14,6 +14,10 @@
 
 @interface ConversationsViewController : SearchTableViewController <NSFetchedResultsControllerDelegate>
 
+@property (nonatomic, strong) UINavigationController* createConversationNavigationController;
+
 - (instancetype)initWithNumber:(NumberData*)number managedObjectContext:(NSManagedObjectContext*)managedObjectContext;
+
+- (void)scrollToChatWithExternE164:(NSString*)externE164;
 
 @end

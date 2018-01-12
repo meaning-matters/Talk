@@ -176,7 +176,7 @@
     NumberData* number = [self.fetchedNumbersController objectAtIndexPath:indexPath];
     ConversationsViewController* viewController = [[ConversationsViewController alloc] initWithNumber:number
                                                                                  managedObjectContext:self.managedObjectContext];
-    
+
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

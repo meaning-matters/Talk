@@ -87,4 +87,6 @@
 
 - (void)callWhenContactsAreLoaded:(void(^)(void))block;
 
+- (void)filterContactsWithSearchString:(NSString*)searchStringParam completion:(void(^)(NSArray* contacts))completion;
+
 @end

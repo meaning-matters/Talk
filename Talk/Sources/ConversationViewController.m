@@ -16,15 +16,25 @@
 #import "AppDelegate.h"
 #import "MessageUpdatesHandler.h"
 #import "DataManager.h"
+#import "BlockAlertView.h"
+#import "Strings.h"
 
 
 @interface ConversationViewController ()
 
-@property (nonatomic, strong) NSArray*                       messages;
-@property (nonatomic, strong) JSQMessagesBubbleImageFactory* bubbleFactory;
-@property (nonatomic, weak) id<NSObject>                     messagesObserver;
-@property (nonatomic, strong) NSFetchedResultsController*    fetchedMessagesController;
 @property (nonatomic, strong) NSManagedObjectContext*        managedObjectContext;
+@property (nonatomic, strong) NSFetchedResultsController*    fetchedMessagesController;
+@property (nonatomic, weak) id<NSObject>                     messagesObserver;
+@property (nonatomic, strong) NSMutableArray*                fetchedMessages;
+@property (nonatomic, strong) NSArray*                       messages;
+
+@property (nonatomic, strong) JSQMessagesBubbleImageFactory* bubbleFactory;
+@property (nonatomic, strong) MessageData*                   sentMessage;
+
+@property (nonatomic, strong) PhoneNumber*                   localPhoneNumber;
+@property (nonatomic, strong) PhoneNumber*                   externPhoneNumber;
+@property (nonatomic, strong) NSString*                      contactId;
+
 @property (nonatomic) NSInteger                              firstUnreadMessageIndex;
 @property (nonatomic) BOOL                                   hasFetchedMessages;
 
@@ -33,9 +43,38 @@
 
 @implementation ConversationViewController
 
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
+                   fetchedMessagesController:(NSFetchedResultsController*)fetchedMessagesController
+                            localPhoneNumber:(PhoneNumber*)localPhoneNumber
+                           externPhoneNumber:(PhoneNumber*)externPhoneNumber
+                                   contactId:(NSString*)contactId
+{
+    if (self = [super init])
+    {
+        self.managedObjectContext      = managedObjectContext;
+        self.fetchedMessagesController = fetchedMessagesController;
+        
+        self.localPhoneNumber  = localPhoneNumber;
+        self.externPhoneNumber = externPhoneNumber;
+        self.contactId         = contactId;
+    }
+    
+    return self;
+}
+
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self processMessages:self.fetchedMessagesController.fetchedObjects];
+    
+    // Scroll to first unread message.
+    if (self.firstUnreadMessageIndex >= 0)
+    {
+        NSIndexPath* indexPath = [NSIndexPath indexPathForItem:self.firstUnreadMessageIndex inSection:0];
+        [self scrollToIndexPath:indexPath animated:NO];
+    }
     
     // Disable the attachment button.
     self.inputToolbar.contentView.leftBarButtonItem = nil;
@@ -70,17 +109,14 @@
     self.fetchedMessagesController = [[DataManager sharedManager] fetchResultsForEntityName:@"Message"
                                                                                withSortKeys:nil
                                                                        managedObjectContext:self.managedObjectContext];
-    
-    [self processMessages:[self.fetchedMessagesController fetchedObjects]];
-    
+        
     if (self.contactId != nil)
     {
         self.title = [[AppDelegate appDelegate] contactNameForId:self.contactId];
     }
     else
     {
-        PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:self.externE164];
-        self.title = phoneNumber.e164Format;
+        self.title = [self.externPhoneNumber internationalFormat];
     }
 
     __weak typeof(self) weakSelf = self;
@@ -95,28 +131,19 @@
 }
 
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    // @TODO: This makes the messages jump. Fix that.
-    // Scroll to first unread message.
-    if (self.firstUnreadMessageIndex >= 0)
-    {
-        NSIndexPath* indexPath = [NSIndexPath indexPathForItem:self.firstUnreadMessageIndex inSection:0];
-        [self scrollToIndexPath:indexPath animated:NO];
-    }
-}
-
-
-// self.messages will only contain messages where message.externE164 == self.externE164.
+// self.messages will only contain messages where:
+// - message.externE164 == [self.localPhoneNumber e164Format].
+// - message.numberE164 == [self.externPhoneNumber e164Format].
+//
 // Sorts the messages on timestamp.
 // Removes the MessageUpdates for all those messages.
 // Reloads the collectionView.
 - (void)processMessages:(NSArray*)messages
 {
     // Filter to keep only the messages with the correct number-combination.
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"numberE164 = %@ AND externE164 = %@", self.numberE164, self.externE164];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"numberE164 = %@ AND externE164 = %@",
+                              [self.localPhoneNumber e164Format],
+                              [self.externPhoneNumber e164Format]];
     messages = [messages filteredArrayUsingPredicate:predicate];
     
     // Sort the messages by timestamp.
@@ -225,7 +252,7 @@
 {
     MessageData*                        message = self.messages[indexPath.row];
     id<JSQMessageBubbleImageDataSource> result  = nil;
-    
+
     switch (message.direction)
     {
         case MessageDirectionInbound:
@@ -257,24 +284,47 @@
     //    - Choose country
     if ([URL.scheme isEqualToString:@"tel"])
     {
-        PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:URL.resourceSpecifier];
+        NSString* number = [URL.resourceSpecifier stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         
-        // Get the contactId for the chosen number.
-        [[AppDelegate appDelegate] findContactsHavingNumber:[phoneNumber nationalDigits]
-                                                 completion:^(NSArray* contactIds)
+        PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:number isoCountryCode:@"ES"]; // @TODO: country code from self.externE164 (other branch)
+        
+        if ([phoneNumber isValid])
         {
-            NSString* contactId;
-            if (contactIds.count > 0)
+            // Get the contactId for the chosen number.
+            [[AppDelegate appDelegate] findContactsHavingNumber:[phoneNumber nationalDigits]
+                                                     completion:^(NSArray* contactIds)
             {
-                contactId = [contactIds firstObject];
-            }
+                NSString* contactId;
+                if (contactIds.count > 0)
+                {
+                    contactId = [contactIds firstObject];
+                }
+                
+                // Initiate the call.
+                [[CallManager sharedManager] callPhoneNumber:phoneNumber
+                                                   contactId:contactId
+                                                    callerId:nil // @TODO: Use callerID of number used for SMS.
+                                                  completion:nil];
+            }];
+        }
+        else
+        {
+            NSString* title;
+            NSString* message;
             
-            // Initiate the call.
-            [[CallManager sharedManager] callPhoneNumber:phoneNumber
-                                               contactId:contactId
-                                                callerId:nil // Determine the caller ID based on user preferences.
-                                              completion:nil];
-        }];
+            title   = NSLocalizedString(@"Number Invalid",
+                                        @"Alert title indicating the pressed number is invalid.");
+            
+            message = NSLocalizedString(@"The chosen number is invalid and cannot be used to make a call.",
+                                        @"Alert mesage indicating the pressed number is invalid.");
+            
+            
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:nil
+                                 cancelButtonTitle:[Strings closeString]
+                                 otherButtonTitles:nil];
+        }
         
         return NO;
     }
@@ -282,6 +332,51 @@
     {
         return YES;
     }
+}
+
+
+- (void)didPressSendButton:(UIButton*)button
+           withMessageText:(NSString*)text
+                  senderId:(NSString*)senderId
+         senderDisplayName:(NSString*)senderDisplayName
+                      date:(NSDate*)date
+{
+    self.sentMessage = [NSEntityDescription insertNewObjectForEntityForName:@"Message"
+                                                     inManagedObjectContext:self.managedObjectContext];
+    
+    // @TODO: Format message (special chars, emojis, etc etc)
+    [self.sentMessage createForNumberE164:[self.localPhoneNumber e164Format]
+                               externE164:[self.externPhoneNumber e164Format]
+                                     text:text
+                                 datetime:date
+                               completion:^(NSError* error)
+    {
+        if (error == nil)
+        {
+            [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+            NSManagedObjectContext* mainContext = [DataManager sharedManager].managedObjectContext;
+            self.sentMessage = [mainContext existingObjectWithID:self.sentMessage.objectID error:nil];
+            
+            [self.fetchedMessages addObject:self.sentMessage];
+            
+            [self finishSendingMessage];
+            [self processMessages:self.fetchedMessagesController.fetchedObjects];
+        }
+        else
+        {
+            NSString* title   = NSLocalizedString(@"Sending Message Failed",
+                                                  @"Alert-title that message could not be sent.");
+            // @TODO: Implement different failures by accepting error-codes from server (to-implement)
+            NSString* message = NSLocalizedString(@"Make sure you have a working internet-connection. Please try again later.",
+                                                  @"Alert-message that message could not be sent.");
+            
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:nil
+                                 cancelButtonTitle:[Strings closeString]
+                                 otherButtonTitles:nil];
+        }
+    }];
 }
 
 
@@ -316,6 +411,12 @@
 
 // Must be overriden for JSQMessagesViewController.
 - (NSString*)senderId
+{
+    return nil;
+}
+
+
+- (NSString*)senderDisplayName
 {
     return nil;
 }

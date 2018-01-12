@@ -1,13 +1,7 @@
-
-- Change the icon of the Messages-tab.
-
 - Later: orderByConversation (use predicate of fetchedMessagesController + test performance)
 
 - All number-formats must be checked, in the entire app. What the app works with + how it is displayed to the user.
 - What happens with special cases such as "WeChat" etc?
-
-- You're sure this is GMT? All timestamps in DB and in API must be GMT. All dates/times shown to user must be their local time (see Number expiration/renewal). Did you make sure that all times/dates in all your work so far are according to these rules?
-- Check times everywhere in app and server and DB + formatting displayed to user.
 
 - All cancels for webrequests.
 
@@ -15,10 +9,42 @@
 
 - Handle webrequest errors etc.
 
+- When selecting text in a message, the blue dot (the last one always, the first one only when moving) is not drawn outside of the bubble.
+- The edit/delete/etc menu is not always in the right place (try clicking somehwere after selecting text and you'll see)
+- No way to remove selection
+
+- Clicking in a chat should close the keyboard but this is only done when clicking between the bubbles (and the bubbles are internally the whole screen width ... )
+
+- Change icon (both sides are cut of 1 or 2 pixels)
+
+- [FIXED?] InputToolbar appears too late (maybe because of loading the messages first?)
+
+- When openening a long chat, first it's scrolled to the top, then to the bottom (not everything loaded or something??)
+
 - Messages jump when going into a conversations. This has to do with jumping to the first unread message.
 
-- CellDotView should be blue.
+- A conversation without contactId (and contactname) is updated when this is added to contacts. But when this contact is removed the name stays there (same happens on recents). Is that ok?
+
+- Replace all underscores in property-names on server-side as well, then change DataManager that there are no underscores anymore.
+
+- Replace all alertcontrollers with BlockAlertView
+
+- Clean up functions in webclient + server.
+
+- See CDRs API: There should be just one method. Selection between all or from a date should be done in the same way as done for CDRs. Ergo, we don't want a separate API to get all message.
+
+- Act when the contact-name is too long as title for the conversation-screen
+
+- Act when the phonenumber-name is too long for the conversations-overview-screen
+
+- viewWill/DidAppear are called also when you navigate back (by a pop of another view controller on top). Please explain how you're sure that this sorting is called absolutely no more than needed.
+
+- Implement different failures by accepting error-codes from server (to-implement)    Look at existing API failure alerts and do something that matches the rest of the app.
 
 - Change icon (both sides are cut of 1 or 2 pixels)
 
 - NumbersMessagesViewController + ConversationsViewController both do a refresh on an interval. Only the first one should do this, and the next one update the table using those results.
+
+- Don't show pending numbers as available for texting
+
+

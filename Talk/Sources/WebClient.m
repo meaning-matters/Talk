@@ -1536,7 +1536,8 @@
 }
 
 
-- (void)retrieveMessages:(void (^)(NSError*, NSArray*))reply
+// 40A. GET ALL MESSAGES
+- (void)retrieveMessages:(void (^)(NSError* error, NSArray* messages))reply
 {
     NSString* username       = [Settings sharedSettings].webUsername;
     
@@ -1581,23 +1582,27 @@
 }
 
 
-// 40B. SEND SMS
-//- (void)createMessage:(NSString *)message destination:(NSString *)e164 reply:(void (^)(NSError * error, NSString* status))reply
-//{
-//    [self getPath:[NSString stringWithFormat:@"/users/%@/sms/v1/%@", [Settings sharedSettings].webUsername, e164]
-//       parameters:nil
-//            reply:^(NSError* error, id content)
-//     {
-//         if (error == nil)
-//         {
-//             reply(nil, content);
-//         }
-//         else
-//         {
-//             reply(error, nil);
-//         }
-//     }];
-//}
+- (void)sendMessage:(MessageData*)message reply:(void(^)(NSError* error, NSString* uuid))reply
+{
+    NSString*     username   = [Settings sharedSettings].webUsername;
+    NSDictionary* parameters = @{@"fromNumber" : [message.numberE164 stringByReplacingOccurrencesOfString:@"+" withString:@""],
+                                 @"toNumber"   : [message.externE164 stringByReplacingOccurrencesOfString:@"+" withString:@""],
+                                 @"msg"         : message.text};
+    
+    [self postPath:[NSString stringWithFormat:@"/users/%@/messages", username]
+        parameters:parameters
+             reply:^(NSError* error, id content)
+    {
+        if (error == nil)
+        {
+            reply(nil, content[@"uuid"]);
+        }
+        else
+        {
+            reply(error, nil);
+        }
+    }];
+}
 
 
 #pragma mark - Public Utility

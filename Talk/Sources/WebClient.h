@@ -13,6 +13,7 @@
 #import "WebStatus.h"
 #import "AddressStatus.h"
 #import "AddressType.h"
+#import "MessageData.h"
 
 
 @interface WebClient : NSObject
@@ -378,7 +379,10 @@
                                                float     callthruCost))reply;
 
 // 40A. GET ALL MESSAGES
-- (void)retrieveMessages:(void (^)(NSError*, NSArray*))reply;
+- (void)retrieveMessages:(void (^)(NSError* error, NSArray* messages))reply;
+
+// 40B. SEND SMS
+- (void)sendMessage:(MessageData*)message reply:(void(^)(NSError* error, NSString* uuid))reply;
 
 // 40B. GET ALL MESSAGES FROM DATE
 - (void)retrieveMessagesFromDate:(NSDate*)date reply:(void (^)(NSError *, NSArray *))reply;

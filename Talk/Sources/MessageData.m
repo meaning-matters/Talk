@@ -7,6 +7,7 @@
 //
 
 #import "MessageData.h"
+#import "WebClient.h"
 
 @implementation MessageData
 
@@ -18,5 +19,30 @@
 @dynamic timestamp;
 @dynamic uuid;
 @dynamic contactId;
+
+
+- (void)createForNumberE164:(NSString*)numberE164
+                 externE164:(NSString*)externE164
+                       text:(NSString*)text
+                   datetime:(NSDate*)datetime
+                 completion:(void (^)(NSError* error))completion
+{
+    self.numberE164 = numberE164;
+    self.externE164 = externE164;
+    self.text       = text;
+    self.timestamp  = datetime;
+    self.direction  = MessageDirectionOutbound;
+    
+    [[WebClient sharedClient] sendMessage:self
+                                    reply:^(NSError* error, NSString* uuid)
+    {
+        if (error == nil)
+        {
+            self.uuid = uuid;
+        }
+        
+        completion ? completion(error) : 0;
+    }];
+}
 
 @end
