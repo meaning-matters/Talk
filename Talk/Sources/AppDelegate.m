@@ -36,6 +36,7 @@
 #import "WebViewController.h"
 #import "NumberData.h"
 #import "DtmfPlayer.h"
+#import "UILabel+CustomSytemFont.h"
 
 NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification";
 
@@ -55,7 +56,7 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
 
 NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 {
-    return UIContentSizeCategoryExtraLarge;  // UIContentSizeCategoryLarge is iOS' default.
+    return UIContentSizeCategoryLarge;  // UIContentSizeCategoryLarge is iOS' default.
 }
 
 
@@ -137,6 +138,8 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
     #warning Don't forget to remove, and to switch to NO 'Application supports iTunes file sharing' in .plist.
     [Common redirectStderrToFile];
 #endif
+
+    [[UILabel appearance] setSubstituteFontName:@"Courier"];
     
     UIUserNotificationType types         = UIUserNotificationTypeBadge |
                                            UIUserNotificationTypeSound |

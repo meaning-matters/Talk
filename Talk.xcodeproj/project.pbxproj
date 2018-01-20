@@ -146,6 +146,7 @@
 		484D937117131E97006FA875 /* AddressPostcodesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484D936F17131E97006FA875 /* AddressPostcodesViewController.m */; };
 		484F7C3B164C15770059A5A6 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484F7C3A164C15770059A5A6 /* CoreTelephony.framework */; };
 		484F7C3E164C15EA0059A5A6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484F7C3D164C15EA0059A5A6 /* SystemConfiguration.framework */; };
+		48522B78201284D3001F5ECA /* UILabel+CustomSytemFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 48522B77201284D3001F5ECA /* UILabel+CustomSytemFont.m */; };
 		4856E5E91D96D796001F141F /* BadgeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4856E5E81D96D796001F141F /* BadgeCell.m */; };
 		485A608918D768880055C176 /* GetStartedLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 485A608818D768880055C176 /* GetStartedLogo.png */; };
 		485A609018D771F60055C176 /* GetStarted1.png in Resources */ = {isa = PBXBuildFile; fileRef = 485A608F18D771F60055C176 /* GetStarted1.png */; };
@@ -456,6 +457,7 @@
 		488AD1F216E80A60004D3A2A /* NSObject+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 488AD1F016E80A60004D3A2A /* NSObject+Blocks.m */; };
 		488D77561780773800099470 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 488D77551780773800099470 /* CoreText.framework */; };
 		488D7759178078CC00099470 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 488D7758178078CC00099470 /* QuartzCore.framework */; };
+		488EC0DD1FEB043E00384A99 /* UIFont+CustomSystemFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 488EC0DC1FEB043E00384A99 /* UIFont+CustomSystemFont.m */; };
 		488FBBE21700852F000ECC71 /* NumberData.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBE11700852F000ECC71 /* NumberData.m */; };
 		488FBBE31700852F000ECC71 /* NumberData.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBE11700852F000ECC71 /* NumberData.m */; };
 		4890CB991E33CCB5001ED2D2 /* CallVerification@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4890CB971E33CCB5001ED2D2 /* CallVerification@2x.png */; };
@@ -884,6 +886,8 @@
 		484D936F17131E97006FA875 /* AddressPostcodesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressPostcodesViewController.m; sourceTree = "<group>"; };
 		484F7C3A164C15770059A5A6 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		484F7C3D164C15EA0059A5A6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		48522B76201284D3001F5ECA /* UILabel+CustomSytemFont.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UILabel+CustomSytemFont.h"; sourceTree = "<group>"; };
+		48522B77201284D3001F5ECA /* UILabel+CustomSytemFont.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UILabel+CustomSytemFont.m"; sourceTree = "<group>"; };
 		4856E5E71D96D796001F141F /* BadgeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BadgeCell.h; sourceTree = "<group>"; };
 		4856E5E81D96D796001F141F /* BadgeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgeCell.m; sourceTree = "<group>"; };
 		485A608818D768880055C176 /* GetStartedLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GetStartedLogo.png; sourceTree = "<group>"; };
@@ -1207,6 +1211,8 @@
 		488D7753178076E300099470 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HockeySDK.framework; path = "External/HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework"; sourceTree = "<group>"; };
 		488D77551780773800099470 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		488D7758178078CC00099470 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		488EC0DB1FEB043E00384A99 /* UIFont+CustomSystemFont.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIFont+CustomSystemFont.h"; sourceTree = "<group>"; };
+		488EC0DC1FEB043E00384A99 /* UIFont+CustomSystemFont.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIFont+CustomSystemFont.m"; sourceTree = "<group>"; };
 		488FBBD817007CC6000ECC71 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
 		488FBBD917007CC6000ECC71 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DataManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		488FBBE01700852F000ECC71 /* NumberData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberData.h; sourceTree = "<group>"; };
@@ -1765,6 +1771,10 @@
 				48ADD0F61706791A001515EB /* UIView+AnimateHidden.m */,
 				48FDF65B1DF9FE4900A2A7F6 /* UIView+LayerProperties.h */,
 				48FDF65C1DF9FE4900A2A7F6 /* UIView+LayerProperties.m */,
+				488EC0DB1FEB043E00384A99 /* UIFont+CustomSystemFont.h */,
+				488EC0DC1FEB043E00384A99 /* UIFont+CustomSystemFont.m */,
+				48522B76201284D3001F5ECA /* UILabel+CustomSytemFont.h */,
+				48522B77201284D3001F5ECA /* UILabel+CustomSytemFont.m */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -3408,6 +3418,7 @@
 				48B813491AADF9380019AF77 /* NBContact.m in Sources */,
 				48FC54321C89EDA3007658FE /* CellDotView.m in Sources */,
 				48B813351AADF8DE0019AF77 /* NBPeopleListViewController.m in Sources */,
+				48522B78201284D3001F5ECA /* UILabel+CustomSytemFont.m in Sources */,
 				488FBBE21700852F000ECC71 /* NumberData.m in Sources */,
 				48DDF4C31E3A788A00BDEC43 /* AFURLResponseSerialization.m in Sources */,
 				48B8135E1AADF97A0019AF77 /* NBNotesCell.m in Sources */,
@@ -3415,6 +3426,7 @@
 				48BC7F3C1702FDD1006671B5 /* NumberViewController.m in Sources */,
 				489387FB17039158005CC795 /* DestinationData.m in Sources */,
 				489387FF17039165005CC795 /* RecordingData.m in Sources */,
+				488EC0DD1FEB043E00384A99 /* UIFont+CustomSystemFont.m in Sources */,
 				486D4A2318F06BC8004699C9 /* CallRatesViewController.m in Sources */,
 				48B813421AADF91D0019AF77 /* NBGroupsManager.m in Sources */,
 				48E678C91C9DD89000471BDE /* AddressStatus.m in Sources */,
@@ -3691,7 +3703,7 @@
 					"\"$(SRCROOT)/External/HockeySDK-iOS-4.1.2/Classes\"",
 				);
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
@@ -3702,7 +3714,7 @@
 				PRODUCT_NAME = NumberBay;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos11.2;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;
@@ -3735,7 +3747,7 @@
 					"\"$(SRCROOT)/External/HockeySDK-iOS-4.1.2/Classes\"",
 				);
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
@@ -3744,7 +3756,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = NumberBay;
 				PROVISIONING_PROFILE = "";
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos11.2;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;
@@ -3865,7 +3877,7 @@
 					"\"$(SRCROOT)/External/HockeySDK-iOS-4.1.2/Classes\"",
 				);
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
@@ -3875,7 +3887,7 @@
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PRODUCT_NAME = NumberBay;
 				PROVISIONING_PROFILE = "";
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos11.2;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;

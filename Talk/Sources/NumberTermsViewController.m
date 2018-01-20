@@ -216,7 +216,7 @@ typedef NS_ENUM(NSUInteger, NumberTerms)
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 75.0;
+    return 90.0;
 }
 
 @end
