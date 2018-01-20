@@ -78,13 +78,7 @@ typedef enum
 
     self.clearsSelectionOnViewWillAppear = YES;
 
-    [[NSNotificationCenter defaultCenter] addObserverForName:NetworkStatusSimChangedNotification
-                                                      object:nil
-                                                       queue:[NSOperationQueue mainQueue]
-                                                  usingBlock:^(NSNotification* note)
-    {
-        [Common reloadSections:TableSectionHomeCountry allSections:sections tableView:self.tableView];
-    }];
+    // No need to observer NetworkStatusSimChangedNotification because we already observe "homeIsoCountryCode" below.
 
     // Refresh the Phone or Number names used.
     [[NSNotificationCenter defaultCenter] addObserverForName:NSManagedObjectContextObjectsDidChangeNotification

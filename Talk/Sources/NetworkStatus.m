@@ -103,7 +103,12 @@ static NSTimer*                 loadUrlTestTimer;
             info = @{ @"status" : @(NetworkStatusSimNotAvailable) };
         }
 
-        [Settings sharedSettings].homeIsoCountryCode = self.simIsoCountryCode;
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            // Must be done on main thread to make sure KVC listeners are triggered on that thread.
+            [Settings sharedSettings].homeIsoCountryCode = self.simIsoCountryCode;
+        });
+
         [[NSNotificationCenter defaultCenter] postNotificationName:NetworkStatusSimChangedNotification
                                                             object:nil
                                                           userInfo:info];
