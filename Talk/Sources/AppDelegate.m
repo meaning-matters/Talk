@@ -140,6 +140,7 @@ NSString* swizzled_preferredContentSizeCategory(id self, SEL _cmd)
 #endif
 
     [[UILabel appearance] setSubstituteFontName:@"Courier"];
+    https://stackoverflow.com/a/28180645/1971013
     
     UIUserNotificationType types         = UIUserNotificationTypeBadge |
                                            UIUserNotificationTypeSound |
