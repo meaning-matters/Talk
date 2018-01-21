@@ -1399,21 +1399,21 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
         {
             if (self.isNew || self.isUpdatable)
             {
-                if (self.proofTypes.requiresAddressProofType && !self.proofTypes.requiresIdentityProofType)
+                if (self.proofTypes.requiresAddressProof && !self.proofTypes.requiresIdentityProof)
                 {
                     title = NSLocalizedString(@"To use the current Number, a proof of your (company's) address is "
                                               @"legally required.",
                                               @"");
                 }
 
-                if (!self.proofTypes.requiresAddressProofType && self.proofTypes.requiresIdentityProofType)
+                if (!self.proofTypes.requiresAddressProof && self.proofTypes.requiresIdentityProof)
                 {
                     title = NSLocalizedString(@"To use the current Number, a proof of your (company's) identity is "
                                               @"legally required.",
                                               @"");
                 }
 
-                if (self.proofTypes.requiresAddressProofType && self.proofTypes.requiresIdentityProofType)
+                if (self.proofTypes.requiresAddressProof && self.proofTypes.requiresIdentityProof)
                 {
                     title = NSLocalizedString(@"To use the current Number, a proof of your (company's) address and "
                                               @"identity are legally required.",
