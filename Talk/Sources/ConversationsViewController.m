@@ -34,6 +34,8 @@
 @property (nonatomic, weak) id<NSObject>                  defaultsObserver;
 @property (nonatomic, weak) id<NSObject>                  messagesObserver;
 @property (nonatomic, strong) UIBarButtonItem*            composeButtonItem;
+@property (nonatomic, strong) NSMutableArray*             contactsSearchResults;
+@property (nonatomic, strong) NSMutableArray*             messagesSearchResults;
 
 @end
 
@@ -347,13 +349,54 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return self.fetchedMessagesController.sections.count;
+    if ([self searchBarIsEmpty])
+    {
+        return 1;
+    }
+    else
+    {
+        return 2; // Contacts results + messages results
+    }
+}
+
+
+- (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if ([self searchBarIsEmpty])
+    {
+        return nil;
+    }
+    else
+    {
+        if (section == 0)
+        {
+            return @"Contacts";
+        }
+        else
+        {
+            return @"Messages";
+        }
+    }
 }
 
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.conversations.count;
+    if ([self searchBarIsEmpty])
+    {
+        return self.conversations.count;
+    }
+    else
+    {
+        if (section == 0)
+        {
+            return self.contactsSearchResults.count;
+        }
+        else
+        {
+            return self.messagesSearchResults.count;
+        }
+    }
 }
 
 
@@ -381,35 +424,57 @@
         cell = [self.tableView dequeueReusableCellWithIdentifier:@"ConversationCell"];
     }
     
-    // Last message of the conversation.
-    MessageData* lastMessage = [self.conversations[indexPath.row] lastObject];
-    
-    // The dot on the left of the cell is shown if this conversation has an unread message.
-    CellDotView* dotView = [CellDotView getFromCell:cell];
-    
-    if (dotView == nil)
+    if ([self searchBarIsEmpty])
     {
-        dotView = [[CellDotView alloc] init];
-        [dotView addToCell:cell];
-    }
-    
-    dotView.hidden = YES;
-    
-    for (MessageData* message in self.conversations[indexPath.row])
-    {
-        if ([[MessageUpdatesHandler sharedHandler] messageUpdateWithUuid:message.uuid] != nil)
+        // Last message of the conversation.
+        MessageData* lastMessage = [self.conversations[indexPath.row] lastObject];
+        
+        // The dot on the left of the cell is shown if this conversation has an unread message.
+        CellDotView* dotView = [CellDotView getFromCell:cell];
+        
+        if (dotView == nil)
         {
-            dotView.hidden = NO;
-            
-            break;
+            dotView = [[CellDotView alloc] init];
+            [dotView addToCell:cell];
         }
+        
+        dotView.hidden = YES;
+        
+        for (MessageData* message in self.conversations[indexPath.row])
+        {
+            if ([[MessageUpdatesHandler sharedHandler] messageUpdateWithUuid:message.uuid] != nil)
+            {
+                dotView.hidden = NO;
+                
+                break;
+            }
+        }
+        
+        PhoneNumber* number        = [[PhoneNumber alloc] initWithNumber:lastMessage.externE164];
+        cell.nameNumberLabel.text  = lastMessage.contactId ? [[AppDelegate appDelegate] contactNameForId:lastMessage.contactId]
+                                                           : [number internationalFormat];
+        cell.textPreviewLabel.text = lastMessage.text;
+        cell.timestampLabel.text   = [Common historyStringForDate:lastMessage.timestamp showTimeForToday:YES];
     }
-    
-    PhoneNumber* number        = [[PhoneNumber alloc] initWithNumber:lastMessage.externE164];
-    cell.nameNumberLabel.text  = lastMessage.contactId ? [[AppDelegate appDelegate] contactNameForId:lastMessage.contactId]
-                                                       : [number internationalFormat];
-    cell.textPreviewLabel.text = lastMessage.text;
-    cell.timestampLabel.text   = [Common historyStringForDate:lastMessage.timestamp showTimeForToday:YES];
+    else
+    {
+        MessageData* message;
+        
+        if (indexPath.section == 0) // Contacts
+        {
+            message = [self.contactsSearchResults[indexPath.row] lastObject];
+        }
+        else // Messages
+        {
+            message = self.messagesSearchResults[indexPath.row];
+        }
+        
+        PhoneNumber* number        = [[PhoneNumber alloc] initWithNumber:message.externE164];
+        cell.nameNumberLabel.text  = message.contactId ? [[AppDelegate appDelegate] contactNameForId:message.contactId]
+                                                                                                    : [number internationalFormat];
+        cell.textPreviewLabel.text = message.text;
+        cell.timestampLabel.text   = [Common historyStringForDate:message.timestamp showTimeForToday:YES];
+    }
     
     return cell;
 }
@@ -419,6 +484,53 @@
 - (BOOL)hidesBottomBarWhenPushed
 {
     return self.navigationController.visibleViewController != self;
+}
+
+
+- (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
+{
+    self.contactsSearchResults = [[NSMutableArray alloc] init];
+    self.messagesSearchResults = [[NSMutableArray alloc] init];
+    
+    [self.conversations enumerateObjectsUsingBlock:^(NSArray* conversation, NSUInteger index, BOOL* stop)
+    {
+        MessageData* lastMessage = [conversation lastObject];
+        
+        NSRange range = NSMakeRange(0, 0); // @TODO: like this?
+        if (lastMessage.contactId != nil)
+        {
+            NSString* contactName = [[AppDelegate appDelegate] contactNameForId:lastMessage.contactId];
+            range = [contactName rangeOfString:searchText options:NSCaseInsensitiveSearch | NSDiacriticInsensitiveSearch];
+        }
+        
+        if (range.location != NSNotFound)
+        {
+            [self.contactsSearchResults addObject:conversation];
+        }
+        else
+        {
+            range = [lastMessage.externE164 rangeOfString:searchText options:NSCaseInsensitiveSearch | NSDiacriticInsensitiveSearch];
+            if (range.location != NSNotFound)
+            {
+                [self.contactsSearchResults addObject:conversation];
+            }
+        }
+        
+        [conversation enumerateObjectsUsingBlock:^(MessageData* message, NSUInteger index, BOOL* stop)
+        {
+            NSRange range = [message.text  rangeOfString:searchText options:NSCaseInsensitiveSearch | NSDiacriticInsensitiveSearch];
+            if (range.location != NSNotFound)
+            {
+                [self.messagesSearchResults addObject:message];
+            }
+        }];
+    }];
+}
+
+
+- (BOOL)searchBarIsEmpty
+{
+    return self.searchBar.text.length == 0;
 }
 
 @end
