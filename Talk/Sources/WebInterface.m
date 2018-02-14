@@ -371,9 +371,9 @@ static void processDnsReply(DNSServiceRef       sdRef,
                                                          [Settings sharedSettings].serverTestUrlPath];
 
         NSDate* startDate = [NSDate date];
-         NSURLSession *session = [NSURLSession sharedSession];
-         [[session dataTaskWithURL:[NSURL URLWithString:urlString]
-                 completionHandler:^(NSData* data, NSURLResponse* response, NSError* error)
+        NSURLSession *session = [NSURLSession sharedSession];
+        [[session dataTaskWithURL:[NSURL URLWithString:urlString]
+                completionHandler:^(NSData* data, NSURLResponse* response, NSError* error)
         {
             // This code is NOT run on main thread!!!
 
