@@ -118,6 +118,9 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 @property (nonatomic, strong) UITextField*                companyNameTextField;
 @property (nonatomic, strong) UITextField*                firstNameTextField;
 @property (nonatomic, strong) UITextField*                lastNameTextField;
+@property (nonatomic, strong) UITextField*                streetTextField;
+@property (nonatomic, strong) UITextField*                buildingNumberTextField;
+@property (nonatomic, strong) UITextField*                buildingLetterTextField;
 @property (nonatomic, strong) UITextField*                cityTextField;
 @property (nonatomic, strong) UITextField*                postcodeTextField;
 @property (nonatomic, strong) UITextField*                countryTextField;
@@ -1175,6 +1178,84 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 }
 
 
+// See https://developers.voxbone.com/voice-apis/regulations/create-regulation-address/
+- (NSUInteger)maximumLengthForTextField:(UITextField*)textField
+{
+    NSUInteger length = 60;
+
+    if (textField == self.idNumberTextField)
+    {
+        length = 60;
+    }
+
+    if (textField == self.fiscalIdCodeTextField)
+    {
+        length = 60;
+    }
+
+    if (textField == self.streetCodeTextField)
+    {
+        length = 4;
+    }
+
+    if (textField == self.municipalityCodeTextField)
+    {
+        length = 4;
+    }
+
+    if (textField == self.companyNameTextField)
+    {
+        length = 60;
+    }
+
+    if (textField == self.firstNameTextField)
+    {
+        length = 60;
+    }
+
+    if (textField == self.lastNameTextField)
+    {
+        length = 60;
+    }
+
+    if (textField == self.streetTextField)
+    {
+        length = 50;
+    }
+
+    if (textField == self.buildingNumberTextField)
+    {
+        length = 10; // This value is hard-coded in `addressFooterString`.
+    }
+
+    if (textField == self.buildingLetterTextField)
+    {
+        length = 10; // This value is hard-coded in `addressFooterString`.
+    }
+
+    if (textField == self.cityTextField)
+    {
+        length = 60;
+    }
+
+    if (textField == self.postcodeTextField)
+    {
+        length = 10; // This value is hard-coded in `addressFooterString`.
+    }
+
+    return length;
+}
+
+
+- (NSString*)addressFooterString
+{
+    return NSLocalizedString(@"Postcode, Building Number, and Building Letter can only be 10 characters long.\n\n"
+                             @"To make it fit: delete unnecessary characters and/or parts, and/or abbreviate. "
+                             @"Otherwise, add to the Street, Building Letter, and/or City field, and we'll sort it "
+                             @"out for you.",  @"");
+}
+
+
 #pragma mark - Table View Delegates
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
@@ -1420,6 +1501,12 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
                                               @"");
                 }
             }
+
+            break;
+        }
+        case TableSectionAddress:
+        {
+            title = [self addressFooterString];
 
             break;
         }
@@ -1957,30 +2044,36 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
     {
         case TableRowAddressStreet:
         {
-            cell.textLabel.text = [Strings streetString];
+            cell.textLabel.text    = [Strings streetString];
             textField.placeholder  = [Strings requiredString];
             textField.text         = [self stringByStrippingNonBreakingSpaces:self.address.street];
             textField.keyboardType = UIKeyboardTypeAlphabet;
+
+            self.streetTextField = textField;
             objc_setAssociatedObject(textField, @"TextFieldKey", @"street", OBJC_ASSOCIATION_RETAIN);
             break;
         }
         case TableRowAddressBuildingNumber:
         {
-            cell.textLabel.text = [Strings buildingNumberString];
+            cell.textLabel.text              = [Strings buildingNumberString];
             textField.placeholder            = [Strings requiredString];
             textField.text                   = [self stringByStrippingNonBreakingSpaces:self.address.buildingNumber];
             textField.keyboardType           = UIKeyboardTypeNumbersAndPunctuation;
             textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
+
+            self.buildingNumberTextField = textField;
             objc_setAssociatedObject(textField, @"TextFieldKey", @"buildingNumber", OBJC_ASSOCIATION_RETAIN);
             break;
         }
         case TableRowAddressBuildingLetter:
         {
-            cell.textLabel.text = [Strings buildingLetterString];
+            cell.textLabel.text              = [Strings buildingLetterString];
             textField.placeholder            = [Strings optionalString];
             textField.text                   = [self stringByStrippingNonBreakingSpaces:self.address.buildingLetter];
             textField.keyboardType           = UIKeyboardTypeAlphabet;
             textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
+
+            self.buildingLetterTextField = textField;
             objc_setAssociatedObject(textField, @"TextFieldKey", @"buildingLetter", OBJC_ASSOCIATION_RETAIN);
             break;
         }
@@ -2477,6 +2570,17 @@ typedef NS_ENUM(NSUInteger, TableRowsExtraFields)
 
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string
 {
+    NSString* result = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    if (result.length > [self maximumLengthForTextField:textField])
+    {
+        [BlockAlertView showAlertViewWithTitle:NSLocalizedString(@"Limited Field Length", @"")
+                                       message:[self addressFooterString]
+                                    completion:nil
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:nil];
+        return NO;
+    }
+
     NSString* key = objc_getAssociatedObject(textField, @"TextFieldKey");
     
     // See http://stackoverflow.com/a/14792880/1971013 for keeping cursor on correct position.
