@@ -259,9 +259,9 @@ typedef enum
             title = NSLocalizedStringWithDefaultValue(@"Settings:Options SectionFooter", nil,
                                                       [NSBundle mainBundle],
                                                       @"Choose to sort lists of Phones and Numbers by country or name.\n\n"
-                                                      @"You can hide all footnotes that appear in the app's tables. "
-                                                      @" you can still show "
-                                                      @"them for a few seconds by holding the light-grey screen areas.",
+                                                      @"You can hide all footnotes on the app's tables. When hidden, you "
+                                                      @"can still show footnotes for a few seconds by holding the light-grey "
+                                                      @"areas where they appear.",
                                                       @"Explanation what the Home Country setting is doing\n"
                                                       @"[* lines]");
             break;
