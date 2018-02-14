@@ -355,7 +355,22 @@
     }
     else
     {
-        return 2; // Contacts results + messages results
+        if (self.contactsSearchResults.count > 0 && self.messagesSearchResults.count > 0)
+        {
+            return 2;
+        }
+        else if (self.contactsSearchResults.count > 0 && self.messagesSearchResults.count == 0)
+        {
+            return 1;
+        }
+        else if (self.contactsSearchResults.count == 0 && self.messagesSearchResults.count > 0)
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
     }
 }
 
@@ -368,13 +383,28 @@
     }
     else
     {
-        if (section == 0)
+        if (self.contactsSearchResults.count > 0 && self.messagesSearchResults.count > 0)
+        {
+            if (section == 0)
+            {
+                return @"Contacts";
+            }
+            else
+            {
+                return @"Messages";
+            }
+        }
+        else if (self.contactsSearchResults.count > 0 && self.messagesSearchResults.count == 0)
         {
             return @"Contacts";
         }
-        else
+        else if (self.contactsSearchResults.count == 0 && self.messagesSearchResults.count > 0)
         {
             return @"Messages";
+        }
+        else
+        {
+            return @"Nada";
         }
     }
 }
@@ -388,13 +418,28 @@
     }
     else
     {
-        if (section == 0)
+        if (self.contactsSearchResults.count > 0 && self.messagesSearchResults.count > 0)
+        {
+            if (section == 0)
+            {
+                return self.contactsSearchResults.count;
+            }
+            else
+            {
+                return self.messagesSearchResults.count;
+            }
+        }
+        else if (self.contactsSearchResults.count > 0 && self.messagesSearchResults.count == 0)
         {
             return self.contactsSearchResults.count;
         }
-        else
+        else if (self.contactsSearchResults.count == 0 && self.messagesSearchResults.count > 0)
         {
             return self.messagesSearchResults.count;
+        }
+        else
+        {
+            return 0;
         }
     }
 }
@@ -460,11 +505,22 @@
     {
         MessageData* message;
         
-        if (indexPath.section == 0) // Contacts
+        if (self.contactsSearchResults.count > 0 && self.messagesSearchResults.count > 0)
+        {
+            if (indexPath.section == 0)
+            {
+                message = [self.contactsSearchResults[indexPath.row] lastObject];
+            }
+            else
+            {
+                message = self.messagesSearchResults[indexPath.row];
+            }
+        }
+        else if (self.contactsSearchResults.count > 0 && self.messagesSearchResults.count == 0)
         {
             message = [self.contactsSearchResults[indexPath.row] lastObject];
         }
-        else // Messages
+        else if (self.contactsSearchResults.count == 0 && self.messagesSearchResults.count > 0)
         {
             message = self.messagesSearchResults[indexPath.row];
         }
@@ -487,6 +543,8 @@
 }
 
 
+// @TODO: Searching not on main thread?
+// @TODO: Abort searching when text changed?
 - (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
 {
     self.contactsSearchResults = [[NSMutableArray alloc] init];
