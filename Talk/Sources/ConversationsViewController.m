@@ -356,7 +356,12 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 - (TableSections)tableSectionsMask
 {
-    TableSections section = 1UL << 0;
+    TableSections section = 0;
+    
+    if (self.contactsSearchResults.count == 0 && self.messagesSearchResults.count == 0)
+    {
+        section = 1UL << 0;
+    }
     
     if (self.contactsSearchResults.count > 0)
     {
@@ -386,48 +391,35 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if ([self searchBarIsEmpty])
-    {
-        return nil;
-    }
-    else
-    {
-        if (self.contactsSearchResults.count > 0 && self.messagesSearchResults.count > 0)
+    switch ([self tableSectionsMask]) {
+        case TableSectionsNormal: return nil; break;
+            
+        case TableSectionsContacts | TableSectionsMessages:
         {
             if (section == 0)
             {
-                return @"Contacts";
+                return @"Contacts"; // @TODO: NSLocalizedString
             }
             else
             {
-                return @"Messages";
+                return @"Messages"; // @TODO: NSLocalizedString
             }
+
+            break;
         }
-        else if (self.contactsSearchResults.count > 0 && self.messagesSearchResults.count == 0)
-        {
-            return @"Contacts";
-        }
-        else if (self.contactsSearchResults.count == 0 && self.messagesSearchResults.count > 0)
-        {
-            return @"Messages";
-        }
-        else
-        {
-            return @"Nada";
-        }
+            
+        case TableSectionsContacts: return @"Contacts"; break; // @TODO: NSLocalizedString
+        case TableSectionsMessages: return @"Messages"; break;  // @TODO: NSLocalizedString
     }
 }
 
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if ([self searchBarIsEmpty])
-    {
-        return self.conversations.count;
-    }
-    else
-    {
-        if (self.contactsSearchResults.count > 0 && self.messagesSearchResults.count > 0)
+    switch ([self tableSectionsMask]) {
+        case TableSectionsNormal: return self.conversations.count; break;
+            
+        case TableSectionsContacts | TableSectionsMessages:
         {
             if (section == 0)
             {
@@ -437,19 +429,12 @@ typedef NS_ENUM(NSUInteger, TableSections)
             {
                 return self.messagesSearchResults.count;
             }
+            
+            break;
         }
-        else if (self.contactsSearchResults.count > 0 && self.messagesSearchResults.count == 0)
-        {
-            return self.contactsSearchResults.count;
-        }
-        else if (self.contactsSearchResults.count == 0 && self.messagesSearchResults.count > 0)
-        {
-            return self.messagesSearchResults.count;
-        }
-        else
-        {
-            return 0;
-        }
+            
+        case TableSectionsContacts: return self.contactsSearchResults.count; break;
+        case TableSectionsMessages: return self.messagesSearchResults.count; break;
     }
 }
 
@@ -461,13 +446,15 @@ typedef NS_ENUM(NSUInteger, TableSections)
     PhoneNumber* externPhoneNumber;
     NSString*    scrollToMessageUUID = @"";
     
-    if ([self searchBarIsEmpty])
-    {
-        message = [self.conversations[indexPath.row] lastObject];
-    }
-    else
-    {
-        if (self.contactsSearchResults.count > 0 && self.messagesSearchResults.count > 0)
+    switch ([self tableSectionsMask]) {
+        case TableSectionsNormal:
+        {
+            message = [self.conversations[indexPath.row] lastObject];
+            
+            break;
+        }
+            
+        case TableSectionsContacts | TableSectionsMessages:
         {
             if (indexPath.section == 0)
             {
@@ -478,15 +465,23 @@ typedef NS_ENUM(NSUInteger, TableSections)
                 message = self.messagesSearchResults[indexPath.row];
                 scrollToMessageUUID = message.uuid;
             }
+            
+            break;
         }
-        else if (self.contactsSearchResults.count > 0 && self.messagesSearchResults.count == 0)
+            
+        case TableSectionsContacts:
         {
             message = self.contactsSearchResults[indexPath.row];
+            
+            break;
         }
-        else if (self.contactsSearchResults.count == 0 && self.messagesSearchResults.count > 0)
+            
+        case TableSectionsMessages:
         {
             message = self.messagesSearchResults[indexPath.row];
             scrollToMessageUUID = message.uuid;
+            
+            break;
         }
     }
     
@@ -512,43 +507,46 @@ typedef NS_ENUM(NSUInteger, TableSections)
         cell = [self.tableView dequeueReusableCellWithIdentifier:@"ConversationCell"];
     }
     
-    if ([self searchBarIsEmpty])
-    {
-        // Last message of the conversation.
-        MessageData* lastMessage = [self.conversations[indexPath.row] lastObject];
-        
-        // The dot on the left of the cell is shown if this conversation has an unread message.
-        CellDotView* dotView = [CellDotView getFromCell:cell];
-        
-        if (dotView == nil)
+    MessageData* message;
+    
+    switch ([self tableSectionsMask]) {
+        case TableSectionsNormal:
         {
-            dotView = [[CellDotView alloc] init];
-            [dotView addToCell:cell];
-        }
-        
-        dotView.hidden = YES;
-        
-        for (MessageData* message in self.conversations[indexPath.row])
-        {
-            if ([[MessageUpdatesHandler sharedHandler] messageUpdateWithUuid:message.uuid] != nil)
+            // Last message of the conversation.
+            MessageData* lastMessage = [self.conversations[indexPath.row] lastObject];
+            
+            // The dot on the left of the cell is shown if this conversation has an unread message.
+            CellDotView* dotView = [CellDotView getFromCell:cell];
+            
+            if (dotView == nil)
             {
-                dotView.hidden = NO;
-                
-                break;
+                dotView = [[CellDotView alloc] init];
+                [dotView addToCell:cell];
             }
+            
+            dotView.hidden = YES;
+            
+            for (message in self.conversations[indexPath.row])
+            {
+                if ([[MessageUpdatesHandler sharedHandler] messageUpdateWithUuid:message.uuid] != nil)
+                {
+                    dotView.hidden = NO;
+                    
+                    break;
+                }
+            }
+            
+            message = lastMessage;
+//            PhoneNumber* number        = [[PhoneNumber alloc] initWithNumber:lastMessage.externE164];
+//            cell.nameNumberLabel.text  = lastMessage.contactId ? [[AppDelegate appDelegate] contactNameForId:lastMessage.contactId]
+//            : [number internationalFormat];
+//            cell.textPreviewLabel.text = lastMessage.text;
+//            cell.timestampLabel.text   = [Common historyStringForDate:lastMessage.timestamp showTimeForToday:YES];
+            
+            break;
         }
-        
-        PhoneNumber* number        = [[PhoneNumber alloc] initWithNumber:lastMessage.externE164];
-        cell.nameNumberLabel.text  = lastMessage.contactId ? [[AppDelegate appDelegate] contactNameForId:lastMessage.contactId]
-                                                           : [number internationalFormat];
-        cell.textPreviewLabel.text = lastMessage.text;
-        cell.timestampLabel.text   = [Common historyStringForDate:lastMessage.timestamp showTimeForToday:YES];
-    }
-    else
-    {
-        MessageData* message;
-        
-        if (self.contactsSearchResults.count > 0 && self.messagesSearchResults.count > 0)
+            
+        case TableSectionsContacts | TableSectionsMessages:
         {
             if (indexPath.section == 0)
             {
@@ -558,22 +556,30 @@ typedef NS_ENUM(NSUInteger, TableSections)
             {
                 message = self.messagesSearchResults[indexPath.row];
             }
+            
+            break;
         }
-        else if (self.contactsSearchResults.count > 0 && self.messagesSearchResults.count == 0)
+            
+        case TableSectionsContacts:
         {
             message = [self.contactsSearchResults[indexPath.row] lastObject];
+            
+            break;
         }
-        else if (self.contactsSearchResults.count == 0 && self.messagesSearchResults.count > 0)
+            
+        case TableSectionsMessages:
         {
             message = self.messagesSearchResults[indexPath.row];
+            
+            break;
         }
-        
-        PhoneNumber* number        = [[PhoneNumber alloc] initWithNumber:message.externE164];
-        cell.nameNumberLabel.text  = message.contactId ? [[AppDelegate appDelegate] contactNameForId:message.contactId]
-                                                                                                    : [number internationalFormat];
-        cell.textPreviewLabel.text = message.text;
-        cell.timestampLabel.text   = [Common historyStringForDate:message.timestamp showTimeForToday:YES];
     }
+    
+    PhoneNumber* number        = [[PhoneNumber alloc] initWithNumber:message.externE164];
+    cell.nameNumberLabel.text  = message.contactId ? [[AppDelegate appDelegate] contactNameForId:message.contactId]
+                                                                                                : [number internationalFormat];
+    cell.textPreviewLabel.text = message.text;
+    cell.timestampLabel.text   = [Common historyStringForDate:message.timestamp showTimeForToday:YES];
     
     return cell;
 }
@@ -597,7 +603,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
     {
         MessageData* lastMessage = [conversation lastObject];
         
-        NSRange range = NSMakeRange(0, 0); // @TODO: like this?
+        NSRange range = NSMakeRange(0, 0);
         if (lastMessage.contactId != nil)
         {
             NSString* contactName = [[AppDelegate appDelegate] contactNameForId:lastMessage.contactId];
@@ -626,8 +632,6 @@ typedef NS_ENUM(NSUInteger, TableSections)
             }
         }];
     }];
-    
-    [self tableSectionsMask];
 }
 
 
