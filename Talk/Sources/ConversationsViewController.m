@@ -20,9 +20,16 @@
 #import "PhoneNumber.h"
 #import "NewConversationViewController.h"
 
+typedef NS_ENUM(NSUInteger, TableSections)
+{
+    TableSectionsNormal   = 1UL << 0, // No search.
+    TableSectionsContacts = 1UL << 1, // Contacts search results.
+    TableSectionsMessages = 1UL << 2, // MessagesSearchResults.
+};
 
 @interface ConversationsViewController ()
 
+@property (nonatomic, assign) TableSections               sections;
 @property (nonatomic, strong) NSFetchedResultsController* fetchedMessagesController;
 @property (nonatomic, strong) NSManagedObjectContext*     managedObjectContext;
 @property (nonatomic, strong) NSString*                   numberE164;
@@ -347,6 +354,23 @@
 }
 
 
+- (TableSections)tableSectionsMask
+{
+    TableSections section = 1UL << 0;
+    
+    if (self.contactsSearchResults.count > 0)
+    {
+        section |= TableSectionsContacts;
+    }
+    
+    if (self.messagesSearchResults.count > 0)
+    {
+        section |= TableSectionsMessages;
+    }
+    
+    return section;
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
     if ([self searchBarIsEmpty])
@@ -602,6 +626,8 @@
             }
         }];
     }];
+    
+    [self tableSectionsMask];
 }
 
 
