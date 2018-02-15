@@ -355,22 +355,7 @@
     }
     else
     {
-        if (self.contactsSearchResults.count > 0 && self.messagesSearchResults.count > 0)
-        {
-            return 2;
-        }
-        else if (self.contactsSearchResults.count > 0 && self.messagesSearchResults.count == 0)
-        {
-            return 1;
-        }
-        else if (self.contactsSearchResults.count == 0 && self.messagesSearchResults.count > 0)
-        {
-            return 1;
-        }
-        else
-        {
-            return 0;
-        }
+        return (self.contactsSearchResults.count > 0) + (self.messagesSearchResults.count > 0);
     }
 }
 
@@ -447,15 +432,49 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    MessageData* message                       = [self.conversations[indexPath.row] lastObject];
-    PhoneNumber* localPhoneNumber              = [[PhoneNumber alloc] initWithNumber:message.numberE164];
-    PhoneNumber* externPhoneNumber             = [[PhoneNumber alloc] initWithNumber:message.externE164];
+    MessageData* message;
+    PhoneNumber* localPhoneNumber;
+    PhoneNumber* externPhoneNumber;
+    NSString*    scrollToMessageUUID = @"";
+    
+    if ([self searchBarIsEmpty])
+    {
+        message = [self.conversations[indexPath.row] lastObject];
+    }
+    else
+    {
+        if (self.contactsSearchResults.count > 0 && self.messagesSearchResults.count > 0)
+        {
+            if (indexPath.section == 0)
+            {
+                message = self.contactsSearchResults[indexPath.row];
+            }
+            else
+            {
+                message = self.messagesSearchResults[indexPath.row];
+                scrollToMessageUUID = message.uuid;
+            }
+        }
+        else if (self.contactsSearchResults.count > 0 && self.messagesSearchResults.count == 0)
+        {
+            message = self.contactsSearchResults[indexPath.row];
+        }
+        else if (self.contactsSearchResults.count == 0 && self.messagesSearchResults.count > 0)
+        {
+            message = self.messagesSearchResults[indexPath.row];
+            scrollToMessageUUID = message.uuid;
+        }
+    }
+    
+    localPhoneNumber  = [[PhoneNumber alloc] initWithNumber:message.numberE164];
+    externPhoneNumber = [[PhoneNumber alloc] initWithNumber:message.externE164];
+    
     ConversationViewController* viewController = [[ConversationViewController alloc] initWithManagedObjectContext:self.managedObjectContext
                                                                                         fetchedMessagesController:self.fetchedMessagesController
                                                                                                  localPhoneNumber:localPhoneNumber
                                                                                                 externPhoneNumber:externPhoneNumber
-                                                                                                        contactId:message.contactId];
-    
+                                                                                                        contactId:message.contactId
+                                                                                              scrollToMessageUUID:scrollToMessageUUID];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
@@ -547,8 +566,8 @@
 // @TODO: Abort searching when text changed?
 - (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
 {
-    self.contactsSearchResults = [[NSMutableArray alloc] init];
-    self.messagesSearchResults = [[NSMutableArray alloc] init];
+    self.contactsSearchResults = [NSMutableArray array];
+    self.messagesSearchResults = [NSMutableArray array];
     
     [self.conversations enumerateObjectsUsingBlock:^(NSArray* conversation, NSUInteger index, BOOL* stop)
     {
@@ -583,6 +602,13 @@
             }
         }];
     }];
+}
+
+
+- (void)searchBarCancelButtonClicked:(UISearchBar*)searchBar
+{
+    searchBar.text = @"";
+    [self.tableView reloadData];
 }
 
 

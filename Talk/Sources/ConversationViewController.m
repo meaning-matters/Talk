@@ -35,8 +35,10 @@
 @property (nonatomic, strong) PhoneNumber*                   externPhoneNumber;
 @property (nonatomic, strong) NSString*                      contactId;
 
-@property (nonatomic) NSInteger                              firstUnreadMessageIndex;
-@property (nonatomic) BOOL                                   hasFetchedMessages;
+@property (nonatomic)         BOOL                           hasFetchedMessages;
+
+@property (nonatomic)         NSInteger                      scrollToMessageIndex;
+@property (nonatomic, strong) NSString*                      scrollToMessageUUID;
 
 @end
 
@@ -48,18 +50,35 @@
                             localPhoneNumber:(PhoneNumber*)localPhoneNumber
                            externPhoneNumber:(PhoneNumber*)externPhoneNumber
                                    contactId:(NSString*)contactId
+                             scrollToMessageUUID:(NSString*)scrollToMessageUUID
 {
     if (self = [super init])
     {
         self.managedObjectContext      = managedObjectContext;
         self.fetchedMessagesController = fetchedMessagesController;
         
-        self.localPhoneNumber  = localPhoneNumber;
-        self.externPhoneNumber = externPhoneNumber;
-        self.contactId         = contactId;
+        self.localPhoneNumber          = localPhoneNumber;
+        self.externPhoneNumber         = externPhoneNumber;
+        self.contactId                 = contactId;
+        
+        self.scrollToMessageUUID       = scrollToMessageUUID;
     }
     
     return self;
+}
+
+
+// @TODO: This looks weird. First the chat is displayed normally and the scrolled to this message. Is this the same on fast devices?
+// Is there a better way to do this?
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (self.scrollToMessageIndex >= 0)
+    {
+        NSIndexPath* indexPath = [NSIndexPath indexPathForItem:self.scrollToMessageIndex inSection:0];
+        [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
+    }
 }
 
 
@@ -68,13 +87,6 @@
     [super viewWillAppear:animated];
     
     [self processMessages:self.fetchedMessagesController.fetchedObjects];
-    
-    // Scroll to first unread message.
-    if (self.firstUnreadMessageIndex >= 0)
-    {
-        NSIndexPath* indexPath = [NSIndexPath indexPathForItem:self.firstUnreadMessageIndex inSection:0];
-        [self scrollToIndexPath:indexPath animated:NO];
-    }
     
     // Disable the attachment button.
     self.inputToolbar.contentView.leftBarButtonItem = nil;
@@ -99,7 +111,7 @@
     [super viewDidLoad];
     
     self.hasFetchedMessages      = NO;
-    self.firstUnreadMessageIndex = -1;
+    self.scrollToMessageIndex    = -1;
     
     self.bubbleFactory = [[JSQMessagesBubbleImageFactory alloc] init];
     
@@ -155,23 +167,42 @@
         return [first compare:second];
     }];
     
-    // Determine if we have to scroll to the first unread message.
     if (self.hasFetchedMessages == NO)
     {
         int index = 0;
-        for (MessageData* message in self.messages)
+        
+        if (self.scrollToMessageUUID.length > 0)
         {
-            if ([[MessageUpdatesHandler sharedHandler] messageUpdateWithUuid:message.uuid] != nil)
+            for (MessageData* message in self.messages)
             {
-                self.firstUnreadMessageIndex = index;
+                if ([message.uuid isEqualToString:self.scrollToMessageUUID])
+                {
+                    self.scrollToMessageIndex = index;
+                    
+                    break;
+                }
                 
-                break;
+                index++;
             }
             
-            index++;
+            self.hasFetchedMessages = YES;
         }
-        
-        self.hasFetchedMessages = YES;
+        else
+        {
+            for (MessageData* message in self.messages)
+            {
+                if ([[MessageUpdatesHandler sharedHandler] messageUpdateWithUuid:message.uuid] != nil)
+                {
+                    self.scrollToMessageIndex = index;
+                    
+                    break;
+                }
+                
+                index++;
+            }
+            
+            self.hasFetchedMessages = YES;
+        }
     }
     
     [self removeUpdates];

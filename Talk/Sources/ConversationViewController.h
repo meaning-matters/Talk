@@ -17,6 +17,7 @@
                    fetchedMessagesController:(NSFetchedResultsController*)fetchedMessagesController
                             localPhoneNumber:(PhoneNumber*)localPhoneNumber
                            externPhoneNumber:(PhoneNumber*)externPhoneNumber
-                                   contactId:(NSString*)contactId;
+                                   contactId:(NSString*)contactId
+                         scrollToMessageUUID:(NSString*)scrollToMessageUUID;
 
 @end
