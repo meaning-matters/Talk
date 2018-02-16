@@ -104,18 +104,41 @@ typedef enum
 
 - (void)findContactsForAnonymousItems
 {
+    // Build up list with recents using same E164 to call `findContactsHavingNumber` a few times as possible.
+    NSMutableDictionary* recentsArrayForE164 = [NSMutableDictionary dictionary];
+
     for (NSArray* recents in dataSource)
     {
-        CallRecordData* recent = recents[0];
-        if (recent.contactId == nil)
+        CallRecordData* recent = recents[0]; // Or lastObject, or any object???
+        if (recent.contactId == nil && recent.fromE164 != nil)
         {
-            PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:recent.fromE164];
-            [[AppDelegate appDelegate] findContactsHavingNumber:[phoneNumber nationalDigits]
-                                                     completion:^(NSArray* contactIds)
+            if (recentsArrayForE164[recent.fromE164] == nil)
             {
-                recent.contactId = [contactIds firstObject];
-            }];
+                recentsArrayForE164[recent.fromE164] = [NSMutableArray array];
+            }
+
+            [recentsArrayForE164[recent.fromE164] addObject:recents];
         }
+    }
+
+    for (NSString* fromE164 in [recentsArrayForE164 allKeys])
+    {
+        PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:fromE164];
+        [[AppDelegate appDelegate] findContactsHavingNumber:[phoneNumber nationalDigits]
+                                                 completion:^(NSArray* contactIds)
+        {
+            NSString* contactId = [contactIds firstObject];
+            if (contactId != nil)
+            {
+                for (NSArray* recents in recentsArrayForE164[fromE164])
+                {
+                    for (CallRecordData* recent in recents)
+                    {
+                        recent.contactId = contactId;
+                    }
+                }
+            }
+        }];
     }
 
     [[DataManager sharedManager] saveManagedObjectContext:nil];
