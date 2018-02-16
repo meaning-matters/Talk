@@ -38,8 +38,8 @@ typedef NS_ENUM(NSUInteger, TableSections)
 @property (nonatomic, strong) NSArray*                    conversations;
 @property (nonatomic, strong) UILabel*                    noConversationsLabel;
 @property (nonatomic, strong) ConversationCell*           conversationCell;
-@property (nonatomic, weak) id<NSObject>                  defaultsObserver;
-@property (nonatomic, weak) id<NSObject>                  messagesObserver;
+@property (nonatomic, weak)   id<NSObject>                defaultsObserver;
+@property (nonatomic, weak)   id<NSObject>                messagesObserver;
 @property (nonatomic, strong) UIBarButtonItem*            composeButtonItem;
 @property (nonatomic, strong) NSMutableArray*             contactsSearchResults;
 @property (nonatomic, strong) NSMutableArray*             messagesSearchResults;
@@ -376,6 +376,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
     return section;
 }
 
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
     if ([self searchBarIsEmpty])
@@ -391,7 +392,8 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    switch ([self tableSectionsMask]) {
+    switch ([self tableSectionsMask])
+    {
         case TableSectionsNormal: return nil; break;
             
         case TableSectionsContacts | TableSectionsMessages:
@@ -409,14 +411,15 @@ typedef NS_ENUM(NSUInteger, TableSections)
         }
             
         case TableSectionsContacts: return @"Contacts"; break; // @TODO: NSLocalizedString
-        case TableSectionsMessages: return @"Messages"; break;  // @TODO: NSLocalizedString
+        case TableSectionsMessages: return @"Messages"; break; // @TODO: NSLocalizedString
     }
 }
 
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    switch ([self tableSectionsMask]) {
+    switch ([self tableSectionsMask])
+    {
         case TableSectionsNormal: return self.conversations.count; break;
             
         case TableSectionsContacts | TableSectionsMessages:
@@ -446,7 +449,8 @@ typedef NS_ENUM(NSUInteger, TableSections)
     PhoneNumber* externPhoneNumber;
     NSString*    scrollToMessageUUID = @"";
     
-    switch ([self tableSectionsMask]) {
+    switch ([self tableSectionsMask])
+    {
         case TableSectionsNormal:
         {
             message = [self.conversations[indexPath.row] lastObject];
@@ -509,7 +513,8 @@ typedef NS_ENUM(NSUInteger, TableSections)
     
     MessageData* message;
     
-    switch ([self tableSectionsMask]) {
+    switch ([self tableSectionsMask])
+    {
         case TableSectionsNormal:
         {
             // Last message of the conversation.
@@ -537,11 +542,6 @@ typedef NS_ENUM(NSUInteger, TableSections)
             }
             
             message = lastMessage;
-//            PhoneNumber* number        = [[PhoneNumber alloc] initWithNumber:lastMessage.externE164];
-//            cell.nameNumberLabel.text  = lastMessage.contactId ? [[AppDelegate appDelegate] contactNameForId:lastMessage.contactId]
-//            : [number internationalFormat];
-//            cell.textPreviewLabel.text = lastMessage.text;
-//            cell.timestampLabel.text   = [Common historyStringForDate:lastMessage.timestamp showTimeForToday:YES];
             
             break;
         }

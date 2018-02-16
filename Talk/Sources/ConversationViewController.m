@@ -24,7 +24,7 @@
 
 @property (nonatomic, strong) NSManagedObjectContext*        managedObjectContext;
 @property (nonatomic, strong) NSFetchedResultsController*    fetchedMessagesController;
-@property (nonatomic, weak) id<NSObject>                     messagesObserver;
+@property (nonatomic, weak)   id<NSObject>                   messagesObserver;
 @property (nonatomic, strong) NSMutableArray*                fetchedMessages;
 @property (nonatomic, strong) NSArray*                       messages;
 
@@ -50,7 +50,7 @@
                             localPhoneNumber:(PhoneNumber*)localPhoneNumber
                            externPhoneNumber:(PhoneNumber*)externPhoneNumber
                                    contactId:(NSString*)contactId
-                             scrollToMessageUUID:(NSString*)scrollToMessageUUID
+                         scrollToMessageUUID:(NSString*)scrollToMessageUUID
 {
     if (self = [super init])
     {
@@ -110,10 +110,10 @@
 {
     [super viewDidLoad];
     
-    self.hasFetchedMessages      = NO;
-    self.scrollToMessageIndex    = -1;
+    self.hasFetchedMessages        = NO;
+    self.scrollToMessageIndex      = -1;
     
-    self.bubbleFactory = [[JSQMessagesBubbleImageFactory alloc] init];
+    self.bubbleFactory             = [[JSQMessagesBubbleImageFactory alloc] init];
     
     self.collectionView.delegate   = self;
     self.collectionView.dataSource = self;
@@ -203,6 +203,15 @@
             
             self.hasFetchedMessages = YES;
         }
+    }
+    
+    if (self.scrollToMessageIndex >= 0)
+    {
+        self.automaticallyScrollsToMostRecentMessage = NO;
+    }
+    else
+    {
+        self.automaticallyScrollsToMostRecentMessage = YES;
     }
     
     [self removeUpdates];
