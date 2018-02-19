@@ -18,6 +18,6 @@
                             localPhoneNumber:(PhoneNumber*)localPhoneNumber
                            externPhoneNumber:(PhoneNumber*)externPhoneNumber
                                    contactId:(NSString*)contactId
-                         scrollToMessageUUID:(NSString*)scrollToMessageUUID;
+                         scrollToMessageUuid:(NSString*)scrollToMessageUuid;
 
 @end

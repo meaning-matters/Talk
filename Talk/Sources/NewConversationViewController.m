@@ -209,7 +209,7 @@
                                                                                                        localPhoneNumber:numberE164
                                                                                                        externPhoneNumber:externE164
                                                                                                         contactId:contactId
-                                                                                              scrollToMessageUUID:@""];
+                                                                                              scrollToMessageUuid:@""];
     
     // Scroll to the row with the existing chat.
     [self.conversationsViewcontroller scrollToChatWithExternE164:[externE164 e164Format]];

@@ -37,8 +37,8 @@
 
 @property (nonatomic)         BOOL                           hasFetchedMessages;
 
-@property (nonatomic)         NSInteger                      scrollToMessageIndex;
-@property (nonatomic, strong) NSString*                      scrollToMessageUUID;
+@property (nonatomic)         NSInteger                      initialMessageIndex;
+@property (nonatomic, strong) NSString*                      initialMessageUuid;
 
 @end
 
@@ -50,7 +50,7 @@
                             localPhoneNumber:(PhoneNumber*)localPhoneNumber
                            externPhoneNumber:(PhoneNumber*)externPhoneNumber
                                    contactId:(NSString*)contactId
-                         scrollToMessageUUID:(NSString*)scrollToMessageUUID
+                         scrollToMessageUuid:(NSString*)scrollToMessageUuid
 {
     if (self = [super init])
     {
@@ -61,22 +61,20 @@
         self.externPhoneNumber         = externPhoneNumber;
         self.contactId                 = contactId;
         
-        self.scrollToMessageUUID       = scrollToMessageUUID;
+        self.initialMessageUuid       = scrollToMessageUuid;
     }
     
     return self;
 }
 
 
-// @TODO: This looks weird. First the chat is displayed normally and the scrolled to this message. Is this the same on fast devices?
-// Is there a better way to do this?
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    if (self.scrollToMessageIndex >= 0)
+    if (self.initialMessageIndex >= 0)
     {
-        NSIndexPath* indexPath = [NSIndexPath indexPathForItem:self.scrollToMessageIndex inSection:0];
+        NSIndexPath* indexPath = [NSIndexPath indexPathForItem:self.initialMessageIndex inSection:0];
         [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
     }
 }
@@ -111,7 +109,7 @@
     [super viewDidLoad];
     
     self.hasFetchedMessages        = NO;
-    self.scrollToMessageIndex      = -1;
+    self.initialMessageIndex      = -1;
     
     self.bubbleFactory             = [[JSQMessagesBubbleImageFactory alloc] init];
     
@@ -171,13 +169,13 @@
     {
         int index = 0;
         
-        if (self.scrollToMessageUUID.length > 0)
+        if (self.initialMessageUuid.length > 0)
         {
             for (MessageData* message in self.messages)
             {
-                if ([message.uuid isEqualToString:self.scrollToMessageUUID])
+                if ([message.uuid isEqualToString:self.initialMessageUuid])
                 {
-                    self.scrollToMessageIndex = index;
+                    self.initialMessageIndex = index;
                     
                     break;
                 }
@@ -193,7 +191,7 @@
             {
                 if ([[MessageUpdatesHandler sharedHandler] messageUpdateWithUuid:message.uuid] != nil)
                 {
-                    self.scrollToMessageIndex = index;
+                    self.initialMessageIndex = index;
                     
                     break;
                 }
@@ -205,7 +203,7 @@
         }
     }
     
-    if (self.scrollToMessageIndex >= 0)
+    if (self.initialMessageIndex >= 0)
     {
         self.automaticallyScrollsToMostRecentMessage = NO;
     }

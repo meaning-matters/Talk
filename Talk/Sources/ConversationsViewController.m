@@ -22,9 +22,9 @@
 
 typedef NS_ENUM(NSUInteger, TableSections)
 {
-    TableSectionsNormal   = 1UL << 0, // No search.
-    TableSectionsContacts = 1UL << 1, // Contacts search results.
-    TableSectionsMessages = 1UL << 2, // MessagesSearchResults.
+    TableSectionNormal   = 1UL << 0, // No search.
+    TableSectionContacts = 1UL << 1, // Contacts search results.
+    TableSectionMessages = 1UL << 2, // MessagesSearchResults.
 };
 
 @interface ConversationsViewController ()
@@ -354,75 +354,84 @@ typedef NS_ENUM(NSUInteger, TableSections)
 }
 
 
-- (TableSections)tableSectionsMask
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    TableSections section = 0;
+    self.sections = 0;
     
     if (self.contactsSearchResults.count == 0 && self.messagesSearchResults.count == 0)
     {
-        section = 1UL << 0;
+        self.sections |= TableSectionNormal;
     }
     
     if (self.contactsSearchResults.count > 0)
     {
-        section |= TableSectionsContacts;
+        self.sections |= TableSectionContacts;
     }
     
     if (self.messagesSearchResults.count > 0)
     {
-        section |= TableSectionsMessages;
+        self.sections |= TableSectionMessages;
     }
     
-    return section;
-}
-
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
-{
-    if ([self searchBarIsEmpty])
-    {
-        return 1;
-    }
-    else
-    {
-        return (self.contactsSearchResults.count > 0) + (self.messagesSearchResults.count > 0);
-    }
+    return [Common bitsSetCount:self.sections];
 }
 
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    switch ([self tableSectionsMask])
+    switch (self.sections)
     {
-        case TableSectionsNormal: return nil; break;
+        case TableSectionNormal:
+        {
+            return nil;
             
-        case TableSectionsContacts | TableSectionsMessages:
+            break;
+        }
+            
+        case TableSectionContacts | TableSectionMessages:
         {
             if (section == 0)
             {
-                return @"Contacts"; // @TODO: NSLocalizedString
+                return NSLocalizedString(@"Contacts", @"Contacts header title");
             }
             else
             {
-                return @"Messages"; // @TODO: NSLocalizedString
+                return NSLocalizedString(@"Messages", @"Messages header title");
             }
 
             break;
         }
             
-        case TableSectionsContacts: return @"Contacts"; break; // @TODO: NSLocalizedString
-        case TableSectionsMessages: return @"Messages"; break; // @TODO: NSLocalizedString
+        case TableSectionContacts:
+        {
+            return NSLocalizedString(@"Contacts", @"Contacts header title");
+            
+            break;
+        }
+            
+        case TableSectionMessages:
+        {
+            return NSLocalizedString(@"Messages", @"Messages header title");
+            
+            break;
+        }
     }
 }
 
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    switch ([self tableSectionsMask])
+    switch (self.sections)
     {
-        case TableSectionsNormal: return self.conversations.count; break;
+        case TableSectionNormal:
+        {
+            return self.conversations.count;
             
-        case TableSectionsContacts | TableSectionsMessages:
+            break;
+        }
+            
+        case TableSectionContacts | TableSectionMessages:
         {
             if (section == 0)
             {
@@ -436,8 +445,19 @@ typedef NS_ENUM(NSUInteger, TableSections)
             break;
         }
             
-        case TableSectionsContacts: return self.contactsSearchResults.count; break;
-        case TableSectionsMessages: return self.messagesSearchResults.count; break;
+        case TableSectionContacts:
+        {
+            return self.contactsSearchResults.count;
+            
+            break;
+        }
+            
+        case TableSectionMessages:
+        {
+            return self.messagesSearchResults.count;
+            
+            break;
+        }
     }
 }
 
@@ -449,16 +469,16 @@ typedef NS_ENUM(NSUInteger, TableSections)
     PhoneNumber* externPhoneNumber;
     NSString*    scrollToMessageUUID = @"";
     
-    switch ([self tableSectionsMask])
+    switch (self.sections)
     {
-        case TableSectionsNormal:
+        case TableSectionNormal:
         {
             message = [self.conversations[indexPath.row] lastObject];
             
             break;
         }
             
-        case TableSectionsContacts | TableSectionsMessages:
+        case TableSectionContacts | TableSectionMessages:
         {
             if (indexPath.section == 0)
             {
@@ -473,14 +493,14 @@ typedef NS_ENUM(NSUInteger, TableSections)
             break;
         }
             
-        case TableSectionsContacts:
+        case TableSectionContacts:
         {
             message = self.contactsSearchResults[indexPath.row];
             
             break;
         }
             
-        case TableSectionsMessages:
+        case TableSectionMessages:
         {
             message = self.messagesSearchResults[indexPath.row];
             scrollToMessageUUID = message.uuid;
@@ -497,7 +517,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
                                                                                                  localPhoneNumber:localPhoneNumber
                                                                                                 externPhoneNumber:externPhoneNumber
                                                                                                         contactId:message.contactId
-                                                                                              scrollToMessageUUID:scrollToMessageUUID];
+                                                                                              scrollToMessageUuid:scrollToMessageUUID];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
@@ -513,9 +533,9 @@ typedef NS_ENUM(NSUInteger, TableSections)
     
     MessageData* message;
     
-    switch ([self tableSectionsMask])
+    switch (self.sections)
     {
-        case TableSectionsNormal:
+        case TableSectionNormal:
         {
             // Last message of the conversation.
             MessageData* lastMessage = [self.conversations[indexPath.row] lastObject];
@@ -546,7 +566,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
             break;
         }
             
-        case TableSectionsContacts | TableSectionsMessages:
+        case TableSectionContacts | TableSectionMessages:
         {
             if (indexPath.section == 0)
             {
@@ -560,14 +580,14 @@ typedef NS_ENUM(NSUInteger, TableSections)
             break;
         }
             
-        case TableSectionsContacts:
+        case TableSectionContacts:
         {
             message = [self.contactsSearchResults[indexPath.row] lastObject];
             
             break;
         }
             
-        case TableSectionsMessages:
+        case TableSectionMessages:
         {
             message = self.messagesSearchResults[indexPath.row];
             
@@ -637,7 +657,9 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 - (void)searchBarCancelButtonClicked:(UISearchBar*)searchBar
 {
-    searchBar.text = @"";
+    self.contactsSearchResults = [NSMutableArray array];
+    self.messagesSearchResults = [NSMutableArray array];
+    
     [self.tableView reloadData];
 }
 
