@@ -616,42 +616,61 @@ typedef NS_ENUM(NSUInteger, TableSections)
 // @TODO: Abort searching when text changed?
 - (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
 {
-    self.contactsSearchResults = [NSMutableArray array];
-    self.messagesSearchResults = [NSMutableArray array];
-    
-    [self.conversations enumerateObjectsUsingBlock:^(NSArray* conversation, NSUInteger index, BOOL* stop)
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
     {
-        MessageData* lastMessage = [conversation lastObject];
+        NSMutableArray* contactsSearchResults = [NSMutableArray array];
+        NSMutableArray* messagesSearchResults = [NSMutableArray array];
         
-        NSRange range = NSMakeRange(0, 0);
-        if (lastMessage.contactId != nil)
+        [self.conversations enumerateObjectsUsingBlock:^(NSArray* conversation, NSUInteger index, BOOL* stop)
         {
-            NSString* contactName = [[AppDelegate appDelegate] contactNameForId:lastMessage.contactId];
-            range = [contactName rangeOfString:searchText options:NSCaseInsensitiveSearch | NSDiacriticInsensitiveSearch];
-        }
+            MessageData* lastMessage = [conversation lastObject];
+            
+            NSRange range = NSMakeRange(0, 0);
+            if (lastMessage.contactId != nil)
+            {
+                NSString* contactName = [[AppDelegate appDelegate] contactNameForId:lastMessage.contactId];
+                range = [contactName rangeOfString:searchText options:NSCaseInsensitiveSearch | NSDiacriticInsensitiveSearch];
+            }
+            
+            if (range.location != NSNotFound)
+            {
+                [contactsSearchResults addObject:conversation];
+            }
+            else
+            {
+                range = [lastMessage.externE164 rangeOfString:searchText options:NSCaseInsensitiveSearch | NSDiacriticInsensitiveSearch];
+                if (range.location != NSNotFound)
+                {
+                    [contactsSearchResults addObject:conversation];
+                }
+            }
+            
+            [conversation enumerateObjectsUsingBlock:^(MessageData* message, NSUInteger index, BOOL* stop)
+             {
+                NSRange range = [message.text  rangeOfString:searchText options:NSCaseInsensitiveSearch | NSDiacriticInsensitiveSearch];
+                if (range.location != NSNotFound)
+                {
+                    [messagesSearchResults addObject:message];
+                }
+             }];
+        }];
         
-        if (range.location != NSNotFound)
+        if ([NSThread isMainThread])
         {
-            [self.contactsSearchResults addObject:conversation];
+            self.contactsSearchResults = contactsSearchResults;
+            self.messagesSearchResults = messagesSearchResults;
+            [self.tableView reloadData];
         }
         else
         {
-            range = [lastMessage.externE164 rangeOfString:searchText options:NSCaseInsensitiveSearch | NSDiacriticInsensitiveSearch];
-            if (range.location != NSNotFound)
+            dispatch_sync(dispatch_get_main_queue(), ^
             {
-                [self.contactsSearchResults addObject:conversation];
-            }
+                self.contactsSearchResults = contactsSearchResults;
+                self.messagesSearchResults = messagesSearchResults;
+                [self.tableView reloadData];
+            });
         }
-        
-        [conversation enumerateObjectsUsingBlock:^(MessageData* message, NSUInteger index, BOOL* stop)
-        {
-            NSRange range = [message.text  rangeOfString:searchText options:NSCaseInsensitiveSearch | NSDiacriticInsensitiveSearch];
-            if (range.location != NSNotFound)
-            {
-                [self.messagesSearchResults addObject:message];
-            }
-        }];
-    }];
+    });
 }
 
 
