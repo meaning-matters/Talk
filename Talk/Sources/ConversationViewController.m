@@ -18,6 +18,8 @@
 #import "DataManager.h"
 #import "BlockAlertView.h"
 #import "Strings.h"
+#import "WebClient.h"
+#import "PurchaseManager.h"
 
 
 @interface ConversationViewController ()
@@ -109,7 +111,7 @@
     self.fetchedMessagesController = [[DataManager sharedManager] fetchResultsForEntityName:@"Message"
                                                                                withSortKeys:nil
                                                                        managedObjectContext:self.managedObjectContext];
-        
+    
     if (self.contactId != nil)
     {
         self.title = [[AppDelegate appDelegate] contactNameForId:self.contactId];
@@ -118,16 +120,16 @@
     {
         self.title = [self.externPhoneNumber internationalFormat];
     }
-
+    
     __weak typeof(self) weakSelf = self;
     self.messagesObserver = [[NSNotificationCenter defaultCenter] addObserverForName:MessageUpdatesNotification
                                                                               object:nil
                                                                                queue:[NSOperationQueue mainQueue]
                                                                           usingBlock:^(NSNotification* note)
-    {
-        [weakSelf.fetchedMessagesController performFetch:nil];
-        [weakSelf processMessages:[weakSelf.fetchedMessagesController fetchedObjects]];
-    }];
+                             {
+                                 [weakSelf.fetchedMessagesController performFetch:nil];
+                                 [weakSelf processMessages:[weakSelf.fetchedMessagesController fetchedObjects]];
+                             }];
 }
 
 
@@ -148,12 +150,12 @@
     
     // Sort the messages by timestamp.
     self.messages = [messages sortedArrayUsingComparator:^(id a, id b)
-    {
-        NSDate* first  = ((MessageData*)a).timestamp;
-        NSDate* second = ((MessageData*)b).timestamp;
-        
-        return [first compare:second];
-    }];
+                     {
+                         NSDate* first  = ((MessageData*)a).timestamp;
+                         NSDate* second = ((MessageData*)b).timestamp;
+                         
+                         return [first compare:second];
+                     }];
     
     // Determine if we have to scroll to the first unread message.
     if (self.hasFetchedMessages == NO)
@@ -206,7 +208,7 @@
 {
     MessageData* message  = self.messages[indexPath.row];
     NSString*    senderId = (message.direction == MessageDirectionInbound) ? message.externE164 : message.numberE164;
-
+    
     return [[JSQMessage alloc] initWithSenderId:senderId
                               senderDisplayName:@"" // Not used.
                                            date:message.timestamp
@@ -236,10 +238,10 @@
         case MessageDirectionInbound:  cell.textView.textColor = [UIColor whiteColor]; break;
         case MessageDirectionOutbound: cell.textView.textColor = [UIColor blackColor]; break;
     }
-
+    
     cell.textView.linkTextAttributes = @{ NSForegroundColorAttributeName : cell.textView.textColor,
                                           NSUnderlineStyleAttributeName  : @(NSUnderlineStyleSingle |
-                                                                             NSUnderlinePatternSolid) };
+                                              NSUnderlinePatternSolid) };
     
     cell.accessoryButton.hidden = YES;
     
@@ -252,7 +254,7 @@
 {
     MessageData*                        message = self.messages[indexPath.row];
     id<JSQMessageBubbleImageDataSource> result  = nil;
-
+    
     switch (message.direction)
     {
         case MessageDirectionInbound:
@@ -268,7 +270,7 @@
             break;
         }
     }
-
+    
     return result;
 }
 
@@ -293,19 +295,19 @@
             // Get the contactId for the chosen number.
             [[AppDelegate appDelegate] findContactsHavingNumber:[phoneNumber nationalDigits]
                                                      completion:^(NSArray* contactIds)
-            {
-                NSString* contactId;
-                if (contactIds.count > 0)
-                {
-                    contactId = [contactIds firstObject];
-                }
-                
-                // Initiate the call.
-                [[CallManager sharedManager] callPhoneNumber:phoneNumber
-                                                   contactId:contactId
-                                                    callerId:nil // @TODO: Use callerID of number used for SMS.
-                                                  completion:nil];
-            }];
+             {
+                 NSString* contactId;
+                 if (contactIds.count > 0)
+                 {
+                     contactId = [contactIds firstObject];
+                 }
+                 
+                 // Initiate the call.
+                 [[CallManager sharedManager] callPhoneNumber:phoneNumber
+                                                    contactId:contactId
+                                                     callerId:nil // @TODO: Use callerID of number used for SMS.
+                                                   completion:nil];
+             }];
         }
         else
         {
@@ -341,6 +343,138 @@
          senderDisplayName:(NSString*)senderDisplayName
                       date:(NSDate*)date
 {
+    // @TODO: Disable send-button during this process?
+    // @TODO: Fix server side that SMS is not always sent
+    // @TODO: Show loading screen while buying?
+    
+    // Check if there's enough credit.
+    [[WebClient sharedClient] retrieveCreditWithReply:^(NSError* error, float credit)
+     {
+         float totalFee         = 1.0; // @TODO: Get the actual cost for sending the SMS
+         NSString* creditString = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
+         NSString* totalString  = [[PurchaseManager sharedManager] localizedFormattedPrice:totalFee];
+         
+         if (error == nil)
+         {
+             if (totalFee < credit)
+             {
+                 // Credit is sufficient, send SMS
+                 [self sendMessageWithText:text andDate:date];
+                 [[AppDelegate appDelegate] checkCreditWithCompletion:nil];
+             }
+             else
+             {
+                 int extraCreditAmount = [[PurchaseManager sharedManager] amountForCredit:totalFee - credit];
+                 if (extraCreditAmount > 0)
+                 {
+                     NSString* productIdentifier;
+                     NSString* extraString;
+                     NSString* title;
+                     NSString* message;
+                     
+                     productIdentifier = [[PurchaseManager sharedManager] productIdentifierForCreditAmount:extraCreditAmount];
+                     extraString       = [[PurchaseManager sharedManager] localizedPriceForProductIdentifier:productIdentifier];
+                     
+                     title   = NSLocalizedStringWithDefaultValue(@"SendSMS NeedExtraCreditTitle", nil,
+                                                                 [NSBundle mainBundle], @"Extra Credit Needed",
+                                                                 @"Alert title: extra credit must be bought.\n"
+                                                                 @"[iOS alert title size].");
+                     message = NSLocalizedStringWithDefaultValue(@"SendSMS NeedExtraCreditMessage", nil,
+                                                                 [NSBundle mainBundle],
+                                                                 @"The total price of %@ is more than your current "
+                                                                 @"Credit: %@.\n\nYou can buy the sufficient standard "
+                                                                 @"amount of %@ extra Credit now, or cancel to first "
+                                                                 @"increase your Credit from the Credit tab.",
+                                                                 @"Alert message: buying extra credit is needed.\n"
+                                                                 @"[iOS alert message size]");
+                     message = [NSString stringWithFormat:message, totalString, creditString, extraString];
+                     [BlockAlertView showAlertViewWithTitle:title
+                                                    message:message
+                                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
+                      {
+                          if (cancelled == NO)
+                          {
+                              [[PurchaseManager sharedManager] buyCreditAmount:extraCreditAmount
+                                                                    completion:^(BOOL success, id object)
+                               {
+                                   if (success == YES)
+                                   {
+                                       // Credit is sufficient now, send SMS
+                                       [self sendMessageWithText:text andDate:date];
+                                       [[AppDelegate appDelegate] checkCreditWithCompletion:nil];
+                                   }
+                                   else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
+                                   {
+                                       // @TODO: Put SMS in chat as NOT SENT?
+                                   }
+                                   else if (object != nil)
+                                   {
+                                       NSString* title;
+                                       NSString* message;
+                                       
+                                       title   = NSLocalizedStringWithDefaultValue(@"PayNumber FailedBuyCreditTitle", nil,
+                                                                                   [NSBundle mainBundle], @"Buying Credit Failed",
+                                                                                   @"Alert title: Credit could not be bought.\n"
+                                                                                   @"[iOS alert title size].");
+                                       message = NSLocalizedStringWithDefaultValue(@"PayNumber FailedBuyCreditMessage", nil,
+                                                                                   [NSBundle mainBundle],
+                                                                                   @"Something went wrong while buying Credit: "
+                                                                                   @"%@\n\nPlease try again later.",
+                                                                                   @"Message telling that buying credit failed\n"
+                                                                                   @"[iOS alert message size]");
+                                       message = [NSString stringWithFormat:message, [object localizedDescription]];
+                                       [BlockAlertView showAlertViewWithTitle:title
+                                                                      message:message
+                                                                   completion:^(BOOL cancelled, NSInteger buttonIndex)
+                                        {
+                                            // @TODO: Put SMS in chat as NOT SENT?
+                                        }
+                                                            cancelButtonTitle:[Strings closeString]
+                                                            otherButtonTitles:nil];
+                                   }
+                               }];
+                          }
+                          else
+                          {
+                              // @TODO: Put SMS in chat as NOT SENT?
+                          }
+                      }
+                                          cancelButtonTitle:[Strings cancelString]
+                                          otherButtonTitles:[Strings buyString], nil];
+                 }
+             }
+         }
+         else
+         {
+             NSString* title;
+             NSString* message;
+             
+             title   = NSLocalizedStringWithDefaultValue(@"PaySMS FailedGetCreditTitle", nil,
+                                                         [NSBundle mainBundle], @"Credit Unknown",
+                                                         @"Alert title: Reading the user's credit failed.\n"
+                                                         @"[iOS alert title size].");
+             message = NSLocalizedStringWithDefaultValue(@"PaySMS FailedGetCreditMessage", nil,
+                                                         [NSBundle mainBundle],
+                                                         @"Could not get your up-to-date Credit: %@.\n\n"
+                                                         @"Please try again later.",
+                                                         @"Message telling that paying an SMS failed\n"
+                                                         @"[iOS alert message size]");
+             message = [NSString stringWithFormat:message, error.localizedDescription];
+             [BlockAlertView showAlertViewWithTitle:title
+                                            message:message
+                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
+              {
+                  // @TODO: Put SMS in chat as NOT SENT?
+              }
+                                  cancelButtonTitle:[Strings closeString]
+                                  otherButtonTitles:nil];
+         }
+     }];
+}
+
+
+- (void)sendMessageWithText:(NSString*)text andDate:(NSDate*)date
+{
     self.sentMessage = [NSEntityDescription insertNewObjectForEntityForName:@"Message"
                                                      inManagedObjectContext:self.managedObjectContext];
     
@@ -350,33 +484,33 @@
                                      text:text
                                  datetime:date
                                completion:^(NSError* error)
-    {
-        if (error == nil)
-        {
-            [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
-            NSManagedObjectContext* mainContext = [DataManager sharedManager].managedObjectContext;
-            self.sentMessage = [mainContext existingObjectWithID:self.sentMessage.objectID error:nil];
-            
-            [self.fetchedMessages addObject:self.sentMessage];
-            
-            [self finishSendingMessage];
-            [self processMessages:self.fetchedMessagesController.fetchedObjects];
-        }
-        else
-        {
-            NSString* title   = NSLocalizedString(@"Sending Message Failed",
-                                                  @"Alert-title that message could not be sent.");
-            // @TODO: Implement different failures by accepting error-codes from server (to-implement)
-            NSString* message = NSLocalizedString(@"Make sure you have a working internet-connection. Please try again later.",
-                                                  @"Alert-message that message could not be sent.");
-            
-            [BlockAlertView showAlertViewWithTitle:title
-                                           message:message
-                                        completion:nil
-                                 cancelButtonTitle:[Strings closeString]
-                                 otherButtonTitles:nil];
-        }
-    }];
+     {
+         if (error == nil)
+         {
+             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+             NSManagedObjectContext* mainContext = [DataManager sharedManager].managedObjectContext;
+             self.sentMessage = [mainContext existingObjectWithID:self.sentMessage.objectID error:nil];
+             
+             [self.fetchedMessages addObject:self.sentMessage];
+             
+             [self finishSendingMessage];
+             [self processMessages:self.fetchedMessagesController.fetchedObjects];
+         }
+         else
+         {
+             NSString* title   = NSLocalizedString(@"Sending Message Failed",
+                                                   @"Alert-title that message could not be sent.");
+             // @TODO: Implement different failures by accepting error-codes from server (to-implement)
+             NSString* message = NSLocalizedString(@"Make sure you have a working internet-connection. Please try again later.",
+                                                   @"Alert-message that message could not be sent.");
+             
+             [BlockAlertView showAlertViewWithTitle:title
+                                            message:message
+                                         completion:nil
+                                  cancelButtonTitle:[Strings closeString]
+                                  otherButtonTitles:nil];
+         }
+     }];
 }
 
 
@@ -386,7 +520,7 @@
     if (recognizer.state == UIGestureRecognizerStateEnded)
     {
         if ([self.inputToolbar.contentView.textView isFirstResponder])
-        {    
+        {
             [self.inputToolbar.contentView.textView resignFirstResponder];
         }
     }
@@ -412,7 +546,7 @@
 // Must be overriden for JSQMessagesViewController.
 - (NSString*)senderId
 {
-    return nil;
+    return @"";
 }
 
 
@@ -422,3 +556,4 @@
 }
 
 @end
+
