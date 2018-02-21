@@ -29,6 +29,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 @interface ConversationsViewController ()
 
+@property (nonatomic, strong) dispatch_queue_t            searchQueue;
 @property (nonatomic, assign) TableSections               sections;
 @property (nonatomic, strong) NSFetchedResultsController* fetchedMessagesController;
 @property (nonatomic, strong) NSManagedObjectContext*     managedObjectContext;
@@ -58,6 +59,8 @@ typedef NS_ENUM(NSUInteger, TableSections)
         self.numberName           = number.name;
         self.title                = self.numberName;
     }
+    
+    self.searchQueue = dispatch_queue_create("MessageContacts Search", DISPATCH_QUEUE_SERIAL);
     
     __weak typeof(self) weakSelf = self;
     self.defaultsObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
@@ -354,7 +357,6 @@ typedef NS_ENUM(NSUInteger, TableSections)
 }
 
 
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
     self.sections = 0;
@@ -616,7 +618,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
 // @TODO: Abort searching when text changed?
 - (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+    dispatch_async(self.searchQueue, ^
     {
         NSMutableArray* contactsSearchResults = [NSMutableArray array];
         NSMutableArray* messagesSearchResults = [NSMutableArray array];
@@ -655,21 +657,13 @@ typedef NS_ENUM(NSUInteger, TableSections)
              }];
         }];
         
-        if ([NSThread isMainThread])
+        dispatch_async(dispatch_get_main_queue(), ^
         {
             self.contactsSearchResults = contactsSearchResults;
             self.messagesSearchResults = messagesSearchResults;
+            
             [self.tableView reloadData];
-        }
-        else
-        {
-            dispatch_sync(dispatch_get_main_queue(), ^
-            {
-                self.contactsSearchResults = contactsSearchResults;
-                self.messagesSearchResults = messagesSearchResults;
-                [self.tableView reloadData];
-            });
-        }
+        });
     });
 }
 
