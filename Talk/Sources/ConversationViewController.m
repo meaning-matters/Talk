@@ -26,7 +26,7 @@
 
 @property (nonatomic, strong) NSManagedObjectContext*        managedObjectContext;
 @property (nonatomic, strong) NSFetchedResultsController*    fetchedMessagesController;
-@property (nonatomic, weak) id<NSObject>                     messagesObserver;
+@property (nonatomic, weak)   id<NSObject>                   messagesObserver;
 @property (nonatomic, strong) NSMutableArray*                fetchedMessages;
 @property (nonatomic, strong) NSArray*                       messages;
 
@@ -350,7 +350,7 @@
     // Check if there's enough credit.
     [[WebClient sharedClient] retrieveCreditWithReply:^(NSError* error, float credit)
      {
-         float totalFee         = 1.0; // @TODO: Get the actual cost for sending the SMS
+         float totalFee         = 1.0; // @TODO: Get the actual cost for sending the SMS, from server
          NSString* creditString = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
          NSString* totalString  = [[PurchaseManager sharedManager] localizedFormattedPrice:totalFee];
          
