@@ -1583,12 +1583,12 @@
 
 
 // 40C. SEND MESSAGE
-- (void)sendMessage:(MessageData*)message reply:(void(^)(NSError* error, NSString* uuid))reply
+- (void)sendMessage:(MessageData*)message reply:(void (^)(NSError* error, NSString* uuid))reply
 {
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSDictionary* parameters = @{@"fromNumber" : [message.numberE164 stringByReplacingOccurrencesOfString:@"+" withString:@""],
                                  @"toNumber"   : [message.externE164 stringByReplacingOccurrencesOfString:@"+" withString:@""],
-                                 @"msg"         : message.text};
+                                 @"msg"        : message.text};
     
     [self postPath:[NSString stringWithFormat:@"/users/%@/messages", username]
         parameters:parameters
@@ -1612,7 +1612,21 @@
                              toNumber:(NSString*)toNumber
                                 reply:(void (^)(NSError* error, float totalCost))reply
 {
+    NSString* username = [Settings sharedSettings].webUsername;
     
+    [self getPath:[NSString stringWithFormat:@"/users/%@/messages/%@/%@/%@", username, fromNumber, toNumber, msg]
+       parameters:nil
+            reply:^(NSError* error, id content)
+    {
+        if (error == nil)
+        {
+            reply(nil, [content[@"cost"] floatValue]);
+        }
+        else
+        {
+            reply(error, 0);
+        }
+    }];
 }
 
 
