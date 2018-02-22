@@ -1614,6 +1614,9 @@
 {
     NSString* username = [Settings sharedSettings].webUsername;
     
+    fromNumber = [fromNumber stringByReplacingOccurrencesOfString:@"+" withString:@""];
+    toNumber   = [toNumber stringByReplacingOccurrencesOfString:@"+" withString:@""];
+    
     [self getPath:[NSString stringWithFormat:@"/users/%@/messages/%@/%@/%@", username, fromNumber, toNumber, msg]
        parameters:nil
             reply:^(NSError* error, id content)

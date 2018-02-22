@@ -345,131 +345,164 @@
 {
     // @TODO: Disable send-button during this process?
     // @TODO: Fix server side that SMS is not always sent
-    // @TODO: Show loading screen while buying?
+    // @TODO: Show loading screen while checking/buying?
     
-    // Check if there's enough credit.
-    [[WebClient sharedClient] retrieveCreditWithReply:^(NSError* error, float credit)
-     {
-         float totalFee         = 1.0; // @TODO: Get the actual cost for sending the SMS, from server
-         NSString* creditString = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
-         NSString* totalString  = [[PurchaseManager sharedManager] localizedFormattedPrice:totalFee];
-         
-         if (error == nil)
-         {
-             if (totalFee < credit)
-             {
-                 // Credit is sufficient, send SMS
-                 [self sendMessageWithText:text andDate:date];
-                 [[AppDelegate appDelegate] checkCreditWithCompletion:nil];
-             }
-             else
-             {
-                 int extraCreditAmount = [[PurchaseManager sharedManager] amountForCredit:totalFee - credit];
-                 if (extraCreditAmount > 0)
-                 {
-                     NSString* productIdentifier;
-                     NSString* extraString;
-                     NSString* title;
-                     NSString* message;
-                     
-                     productIdentifier = [[PurchaseManager sharedManager] productIdentifierForCreditAmount:extraCreditAmount];
-                     extraString       = [[PurchaseManager sharedManager] localizedPriceForProductIdentifier:productIdentifier];
-                     
-                     title   = NSLocalizedStringWithDefaultValue(@"SendSMS NeedExtraCreditTitle", nil,
-                                                                 [NSBundle mainBundle], @"Extra Credit Needed",
-                                                                 @"Alert title: extra credit must be bought.\n"
-                                                                 @"[iOS alert title size].");
-                     message = NSLocalizedStringWithDefaultValue(@"SendSMS NeedExtraCreditMessage", nil,
-                                                                 [NSBundle mainBundle],
-                                                                 @"The total price of %@ is more than your current "
-                                                                 @"Credit: %@.\n\nYou can buy the sufficient standard "
-                                                                 @"amount of %@ extra Credit now, or cancel to first "
-                                                                 @"increase your Credit from the Credit tab.",
-                                                                 @"Alert message: buying extra credit is needed.\n"
-                                                                 @"[iOS alert message size]");
-                     message = [NSString stringWithFormat:message, totalString, creditString, extraString];
-                     [BlockAlertView showAlertViewWithTitle:title
-                                                    message:message
-                                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
-                      {
-                          if (cancelled == NO)
-                          {
-                              [[PurchaseManager sharedManager] buyCreditAmount:extraCreditAmount
-                                                                    completion:^(BOOL success, id object)
-                               {
-                                   if (success == YES)
-                                   {
-                                       // Credit is sufficient now, send SMS
-                                       [self sendMessageWithText:text andDate:date];
-                                       [[AppDelegate appDelegate] checkCreditWithCompletion:nil];
-                                   }
-                                   else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
-                                   {
-                                       // @TODO: Put SMS in chat as NOT SENT?
-                                   }
-                                   else if (object != nil)
-                                   {
-                                       NSString* title;
-                                       NSString* message;
-                                       
-                                       title   = NSLocalizedStringWithDefaultValue(@"PayNumber FailedBuyCreditTitle", nil,
-                                                                                   [NSBundle mainBundle], @"Buying Credit Failed",
-                                                                                   @"Alert title: Credit could not be bought.\n"
-                                                                                   @"[iOS alert title size].");
-                                       message = NSLocalizedStringWithDefaultValue(@"PayNumber FailedBuyCreditMessage", nil,
-                                                                                   [NSBundle mainBundle],
-                                                                                   @"Something went wrong while buying Credit: "
-                                                                                   @"%@\n\nPlease try again later.",
-                                                                                   @"Message telling that buying credit failed\n"
-                                                                                   @"[iOS alert message size]");
-                                       message = [NSString stringWithFormat:message, [object localizedDescription]];
-                                       [BlockAlertView showAlertViewWithTitle:title
-                                                                      message:message
-                                                                   completion:^(BOOL cancelled, NSInteger buttonIndex)
+    // First check the cost for sending this SMS
+    [[WebClient sharedClient] retrieveMessageCostForMessage:text
+                                                 fromNumber:[[self localPhoneNumber] e164Format]
+                                                   toNumber:[[self externPhoneNumber] e164Format]
+                                                      reply:^(NSError* error, float totalCost)
+    {
+        if (error == nil)
+        {
+            [[WebClient sharedClient] retrieveCreditWithReply:^(NSError* error, float credit)
+            {
+                if (error == nil)
+                {
+                    NSString* creditString = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
+                    NSString* costString   = [[PurchaseManager sharedManager] localizedFormattedPrice:totalCost];
+                    
+                    if (totalCost < credit)
+                    {
+                        // Credit is sufficient, send SMS
+                        [self sendMessageWithText:text andDate:date];
+                        [[AppDelegate appDelegate] checkCreditWithCompletion:nil];
+                    }
+                    else
+                    {
+                        int extraCreditAmount = [[PurchaseManager sharedManager] amountForCredit:totalCost - credit];
+                        if (extraCreditAmount > 0)
+                        {
+                            NSString* productIdentifier;
+                            NSString* extraString;
+                            NSString* title;
+                            NSString* message;
+                            
+                            productIdentifier = [[PurchaseManager sharedManager] productIdentifierForCreditAmount:extraCreditAmount];
+                            extraString       = [[PurchaseManager sharedManager] localizedPriceForProductIdentifier:productIdentifier];
+                            
+                            title   = NSLocalizedStringWithDefaultValue(@"SendSMS NeedExtraCreditTitle", nil,
+                                                                        [NSBundle mainBundle], @"Extra Credit Needed",
+                                                                        @"Alert title: extra credit must be bought.\n"
+                                                                        @"[iOS alert title size].");
+                            message = NSLocalizedStringWithDefaultValue(@"SendSMS NeedExtraCreditMessage", nil,
+                                                                        [NSBundle mainBundle],
+                                                                        @"The total price of %@ is more than your current "
+                                                                        @"Credit: %@.\n\nYou can buy the sufficient standard "
+                                                                        @"amount of %@ extra Credit now, or cancel to first "
+                                                                        @"increase your Credit from the Credit tab.",
+                                                                        @"Alert message: buying extra credit is needed.\n"
+                                                                        @"[iOS alert message size]");
+                            message = [NSString stringWithFormat:message, costString, creditString, extraString];
+                            [BlockAlertView showAlertViewWithTitle:title
+                                                           message:message
+                                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+                            {
+                                if (cancelled == NO)
+                                {
+                                    [[PurchaseManager sharedManager] buyCreditAmount:extraCreditAmount
+                                                                          completion:^(BOOL success, id object)
+                                    {
+                                        if (success == YES)
+                                        {
+                                            // Credit is sufficient now, send SMS
+                                            [self sendMessageWithText:text andDate:date];
+                                            [[AppDelegate appDelegate] checkCreditWithCompletion:nil];
+                                        }
+                                        else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
                                         {
                                             // @TODO: Put SMS in chat as NOT SENT?
                                         }
-                                                            cancelButtonTitle:[Strings closeString]
-                                                            otherButtonTitles:nil];
-                                   }
-                               }];
-                          }
-                          else
-                          {
-                              // @TODO: Put SMS in chat as NOT SENT?
-                          }
-                      }
-                                          cancelButtonTitle:[Strings cancelString]
-                                          otherButtonTitles:[Strings buyString], nil];
-                 }
-             }
-         }
-         else
-         {
-             NSString* title;
-             NSString* message;
-             
-             title   = NSLocalizedStringWithDefaultValue(@"PaySMS FailedGetCreditTitle", nil,
-                                                         [NSBundle mainBundle], @"Credit Unknown",
-                                                         @"Alert title: Reading the user's credit failed.\n"
-                                                         @"[iOS alert title size].");
-             message = NSLocalizedStringWithDefaultValue(@"PaySMS FailedGetCreditMessage", nil,
-                                                         [NSBundle mainBundle],
-                                                         @"Could not get your up-to-date Credit: %@.\n\n"
-                                                         @"Please try again later.",
-                                                         @"Message telling that paying an SMS failed\n"
-                                                         @"[iOS alert message size]");
-             message = [NSString stringWithFormat:message, error.localizedDescription];
-             [BlockAlertView showAlertViewWithTitle:title
-                                            message:message
-                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
-              {
-                  // @TODO: Put SMS in chat as NOT SENT?
-              }
-                                  cancelButtonTitle:[Strings closeString]
-                                  otherButtonTitles:nil];
-         }
-     }];
+                                        else if (object != nil)
+                                        {
+                                            NSString* title;
+                                            NSString* message;
+                                            
+                                            title   = NSLocalizedStringWithDefaultValue(@"PayNumber FailedBuyCreditTitle", nil,
+                                                                                        [NSBundle mainBundle], @"Buying Credit Failed",
+                                                                                        @"Alert title: Credit could not be bought.\n"
+                                                                                        @"[iOS alert title size].");
+                                            message = NSLocalizedStringWithDefaultValue(@"PayNumber FailedBuyCreditMessage", nil,
+                                                                                        [NSBundle mainBundle],
+                                                                                        @"Something went wrong while buying Credit: "
+                                                                                        @"%@\n\nPlease try again later.",
+                                                                                        @"Message telling that buying credit failed\n"
+                                                                                        @"[iOS alert message size]");
+                                            message = [NSString stringWithFormat:message, [object localizedDescription]];
+                                            [BlockAlertView showAlertViewWithTitle:title
+                                                                           message:message
+                                                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+                                            {
+                                                // @TODO: Put SMS in chat as NOT SENT?
+                                            }
+                                                                 cancelButtonTitle:[Strings closeString]
+                                                                 otherButtonTitles:nil];
+                                        }
+                                    }];
+                                }
+                                else
+                                {
+                                    // @TODO: Put SMS in chat as NOT SENT?
+                                }
+                            }
+                                                 cancelButtonTitle:[Strings cancelString]
+                                                 otherButtonTitles:[Strings buyString], nil];
+                        }
+                    }
+                }
+                else
+                {
+                    NSString* title;
+                    NSString* message;
+                    
+                    title   = NSLocalizedStringWithDefaultValue(@"SendSMS FailedGetCreditTitle", nil,
+                                                                [NSBundle mainBundle], @"Credit Unknown",
+                                                                @"Alert title: Reading the user's credit failed.\n"
+                                                                @"[iOS alert title size].");
+                    message = NSLocalizedStringWithDefaultValue(@"SendSMS FailedGetCreditMessage", nil,
+                                                                [NSBundle mainBundle],
+                                                                @"Could not get your up-to-date Credit: %@.\n\n"
+                                                                @"Please try again later.",
+                                                                @"Message telling that paying an SMS failed\n"
+                                                                @"[iOS alert message size]");
+                    message = [NSString stringWithFormat:message, error.localizedDescription];
+                    [BlockAlertView showAlertViewWithTitle:title
+                                                   message:message
+                                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+                    {
+                        // @TODO: Put SMS in chat as NOT SENT?
+                    }
+                                         cancelButtonTitle:[Strings closeString]
+                                         otherButtonTitles:nil];
+                }
+            }];
+        }
+        else
+        {
+            NSString* title;
+            NSString* message;
+            
+            title   = NSLocalizedStringWithDefaultValue(@"SendSMS FailedGetCostTitle", nil,
+                                                        [NSBundle mainBundle], @"Cost Unknown",
+                                                        @"Alert title: Determining the SMS' cost failed.\n"
+                                                        @"[iOS alert title size].");
+            message = NSLocalizedStringWithDefaultValue(@"SendSMS FailedGetCostMessage", nil,
+                                                        [NSBundle mainBundle],
+                                                        @"Could not determine your the cost of this SMS: %@.\n\n"
+                                                        @"Please try again later.",
+                                                        @"Message telling that determining the SMS' cost failed\n"
+                                                        @"[iOS alert message size]");
+            message = [NSString stringWithFormat:message, error.localizedDescription];
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:^(BOOL cancelled, NSInteger buttonIndex)
+            {
+                // @TODO: Put SMS in chat as NOT SENT?
+            }
+                                 cancelButtonTitle:[Strings closeString]
+                                 otherButtonTitles:nil];
+        }
+    }];
 }
 
 
