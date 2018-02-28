@@ -126,10 +126,10 @@
                                                                               object:nil
                                                                                queue:[NSOperationQueue mainQueue]
                                                                           usingBlock:^(NSNotification* note)
-                             {
-                                 [weakSelf.fetchedMessagesController performFetch:nil];
-                                 [weakSelf processMessages:[weakSelf.fetchedMessagesController fetchedObjects]];
-                             }];
+                            {
+                                [weakSelf.fetchedMessagesController performFetch:nil];
+                                [weakSelf processMessages:[weakSelf.fetchedMessagesController fetchedObjects]];
+                            }];
 }
 
 
@@ -150,12 +150,12 @@
     
     // Sort the messages by timestamp.
     self.messages = [messages sortedArrayUsingComparator:^(id a, id b)
-                     {
-                         NSDate* first  = ((MessageData*)a).timestamp;
-                         NSDate* second = ((MessageData*)b).timestamp;
-                         
-                         return [first compare:second];
-                     }];
+                    {
+                        NSDate* first  = ((MessageData*)a).timestamp;
+                        NSDate* second = ((MessageData*)b).timestamp;
+                        
+                        return [first compare:second];
+                    }];
     
     // Determine if we have to scroll to the first unread message.
     if (self.hasFetchedMessages == NO)
@@ -295,19 +295,19 @@
             // Get the contactId for the chosen number.
             [[AppDelegate appDelegate] findContactsHavingNumber:[phoneNumber nationalDigits]
                                                      completion:^(NSArray* contactIds)
-             {
-                 NSString* contactId;
-                 if (contactIds.count > 0)
-                 {
-                     contactId = [contactIds firstObject];
-                 }
-                 
-                 // Initiate the call.
-                 [[CallManager sharedManager] callPhoneNumber:phoneNumber
-                                                    contactId:contactId
-                                                     callerId:nil // @TODO: Use callerID of number used for SMS.
-                                                   completion:nil];
-             }];
+            {
+                NSString* contactId;
+                if (contactIds.count > 0)
+                {
+                    contactId = [contactIds firstObject];
+                }
+                
+                // Initiate the call.
+                [[CallManager sharedManager] callPhoneNumber:phoneNumber
+                                                   contactId:contactId
+                                                    callerId:nil // @TODO: Use callerID of number used for SMS.
+                                                  completion:nil];
+            }];
         }
         else
         {
@@ -517,33 +517,35 @@
                                      text:text
                                  datetime:date
                                completion:^(NSError* error)
-     {
-         if (error == nil)
-         {
-             [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
-             NSManagedObjectContext* mainContext = [DataManager sharedManager].managedObjectContext;
-             self.sentMessage = [mainContext existingObjectWithID:self.sentMessage.objectID error:nil];
-             
-             [self.fetchedMessages addObject:self.sentMessage];
-             
-             [self finishSendingMessage];
-             [self processMessages:self.fetchedMessagesController.fetchedObjects];
-         }
-         else
-         {
-             NSString* title   = NSLocalizedString(@"Sending Message Failed",
-                                                   @"Alert-title that message could not be sent.");
-             // @TODO: Implement different failures by accepting error-codes from server (to-implement)
-             NSString* message = NSLocalizedString(@"Make sure you have a working internet-connection. Please try again later.",
-                                                   @"Alert-message that message could not be sent.");
-             
-             [BlockAlertView showAlertViewWithTitle:title
-                                            message:message
-                                         completion:nil
-                                  cancelButtonTitle:[Strings closeString]
-                                  otherButtonTitles:nil];
-         }
-     }];
+    {
+        if (error == nil)
+        {
+            [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
+            NSManagedObjectContext* mainContext = [DataManager sharedManager].managedObjectContext;
+            self.sentMessage = [mainContext existingObjectWithID:self.sentMessage.objectID error:nil];
+            
+            // Add new object and perform new fetch so new message is included.
+            [self.fetchedMessages addObject:self.sentMessage];
+            [self.fetchedMessagesController performFetch:nil];
+            
+            [self finishSendingMessage];
+            [self processMessages:self.fetchedMessagesController.fetchedObjects];
+        }
+        else
+        {
+            NSString* title   = NSLocalizedString(@"Sending Message Failed",
+                                                  @"Alert-title that message could not be sent.");
+            // @TODO: Implement different failures by accepting error-codes from server (to-implement)
+            NSString* message = NSLocalizedString(@"Make sure you have a working internet-connection. Please try again later.",
+                                                  @"Alert-message that message could not be sent.");
+            
+            [BlockAlertView showAlertViewWithTitle:title
+                                           message:message
+                                        completion:nil
+                                 cancelButtonTitle:[Strings closeString]
+                                 otherButtonTitles:nil];
+        }
+    }];
 }
 
 
