@@ -18,6 +18,7 @@
 #import "DataManager.h"
 #import "BlockAlertView.h"
 #import "Strings.h"
+#import "NBPersonViewController.h"
 
 
 @interface ConversationViewController ()
@@ -91,6 +92,36 @@
     tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                             action:@selector(handleCollectionTapRecognizer:)];
     [self.collectionView addGestureRecognizer:tapRecognizer];
+    
+    // Add contactInfo button to navigationbar.
+    UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
+    [infoButton addTarget:self action:@selector(contactInfo) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem* modalButton = [[UIBarButtonItem alloc] initWithCustomView:infoButton];
+    [self.navigationItem setRightBarButtonItem:modalButton animated:YES];
+}
+
+
+- (void)contactInfo
+{
+    NBPersonViewController *personViewController = [[NBPersonViewController alloc] init];
+    ABRecordRef contactRef;
+    
+    if (self.contactId == nil) // If the contact is unknown
+    {
+        contactRef = ABPersonCreate();
+        
+        ABMutableMultiValueRef numberMulti = ABMultiValueCreateMutable(kABMultiStringPropertyType);
+        ABMultiValueAddValueAndLabel(numberMulti, (__bridge CFTypeRef)[self.externPhoneNumber e164Format], kABPersonPhoneMobileLabel, nil);
+        ABRecordSetValue(contactRef, kABPersonPhoneProperty, numberMulti, nil);
+    }
+    else // If contact is known
+    {
+        ABRecordID recordID = [self.contactId intValue];
+        contactRef          = ABAddressBookGetPersonWithRecordID([[NBAddressBookManager sharedManager] getAddressBook], recordID);
+    }
+    
+    [personViewController setDisplayedPerson:contactRef];
+    [self.navigationController pushViewController:personViewController animated:YES];
 }
 
 
