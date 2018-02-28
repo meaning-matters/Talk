@@ -343,10 +343,6 @@
          senderDisplayName:(NSString*)senderDisplayName
                       date:(NSDate*)date
 {
-    // @TODO: Disable send-button during this process?
-    // @TODO: Fix server side that SMS is not always sent
-    // @TODO: Show loading screen while checking/buying?
-    
     // First check the cost for sending this SMS
     [[WebClient sharedClient] retrieveMessageCostForMessage:text
                                                  fromNumber:[[self localPhoneNumber] e164Format]
@@ -411,7 +407,7 @@
                                         }
                                         else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
                                         {
-                                            // @TODO: Put SMS in chat as NOT SENT?
+                                            // @TODO: Put SMS in chat as NOT SENT? (Maybe combine with user-story: Buffering)
                                         }
                                         else if (object != nil)
                                         {
@@ -433,7 +429,7 @@
                                                                            message:message
                                                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
                                             {
-                                                // @TODO: Put SMS in chat as NOT SENT?
+                                                // @TODO: Put SMS in chat as NOT SENT? (Maybe combine with user-story: Buffering)
                                             }
                                                                  cancelButtonTitle:[Strings closeString]
                                                                  otherButtonTitles:nil];
@@ -442,7 +438,7 @@
                                 }
                                 else
                                 {
-                                    // @TODO: Put SMS in chat as NOT SENT?
+                                    // @TODO: Put SMS in chat as NOT SENT? (Maybe combine with user-story: Buffering)
                                 }
                             }
                                                  cancelButtonTitle:[Strings cancelString]
@@ -470,7 +466,7 @@
                                                    message:message
                                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
                     {
-                        // @TODO: Put SMS in chat as NOT SENT?
+                        // @TODO: Put SMS in chat as NOT SENT? (Maybe combine with user-story: Buffering)
                     }
                                          cancelButtonTitle:[Strings closeString]
                                          otherButtonTitles:nil];
