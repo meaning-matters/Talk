@@ -40,6 +40,8 @@
 @property (nonatomic) NSInteger                              firstUnreadMessageIndex;
 @property (nonatomic) BOOL                                   hasFetchedMessages;
 
+@property (strong, nonatomic) NSTimer*                       searchTimer;
+
 @end
 
 
@@ -274,6 +276,61 @@
     return result;
 }
 
+
+- (void)textViewDidChange:(UITextView*)textView
+{
+    if (self.searchTimer != nil)
+    {
+        [self.searchTimer invalidate];
+        self.searchTimer = nil;
+    }
+    
+    // After 0.5 seconds of no typing, refresh predicted cost of message.
+    self.searchTimer = [NSTimer scheduledTimerWithTimeInterval:0.5
+                                                        target:self
+                                                      selector:@selector(updateMessageCost:)
+                                                      userInfo:textView.text
+                                                       repeats:NO];
+}
+
+
+// Called by timer after x.x seconds of no typing.
+- (void)updateMessageCost:(NSTimer*)timer
+{
+    NSString* localPhoneNumber  = [[self localPhoneNumber] e164Format];
+    NSString* externPhoneNumber = [[self externPhoneNumber] e164Format];
+    NSString* text              = (NSString*)timer.userInfo;
+    
+    
+    // Retrieve predicted cost for typed message.
+    [[WebClient sharedClient] retrieveMessageCostForMessage:text
+                                                 fromNumber:localPhoneNumber
+                                                   toNumber:externPhoneNumber
+                                                      reply:^(NSError* error, float totalCost)
+    {
+        
+        /*
+         @TODO: Kees:
+            There should be a label somewhere to show the predicted cost for the typed message.
+         
+            - If there is an error, this cost could be displayed in red (don't change the label itself, only the color)
+            - If there is no error, update the label with the new cost and make the label blue/green again.
+         
+            For now it's in the title of the navigationbar. The "send"-button of the library is not easily accessible, and there should be another label somewhere else.
+            The new label should get as initial cost 0.0
+         */
+        
+        if (error != nil)
+        {
+            // @TODO: Make label red (?), leave the previous cost.
+        }
+        else
+        {
+            // @TODO: Make label blue/green, update the cost.
+            self.navigationItem.title = [[AppDelegate appDelegate] localizedFormattedPrice1ExtraDigit:totalCost];
+        }
+    }];
+}
 
 - (BOOL)textView:(UITextView*)textView shouldInteractWithURL:(NSURL*)URL inRange:(NSRange)characterRange
 {
