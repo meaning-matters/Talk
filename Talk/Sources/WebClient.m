@@ -1616,13 +1616,7 @@
     
     fromNumber = [fromNumber stringByReplacingOccurrencesOfString:@"+" withString:@""];
     toNumber   = [toNumber stringByReplacingOccurrencesOfString:@"+" withString:@""];
-    
-    // Escape-encode message string.
-    message = (__bridge NSString*)CFURLCreateStringByAddingPercentEscapes(NULL,
-                                                                          (CFStringRef)message,
-                                                                          NULL,
-                                                                          (CFStringRef)@"!*'();:@&=+$,/?%#[]",
-                                                                          kCFStringEncodingUTF8);
+    message    = [message stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     
     [self getPath:[NSString stringWithFormat:@"/users/%@/messages/%@/%@/%@", username, fromNumber, toNumber, message]
        parameters:nil
