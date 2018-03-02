@@ -544,7 +544,6 @@ typedef NS_ENUM(NSUInteger, TableSections)
             
             // The dot on the left of the cell is shown if this conversation has an unread message.
             CellDotView* dotView = [CellDotView getFromCell:cell];
-            
             if (dotView == nil)
             {
                 dotView = [[CellDotView alloc] init];
