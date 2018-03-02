@@ -126,10 +126,10 @@
                                                                               object:nil
                                                                                queue:[NSOperationQueue mainQueue]
                                                                           usingBlock:^(NSNotification* note)
-                            {
-                                [weakSelf.fetchedMessagesController performFetch:nil];
-                                [weakSelf processMessages:[weakSelf.fetchedMessagesController fetchedObjects]];
-                            }];
+    {
+        [weakSelf.fetchedMessagesController performFetch:nil];
+        [weakSelf processMessages:[weakSelf.fetchedMessagesController fetchedObjects]];
+    }];
 }
 
 
@@ -150,12 +150,12 @@
     
     // Sort the messages by timestamp.
     self.messages = [messages sortedArrayUsingComparator:^(id a, id b)
-                    {
-                        NSDate* first  = ((MessageData*)a).timestamp;
-                        NSDate* second = ((MessageData*)b).timestamp;
-                        
-                        return [first compare:second];
-                    }];
+    {
+        NSDate* first  = ((MessageData*)a).timestamp;
+        NSDate* second = ((MessageData*)b).timestamp;
+        
+        return [first compare:second];
+    }];
     
     // Determine if we have to scroll to the first unread message.
     if (self.hasFetchedMessages == NO)
@@ -344,10 +344,10 @@
                       date:(NSDate*)date
 {
     // First check the cost for sending this SMS
-    [[WebClient sharedClient] retrieveMessageCostForMessage:text
-                                                 fromNumber:[[self localPhoneNumber] e164Format]
-                                                   toNumber:[[self externPhoneNumber] e164Format]
-                                                      reply:^(NSError* error, float totalCost)
+    [[WebClient sharedClient] retrieveCostOfMessage:text
+                                         fromNumber:[[self localPhoneNumber] e164Format]
+                                           toNumber:[[self externPhoneNumber] e164Format]
+                                              reply:^(NSError* error, float totalCost)
     {
         if (error == nil)
         {
@@ -355,9 +355,6 @@
             {
                 if (error == nil)
                 {
-                    NSString* creditString = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
-                    NSString* costString   = [[PurchaseManager sharedManager] localizedFormattedPrice:totalCost];
-                    
                     if (totalCost < credit)
                     {
                         // Credit is sufficient, send SMS
@@ -374,8 +371,11 @@
                             NSString* title;
                             NSString* message;
                             
-                            productIdentifier = [[PurchaseManager sharedManager] productIdentifierForCreditAmount:extraCreditAmount];
-                            extraString       = [[PurchaseManager sharedManager] localizedPriceForProductIdentifier:productIdentifier];
+                            NSString* creditString = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
+                            NSString* costString   = [[PurchaseManager sharedManager] localizedFormattedPrice:totalCost];
+                            
+                            productIdentifier      = [[PurchaseManager sharedManager] productIdentifierForCreditAmount:extraCreditAmount];
+                            extraString            = [[PurchaseManager sharedManager] localizedPriceForProductIdentifier:productIdentifier];
                             
                             title   = NSLocalizedStringWithDefaultValue(@"SendSMS NeedExtraCreditTitle", nil,
                                                                         [NSBundle mainBundle], @"Extra Credit Needed",
@@ -383,13 +383,13 @@
                                                                         @"[iOS alert title size].");
                             message = NSLocalizedStringWithDefaultValue(@"SendSMS NeedExtraCreditMessage", nil,
                                                                         [NSBundle mainBundle],
-                                                                        @"The total price of %@ is more than your current "
-                                                                        @"Credit: %@.\n\nYou can buy the sufficient standard "
+                                                                        @"Your credit: %@, is not enough to send this message: "
+                                                                        @"%@.\n\nYou can buy the sufficient standard "
                                                                         @"amount of %@ extra Credit now, or cancel to first "
                                                                         @"increase your Credit from the Credit tab.",
                                                                         @"Alert message: buying extra credit is needed.\n"
                                                                         @"[iOS alert message size]");
-                            message = [NSString stringWithFormat:message, costString, creditString, extraString];
+                            message = [NSString stringWithFormat:message, creditString, costString, extraString];
                             [BlockAlertView showAlertViewWithTitle:title
                                                            message:message
                                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
@@ -407,7 +407,7 @@
                                         }
                                         else if (object != nil && ((NSError*)object).code == SKErrorPaymentCancelled)
                                         {
-                                            // @TODO: Put SMS in chat as NOT SENT? (Maybe combine with user-story: Buffering)
+                                            [self bufferMessageWithText:text andDate:date];
                                         }
                                         else if (object != nil)
                                         {
@@ -429,7 +429,7 @@
                                                                            message:message
                                                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
                                             {
-                                                // @TODO: Put SMS in chat as NOT SENT? (Maybe combine with user-story: Buffering)
+                                                [self bufferMessageWithText:text andDate:date];
                                             }
                                                                  cancelButtonTitle:[Strings closeString]
                                                                  otherButtonTitles:nil];
@@ -438,7 +438,7 @@
                                 }
                                 else
                                 {
-                                    // @TODO: Put SMS in chat as NOT SENT? (Maybe combine with user-story: Buffering)
+                                    [self bufferMessageWithText:text andDate:date];
                                 }
                             }
                                                  cancelButtonTitle:[Strings cancelString]
@@ -466,7 +466,7 @@
                                                    message:message
                                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
                     {
-                        // @TODO: Put SMS in chat as NOT SENT? (Maybe combine with user-story: Buffering)
+                        [self bufferMessageWithText:text andDate:date];
                     }
                                          cancelButtonTitle:[Strings closeString]
                                          otherButtonTitles:nil];
@@ -484,16 +484,16 @@
                                                         @"[iOS alert title size].");
             message = NSLocalizedStringWithDefaultValue(@"SendSMS FailedGetCostMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"Could not determine your the cost of this SMS: %@.\n\n"
+                                                        @"Could not determine the cost of this SMS.\n\n"
                                                         @"Please try again later.",
-                                                        @"Message telling that determining the SMS' cost failed\n"
+                                                        @"Message telling that determining the SMS cost failed\n"
                                                         @"[iOS alert message size]");
             message = [NSString stringWithFormat:message, error.localizedDescription];
             [BlockAlertView showAlertViewWithTitle:title
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)
             {
-                // @TODO: Put SMS in chat as NOT SENT?
+                [self bufferMessageWithText:text andDate:date];
             }
                                  cancelButtonTitle:[Strings closeString]
                                  otherButtonTitles:nil];
@@ -542,6 +542,12 @@
                                  otherButtonTitles:nil];
         }
     }];
+}
+
+
+- (void)bufferMessageWithText:(NSString*)text andDate:(NSDate*)date
+{
+    
 }
 
 

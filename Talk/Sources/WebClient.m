@@ -1607,24 +1607,24 @@
 
 
 // 40D. GET COST FOR SENDING MESSAGE
-- (void)retrieveMessageCostForMessage:(NSString*)msg
-                           fromNumber:(NSString*)fromNumber
-                             toNumber:(NSString*)toNumber
-                                reply:(void (^)(NSError* error, float totalCost))reply
+- (void)retrieveCostOfMessage:(NSString*)message
+                   fromNumber:(NSString*)fromNumber
+                     toNumber:(NSString*)toNumber
+                        reply:(void (^)(NSError* error, float totalCost))reply
 {
     NSString* username = [Settings sharedSettings].webUsername;
     
     fromNumber = [fromNumber stringByReplacingOccurrencesOfString:@"+" withString:@""];
     toNumber   = [toNumber stringByReplacingOccurrencesOfString:@"+" withString:@""];
     
-    // Escape-encode message string
-    msg = (__bridge NSString*)CFURLCreateStringByAddingPercentEscapes(NULL,
-                                                                      (CFStringRef)msg,
-                                                                      NULL,
-                                                                      (CFStringRef)@"!*'();:@&=+$,/?%#[]",
-                                                                      kCFStringEncodingUTF8);
+    // Escape-encode message string.
+    message = (__bridge NSString*)CFURLCreateStringByAddingPercentEscapes(NULL,
+                                                                          (CFStringRef)message,
+                                                                          NULL,
+                                                                          (CFStringRef)@"!*'();:@&=+$,/?%#[]",
+                                                                          kCFStringEncodingUTF8);
     
-    [self getPath:[NSString stringWithFormat:@"/users/%@/messages/%@/%@/%@", username, fromNumber, toNumber, msg]
+    [self getPath:[NSString stringWithFormat:@"/users/%@/messages/%@/%@/%@", username, fromNumber, toNumber, message]
        parameters:nil
             reply:^(NSError* error, id content)
     {
@@ -2116,7 +2116,7 @@
 
 
 // 40D.
-- (void)cancelAllRetrieveMessageCostForMessage:(NSString*)msg fromNumber:(NSString*)fromNumber toNumber:(NSString*)toNumber
+- (void)cancelAllRetrieveCostOfMessage:(NSString*)msg fromNumber:(NSString*)fromNumber toNumber:(NSString*)toNumber
 {
     // @TODO: Make this method.
 }
