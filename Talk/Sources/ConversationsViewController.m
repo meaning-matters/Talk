@@ -613,14 +613,12 @@ typedef NS_ENUM(NSUInteger, TableSections)
 }
 
 
-// @TODO: Searching not on main thread?
-// @TODO: Abort searching when text changed?
+// @TODO: Searching not on main thread, but in background
+// @TODO: Abort searching and start over when text changed
 - (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
 {
-    dispatch_async(self.searchQueue, ^
-    {
-        NSMutableArray* contactsSearchResults = [NSMutableArray array];
-        NSMutableArray* messagesSearchResults = [NSMutableArray array];
+        self.contactsSearchResults = [NSMutableArray array];
+        self.messagesSearchResults = [NSMutableArray array];
         
         [self.conversations enumerateObjectsUsingBlock:^(NSArray* conversation, NSUInteger index, BOOL* stop)
         {
@@ -635,14 +633,14 @@ typedef NS_ENUM(NSUInteger, TableSections)
             
             if (range.location != NSNotFound)
             {
-                [contactsSearchResults addObject:conversation];
+                [self.contactsSearchResults addObject:conversation];
             }
             else
             {
                 range = [lastMessage.externE164 rangeOfString:searchText options:NSCaseInsensitiveSearch | NSDiacriticInsensitiveSearch];
                 if (range.location != NSNotFound)
                 {
-                    [contactsSearchResults addObject:conversation];
+                    [self.contactsSearchResults addObject:conversation];
                 }
             }
             
@@ -651,19 +649,12 @@ typedef NS_ENUM(NSUInteger, TableSections)
                 NSRange range = [message.text  rangeOfString:searchText options:NSCaseInsensitiveSearch | NSDiacriticInsensitiveSearch];
                 if (range.location != NSNotFound)
                 {
-                    [messagesSearchResults addObject:message];
+                    [self.messagesSearchResults addObject:message];
                 }
              }];
         }];
-        
-        dispatch_async(dispatch_get_main_queue(), ^
-        {
-            self.contactsSearchResults = contactsSearchResults;
-            self.messagesSearchResults = messagesSearchResults;
             
-            [self.tableView reloadData];
-        });
-    });
+        [self.tableView reloadData];
 }
 
 
