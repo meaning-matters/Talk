@@ -103,25 +103,23 @@
 
 - (void)contactInfo
 {
-    NBPersonViewController *personViewController = [[NBPersonViewController alloc] init];
-    ABRecordRef contactRef;
-    
     if (self.contactId == nil) // If the contact is unknown
     {
-        contactRef = ABPersonCreate();
-        
-        ABMutableMultiValueRef numberMulti = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-        ABMultiValueAddValueAndLabel(numberMulti, (__bridge CFTypeRef)[self.externPhoneNumber e164Format], kABPersonPhoneMobileLabel, nil);
-        ABRecordSetValue(contactRef, kABPersonPhoneProperty, numberMulti, nil);
+        NSString* localNumber = [self.externPhoneNumber e164Format];
+        NSString* type        = [[NBAddressBookManager sharedManager].delegate typeOfNumber:localNumber];
+        [[NBAddressBookManager sharedManager] addNumber:localNumber
+                                        toContactAsType:type
+                                         viewController:self];
     }
     else // If contact is known
     {
-        ABRecordID recordID = [self.contactId intValue];
-        contactRef          = ABAddressBookGetPersonWithRecordID([[NBAddressBookManager sharedManager] getAddressBook], recordID);
+        ABRecordID  recordID   = [self.contactId intValue];
+        ABRecordRef contactRef = ABAddressBookGetPersonWithRecordID([[NBAddressBookManager sharedManager] getAddressBook], recordID);
+        
+        NBPersonViewController *personViewController = [[NBPersonViewController alloc] init];
+        [personViewController setDisplayedPerson:contactRef];
+        [self.navigationController pushViewController:personViewController animated:YES];
     }
-    
-    [personViewController setDisplayedPerson:contactRef];
-    [self.navigationController pushViewController:personViewController animated:YES];
 }
 
 
@@ -159,6 +157,25 @@
         [weakSelf.fetchedMessagesController performFetch:nil];
         [weakSelf processMessages:[weakSelf.fetchedMessagesController fetchedObjects]];
     }];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(findContactForNumber) name:NF_RELOAD_CONTACTS object:nil];
+}
+
+
+- (void)findContactForNumber
+{
+    if (self.contactId == nil)
+    {
+        [[AppDelegate appDelegate] findContactsHavingNumber:[self.externPhoneNumber e164Format]
+                                                 completion:^(NSArray* contactIds)
+        {
+            if (contactIds.count > 0)
+            {
+                self.contactId = [contactIds firstObject];
+                self.title = [[AppDelegate appDelegate] contactNameForId:self.contactId];
+            }
+        }];
+    }
 }
 
 
