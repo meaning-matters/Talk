@@ -93,17 +93,17 @@
                                                             action:@selector(handleCollectionTapRecognizer:)];
     [self.collectionView addGestureRecognizer:tapRecognizer];
     
-    // Add contactInfo button to navigationbar.
-    UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
-    [infoButton addTarget:self action:@selector(contactInfo) forControlEvents:UIControlEventTouchUpInside];
+    // Add showContactDetails button to navigation bar.
+    UIButton* infoButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
+    [infoButton addTarget:self action:@selector(showContactDetails) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem* modalButton = [[UIBarButtonItem alloc] initWithCustomView:infoButton];
     [self.navigationItem setRightBarButtonItem:modalButton animated:YES];
 }
 
 
-- (void)contactInfo
+- (void)showContactDetails
 {
-    if (self.contactId == nil) // If the contact is unknown
+    if (self.contactId == nil) // If the contact is unknown.
     {
         NSString* localNumber = [self.externPhoneNumber e164Format];
         NSString* type        = [[NBAddressBookManager sharedManager].delegate typeOfNumber:localNumber];
@@ -111,13 +111,13 @@
                                         toContactAsType:type
                                          viewController:self];
     }
-    else // If contact is known
+    else // If contact is known.
     {
-        ABRecordID  recordID   = [self.contactId intValue];
-        ABRecordRef contactRef = ABAddressBookGetPersonWithRecordID([[NBAddressBookManager sharedManager] getAddressBook], recordID);
+        ABRecordID  recordId = [self.contactId intValue];
+        ABRecordRef contact  = ABAddressBookGetPersonWithRecordID([[NBAddressBookManager sharedManager] getAddressBook], recordId);
         
-        NBPersonViewController *personViewController = [[NBPersonViewController alloc] init];
-        [personViewController setDisplayedPerson:contactRef];
+        NBPersonViewController* personViewController = [[NBPersonViewController alloc] init];
+        [personViewController setDisplayedPerson:contact];
         [self.navigationController pushViewController:personViewController animated:YES];
     }
 }
