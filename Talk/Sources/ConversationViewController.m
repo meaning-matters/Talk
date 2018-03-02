@@ -279,28 +279,34 @@
 
 - (void)textViewDidChange:(UITextView*)textView
 {
-    if (self.searchTimer != nil)
+    if (self.searchTimer == nil)
     {
-        [self.searchTimer invalidate];
-        self.searchTimer = nil;
+        // After 0.5 seconds of no typing, refresh predicted cost of message.
+        self.searchTimer = [NSTimer scheduledTimerWithTimeInterval:1
+                                                            target:self
+                                                          selector:@selector(updateMessageCost:)
+                                                          userInfo:textView.text
+                                                           repeats:NO];
     }
-    
-    // After 0.5 seconds of no typing, refresh predicted cost of message.
-    self.searchTimer = [NSTimer scheduledTimerWithTimeInterval:0.5
-                                                        target:self
-                                                      selector:@selector(updateMessageCost:)
-                                                      userInfo:textView.text
-                                                       repeats:NO];
 }
 
 
 // Called by timer after x.x seconds of no typing.
 - (void)updateMessageCost:(NSTimer*)timer
 {
+    NSString* text = (NSString*)timer.userInfo;
+    
+    if (text.length == 0)
+    {
+        self.searchTimer = nil;
+        // @TODO: Kees: Replace with label
+        self.navigationItem.title = [[AppDelegate appDelegate] localizedFormattedPrice1ExtraDigit:0];
+        
+        return;
+    }
+    
     NSString* localPhoneNumber  = [[self localPhoneNumber] e164Format];
     NSString* externPhoneNumber = [[self externPhoneNumber] e164Format];
-    NSString* text              = (NSString*)timer.userInfo;
-    
     
     // Retrieve predicted cost for typed message.
     [[WebClient sharedClient] retrieveMessageCostForMessage:text
@@ -308,6 +314,7 @@
                                                    toNumber:externPhoneNumber
                                                       reply:^(NSError* error, float totalCost)
     {
+        self.searchTimer = nil;
         
         /*
          @TODO: Kees:
@@ -322,7 +329,7 @@
         
         if (error != nil)
         {
-            // @TODO: Make label red (?), leave the previous cost.
+            // @TODO: Make label grey (?), leave the previous cost.
         }
         else
         {
