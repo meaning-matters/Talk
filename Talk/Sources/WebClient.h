@@ -388,10 +388,10 @@
 - (void)sendMessage:(MessageData*)message reply:(void(^)(NSError* error, NSString* uuid))reply;
 
 // 40D. GET COST FOR SENDING MESSAGE
-- (void)retrieveMessageCostForMessage:(NSString*)msg
-                           fromNumber:(NSString*)fromNumber
-                             toNumber:(NSString*)toNumber
-                                reply:(void (^)(NSError* error, float totalCost))reply;
+- (void)retrieveCostOfMessage:(NSString*)msg
+                   fromNumber:(NSString*)fromNumber
+                     toNumber:(NSString*)toNumber
+                        reply:(void (^)(NSError* error, float totalCost))reply;
 
 #pragma mark - Cancel Methods
 
@@ -534,6 +534,6 @@
 - (void)cancelAllSendMessage:(MessageData*)message;
 
 // 40D.
-- (void)cancelAllRetrieveMessageCostForMessage:(NSString*)msg fromNumber:(NSString*)fromNumber toNumber:(NSString*)toNumber;
+- (void)cancelAllRetrieveCostOfMessage:(NSString*)message fromNumber:(NSString*)fromNumber toNumber:(NSString*)toNumber;
 
 @end
