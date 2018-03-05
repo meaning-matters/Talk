@@ -693,5 +693,17 @@
     return nil;
 }
 
+- (CGFloat)collectionView:(JSQMessagesCollectionView*)collectionView layout:(JSQMessagesCollectionViewFlowLayout*)collectionViewLayout heightForCellBottomLabelAtIndexPath:(NSIndexPath*)indexPath
+{
+    return ceil([[[NSAttributedString alloc] initWithString:@""] size].height);
+}
+
+- (NSAttributedString*)collectionView:(JSQMessagesCollectionView*)collectionView attributedTextForCellBottomLabelAtIndexPath:(NSIndexPath*)indexPath
+{
+    NSString* cost = [[AppDelegate appDelegate] localizedFormattedPrice1ExtraDigit:((MessageData*)self.messages[indexPath.row]).cost];
+    
+    return [[NSAttributedString alloc] initWithString:cost];
+}
+
 @end
 
