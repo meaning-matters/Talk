@@ -38,8 +38,10 @@
 @property (nonatomic, strong) PhoneNumber*                   externPhoneNumber;
 @property (nonatomic, strong) NSString*                      contactId;
 
-@property (nonatomic) NSInteger                              firstUnreadMessageIndex;
-@property (nonatomic) BOOL                                   hasFetchedMessages;
+@property (nonatomic)         BOOL                           hasFetchedMessages;
+
+@property (nonatomic)         NSInteger                      initialMessageIndex;
+@property (nonatomic, strong) NSString*                      initialMessageUuid;
 
 @property (strong, nonatomic) NSTimer*                       searchTimer;
 
@@ -53,18 +55,33 @@
                             localPhoneNumber:(PhoneNumber*)localPhoneNumber
                            externPhoneNumber:(PhoneNumber*)externPhoneNumber
                                    contactId:(NSString*)contactId
+                         scrollToMessageUuid:(NSString*)scrollToMessageUuid
 {
     if (self = [super init])
     {
         self.managedObjectContext      = managedObjectContext;
         self.fetchedMessagesController = fetchedMessagesController;
         
-        self.localPhoneNumber  = localPhoneNumber;
-        self.externPhoneNumber = externPhoneNumber;
-        self.contactId         = contactId;
+        self.localPhoneNumber          = localPhoneNumber;
+        self.externPhoneNumber         = externPhoneNumber;
+        self.contactId                 = contactId;
+        
+        self.initialMessageUuid       = scrollToMessageUuid;
     }
     
     return self;
+}
+
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (self.initialMessageIndex != NSNotFound)
+    {
+        NSIndexPath* indexPath = [NSIndexPath indexPathForItem:self.initialMessageIndex inSection:0];
+        [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
+    }
 }
 
 
@@ -73,13 +90,6 @@
     [super viewWillAppear:animated];
     
     [self processMessages:self.fetchedMessagesController.fetchedObjects];
-    
-    // Scroll to first unread message.
-    if (self.firstUnreadMessageIndex >= 0)
-    {
-        NSIndexPath* indexPath = [NSIndexPath indexPathForItem:self.firstUnreadMessageIndex inSection:0];
-        [self scrollToIndexPath:indexPath animated:NO];
-    }
     
     // Disable the attachment button.
     self.inputToolbar.contentView.leftBarButtonItem = nil;
@@ -131,10 +141,10 @@
 {
     [super viewDidLoad];
     
-    self.hasFetchedMessages      = NO;
-    self.firstUnreadMessageIndex = -1;
+    self.hasFetchedMessages        = NO;
+    self.initialMessageIndex       = NSNotFound;
     
-    self.bubbleFactory = [[JSQMessagesBubbleImageFactory alloc] init];
+    self.bubbleFactory             = [[JSQMessagesBubbleImageFactory alloc] init];
     
     self.collectionView.delegate   = self;
     self.collectionView.dataSource = self;
@@ -207,24 +217,45 @@
         return [first compare:second];
     }];
     
-    // Determine if we have to scroll to the first unread message.
     if (self.hasFetchedMessages == NO)
     {
         int index = 0;
-        for (MessageData* message in self.messages)
+        
+        if (self.initialMessageUuid.length > 0)
         {
-            if ([[MessageUpdatesHandler sharedHandler] messageUpdateWithUuid:message.uuid] != nil)
+            for (MessageData* message in self.messages)
             {
-                self.firstUnreadMessageIndex = index;
+                if ([message.uuid isEqualToString:self.initialMessageUuid])
+                {
+                    self.initialMessageIndex = index;
+                    
+                    break;
+                }
                 
-                break;
+                index++;
             }
             
-            index++;
+            self.hasFetchedMessages = YES;
         }
-        
-        self.hasFetchedMessages = YES;
+        else
+        {
+            for (MessageData* message in self.messages)
+            {
+                if ([[MessageUpdatesHandler sharedHandler] messageUpdateWithUuid:message.uuid] != nil)
+                {
+                    self.initialMessageIndex = index;
+                    
+                    break;
+                }
+                
+                index++;
+            }
+            
+            self.hasFetchedMessages = YES;
+        }
     }
+    
+    self.automaticallyScrollsToMostRecentMessage == (self.initialMessageIndex == NSNotFound);
     
     [self removeUpdates];
     [self.collectionView reloadData];

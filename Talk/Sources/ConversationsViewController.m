@@ -20,9 +20,17 @@
 #import "PhoneNumber.h"
 #import "NewConversationViewController.h"
 
+typedef NS_ENUM(NSUInteger, TableSections)
+{
+    TableSectionNormal   = 1UL << 0, // No search.
+    TableSectionContacts = 1UL << 1, // Contacts search results.
+    TableSectionMessages = 1UL << 2, // Messages search results.
+};
 
 @interface ConversationsViewController ()
 
+@property (nonatomic, strong) dispatch_queue_t            searchQueue;
+@property (nonatomic, assign) TableSections               sections;
 @property (nonatomic, strong) NSFetchedResultsController* fetchedMessagesController;
 @property (nonatomic, strong) NSManagedObjectContext*     managedObjectContext;
 @property (nonatomic, strong) NSString*                   numberE164;
@@ -31,9 +39,11 @@
 @property (nonatomic, strong) NSArray*                    conversations;
 @property (nonatomic, strong) UILabel*                    noConversationsLabel;
 @property (nonatomic, strong) ConversationCell*           conversationCell;
-@property (nonatomic, weak) id<NSObject>                  defaultsObserver;
-@property (nonatomic, weak) id<NSObject>                  messagesObserver;
+@property (nonatomic, weak)   id<NSObject>                defaultsObserver;
+@property (nonatomic, weak)   id<NSObject>                messagesObserver;
 @property (nonatomic, strong) UIBarButtonItem*            composeButtonItem;
+@property (nonatomic, strong) NSMutableArray*             contactsSearchResults;
+@property (nonatomic, strong) NSMutableArray*             messagesSearchResults;
 
 @end
 
@@ -49,6 +59,8 @@
         self.numberName           = number.name;
         self.title                = self.numberName;
     }
+    
+    self.searchQueue = dispatch_queue_create("MessageContacts Search", DISPATCH_QUEUE_SERIAL);
     
     __weak typeof(self) weakSelf = self;
     self.defaultsObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
@@ -344,27 +356,126 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return self.fetchedMessagesController.sections.count;
+    self.sections = 0;
+    
+    if (self.contactsSearchResults.count == 0 && self.messagesSearchResults.count == 0)
+    {
+        self.sections |= TableSectionNormal;
+    }
+    
+    if (self.contactsSearchResults.count > 0)
+    {
+        self.sections |= TableSectionContacts;
+    }
+    
+    if (self.messagesSearchResults.count > 0)
+    {
+        self.sections |= TableSectionMessages;
+    }
+    
+    return [Common bitsSetCount:self.sections];
+}
+
+
+- (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
+{
+    switch ([Common nthBitSet:section inValue:self.sections])
+    {
+        case TableSectionNormal:
+        {
+            return nil;
+            
+            break;
+        }
+        case TableSectionContacts:
+        {
+            return [Strings contactsString];
+            
+            break;
+        }
+        case TableSectionMessages:
+        {
+            return [Strings messagesString];
+            
+            break;
+        }
+        default:
+        {
+            return nil;
+        }
+    }
 }
 
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.conversations.count;
+    switch ([Common nthBitSet:section inValue:self.sections])
+    {
+        case TableSectionNormal:
+        {
+            return self.conversations.count;
+            
+            break;
+        }
+        case TableSectionContacts:
+        {
+            return self.contactsSearchResults.count;
+            
+            break;
+        }
+        case TableSectionMessages:
+        {
+            return self.messagesSearchResults.count;
+            
+            break;
+        }
+        default:
+        {
+            return 0;
+        }
+    }
 }
 
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    MessageData* message                       = [self.conversations[indexPath.row] lastObject];
-    PhoneNumber* localPhoneNumber              = [[PhoneNumber alloc] initWithNumber:message.numberE164];
-    PhoneNumber* externPhoneNumber             = [[PhoneNumber alloc] initWithNumber:message.externE164];
+    MessageData* message;
+    PhoneNumber* localPhoneNumber;
+    PhoneNumber* externPhoneNumber;
+    NSString*    scrollToMessageUUID = @"";
+    
+    switch ([Common nthBitSet:indexPath.section inValue:self.sections])
+    {
+        case TableSectionNormal:
+        {
+            message = [self.conversations[indexPath.row] lastObject];
+            
+            break;
+        }
+        case TableSectionContacts:
+        {
+            message = self.contactsSearchResults[indexPath.row];
+            
+            break;
+        }
+        case TableSectionMessages:
+        {
+            message             = self.messagesSearchResults[indexPath.row];
+            scrollToMessageUUID = message.uuid;
+            
+            break;
+        }
+    }
+    
+    localPhoneNumber  = [[PhoneNumber alloc] initWithNumber:message.numberE164];
+    externPhoneNumber = [[PhoneNumber alloc] initWithNumber:message.externE164];
+    
     ConversationViewController* viewController = [[ConversationViewController alloc] initWithManagedObjectContext:self.managedObjectContext
                                                                                         fetchedMessagesController:self.fetchedMessagesController
                                                                                                  localPhoneNumber:localPhoneNumber
                                                                                                 externPhoneNumber:externPhoneNumber
-                                                                                                        contactId:message.contactId];
-    
+                                                                                                        contactId:message.contactId
+                                                                                              scrollToMessageUuid:scrollToMessageUUID];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
@@ -378,35 +489,58 @@
         cell = [self.tableView dequeueReusableCellWithIdentifier:@"ConversationCell"];
     }
     
-    // Last message of the conversation.
-    MessageData* lastMessage = [self.conversations[indexPath.row] lastObject];
+    MessageData* message;
     
-    // The dot on the left of the cell is shown if this conversation has an unread message.
-    CellDotView* dotView = [CellDotView getFromCell:cell];
-    
-    if (dotView == nil)
+    switch ([Common nthBitSet:indexPath.section inValue:self.sections])
     {
-        dotView = [[CellDotView alloc] init];
-        [dotView addToCell:cell];
-    }
-    
-    dotView.hidden = YES;
-    
-    for (MessageData* message in self.conversations[indexPath.row])
-    {
-        if ([[MessageUpdatesHandler sharedHandler] messageUpdateWithUuid:message.uuid] != nil)
+        case TableSectionNormal:
         {
-            dotView.hidden = NO;
+            // Last message of the conversation.
+            MessageData* lastMessage = [self.conversations[indexPath.row] lastObject];
+            
+            // The dot on the left of the cell is shown if this conversation has an unread message.
+            CellDotView* dotView = [CellDotView getFromCell:cell];
+            if (dotView == nil)
+            {
+                dotView = [[CellDotView alloc] init];
+                [dotView addToCell:cell];
+            }
+            
+            dotView.hidden = YES;
+            
+            for (message in self.conversations[indexPath.row])
+            {
+                if ([[MessageUpdatesHandler sharedHandler] messageUpdateWithUuid:message.uuid] != nil)
+                {
+                    dotView.hidden = NO;
+                    
+                    break;
+                }
+            }
+            
+            message = lastMessage;
+            
+            break;
+        }
+        case TableSectionContacts:
+        {
+            message = [self.contactsSearchResults[indexPath.row] lastObject];
+            
+            break;
+        }
+        case TableSectionMessages:
+        {
+            message = self.messagesSearchResults[indexPath.row];
             
             break;
         }
     }
     
-    PhoneNumber* number        = [[PhoneNumber alloc] initWithNumber:lastMessage.externE164];
-    cell.nameNumberLabel.text  = lastMessage.contactId ? [[AppDelegate appDelegate] contactNameForId:lastMessage.contactId]
-                                                       : [number internationalFormat];
-    cell.textPreviewLabel.text = lastMessage.text;
-    cell.timestampLabel.text   = [Common historyStringForDate:lastMessage.timestamp showTimeForToday:YES];
+    PhoneNumber* number        = [[PhoneNumber alloc] initWithNumber:message.externE164];
+    cell.nameNumberLabel.text  = message.contactId ? [[AppDelegate appDelegate] contactNameForId:message.contactId]
+                                                                                                : [number internationalFormat];
+    cell.textPreviewLabel.text = message.text;
+    cell.timestampLabel.text   = [Common historyStringForDate:message.timestamp showTimeForToday:YES];
     
     return cell;
 }
@@ -416,6 +550,66 @@
 - (BOOL)hidesBottomBarWhenPushed
 {
     return self.navigationController.visibleViewController != self;
+}
+
+
+// @TODO: Searching not on main thread, but in background
+// @TODO: Abort searching and start over when text changed
+- (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
+{
+        self.contactsSearchResults = [NSMutableArray array];
+        self.messagesSearchResults = [NSMutableArray array];
+        
+        [self.conversations enumerateObjectsUsingBlock:^(NSArray* conversation, NSUInteger index, BOOL* stop)
+        {
+            MessageData* lastMessage = [conversation lastObject];
+            
+            NSRange range = NSMakeRange(0, 0);
+            if (lastMessage.contactId != nil)
+            {
+                NSString* contactName = [[AppDelegate appDelegate] contactNameForId:lastMessage.contactId];
+                range = [contactName rangeOfString:searchText options:NSCaseInsensitiveSearch | NSDiacriticInsensitiveSearch];
+            }
+            
+            if (range.location != NSNotFound)
+            {
+                [self.contactsSearchResults addObject:conversation];
+            }
+            else
+            {
+                range = [lastMessage.externE164 rangeOfString:searchText options:NSCaseInsensitiveSearch | NSDiacriticInsensitiveSearch];
+                if (range.location != NSNotFound)
+                {
+                    [self.contactsSearchResults addObject:conversation];
+                }
+            }
+            
+            [conversation enumerateObjectsUsingBlock:^(MessageData* message, NSUInteger index, BOOL* stop)
+             {
+                NSRange range = [message.text  rangeOfString:searchText options:NSCaseInsensitiveSearch | NSDiacriticInsensitiveSearch];
+                if (range.location != NSNotFound)
+                {
+                    [self.messagesSearchResults addObject:message];
+                }
+             }];
+        }];
+            
+        [self.tableView reloadData];
+}
+
+
+- (void)searchBarCancelButtonClicked:(UISearchBar*)searchBar
+{
+    self.contactsSearchResults = [NSMutableArray array];
+    self.messagesSearchResults = [NSMutableArray array];
+    
+    [self.tableView reloadData];
+}
+
+
+- (BOOL)searchBarIsEmpty
+{
+    return self.searchBar.text.length == 0;
 }
 
 @end

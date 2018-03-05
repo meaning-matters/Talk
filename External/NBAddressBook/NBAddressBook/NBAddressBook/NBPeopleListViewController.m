@@ -287,7 +287,10 @@
                 [self filterArrayUsingKeyword:searchStringParam];
             }
             
-            completion(filteredContacts);
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                completion(filteredContacts);
+            });
         }
         
         searchString = searchStringParam;
