@@ -279,9 +279,9 @@
 
 - (void)textViewDidChange:(UITextView*)textView
 {
+    // After a short delay, refresh predicted cost of message.
     if (self.searchTimer == nil)
     {
-        // After 0.5 seconds of no typing, refresh predicted cost of message.
         self.searchTimer = [NSTimer scheduledTimerWithTimeInterval:1
                                                             target:self
                                                           selector:@selector(updateMessageCost:)
