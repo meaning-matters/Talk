@@ -1539,7 +1539,7 @@
 // 40A. GET ALL MESSAGES
 - (void)retrieveMessages:(void (^)(NSError* error, NSArray* messages))reply
 {
-    NSString* username       = [Settings sharedSettings].webUsername;
+    NSString* username = [Settings sharedSettings].webUsername;
     
     [self getPath:[NSString stringWithFormat:@"/users/%@/messages", username]
        parameters:nil
@@ -1557,7 +1557,7 @@
 }
 
 
-// 40A. GET ALL MESSAGES
+// 40B. GET ALL MESSAGES FROM DATE
 - (void)retrieveMessagesFromDate:(NSDate*)date reply:(void (^)(NSError*, NSArray*))reply
 {
     NSString* username       = [Settings sharedSettings].webUsername;
@@ -1582,12 +1582,13 @@
 }
 
 
-- (void)sendMessage:(MessageData*)message reply:(void(^)(NSError* error, NSString* uuid))reply
+// 40C. SEND MESSAGE
+- (void)sendMessage:(MessageData*)message reply:(void (^)(NSError* error, NSString* uuid))reply
 {
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSDictionary* parameters = @{@"fromNumber" : [message.numberE164 stringByReplacingOccurrencesOfString:@"+" withString:@""],
                                  @"toNumber"   : [message.externE164 stringByReplacingOccurrencesOfString:@"+" withString:@""],
-                                 @"msg"         : message.text};
+                                 @"msg"        : message.text};
     
     [self postPath:[NSString stringWithFormat:@"/users/%@/messages", username]
         parameters:parameters
@@ -1600,6 +1601,34 @@
         else
         {
             reply(error, nil);
+        }
+    }];
+}
+
+
+// 40D. GET COST FOR SENDING MESSAGE
+- (void)retrieveCostOfMessage:(NSString*)message
+                   fromNumber:(NSString*)fromNumber
+                     toNumber:(NSString*)toNumber
+                        reply:(void (^)(NSError* error, float totalCost))reply
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+    
+    fromNumber = [fromNumber stringByReplacingOccurrencesOfString:@"+" withString:@""];
+    toNumber   = [toNumber stringByReplacingOccurrencesOfString:@"+" withString:@""];
+    message    = [message stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    
+    [self getPath:[NSString stringWithFormat:@"/users/%@/messages/%@/%@/%@", username, fromNumber, toNumber, message]
+       parameters:nil
+            reply:^(NSError* error, id content)
+    {
+        if (error == nil)
+        {
+            reply(nil, [content[@"cost"] floatValue]);
+        }
+        else
+        {
+            reply(error, 0);
         }
     }];
 }
@@ -2042,6 +2071,48 @@
     [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodGet
                                                     path:[NSString stringWithFormat:@"/users/%@/callback/%@",
                                                           username, uuid]];
+}
+
+
+// 40A.
+- (void)cancelAllRetrieveMessages
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodGet
+                                                  path:[NSString stringWithFormat:@"/users/%@/messages", username]];
+}
+
+
+// 40B.
+- (void)cancelAllRetrieveMessagesFromDate:(NSDate*)date
+{
+    NSString* username       = [Settings sharedSettings].webUsername;
+    NSString* fromDateString = [Common stringWithDate:date];
+    
+    fromDateString = [fromDateString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+    fromDateString = [fromDateString stringByReplacingOccurrencesOfString:@":" withString:@"%3A"];
+    
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodGet
+                                                  path:[NSString stringWithFormat:@"/users/%@/messages/updates/%@",
+                                                        username, fromDateString]];
+}
+
+
+// 40C.
+- (void)cancelAllSendMessage:(MessageData*)message
+{
+    NSString* username = [Settings sharedSettings].webUsername;
+    
+    [self.webInterface cancelAllHttpRequestsWithMethod:RequestMethodPost
+                                                  path:[NSString stringWithFormat:@"/users/%@/messages", username]];
+}
+
+
+// 40D.
+- (void)cancelAllRetrieveCostOfMessage:(NSString*)msg fromNumber:(NSString*)fromNumber toNumber:(NSString*)toNumber
+{
+    // @TODO: Make this method.
 }
 
 @end

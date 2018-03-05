@@ -381,12 +381,17 @@
 // 40A. GET ALL MESSAGES
 - (void)retrieveMessages:(void (^)(NSError* error, NSArray* messages))reply;
 
-// 40B. SEND SMS
+// 40B. GET ALL MESSAGES FROM DATE
+- (void)retrieveMessagesFromDate:(NSDate*)date reply:(void (^)(NSError*, NSArray*))reply;
+
+// 40C. SEND MESSAGE
 - (void)sendMessage:(MessageData*)message reply:(void(^)(NSError* error, NSString* uuid))reply;
 
-// 40B. GET ALL MESSAGES FROM DATE
-- (void)retrieveMessagesFromDate:(NSDate*)date reply:(void (^)(NSError *, NSArray *))reply;
-
+// 40D. GET COST FOR SENDING MESSAGE
+- (void)retrieveCostOfMessage:(NSString*)msg
+                   fromNumber:(NSString*)fromNumber
+                     toNumber:(NSString*)toNumber
+                        reply:(void (^)(NSError* error, float totalCost))reply;
 
 #pragma mark - Cancel Methods
 
@@ -518,5 +523,17 @@
 
 // 34.
 - (void)cancelAllRetrieveCallbackStateForUuid:(NSString*)uuid;
+
+// 40A.
+- (void)cancelAllRetrieveMessages;
+
+// 40B.
+- (void)cancelAllRetrieveMessagesFromDate:(NSDate*)date;
+
+// 40C.
+- (void)cancelAllSendMessage:(MessageData*)message;
+
+// 40D.
+- (void)cancelAllRetrieveCostOfMessage:(NSString*)message fromNumber:(NSString*)fromNumber toNumber:(NSString*)toNumber;
 
 @end
