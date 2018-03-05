@@ -169,31 +169,28 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 - (void)findContactsForAnonymousMessages
 {
-    dispatch_async(dispatch_queue_create("Contact Search New Conversation", DISPATCH_QUEUE_SERIAL), ^
+    for (NSArray* conversation in self.conversations)
     {
-        for (NSArray* conversation in self.conversations)
+        MessageData* lastMessage = [conversation lastObject];
+        
+        // If one message of a conversation has no contactId, none do, because they are all with the same contact.
+        if (lastMessage.contactId == nil)
         {
-            MessageData* lastMessage = [conversation lastObject];
-            
-            // If one message of a conversation has no contactId, none do, because they are all with the same contact.
-            if (lastMessage.contactId == nil)
+            PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:lastMessage.externE164];
+            [[AppDelegate appDelegate] findContactsHavingNumber:[phoneNumber e164Format]
+                                                     completion:^(NSArray* contactIds)
             {
-                PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:lastMessage.externE164];
-                [[AppDelegate appDelegate] findContactsHavingNumber:[phoneNumber e164Format]
-                                                         completion:^(NSArray* contactIds)
+                if (contactIds.count > 0)
                 {
-                    if (contactIds.count > 0)
+                    // Give all those messages the same contactId.
+                    for (MessageData* message in conversation)
                     {
-                        // Give all those messages the same contactId.
-                        for (MessageData* message in conversation)
-                        {
-                            message.contactId = [contactIds firstObject];
-                        }
+                        message.contactId = [contactIds firstObject];
                     }
-                }];
-            }
+                }
+            }];
         }
-    });
+    }
 }
 
 
