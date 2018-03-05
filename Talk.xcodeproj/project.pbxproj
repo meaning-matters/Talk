@@ -537,6 +537,7 @@
 		48B0C3F9174989F500DAB3BD /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B0C3F8174989F400DAB3BD /* Keychain.m */; };
 		48B0C3FA174989F500DAB3BD /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B0C3F8174989F400DAB3BD /* Keychain.m */; };
 		48B32A011725B65000F49182 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48B32A001725B65000F49182 /* CoreAudio.framework */; };
+		48B4BFE0201E7DC700576075 /* Application.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B4BFDF201E7D1100576075 /* Application.m */; };
 		48B5AAF216E6A58700BA4084 /* NumberCountriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */; };
 		48B5AAF316E6A58700BA4084 /* NumberCountriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */; };
 		48B8131C1AADF7390019AF77 /* CallRecordData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B8131B1AADF7390019AF77 /* CallRecordData.m */; };
@@ -1365,6 +1366,8 @@
 		48B0C3F7174989F400DAB3BD /* Keychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keychain.h; sourceTree = "<group>"; };
 		48B0C3F8174989F400DAB3BD /* Keychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Keychain.m; sourceTree = "<group>"; };
 		48B32A001725B65000F49182 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		48B4BFDF201E7D1100576075 /* Application.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Application.m; sourceTree = "<group>"; };
+		48B4BFE1201E7E7D00576075 /* Application.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Application.h; sourceTree = "<group>"; };
 		48B5AAF016E6A58400BA4084 /* NumberCountriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberCountriesViewController.h; sourceTree = "<group>"; };
 		48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberCountriesViewController.m; sourceTree = "<group>"; };
 		48B813141AADF6970019AF77 /* NBAddressBook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NBAddressBook.h; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBAddressBook.h; sourceTree = SOURCE_ROOT; };
@@ -1974,6 +1977,8 @@
 			isa = PBXGroup;
 			children = (
 				48D0A6F31654D6D700FA2D98 /* main.mm */,
+				48B4BFE1201E7E7D00576075 /* Application.h */,
+				48B4BFDF201E7D1100576075 /* Application.m */,
 				48338F9F16170CA80033F4C1 /* AppDelegate.h */,
 				48338FA016170CA80033F4C1 /* AppDelegate.m */,
 				4822B4301C9615FB004BD2F5 /* AddressUpdatesHandler.h */,
@@ -3133,7 +3138,7 @@
 				TargetAttributes = {
 					48884A6F1615CE920005AA79 = {
 						DevelopmentTeam = K68747FJ6J;
-						LastSwiftMigration = 0830;
+						LastSwiftMigration = 0920;
 						SystemCapabilities = {
 							com.apple.DataProtection = {
 								enabled = 0;
@@ -3790,6 +3795,7 @@
 				82AC3BB51FA76D87002AEB96 /* JSQMessagesInputToolbar.m in Sources */,
 				48B813491AADF9380019AF77 /* NBContact.m in Sources */,
 				48FC54321C89EDA3007658FE /* CellDotView.m in Sources */,
+				48B4BFE0201E7DC700576075 /* Application.m in Sources */,
 				48B813351AADF8DE0019AF77 /* NBPeopleListViewController.m in Sources */,
 				488FBBE21700852F000ECC71 /* NumberData.m in Sources */,
 				82AC3BA61FA76D87002AEB96 /* JSQMediaItem.m in Sources */,
@@ -4102,6 +4108,7 @@
 				);
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
@@ -4113,6 +4120,9 @@
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "Talk/Sources/Talk-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;
@@ -4148,6 +4158,7 @@
 				);
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
@@ -4157,6 +4168,8 @@
 				PRODUCT_NAME = NumberBay;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "Talk/Sources/Talk-Bridging-Header.h";
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;
@@ -4280,6 +4293,7 @@
 				);
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/External/OpenSSL-for-iPhone/lib\"",
@@ -4290,6 +4304,8 @@
 				PRODUCT_NAME = NumberBay;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "Talk/Sources/Talk-Bridging-Header.h";
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7";
 				WRAPPER_EXTENSION = app;

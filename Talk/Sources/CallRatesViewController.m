@@ -199,6 +199,7 @@
     [[WebClient sharedClient] retrieveCallRateForE164:self.callbackPhoneNumber.e164Format
                                                 reply:^(NSError* error, float ratePerMinute)
     {
+        self.isLoading = NO;
         if (error == nil)
         {
             [[WebClient sharedClient] retrieveCallRates:^(NSError* error, NSArray* rates)

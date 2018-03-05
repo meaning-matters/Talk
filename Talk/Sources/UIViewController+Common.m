@@ -383,22 +383,17 @@
 
 - (void)updateAllSectionsOfTableView:(UITableView*)tableView
 {
-    NSRange     range    = NSMakeRange(0, [tableView numberOfSections]);
-    NSIndexSet* indexSet = [NSIndexSet indexSetWithIndexesInRange:range];
-
-    [tableView beginUpdates];
-    [tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
-    [tableView endUpdates];
+    [tableView reloadData];
 
     if (self.footNoteIndexPath != nil)
     {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
         {
-            [tableView scrollToRowAtIndexPath:self.footNoteIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+            [tableView scrollToRowAtIndexPath:self.footNoteIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+
+            self.footNoteIndexPath = nil;
         });
     }
-
-    self.footNoteIndexPath = nil;
 }
 
 @end

@@ -270,3 +270,6 @@ The operation couldn’t be completed. (SKErrorDomain error 0.) when can't load 
 * Fix and enable Settings > Show Footnotes for iOS 11.
 
 * Date format on Recent Info screen is too long when device language is not English (Spanish for example: "12 de octubre 2..."). Should do short/digits date format!
+
+* Failed calls show up as missed calls.
+

@@ -252,28 +252,34 @@ typedef enum
         {
             if ([self isNumberValid])
             {
-                [self.tableView endEditing:YES];
-
-                // Add delay to prevent a ghost keyboard to appear briefly in case of error when the alert is closed and the
-                // view is dismissed.
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                {
-                   [self getVerificationData:^(NSString* uuid, NSArray* languages, NSUInteger codeLength)
-                   {
-                       self.uuid       = uuid;
-                       self.languages  = languages;
-                       self.codeLength = codeLength;
-
-                       [self pushCallViewController];
-                   }];
-                });
+                [self performVerification];
             }
             else
             {
-                [self showCantVerifyAlertWithIndexPath:indexPath];
+                [self showNumberInvalidAlertWithIndexPath:indexPath];
             }
         }
     }
+}
+
+
+- (void)performVerification
+{
+    [self.tableView endEditing:YES];
+
+    // Add delay to prevent a ghost keyboard to appear briefly in case of error when the alert is closed and the
+    // view is dismissed.
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+    {
+        [self getVerificationData:^(NSString* uuid, NSArray* languages, NSUInteger codeLength)
+        {
+            self.uuid       = uuid;
+            self.languages  = languages;
+            self.codeLength = codeLength;
+
+            [self pushCallViewController];
+        }];
+    });
 }
 
 
@@ -509,21 +515,46 @@ typedef enum
 }
 
 
-- (void)showCantVerifyAlertWithIndexPath:(NSIndexPath*)indexPath
+- (void)showNumberInvalidAlertWithIndexPath:(NSIndexPath*)indexPath
 {
     NSString* title;
     NSString* message;
 
-    title   = NSLocalizedString(@"Can't Verify Number Yet", @"");
-    message = NSLocalizedString(@"First enter your number above. When done, tap here again to verify your number.", @"");
-    [BlockAlertView showAlertViewWithTitle:title
-                                   message:message
-                                completion:^(BOOL cancelled, NSInteger buttonIndex)
+    if (self.phoneNumberTextFieldDelegate.phoneNumber.number.length == 0)
     {
-        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+        title   = NSLocalizedString(@"No Number Entered", @"");
+        message = NSLocalizedString(@"Please, first enter your number above, then tap here again to verify it.", @"");
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+        {
+            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+        }
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:nil];
     }
-                         cancelButtonTitle:[Strings closeString]
-                         otherButtonTitles:nil];
+    else
+    {
+        title   = NSLocalizedString(@"Number Seems Invalid", @"");
+        message = NSLocalizedString(@"The number you entered seems invalid.\n\n"
+                                    @"Tap %@ if the number you entered is indeed valid, or else tap %@ to correct the number.", @"");
+        message = [NSString stringWithFormat:message, [Strings verifyString], [Strings closeString]];
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+        {
+            if (cancelled)
+            {
+                [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+            }
+            else
+            {
+                [self performVerification];
+            }
+        }
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:[Strings verifyString], nil];
+    }
 }
 
 

@@ -109,44 +109,6 @@
 }
 
 
-- (BOOL)requiresAddressProofType
-{
-    NSArray* types = @[];
-    if (self.salutation.isPerson)
-    {
-        types = [types arrayByAddingObjectsFromArray:self.person[@"addressProofTypes"]];
-        types = [types arrayByAddingObjectsFromArray:self.person[@"identityProofTypes"]];
-    }
-
-    if (self.salutation.isCompany)
-    {
-        types = [types arrayByAddingObjectsFromArray:self.company[@"addressProofTypes"]];
-        types = [types arrayByAddingObjectsFromArray:self.company[@"identityProofTypes"]];
-    }
-
-    return [types containsObject:@"UTILITY"];
-}
-
-
-- (BOOL)requiresIdentityProofType
-{
-    NSArray* types = @[];
-    if (self.salutation.isPerson)
-    {
-        types = [types arrayByAddingObjectsFromArray:self.person[@"addressProofTypes"]];
-        types = [types arrayByAddingObjectsFromArray:self.person[@"identityProofTypes"]];
-    }
-
-    if (self.salutation.isCompany)
-    {
-        types = [types arrayByAddingObjectsFromArray:self.company[@"addressProofTypes"]];
-        types = [types arrayByAddingObjectsFromArray:self.company[@"identityProofTypes"]];
-    }
-
-    return [types containsObject:@"COMPANY"] || [types containsObject:@"PASSPORT"] || [types containsObject:@"ID_CARD"];
-}
-
-
 #pragma mark - Helpers
 
 - (NSString*)stringWithStrings:(NSArray*)strings

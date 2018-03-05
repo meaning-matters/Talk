@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-
+#import "Application.h"
 
 int main(int argc, char* argv[])
 {
@@ -17,6 +17,8 @@ int main(int argc, char* argv[])
         [[NSUserDefaults standardUserDefaults] setObject:[NSArray arrayWithObject:@"en"] forKey:@"AppleLanguages"];
         [[NSUserDefaults standardUserDefaults] synchronize];
 
-        return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
+        return UIApplicationMain(argc, argv,
+                                 NSStringFromClass([Application class]),
+                                 NSStringFromClass([AppDelegate class]));
     }
 }

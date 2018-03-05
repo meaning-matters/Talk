@@ -40,6 +40,7 @@ typedef enum
 }
 
 @property (nonatomic, strong) NSIndexPath* countryIndexPath;
+@property (nonatomic, strong) NSDate*      reloadDate;
 
 @end
 
@@ -78,23 +79,24 @@ typedef enum
 
     self.clearsSelectionOnViewWillAppear = YES;
 
-    [[NSNotificationCenter defaultCenter] addObserverForName:NetworkStatusSimChangedNotification
-                                                      object:nil
-                                                       queue:[NSOperationQueue mainQueue]
-                                                  usingBlock:^(NSNotification* note)
-    {
-        [Common reloadSections:TableSectionHomeCountry allSections:sections tableView:self.tableView];
-    }];
+    // No need to observer NetworkStatusSimChangedNotification because we already observe "homeIsoCountryCode" below.
 
     // Refresh the Phone or Number names used.
+    self.reloadDate = [NSDate date];
     [[NSNotificationCenter defaultCenter] addObserverForName:NSManagedObjectContextObjectsDidChangeNotification
                                                       object:[DataManager sharedManager].managedObjectContext
                                                        queue:[NSOperationQueue mainQueue]
                                                   usingBlock:^(NSNotification* note)
     {
-        [Common reloadSections:(TableSectionCallback | TableSectionCallerId)
-                   allSections:sections
-                     tableView:self.tableView];
+        // Limit the number of reloads because this seems to be called a lot when the app becomes active again.
+        if ([[NSDate date] timeIntervalSinceDate:self.reloadDate] > 1)
+        {
+            self.reloadDate = [NSDate date];
+
+            [Common reloadSections:(TableSectionCallback | TableSectionCallerId)
+                       allSections:sections
+                         tableView:self.tableView];
+        }
     }];
 
     [settings addObserver:self
@@ -257,8 +259,9 @@ typedef enum
             title = NSLocalizedStringWithDefaultValue(@"Settings:Options SectionFooter", nil,
                                                       [NSBundle mainBundle],
                                                       @"Choose to sort lists of Phones and Numbers by country or name.\n\n"
-                                                      @"If app footnotes are hidden, you can still show "
-                                                      @"them for a few seconds by holding the light-grey screen areas.",
+                                                      @"You can hide all footnotes on the app's tables. When hidden, you "
+                                                      @"can still show footnotes for a few seconds by holding the light-grey "
+                                                      @"areas where they appear.",
                                                       @"Explanation what the Home Country setting is doing\n"
                                                       @"[* lines]");
             break;
@@ -303,18 +306,7 @@ typedef enum
         }
         case TableSectionOptions:
         {
-            NSComparisonResult order = [[UIDevice currentDevice].systemVersion compare: @"11" options: NSNumericSearch];
-            if (order == NSOrderedSame || order == NSOrderedDescending)
-            {
-                // No footnotes options as it does not work well yet with iOS 11.
-                numberOfRows = 1;
-                [Settings sharedSettings].showFootnotes = YES;
-            }
-            else
-            {
-                // < iOS 11, all good for footnotes.
-                numberOfRows = 2;
-            }
+            numberOfRows = 2;
             break;
         }
         case TableSectionAccountData:

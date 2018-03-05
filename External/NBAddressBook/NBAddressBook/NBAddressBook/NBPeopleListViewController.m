@@ -700,7 +700,7 @@
         NSCharacterSet* stripSet = [NSCharacterSet characterSetWithCharactersInString:@"+()-. \u00a0"];
 
         NSString* strippedNumber = [[number componentsSeparatedByCharactersInSet:stripSet] componentsJoinedByString:@""];
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+        dispatch_async(searchQueue, ^
         {
             NSMutableArray* contacts = [NSMutableArray arrayWithArray:allContacts];
 
