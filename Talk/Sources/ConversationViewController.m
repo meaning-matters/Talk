@@ -379,7 +379,7 @@
     {
         self.searchTimer = nil;
         // @TODO: Kees: Replace with label
-        self.navigationItem.title = [[PurchaseManager sharedManager] localizedFormattedPrice:0];
+        self.navigationItem.title = [[PurchaseManager sharedManager] localizedFormattedPrice1ExtraDigit:0];
         
         return;
     }
@@ -413,7 +413,7 @@
         else
         {
             // @TODO: Make label blue/green, update the cost.
-            self.navigationItem.title = [[PurchaseManager sharedManager] localizedFormattedPrice:totalCost];
+            self.navigationItem.title = [[PurchaseManager sharedManager] localizedFormattedPrice1ExtraDigit:totalCost];
         }
     }];
 }
@@ -509,8 +509,8 @@
                         int extraCreditAmount = [[PurchaseManager sharedManager] amountForCredit:totalCost - credit];
                         if (extraCreditAmount > 0)
                         {
-                            NSString* creditString = [[PurchaseManager sharedManager] localizedFormattedPrice:credit];
-                            NSString* costString   = [[PurchaseManager sharedManager] localizedFormattedPrice:totalCost];
+                            NSString* creditString = [[PurchaseManager sharedManager] localizedFormattedPrice1ExtraDigit:credit];
+                            NSString* costString   = [[PurchaseManager sharedManager] localizedFormattedPrice1ExtraDigit:totalCost];
                             
                             NSString* productIdentifier = [[PurchaseManager sharedManager] productIdentifierForCreditAmount:extraCreditAmount];
                             NSString* extraString       = [[PurchaseManager sharedManager] localizedPriceForProductIdentifier:productIdentifier];
@@ -735,7 +735,7 @@
 
 - (NSAttributedString*)collectionView:(JSQMessagesCollectionView*)collectionView attributedTextForCellBottomLabelAtIndexPath:(NSIndexPath*)indexPath
 {
-    NSString* costString = [[PurchaseManager sharedManager] localizedFormattedPrice:((MessageData*)self.messages[indexPath.row]).cost];
+    NSString* costString = [[PurchaseManager sharedManager] localizedFormattedPrice1ExtraDigit:((MessageData*)self.messages[indexPath.row]).cost];
     
     return [[NSAttributedString alloc] initWithString:costString];
 }
