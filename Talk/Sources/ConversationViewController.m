@@ -379,7 +379,7 @@
     {
         self.searchTimer = nil;
         // @TODO: Kees: Replace with label
-        self.navigationItem.title = [[AppDelegate appDelegate] localizedFormattedPrice1ExtraDigit:0];
+        self.navigationItem.title = [[PurchaseManager sharedManager] localizedFormattedPrice:0];
         
         return;
     }
@@ -413,7 +413,7 @@
         else
         {
             // @TODO: Make label blue/green, update the cost.
-            self.navigationItem.title = [[AppDelegate appDelegate] localizedFormattedPrice1ExtraDigit:totalCost];
+            self.navigationItem.title = [[PurchaseManager sharedManager] localizedFormattedPrice:totalCost];
         }
     }];
 }
@@ -735,7 +735,7 @@
 
 - (NSAttributedString*)collectionView:(JSQMessagesCollectionView*)collectionView attributedTextForCellBottomLabelAtIndexPath:(NSIndexPath*)indexPath
 {
-    NSString* costString = [[AppDelegate appDelegate] localizedFormattedPrice1ExtraDigit:((MessageData*)self.messages[indexPath.row]).cost];
+    NSString* costString = [[PurchaseManager sharedManager] localizedFormattedPrice:((MessageData*)self.messages[indexPath.row]).cost];
     
     return [[NSAttributedString alloc] initWithString:costString];
 }
