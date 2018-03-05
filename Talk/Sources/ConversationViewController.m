@@ -571,6 +571,7 @@
 // Must be overriden for JSQMessagesViewController.
 - (NSString*)senderId
 {
+    // We have to return something so the app doesn't crash.
     return @"";
 }
 
