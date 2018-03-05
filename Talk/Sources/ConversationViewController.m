@@ -724,12 +724,14 @@
     return nil;
 }
 
+
 - (CGFloat)collectionView:(JSQMessagesCollectionView*)collectionView
                    layout:(JSQMessagesCollectionViewFlowLayout*)collectionViewLayout
     heightForCellBottomLabelAtIndexPath:(NSIndexPath*)indexPath
 {
     return ceil([[[NSAttributedString alloc] initWithString:@""] size].height);
 }
+
 
 - (NSAttributedString*)collectionView:(JSQMessagesCollectionView*)collectionView attributedTextForCellBottomLabelAtIndexPath:(NSIndexPath*)indexPath
 {
