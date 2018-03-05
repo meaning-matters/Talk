@@ -309,10 +309,10 @@
     NSString* externPhoneNumber = [[self externPhoneNumber] e164Format];
     
     // Retrieve predicted cost for typed message.
-    [[WebClient sharedClient] retrieveMessageCostForMessage:text
-                                                 fromNumber:localPhoneNumber
-                                                   toNumber:externPhoneNumber
-                                                      reply:^(NSError* error, float totalCost)
+    [[WebClient sharedClient] retrieveCostOfMessage:text
+                                         fromNumber:localPhoneNumber
+                                           toNumber:externPhoneNumber
+                                              reply:^(NSError* error, float totalCost)
     {
         self.searchTimer = nil;
         
