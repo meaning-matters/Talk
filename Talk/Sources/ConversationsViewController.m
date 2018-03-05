@@ -392,13 +392,13 @@ typedef NS_ENUM(NSUInteger, TableSections)
         }
         case TableSectionContacts:
         {
-            return NSLocalizedString(@"Contacts", @"Contacts header title");
+            return [Strings contactsString];
             
             break;
         }
         case TableSectionMessages:
         {
-            return NSLocalizedString(@"Messages", @"Messages header title");
+            return [Strings messagesString];
             
             break;
         }
