@@ -103,7 +103,7 @@
 
 - (void)showContactDetails
 {
-    if (self.contactId == nil) // If the contact is unknown.
+    if (self.contactId == nil)
     {
         NSString* localNumber = [self.externPhoneNumber e164Format];
         NSString* type        = [[NBAddressBookManager sharedManager].delegate typeOfNumber:localNumber];
@@ -111,7 +111,7 @@
                                         toContactAsType:type
                                          viewController:self];
     }
-    else // If contact is known.
+    else
     {
         ABRecordID  recordId = [self.contactId intValue];
         ABRecordRef contact  = ABAddressBookGetPersonWithRecordID([[NBAddressBookManager sharedManager] getAddressBook], recordId);
