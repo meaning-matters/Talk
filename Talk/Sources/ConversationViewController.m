@@ -68,11 +68,11 @@
 }
 
 
--(void)viewDidAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    if (self.initialMessageIndex >= 0)
+    if (self.initialMessageIndex != NSNotFound)
     {
         NSIndexPath* indexPath = [NSIndexPath indexPathForItem:self.initialMessageIndex inSection:0];
         [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
@@ -109,7 +109,7 @@
     [super viewDidLoad];
     
     self.hasFetchedMessages        = NO;
-    self.initialMessageIndex      = -1;
+    self.initialMessageIndex       = NSNotFound;
     
     self.bubbleFactory             = [[JSQMessagesBubbleImageFactory alloc] init];
     
@@ -203,14 +203,7 @@
         }
     }
     
-    if (self.initialMessageIndex >= 0)
-    {
-        self.automaticallyScrollsToMostRecentMessage = NO;
-    }
-    else
-    {
-        self.automaticallyScrollsToMostRecentMessage = YES;
-    }
+    self.automaticallyScrollsToMostRecentMessage == (self.initialMessageIndex == NSNotFound);
     
     [self removeUpdates];
     [self.collectionView reloadData];
