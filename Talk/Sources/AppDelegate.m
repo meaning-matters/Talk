@@ -1271,7 +1271,7 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
     if ([[PhoneNumber stripNumber:number] isEqualToString:recent.dialedNumber] ||
         [recentPhoneNumber.e164Format     isEqualToString:phoneNumber.e164Format])
     {
-        return YES;
+        return YES; 
     }
     else
     {
