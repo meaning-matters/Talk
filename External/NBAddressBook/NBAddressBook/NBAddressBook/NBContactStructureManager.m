@@ -197,21 +197,28 @@
         }
         
         //Load in the numbers for this person
-        [self loadInDetailPropertiesForArray:[tableStructure objectAtIndex:CC_NUMBER] usingDatasource:ABRecordCopyValue(person.contactRef, kABPersonPhoneProperty) andLabelArray:NUMBER_ARRAY];
+        [self loadInDetailPropertiesForArray:[tableStructure objectAtIndex:CC_NUMBER]
+                             usingDatasource:ABRecordCopyValue(person.contactRef, kABPersonPhoneProperty)
+                               andLabelArray:NUMBER_ARRAY];
         
         //Load in the emails for this person
-        [self loadInDetailPropertiesForArray:[tableStructure objectAtIndex:CC_EMAIL] usingDatasource:ABRecordCopyValue(person.contactRef, kABPersonEmailProperty) andLabelArray:HWO_ARRAY];
+        [self loadInDetailPropertiesForArray:[tableStructure objectAtIndex:CC_EMAIL]
+                             usingDatasource:ABRecordCopyValue(person.contactRef, kABPersonEmailProperty)
+                               andLabelArray:HWO_ARRAY];
         
         //Load in the URLs for this person
-        [self loadInDetailPropertiesForArray:[tableStructure objectAtIndex:CC_HOMEPAGE] usingDatasource:ABRecordCopyValue(person.contactRef, kABPersonURLProperty) andLabelArray:WEB_ARRAY];
+        [self loadInDetailPropertiesForArray:[tableStructure objectAtIndex:CC_HOMEPAGE]
+                             usingDatasource:ABRecordCopyValue(person.contactRef, kABPersonURLProperty)
+                               andLabelArray:WEB_ARRAY];
         
         //Load in the birthday
-        NSDate * dateBirthday = (NSDate*) CFBridgingRelease(ABRecordCopyValue(person.contactRef, kABPersonBirthdayProperty));
+        NSDate* dateBirthday = (NSDate*) CFBridgingRelease(ABRecordCopyValue(person.contactRef, kABPersonBirthdayProperty));
         if (dateBirthday != nil)
         {
             //Insert a date cell
-            NSMutableArray * sectionArray = [self.tableStructure objectAtIndex:CC_BIRTHDAY];
-            NBPersonCellInfo * cellInfo = [[NBPersonCellInfo alloc] initWithPlaceholder:nil andLabel:(__bridge NSString *)(ABPersonCopyLocalizedPropertyName(kABPersonBirthdayProperty))];
+            NSMutableArray* sectionArray = [self.tableStructure objectAtIndex:CC_BIRTHDAY];
+            NBPersonCellInfo* cellInfo   = [[NBPersonCellInfo alloc] initWithPlaceholder:nil
+                                                                                andLabel:(__bridge NSString *)(ABPersonCopyLocalizedPropertyName(kABPersonBirthdayProperty))];
             [cellInfo setDateValue:dateBirthday];
             [sectionArray addObject:cellInfo];
         }
@@ -329,8 +336,8 @@
         [addressArray removeLastObject];
         for (CFIndex i = 0; i < ABMultiValueGetCount(addressRef); i++)
         {
-            NSString* label = (__bridge NSString *)ABAddressBookCopyLocalizedLabel((ABMultiValueCopyLabelAtIndex(addressRef, i)));   
-            NSDictionary * addDictionary = (__bridge NSDictionary *)(ABMultiValueCopyValueAtIndex(addressRef, i));
+            NSString*     label         = (__bridge NSString *)ABAddressBookCopyLocalizedLabel((ABMultiValueCopyLabelAtIndex(addressRef, i)));   
+            NSDictionary* addDictionary = (__bridge NSDictionary *)(ABMultiValueCopyValueAtIndex(addressRef, i));
             
             //Create a new cell for each entry
             NBPersonCellAddressInfo * addressCellInfo = [[NBPersonCellAddressInfo alloc] initWithPlaceholder:nil andLabel:label];
@@ -592,9 +599,9 @@
 #endif
     }
     
-    NSMutableArray * rows = [NSMutableArray array];
-    NSMutableArray * section = [self.tableStructure objectAtIndex:sectionIndex];
-    for (NBPersonCellInfo * personCellInfo in section)
+    NSMutableArray* rows    = [NSMutableArray array];
+    NSMutableArray* section = [self.tableStructure objectAtIndex:sectionIndex];
+    for (NBPersonCellInfo* personCellInfo in section)
     {
         if (( personCellInfo.visible && visible) || ( !personCellInfo.visible && !visible))
         {

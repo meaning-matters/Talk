@@ -97,45 +97,52 @@ typedef enum
 {
     dispatch_async(dispatch_get_main_queue(), ^
     {
-        [self findContactsForAnonymousItems];
+        [self updateContactIds];
     });
 }
 
 
-- (void)findContactsForAnonymousItems
+- (void)updateContactIds
 {
-    // Build up list with recents using same E164 to call `findContactsHavingNumber` a few times as possible.
+    // Build up list with recents arrays using same E164 to call `findContactsHavingNumber` a few times as possible.
     NSMutableDictionary* recentsArrayForE164 = [NSMutableDictionary dictionary];
 
     for (NSArray* recents in dataSource)
     {
         CallRecordData* recent = recents[0]; // Or lastObject, or any object???
-        if (recent.contactId == nil && recent.fromE164 != nil)
+        NSString*       e164   = (recent.direction.intValue == CallDirectionIncoming) ? recent.fromE164 : recent.toE164;
+
+        if (e164 != nil)
         {
-            if (recentsArrayForE164[recent.fromE164] == nil)
+            if (recentsArrayForE164[e164] == nil)
             {
-                recentsArrayForE164[recent.fromE164] = [NSMutableArray array];
+                recentsArrayForE164[e164] = [NSMutableArray array];
             }
 
-            [recentsArrayForE164[recent.fromE164] addObject:recents];
+            [recentsArrayForE164[e164] addObject:recents];
+        }
+        else
+        {
+            for (CallRecordData* recent in recents)
+            {
+                recent.contactId = nil;
+            }
         }
     }
 
-    for (NSString* fromE164 in [recentsArrayForE164 allKeys])
+    for (NSString* e164 in [recentsArrayForE164 allKeys])
     {
-        PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:fromE164];
+        PhoneNumber* phoneNumber = [[PhoneNumber alloc] initWithNumber:e164];
         [[AppDelegate appDelegate] findContactsHavingNumber:[phoneNumber nationalDigits]
                                                  completion:^(NSArray* contactIds)
         {
             NSString* contactId = [contactIds firstObject];
-            if (contactId != nil)
+
+            for (NSArray* recents in recentsArrayForE164[e164])
             {
-                for (NSArray* recents in recentsArrayForE164[fromE164])
+                for (CallRecordData* recent in recents)
                 {
-                    for (CallRecordData* recent in recents)
-                    {
-                        recent.contactId = contactId;
-                    }
+                    recent.contactId = contactId;
                 }
             }
         }];
@@ -248,13 +255,17 @@ typedef enum
                                                   inbound:YES
                                                  outbound:NO
                                              verification:NO
-                                                    reply:^(NSError *error, NSArray* records)
+                                                    reply:^(NSError* error, NSArray* records)
     {
         if (error == nil)
         {
             [Settings sharedSettings].recentsCheckDate = [NSDate date];
 
             [self processCallRecords:records];
+            if (records.count > 0)
+            {
+                [self updateContactIds];
+            }
 
             [sender endRefreshing];
         }
@@ -274,8 +285,6 @@ typedef enum
         completion ? completion(error) : 0;
 
         isRetrievingRecents = NO;
-
-        [self findContactsForAnonymousItems];
     }];
 }
 
@@ -538,7 +547,7 @@ typedef enum
     recent.billableFromDuration = fromRecord[@"billableDuration"];
     recent.billableToDuration   = @(0.0);
 
-    recent.dialedNumber = [contactPhoneNumber internationalFormat];
+    recent.dialedNumber = [contactPhoneNumber e164Format];
     [[AppDelegate appDelegate] findContactsHavingNumber:[contactPhoneNumber nationalDigits]
                                              completion:^(NSArray* contactIds)
     {
@@ -692,7 +701,7 @@ typedef enum
     recent.billableFromDuration = fromRecord[@"billableDuration"];
     recent.billableToDuration   = toRecord[@"billableDuration"];
 
-    recent.dialedNumber = [contactPhoneNumber internationalFormat];
+    recent.dialedNumber = [contactPhoneNumber e164Format];
     [[AppDelegate appDelegate] findContactsHavingNumber:[contactPhoneNumber nationalDigits]
                                              completion:^(NSArray* contactIds)
     {
@@ -781,7 +790,7 @@ typedef enum
         recent.status = @(CallStatusFailed);
     }
 
-    recent.dialedNumber = [contactPhoneNumber internationalFormat];
+    recent.dialedNumber = [contactPhoneNumber e164Format];
     [[AppDelegate appDelegate] findContactsHavingNumber:[contactPhoneNumber nationalDigits]
                                              completion:^(NSArray* contactIds)
     {
@@ -1122,7 +1131,7 @@ typedef enum
         cell = [[NBRecentCallCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
         [cell setSelectionStyle:UITableViewCellSelectionStyleDefault];
         
-        //Add a number label
+        // Add a number label
         UILabel* numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(POSITION_NUMBER_LABEL,
                                                                          7,
                                                                          SIZE_NUMBER_LABEL,
@@ -1156,6 +1165,7 @@ typedef enum
 
     // Set the number and description
     CallRecordData* latestEntry = [entryRowArray objectAtIndex:0];
+
     ABRecordRef     contact;
     if (latestEntry.contactId != nil)
     {
@@ -1170,7 +1180,7 @@ typedef enum
         }
     }
 
-    switch ([latestEntry.direction intValue])
+    switch (latestEntry.direction.intValue)
     {
         case CallDirectionIncoming:     [self configureInboundCell:cell      callRecord:latestEntry]; break;
         case CallDirectionOutgoing:     [self configureOutboundCell:cell     callRecord:latestEntry]; break;
@@ -1323,7 +1333,15 @@ typedef enum
 
             if ([[NBAddressBookManager sharedManager].delegate matchRecent:callRecord withNumber:number])
             {
-                [cell.numberTypeLabel setText:(__bridge NSString*)ABAddressBookCopyLocalizedLabel((ABMultiValueCopyLabelAtIndex(datasource, i)))];
+                NSString* label = (__bridge NSString*)ABAddressBookCopyLocalizedLabel((ABMultiValueCopyLabelAtIndex(datasource, i)));
+                if (label.length != 0)
+                {
+                    cell.numberTypeLabel.text = label;
+                }
+                else
+                {
+                    cell.numberTypeLabel.text = NSLocalizedString(@"telephone", "");
+                }
 
                 break;
             }
@@ -1479,7 +1497,7 @@ typedef enum
     NSArray*        recents     = [dataSource objectAtIndex:indexPath.row];
     CallRecordData* firstRecent = [recents objectAtIndex:0];
 
-    switch ([firstRecent.direction intValue])
+    switch (firstRecent.direction.intValue)
     {
         case CallDirectionIncoming:
         {

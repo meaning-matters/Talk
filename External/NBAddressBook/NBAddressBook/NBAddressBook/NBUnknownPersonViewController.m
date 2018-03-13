@@ -287,9 +287,7 @@
             {
                 NSString* localNumber = [personRepresentation string];
                 NSString* type        = [[NBAddressBookManager sharedManager].delegate typeOfNumber:localNumber];
-                [[NBAddressBookManager sharedManager] addNumber:localNumber
-                                                toContactAsType:type
-                                                 viewController:self];
+                [[NBAddressBookManager sharedManager] addNumber:localNumber toContactAsType:type viewController:self];
                 break;
             }
             case UP_SHARE:
