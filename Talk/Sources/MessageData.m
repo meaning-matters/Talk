@@ -19,6 +19,7 @@
 @dynamic timestamp;
 @dynamic uuid;
 @dynamic contactId;
+@dynamic status;
 
 
 - (void)createForNumberE164:(NSString*)numberE164

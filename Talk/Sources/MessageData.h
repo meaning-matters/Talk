@@ -20,6 +20,7 @@
 @property (nonatomic, retain) NSDate*   timestamp;
 @property (nonatomic, retain) NSString* uuid;
 @property (nonatomic, retain) NSString* contactId;
+@property (nonatomic, assign) int16_t   status;
 
 - (void)createForNumberE164:(NSString*)numberE164
                  externE164:(NSString*)externE164

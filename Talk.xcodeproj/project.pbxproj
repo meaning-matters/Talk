@@ -734,6 +734,7 @@
 		82AC3BBE1FA76D87002AEB96 /* JSQMessagesTypingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 82AC3B8E1FA76D87002AEB96 /* JSQMessagesTypingView.m */; };
 		82B08B411F826C4400F07536 /* MessageData.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B08B401F826C4400F07536 /* MessageData.m */; };
 		82B7F0191F66EE7900CB5FFB /* ConversationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B7F0181F66EE7900CB5FFB /* ConversationsViewController.m */; };
+		C768D640205802B200A8D56A /* MessageStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = C768D63F205802B200A8D56A /* MessageStatus.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1681,6 +1682,8 @@
 		82B08B401F826C4400F07536 /* MessageData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageData.m; sourceTree = "<group>"; };
 		82B7F0171F66EE7900CB5FFB /* ConversationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversationsViewController.h; sourceTree = "<group>"; };
 		82B7F0181F66EE7900CB5FFB /* ConversationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConversationsViewController.m; sourceTree = "<group>"; };
+		C768D63E205802B200A8D56A /* MessageStatus.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageStatus.h; sourceTree = "<group>"; };
+		C768D63F205802B200A8D56A /* MessageStatus.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageStatus.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2635,6 +2638,8 @@
 				48FC30BC1C220E300032387E /* AddressType.m */,
 				489B4B3B1CC95F51002E8F54 /* IdType.h */,
 				489B4B3C1CC95F51002E8F54 /* IdType.m */,
+				C768D63E205802B200A8D56A /* MessageStatus.h */,
+				C768D63F205802B200A8D56A /* MessageStatus.m */,
 				48200D1A16EC89BA0069677E /* NumberType.h */,
 				48200D1B16EC89BA0069677E /* NumberType.m */,
 				48FC30C31C2221360032387E /* ProofTypes.h */,
@@ -3776,6 +3781,7 @@
 				829769481F9767AC00128A2C /* ConversationViewController.m in Sources */,
 				48DDF4C11E3A788900BDEC43 /* AFSecurityPolicy.m in Sources */,
 				485F93CE1DEF5CF4006E31ED /* GraphicCallStateView.m in Sources */,
+				C768D640205802B200A8D56A /* MessageStatus.m in Sources */,
 				82AC3BAE1FA76D87002AEB96 /* JSQMessagesCollectionView.m in Sources */,
 				82AC3BA81FA76D87002AEB96 /* JSQMessagesAvatarImage.m in Sources */,
 				48EEC7381E8ACBAB006759A3 /* VerifyPhoneVoiceEnterViewController.m in Sources */,
@@ -4107,7 +4113,7 @@
 					"\"$(SRCROOT)/External/HockeySDK-iOS-4.1.2/Classes\"",
 				);
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4157,7 +4163,7 @@
 					"\"$(SRCROOT)/External/HockeySDK-iOS-4.1.2/Classes\"",
 				);
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4292,7 +4298,7 @@
 					"\"$(SRCROOT)/External/HockeySDK-iOS-4.1.2/Classes\"",
 				);
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
