@@ -15,6 +15,7 @@
 @property (nonatomic, strong) ConversationsViewController* conversationsViewcontroller;
 
 - (instancetype)initWithManagedObjectContact:(NSManagedObjectContext*)managedObjectContext
-                   fetchedMessagesController:(NSFetchedResultsController*)fetchedMessagesController;
+                   fetchedMessagesController:(NSFetchedResultsController*)fetchedMessagesController
+                            localPhoneNumber:(PhoneNumber*)localPhoneNumber;
 
 @end

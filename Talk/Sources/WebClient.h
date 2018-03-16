@@ -385,7 +385,7 @@
 - (void)retrieveMessagesFromDate:(NSDate*)date reply:(void (^)(NSError*, NSArray*))reply;
 
 // 40C. SEND MESSAGE
-- (void)sendMessage:(MessageData*)message reply:(void(^)(NSError* error, NSString* uuid))reply;
+- (void)sendMessage:(MessageData*)message reply:(void(^)(NSError* error, NSString* uuid, float cost))reply;
 
 // 40D. GET COST FOR SENDING MESSAGE
 - (void)retrieveCostOfMessage:(NSString*)msg

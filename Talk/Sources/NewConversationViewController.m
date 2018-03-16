@@ -18,6 +18,7 @@
 @property (nonatomic, strong) NSMutableArray*             contactSearchResults;
 @property (nonatomic, strong) NSString*                   searchBarContent;
 @property (nonatomic, strong) UILabel*                    noSearchResultsLabel;
+@property (nonatomic, strong) PhoneNumber*                localPhoneNumber;
 
 @end
 
@@ -26,11 +27,13 @@
 
 - (instancetype)initWithManagedObjectContact:(NSManagedObjectContext*)managedObjectContext
                    fetchedMessagesController:(NSFetchedResultsController*)fetchedMessagesController
+                            localPhoneNumber:(PhoneNumber*)localPhoneNumber
 {
     if (self = [super init])
     {
         self.managedObjectContext      = managedObjectContext;
         self.fetchedMessagesController = fetchedMessagesController;
+        self.localPhoneNumber          = localPhoneNumber;
     }
     
     return self;
@@ -201,12 +204,9 @@
 
 - (void)openConversationWithExternE164:(PhoneNumber*)externE164 contactId:(NSString*)contactId
 {
-    // @TODO: In the next version this screen should get its own number from ConversationsViewController.!!!
-    PhoneNumber* numberE164 = [[PhoneNumber alloc] initWithNumber:@"34668690178"];
-    
     ConversationViewController* viewController = [[ConversationViewController alloc] initWithManagedObjectContext:self.managedObjectContext
                                                                                         fetchedMessagesController:self.fetchedMessagesController
-                                                                                                       localPhoneNumber:numberE164
+                                                                                                       localPhoneNumber:self.localPhoneNumber
                                                                                                        externPhoneNumber:externE164
                                                                                                         contactId:contactId
                                                                                               scrollToMessageUuid:@""];

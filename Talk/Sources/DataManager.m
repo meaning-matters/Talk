@@ -1262,7 +1262,7 @@
                 object.direction = [MessageDirection messageDirectionEnumForString:dictionary[@"direction"]];
                 object.text      = dictionary[@"text"];
                 object.timestamp = [Common dateWithString:dictionary[@"timestamp"]];
-                object.cost      = [dictionary[@"cost"] floatValue]; // @TODO: Does this work?
+                object.cost      = [dictionary[@"cost"] floatValue];
                 
                 // The '+' is added to the numbers, then a PhoneNumber-object is made.
                 NSString* numberE164String     = [NSString stringWithFormat:@"+%@", dictionary[@"numberE164"]];
@@ -1337,7 +1337,7 @@
                 newMessage.direction = [MessageDirection messageDirectionEnumForString:message[@"direction"]];
                 newMessage.text      = message[@"text"];
                 newMessage.timestamp = [Common dateWithString:message[@"timestamp"]];
-                newMessage.cost      = [message[@"cost"] floatValue]; // @TODO: Does this work?
+                newMessage.cost      = [message[@"cost"] floatValue];
                 
                 // The '+' is added to the numbers, then a PhoneNumber-object is made.
                 NSString*    numberE164String  = [NSString stringWithFormat:@"+%@", message[@"numberE164"]];

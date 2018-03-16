@@ -34,11 +34,12 @@
     self.direction  = MessageDirectionOutbound;
     
     [[WebClient sharedClient] sendMessage:self
-                                    reply:^(NSError* error, NSString* uuid)
+                                    reply:^(NSError* error, NSString* uuid, float cost)
     {
         if (error == nil)
         {
             self.uuid = uuid;
+            self.cost = cost;
         }
         
         completion ? completion(error) : 0;

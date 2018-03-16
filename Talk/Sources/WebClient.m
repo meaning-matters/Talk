@@ -1583,7 +1583,7 @@
 
 
 // 40C. SEND MESSAGE
-- (void)sendMessage:(MessageData*)message reply:(void (^)(NSError* error, NSString* uuid))reply
+- (void)sendMessage:(MessageData*)message reply:(void (^)(NSError* error, NSString* uuid, float cost))reply
 {
     NSString*     username   = [Settings sharedSettings].webUsername;
     NSDictionary* parameters = @{@"fromNumber" : [message.numberE164 stringByReplacingOccurrencesOfString:@"+" withString:@""],
@@ -1596,11 +1596,11 @@
     {
         if (error == nil)
         {
-            reply(nil, content[@"uuid"]);
+            reply(nil, content[@"uuid"], [content[@"cost"] floatValue]);
         }
         else
         {
-            reply(error, nil);
+            reply(error, nil, 0);
         }
     }];
 }

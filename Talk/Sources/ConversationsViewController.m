@@ -309,8 +309,11 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 - (void)newConversationAction:(id)sender
 {
+    PhoneNumber* localNumber = [[PhoneNumber alloc] initWithNumber:self.numberE164];
+    
     NewConversationViewController* viewController = [[NewConversationViewController alloc] initWithManagedObjectContact:self.managedObjectContext
-                                                                                              fetchedMessagesController:self.fetchedMessagesController];
+                                                                                              fetchedMessagesController:self.fetchedMessagesController
+                                                                                                       localPhoneNumber:localNumber];
     
     self.createConversationNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
     
