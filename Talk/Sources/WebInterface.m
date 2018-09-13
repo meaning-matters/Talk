@@ -523,6 +523,7 @@ static void processDnsReply(DNSServiceRef       sdRef,
         else
         {
             [self useFallbackServer];
+            [self prepareServers];
             server = [self.servers firstObject];
         }
         
