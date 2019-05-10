@@ -109,6 +109,9 @@ typedef NS_ENUM(NSUInteger, TableSections)
                                 forKeyPath:@"sortSegment"
                                    options:NSKeyValueObservingOptionNew
                                    context:nil];
+
+    // No longer allow buying Numbers.
+    self.navigationItem.rightBarButtonItem = nil;
 }
 
 
@@ -122,8 +125,7 @@ typedef NS_ENUM(NSUInteger, TableSections)
     if (selectedIndexPath != nil)
     {
         [self configureCell:[self.tableView cellForRowAtIndexPath:selectedIndexPath]
-        onResultsController:self.fetchedNumbersController
-                atIndexPath:selectedIndexPath];
+        onResultsController:self.fetchedNumbersController atIndexPath:selectedIndexPath];
 
         [[DataManager sharedManager] saveManagedObjectContext:self.managedObjectContext];
     }

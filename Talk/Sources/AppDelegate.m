@@ -416,6 +416,13 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
             [self.nBRecentsListViewController retrieveCallRecordsWithSender:nil completion:nil];
         }
     }];
+
+    // Only still show the Numbers tab is user already has one or more.
+    NSArray* numbers = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"];
+    if (numbers.count > 0)
+    {
+        [self addNumbersTab];
+    }
 }
 
 
@@ -679,11 +686,11 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
         NSStringFromClass([NBPeopleListViewController  class]),
         NSStringFromClass([KeypadViewController        class]),
         NSStringFromClass([PhonesViewController        class]),
-        NSStringFromClass([NumbersViewController       class]),
         //NSStringFromClass([DestinationsViewController  class]),
         NSStringFromClass([SettingsViewController      class]),
         NSStringFromClass([HelpsViewController         class]),
         NSStringFromClass([AboutViewController         class]),
+       // NSStringFromClass([NumbersViewController       class]),
     ];
 
     NSSet* preferredSet = [NSSet setWithArray:[Settings sharedSettings].tabBarClassNames];
@@ -741,6 +748,32 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
     }
 
     self.tabBarController.moreNavigationController.delegate = self;
+}
+
+
+- (void)addNumbersTab
+{
+    if (self.numbersViewController != nil)
+    {
+        return;
+    }
+
+    NSString*               className = NSStringFromClass([NumbersViewController class]);
+    UIViewController*       viewController = [[NSClassFromString(className) alloc] init];
+    UINavigationController* navigationController;
+
+    // NavigationController is workaround a nasty iOS bug: http://stackoverflow.com/a/23666520/1971013
+    navigationController = [[NavigationController alloc] initWithRootViewController:viewController];
+
+    // Set appropriate AppDelegate property.
+    SEL selector = NSSelectorFromString([@"set" stringByAppendingFormat:@"%@:", className]);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    [self performSelector:selector withObject:[navigationController topViewController]];
+#pragma clang diagnostic pop
+
+    self.viewControllers = [self.viewControllers arrayByAddingObject:viewController];
+    self.tabBarController.viewControllers = [self.tabBarController.viewControllers arrayByAddingObject:navigationController];
 }
 
 
