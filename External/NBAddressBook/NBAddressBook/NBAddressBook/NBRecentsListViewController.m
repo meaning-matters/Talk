@@ -165,15 +165,25 @@ typedef enum
 {
     [super viewDidLoad];
 
-    segmentedControl = [[UISegmentedControl alloc] initWithItems:@[NSLocalizedString(@"CNT_ALL",    @""),
-                                                                   NSLocalizedString(@"CNT_OUT",    @""),
-                                                                   NSLocalizedString(@"CNT_IN",     @""),
-                                                                   NSLocalizedString(@"CNT_MISSED", @"")]];
-    [segmentedControl setSelectedSegmentIndex:0];
-    [segmentedControl setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
-    segmentedControl.frame = CGRectMake(0, 0, 150, 30);
-    [segmentedControl addTarget:self action:@selector(segmentedControlSwitched:) forControlEvents:UIControlEventValueChanged];
-    self.navigationItem.titleView = segmentedControl;
+    NSArray* numbers = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"];
+    if (numbers.count > 0)
+    {
+        segmentedControl = [[UISegmentedControl alloc] initWithItems:@[NSLocalizedString(@"CNT_ALL",    @""),
+                                                                       NSLocalizedString(@"CNT_OUT",    @""),
+                                                                       NSLocalizedString(@"CNT_IN",     @""),
+                                                                       NSLocalizedString(@"CNT_MISSED", @"")]];
+        [segmentedControl setSelectedSegmentIndex:0];
+        [segmentedControl setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
+        segmentedControl.frame = CGRectMake(0, 0, 150, 30);
+        [segmentedControl addTarget:self action:@selector(segmentedControlSwitched:) forControlEvents:UIControlEventValueChanged];
+        self.navigationItem.titleView = segmentedControl;
+
+        UIRefreshControl* refreshControl = [[UIRefreshControl alloc] init];
+        NSString* title = NSLocalizedString(@"Check for incoming calls", @"");
+        refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:title];
+        [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
+        self.refreshControl = refreshControl;
+    }
 
     // Set the modify-button
     editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(modifyListPressed)];
@@ -198,12 +208,6 @@ typedef enum
                                              selector:@selector(reload)
                                                  name:UIApplicationWillEnterForegroundNotification
                                                object:nil];
-
-    UIRefreshControl* refreshControl = [[UIRefreshControl alloc] init];
-    NSString* title = NSLocalizedString(@"Check for incoming calls", @"");
-    refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:title];
-    [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
-    self.refreshControl = refreshControl;
 }
 
 
