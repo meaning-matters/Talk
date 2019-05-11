@@ -186,9 +186,7 @@
     {
         return NSLocalizedStringWithDefaultValue(@"Phone Phones List Title", nil, [NSBundle mainBundle],
                                                  @"List of your fixed or mobile phones. You can use any of them as "
-                                                 @"your Caller ID, for Callback, and as Destination for receiving "
-                                                 @"calls to your "
-                                                 @"purchased Numbers.",
+                                                 @"your Caller ID and for Callback.",
                                                  @"\n"
                                                  @"[ ].");
     }

@@ -1,7 +1,7 @@
 [
     {
-        "title" : "Call your world",
-        "body"  : "Make great value international calls at high quality using real telephony (not internet/VoIP)."
+        "title" : "Quality call the world",
+        "body"  : "Make cheaper international calls using real telephony (not internet/VoIP)."
     },
     {
         "title" : "Save those (roaming) bytes",
@@ -18,9 +18,5 @@
     {
         "title" : "Simply for you",
         "body"  : "Making things easy for you is our goal. Please tell us what you think, and we'll improve."
-    },
-    {
-        "title" : "Free business from private",
-        "body"  : "Get a second number, or as many you wish. Make calls showing your new number as Caller ID."
     }
 ]

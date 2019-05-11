@@ -258,10 +258,10 @@ typedef enum
         {
             title = NSLocalizedStringWithDefaultValue(@"Settings:Options SectionFooter", nil,
                                                       [NSBundle mainBundle],
-                                                      @"Choose to sort lists of Phones and Numbers by country or name.\n\n"
+                                                      @"Choose to sort lists of Phones by country or name.\n\n"
                                                       @"You can hide all footnotes on the app's tables. When hidden, you "
                                                       @"can still show footnotes for a few seconds by holding the light-grey "
-                                                      @"areas where they appear.",
+                                                      @"areas where they normally appear.",
                                                       @"Explanation what the Home Country setting is doing\n"
                                                       @"[* lines]");
             break;
@@ -271,8 +271,8 @@ typedef enum
             title = NSLocalizedStringWithDefaultValue(@"Settings:AccountDataInfoFull SectionFooter", nil,
                                                       [NSBundle mainBundle],
                                                       @"You can always log in (again) on any device to restore your "
-                                                      @"Credit, verified Phones, purchased Numbers, and "
-                                                      @"incoming call Destinations.",
+                                                      @"Credit and verified Phones. However,  Settings and Caller ID "
+                                                      @"selections for Contacts, are local per device.",
                                                       @"Explanation what the Reset setting is doing\n"
                                                       @"[* lines]");
             break;

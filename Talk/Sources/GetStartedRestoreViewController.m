@@ -42,9 +42,8 @@
                                                            @"in with your App Store account. (Use the same App Store "
                                                            @"account as when signing up with NumberBay.)\n\n"
                                                            @"If using multiple devices, you'll be sharing your "
-                                                           @"Credit, verified Phones, purchased Numbers, incoming "
-                                                           @"call Destinations, and incoming call Recents.\n\n"
-                                                           @"Outgoing call Recents, Settings and Caller ID preferences are per device, "
+                                                           @"Credit and verified Phones.\n\n"
+                                                           @"Settings and Caller ID preferences are per device, "
                                                            @"and won't be restored nor shared.",
                                                            @"....\n"
                                                            @"[iOS alert title size].");

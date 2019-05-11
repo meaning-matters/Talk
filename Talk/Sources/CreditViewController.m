@@ -224,9 +224,8 @@ typedef enum
         case TableSectionAmount:
         {
             title = NSLocalizedStringWithDefaultValue(@"CreditAmount:... TableFooterNumbers", nil, [NSBundle mainBundle],
-                                                      @"Credit is used for outgoing calls, for forwarding "
-                                                      @"calls received on your Numbers, and for incoming "
-                                                      @"call charges on toll-free and some national Numbers.",
+                                                      @"Credit is used for both parts of a call. First our server calls "
+                                                      @"you back on your Phone, then it calls your contact.",
                                                       @"[Multiple lines]");
             break;
         }
@@ -238,7 +237,7 @@ typedef enum
         case TableSectionBuy:
         {
             title = NSLocalizedStringWithDefaultValue(@"BuyCredit:... TableFooter", nil, [NSBundle mainBundle],
-                                                      @"Credit you buy won't expire, and will be available immediately.",
+                                                      @"Credit you buy won't expire and will be available immediately.",
                                                       @"[Multiple lines]");
             break;
         }
