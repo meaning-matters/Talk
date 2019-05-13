@@ -517,25 +517,25 @@ static NSUserDefaults* userDefaults;
 
 - (NSString*)companyAddress1
 {
-    return @"Suite 101";
+    return @"Tower House";
 }
 
 
 - (NSString*)companyAddress2
 {
-    return @"128 Aldersgate Street";
+    return @"Fairfax Street";
 }
 
 
 - (NSString*)companyCity
 {
-    return @"London";
+    return @"Bristol";
 }
 
 
 - (NSString*)companyPostcode
 {
-    return @"EC1A 4AE";
+    return @"BS1 3BN";
 }
 
 
