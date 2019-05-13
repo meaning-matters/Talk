@@ -103,9 +103,10 @@
                                                 @"[iOS alert title size].");
     message = NSLocalizedStringWithDefaultValue(@"GetStartedAction AgreeMessage", nil,
                                                 [NSBundle mainBundle],
-                                                @"I agree to the NumberBay Terms and Conditions.",
+                                                @"I agree to the %@ Terms and Conditions.",
                                                 @"....\n"
                                                 @"[iOS alert message size]");
+    message = [NSString stringWithFormat:message, [Settings sharedSettings].appDisplayName];
     [BlockAlertView showAlertViewWithTitle:title
                                    message:message
                                 completion:^(BOOL cancelled, NSInteger buttonIndex)
@@ -372,10 +373,11 @@
 
         message = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready BuyText", nil,
                                                     [NSBundle mainBundle],
-                                                    @"You're now a NumberBay insider!\n\n"
+                                                    @"You now a member of %@!\n\n"
                                                     @"When there's anything you want to chat about, "
                                                     @"reach us from the Help tab.",
                                                     @"Welcome text for a new user.");
+        message = [NSString stringWithFormat:message, [Settings sharedSettings].appDisplayName];
     }
     else
     {

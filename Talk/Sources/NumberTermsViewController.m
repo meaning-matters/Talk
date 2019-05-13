@@ -10,6 +10,7 @@
 #import "Common.h"
 #import "BlockAlertView.h"
 #import "Strings.h"
+#import "Settings.h"
 
 typedef NS_ENUM(NSUInteger, NumberTerms)
 {
@@ -184,12 +185,15 @@ typedef NS_ENUM(NSUInteger, NumberTerms)
 
 - (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    return NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
-                                             @"The above is a reminder of important rules from the Terms and Conditions, "
-                                             @"which you agreed to when becoming a NumberBay insider. They can be found "
-                                             @"via the About tab.\n\nWe'll have to suspend the account of anyone "
-                                             @"breaking any of the rules.",
-                                             @"...");
+    NSString* title;
+    title = NSLocalizedStringWithDefaultValue(@"Terms", nil, [NSBundle mainBundle],
+                                              @"The above is a reminder of important rules from the Terms and Conditions, "
+                                              @"which you agreed to when becoming a member of %@. They can be found "
+                                              @"via the About tab.\n\nWe'll have to suspend the account of anyone "
+                                              @"breaking any of the rules.",
+                                              @"...");
+
+    return [NSString stringWithFormat:title, [Settings sharedSettings].appDisplayName];
 }
 
 

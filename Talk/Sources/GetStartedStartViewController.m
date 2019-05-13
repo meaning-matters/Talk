@@ -12,6 +12,7 @@
 #import "BlockAlertView.h"
 #import "Strings.h"
 #import "AppDelegate.h"
+#import "Settings.h"
 
 @interface GetStartedStartViewController ()
 
@@ -52,30 +53,28 @@
         self.textView.text = NSLocalizedStringWithDefaultValue(@"GetStartedStart Text", nil, [NSBundle mainBundle],
                                                                @"Receive free credit and add your mobile number; "
                                                                @"that's all you need to make calls.\n\n"
-                                                               @"Then, buy a second phone number. "
-                                                               @"Choose from local, mobile, toll-free or national numbers in "
-                                                               @"60+ countries.\n\n"
-                                                               @"NumberBay uses your real phone for calls, not internet/VoIP. "
-                                                               @"This guarantees you can always be reached and quality is good. "
-                                                               @"Because real calls cost real money, NumberBay is for "
+                                                               @"%@ uses your real phone for calls, not internet/VoIP. "
+                                                               @"This guarantees quality is good and you don't need to worry about Wi-Fi connections. "
+                                                               @"Because real calls cost real money, %@ is for "
                                                                @"those who need real quality.",
                                                                @"....\n"
                                                                @"[iOS alert title size].");
+        self.textView.text = [NSString stringWithFormat:self.textView.text,
+                              [Settings sharedSettings].appDisplayName, [Settings sharedSettings].appDisplayName];
     }
     else
     {
         self.textView.text = NSLocalizedStringWithDefaultValue(@"GetStartedStart Text", nil, [NSBundle mainBundle],
                                                                @"Get some credit and add your mobile number; "
                                                                @"that's all you need to make calls.\n\n"
-                                                               @"Then, buy a second phone number. "
-                                                               @"Choose from local, mobile, toll-free or national numbers in "
-                                                               @"60+ countries.\n\n"
-                                                               @"NumberBay uses your real phone for calls, not internet/VoIP. "
-                                                               @"This guarantees you can always be reached and quality is good. "
-                                                               @"Because real calls cost real money, NumberBay is for "
+                                                               @"%@ uses your real phone for calls, not internet/VoIP. "
+                                                               @"This guarantees you can always be reached and quality is good and you don't need to worry about Wi-Fi connections. "
+                                                               @"Because real calls cost real money, %@ is for "
                                                                @"those who need real quality.",
                                                                @"....\n"
                                                                @"[iOS alert title size].");
+        self.textView.text = [NSString stringWithFormat:self.textView.text,
+                              [Settings sharedSettings].appDisplayName, [Settings sharedSettings].appDisplayName];
     }
 
     [self setButtonTitle];
@@ -178,12 +177,12 @@
                                                         @"[iOS alert title size].");
             message = NSLocalizedStringWithDefaultValue(@"GetStartedRestore FailedRestoreMessage", nil,
                                                         [NSBundle mainBundle],
-                                                        @"You've already become a NumberBay insider earlier. "
-                                                        @"Something went wrong while restoring your account: %@.\n\n"
+                                                        @"You're already a member of %@. But "
+                                                        @"something went wrong while restoring your account: %@.\n\n"
                                                         @"Please try again later.",
                                                         @"Message telling that restoring an account failed\n"
                                                         @"[iOS alert message size]");
-            message = [NSString stringWithFormat:message, [object localizedDescription]];
+            message = [NSString stringWithFormat:message, [Settings sharedSettings].appDisplayName, [object localizedDescription]];
             [BlockAlertView showAlertViewWithTitle:title
                                            message:message
                                         completion:^(BOOL cancelled, NSInteger buttonIndex)

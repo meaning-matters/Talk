@@ -12,6 +12,7 @@
 #import "BlockAlertView.h"
 #import "Strings.h"
 #import "Common.h"
+#import "Settings.h"
 
 
 @implementation GetStartedRestoreViewController
@@ -40,13 +41,14 @@
     self.textView.text = NSLocalizedStringWithDefaultValue(@"GetStartedRestore Text", nil, [NSBundle mainBundle],
                                                            @"To access your data, iOS may ask you to sign "
                                                            @"in with your App Store account. (Use the same App Store "
-                                                           @"account as when signing up with NumberBay.)\n\n"
+                                                           @"account as when signing up with %@.)\n\n"
                                                            @"If using multiple devices, you'll be sharing your "
                                                            @"Credit and verified Phones.\n\n"
                                                            @"Settings and Caller ID preferences are per device, "
                                                            @"and won't be restored nor shared.",
                                                            @"....\n"
                                                            @"[iOS alert title size].");
+    self.textView.text = [NSString stringWithFormat:self.textView.text, [Settings sharedSettings].appDisplayName];
 
     [self.button setTitle:NSLocalizedStringWithDefaultValue(@"GetStartedRestore Button", nil, [NSBundle mainBundle],
                                                             @"Please Come In",

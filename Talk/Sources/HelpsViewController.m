@@ -56,8 +56,11 @@ typedef NS_ENUM(NSUInteger, TableRowsContactUs)
                                                        @"[1 line larger font].");
         // The tabBarItem image must be set in my own NavigationController.
 
-        NSData* data = [Common dataForResource:@"Helps" ofType:@"json"];
-        helpsArray   = [Common objectWithJsonData:data];
+        NSData* data   = [Common dataForResource:@"Helps" ofType:@"json"];
+        helpsArray     = [Common objectWithJsonData:data];
+        NSString* json = [[Common jsonStringWithObject:helpsArray] stringByReplacingOccurrencesOfString:@"<display-name>"
+                                                                                             withString:[Settings sharedSettings].appDisplayName];
+        helpsArray = [Common objectWithJsonString:json];
 
         sections      |= TableSectionContactUs;
         sections      |= TableSectionTexts;

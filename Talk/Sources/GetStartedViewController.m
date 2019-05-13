@@ -303,12 +303,13 @@
 
     message = NSLocalizedStringWithDefaultValue(@"GetStarted CancelMessage", nil,
                                                 [NSBundle mainBundle],
-                                                @"Before becoming a NumberBay insider, you're welcome to have a "
+                                                @"Before becoming a member of %@, you're welcome to have a "
                                                 @"look around the app.\n\n"
                                                 @"You can return here by trying to call, do a few other things, "
                                                 @"or by tapping Get Started on the Settings tab.",
                                                 @"Alert message: ...\n"
                                                 @"[iOS alert message size]");
+    message = [NSString stringWithFormat:message, [Settings sharedSettings].appDisplayName];
 
     [BlockAlertView showAlertViewWithTitle:title
                                    message:message

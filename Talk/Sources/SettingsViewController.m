@@ -350,7 +350,7 @@ typedef enum
             footerTitle = NSLocalizedStringWithDefaultValue(@"Settings ...", nil, [NSBundle mainBundle],
                                                             @"When you initiate a call, you'll be called back "
                                                             @"on the selected Phone.\n\nTo limit your costs, "
-                                                            @"make sure that the NumberBay calling rate to this "
+                                                            @"make sure that the %@ calling rate to this "
                                                             @"number is low, and also check the extra charges of your "
                                                             @"telephone operator for receiving calls (which can be "
                                                             @"substantial).\n\nIf you can, it's often good to use "
@@ -359,6 +359,8 @@ typedef enum
                                                             @"which number you selected here; unless of course, you "
                                                             @"also select the same number as Caller ID.",
                                                             @"[1/4 line larger font].");
+            footerTitle = [NSString stringWithFormat:footerTitle, [Settings sharedSettings].appDisplayName];
+
             
             phonesViewController = [[PhonesViewController alloc] initWithManagedObjectContext:managedObjectContext
                                                                                 selectedPhone:(PhoneData*)callable

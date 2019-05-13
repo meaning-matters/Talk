@@ -948,11 +948,12 @@ static Common* sharedCommon;
                                                           @".\n"
                                                           @"[iOS alert title size].");
     NSString* message = NSLocalizedStringWithDefaultValue(@"....", nil, [NSBundle mainBundle],
-                                                          @"You can do this once you've become a NumberBay insider.\n\n"
+                                                          @"You can do this once you've become a member of %@.\n\n"
                                                           @"Do you want to continue having a look, or are you ready "
                                                           @"to get started?",
                                                           @".....\n"
                                                           @"[iOS alert message size]");
+    message = [NSString stringWithFormat:message, [Settings sharedSettings].appDisplayName];
 
     [BlockAlertView showAlertViewWithTitle:title
                                    message:message
