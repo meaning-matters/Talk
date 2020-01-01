@@ -26,10 +26,9 @@ typedef NS_ENUM(NSUInteger, TableSections)
 
 typedef NS_ENUM(NSUInteger, TableRowsContactUs)
 {
-    TableRowsContactUsChat     = 1UL << 0,
-    TableRowsContactUsEmail    = 1UL << 1,
-    TableRowsContactUsAppStore = 1UL << 2,
-    TableRowsContactUsCall     = 1UL << 3,  // Not used at the moment.
+    TableRowsContactUsEmail    = 1UL << 0,
+    TableRowsContactUsAppStore = 1UL << 1,
+    TableRowsContactUsCall     = 1UL << 2,  // Not used at the moment.
 };
 
 
@@ -64,7 +63,6 @@ typedef NS_ENUM(NSUInteger, TableRowsContactUs)
         sections      |= TableSectionContactUs;
         sections      |= TableSectionTexts;
 
-        rowsContactUs |= TableRowsContactUsChat;
         rowsContactUs |= TableRowsContactUsEmail;
         rowsContactUs |= TableRowsContactUsAppStore;
 
@@ -180,16 +178,6 @@ typedef NS_ENUM(NSUInteger, TableRowsContactUs)
         {
             switch ([Common nthBitSet:indexPath.row inValue:rowsContactUs])
             {
-                case TableRowsContactUsChat:
-                {
-                    text = NSLocalizedStringWithDefaultValue(@"Helps MessageContactUsText", nil, [NSBundle mainBundle],
-                                                             @"Chat With Us",
-                                                             @"....\n"
-                                                             @"[1 line larger font].");
-                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                    cell.textLabel.textColor = [UIColor blackColor];
-                    break;
-                }
                 case TableRowsContactUsEmail:
                 {
                     text = NSLocalizedStringWithDefaultValue(@"Helps EmailContactUsText", nil, [NSBundle mainBundle],
@@ -261,12 +249,6 @@ typedef NS_ENUM(NSUInteger, TableRowsContactUs)
         {
             switch ([Common nthBitSet:indexPath.row inValue:rowsContactUs])
             {
-                case TableRowsContactUsChat:
-                {
-                    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
-                    break;
-                }
                 case TableRowsContactUsEmail:
                 {
                     [tableView deselectRowAtIndexPath:indexPath animated:YES];

@@ -371,7 +371,7 @@
         message = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready BuyText", nil,
                                                     [NSBundle mainBundle],
                                                     @"You now a member of %@!\n\n"
-                                                    @"When there's anything you want to chat about, "
+                                                    @"When there's anything you want to talk about, "
                                                     @"reach us from the Help tab.",
                                                     @"Welcome text for a new user.");
         message = [NSString stringWithFormat:message, [Settings sharedSettings].appDisplayName];
@@ -386,7 +386,7 @@
         message = NSLocalizedStringWithDefaultValue(@"Provisioning:Ready BuyText", nil,
                                                     [NSBundle mainBundle],
                                                     @"Always great to see you again!\n\n"
-                                                    @"Remember, when there's anything you want to chat about, "
+                                                    @"Remember, when there's anything you want to talk about, "
                                                     @"reach us from the Help tab.",
                                                     @"Welcome text for a new user.");
     }
