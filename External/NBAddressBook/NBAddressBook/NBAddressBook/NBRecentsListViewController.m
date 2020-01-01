@@ -165,8 +165,8 @@ typedef enum
 {
     [super viewDidLoad];
 
-    NSArray* numbers = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"];
-    if (numbers.count > 0)
+    //NSArray* numbers = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"];
+    if (NO)
     {
         segmentedControl = [[UISegmentedControl alloc] initWithItems:@[NSLocalizedString(@"CNT_ALL",    @""),
                                                                        NSLocalizedString(@"CNT_OUT",    @""),
