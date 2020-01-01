@@ -15,7 +15,6 @@
 #import "NBAddressBookManager.h"
 #import "KeypadViewController.h"
 #import "PhonesViewController.h"
-#import "AddressesViewController.h"
 #import "SettingsViewController.h"
 #import "HelpsViewController.h"
 #import "AboutViewController.h"

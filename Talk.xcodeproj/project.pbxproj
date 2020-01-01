@@ -19,7 +19,6 @@
 		480CE121193C4D100020F255 /* NumberPayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 480CE120193C4D100020F255 /* NumberPayCell.xib */; };
 		480CE124194DA0100020F255 /* CallerIdData.m in Sources */ = {isa = PBXBuildFile; fileRef = 480CE123194DA0100020F255 /* CallerIdData.m */; };
 		480CE127194DBEC40020F255 /* CallerIdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 480CE126194DBEC40020F255 /* CallerIdViewController.m */; };
-		480E7A2E1BFDCA7800F655E8 /* AddressesTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 480E7A2D1BFDCA7800F655E8 /* AddressesTab@2x.png */; };
 		4812727316487E2D00534450 /* LibPhoneNumber.js in Resources */ = {isa = PBXBuildFile; fileRef = 4812727216487E2D00534450 /* LibPhoneNumber.js */; };
 		4812727416487E2D00534450 /* LibPhoneNumber.js in Sources */ = {isa = PBXBuildFile; fileRef = 4812727216487E2D00534450 /* LibPhoneNumber.js */; };
 		4814D54D19DCCD7C00958E33 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4814D54C19DCCD7C00958E33 /* libresolv.dylib */; };
@@ -135,10 +134,6 @@
 		484943B01753C44D00E1D5C4 /* ThanksView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484943AF1753C44D00E1D5C4 /* ThanksView.xib */; };
 		484943B11753C44D00E1D5C4 /* ThanksView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 484943AF1753C44D00E1D5C4 /* ThanksView.xib */; };
 		484943B617551EB100E1D5C4 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484943B517551EB100E1D5C4 /* Social.framework */; };
-		484D936C1712FBA1006FA875 /* AddressCitiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484D936B1712FBA1006FA875 /* AddressCitiesViewController.m */; };
-		484D936D1712FBA1006FA875 /* AddressCitiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484D936B1712FBA1006FA875 /* AddressCitiesViewController.m */; };
-		484D937017131E97006FA875 /* AddressPostcodesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484D936F17131E97006FA875 /* AddressPostcodesViewController.m */; };
-		484D937117131E97006FA875 /* AddressPostcodesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484D936F17131E97006FA875 /* AddressPostcodesViewController.m */; };
 		484F7C3B164C15770059A5A6 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484F7C3A164C15770059A5A6 /* CoreTelephony.framework */; };
 		484F7C3E164C15EA0059A5A6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484F7C3D164C15EA0059A5A6 /* SystemConfiguration.framework */; };
 		4856E5E91D96D796001F141F /* BadgeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4856E5E81D96D796001F141F /* BadgeCell.m */; };
@@ -149,8 +144,6 @@
 		485E38A117B7E13C0089F0F1 /* HtmlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E389F17B7E13B0089F0F1 /* HtmlViewController.m */; };
 		485E38A317B7E1960089F0F1 /* HtmlView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485E38A217B7E1960089F0F1 /* HtmlView.xib */; };
 		485E38A417B7E1960089F0F1 /* HtmlView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485E38A217B7E1960089F0F1 /* HtmlView.xib */; };
-		485E38A717C0B7F30089F0F1 /* AddressSalutationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E38A617C0B7F00089F0F1 /* AddressSalutationsViewController.m */; };
-		485E38A817C0B7F30089F0F1 /* AddressSalutationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E38A617C0B7F00089F0F1 /* AddressSalutationsViewController.m */; };
 		485ECBDA1651C3B700364F08 /* BQ@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBD71651C3B700364F08 /* BQ@2x.png */; };
 		485ECBDB1651C3B700364F08 /* BQ@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485ECBD71651C3B700364F08 /* BQ@2x.png */; };
 		485ECBE216525D3600364F08 /* KeypadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 485ECBE116525D3600364F08 /* KeypadView.m */; };
@@ -406,7 +399,6 @@
 		4864B3F7175668CA0006542F /* LogoFacebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 4864B3F5175668CA0006542F /* LogoFacebook.png */; };
 		4864B3F917566E950006542F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4864B3F817566E950006542F /* MessageUI.framework */; };
 		4864CAE61D0C765E009B3D9C /* DenmarkMunicipalities.json in Resources */ = {isa = PBXBuildFile; fileRef = 4864CAE51D0C765E009B3D9C /* DenmarkMunicipalities.json */; };
-		4864CAEE1D0C7F25009B3D9C /* AddressMunicipalitiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4864CAED1D0C7F25009B3D9C /* AddressMunicipalitiesViewController.m */; };
 		4865A9DF1792C8B70028785F /* NumberPayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* NumberPayCell.m */; };
 		4865A9E01792C8B70028785F /* NumberPayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* NumberPayCell.m */; };
 		486B95261CDE80F2004CFD8A /* DenmarkCityPostcodes.json in Resources */ = {isa = PBXBuildFile; fileRef = 486B95251CDE80F2004CFD8A /* DenmarkCityPostcodes.json */; };
@@ -464,7 +456,6 @@
 		48995E0D18739F46001395C2 /* Phone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48995E0A18739F46001395C2 /* Phone@2x.png */; };
 		48995E0E18739F46001395C2 /* Phone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48995E0A18739F46001395C2 /* Phone@2x.png */; };
 		48995E1018742206001395C2 /* AppledocSettings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 48995E0F18742206001395C2 /* AppledocSettings.plist */; };
-		489B4B3A1CC95ED3002E8F54 /* AddressIdTypesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 489B4B391CC95ED3002E8F54 /* AddressIdTypesViewController.m */; };
 		489B4B3D1CC95F51002E8F54 /* IdType.m in Sources */ = {isa = PBXBuildFile; fileRef = 489B4B3C1CC95F51002E8F54 /* IdType.m */; };
 		48A0CE6A1805CFDC00B8A9F8 /* CallbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A0CE691805CFDC00B8A9F8 /* CallbackViewController.m */; };
 		48A0CE6B1805CFDC00B8A9F8 /* CallbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A0CE691805CFDC00B8A9F8 /* CallbackViewController.m */; };
@@ -617,8 +608,6 @@
 		48EDD20F1667652A007B89DA /* ColorCurves.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD2001667652A007B89DA /* ColorCurves.png */; };
 		48EDD2101667652A007B89DA /* ColorCurves.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD2001667652A007B89DA /* ColorCurves.png */; };
 		48EEC7381E8ACBAB006759A3 /* VerifyPhoneVoiceEnterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48EEC7371E8ACBAB006759A3 /* VerifyPhoneVoiceEnterViewController.m */; };
-		48F14EDE1BF9C62200541EEC /* AddressesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F14EDD1BF9C62200541EEC /* AddressesViewController.m */; };
-		48F14EE61BF9C63A00541EEC /* AddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F14EE51BF9C63A00541EEC /* AddressViewController.m */; };
 		48F157501CA3412C00A5CB4C /* CountryRegions.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F157491CA33ABE00A5CB4C /* CountryRegions.m */; };
 		48F157521CA40C2B00A5CB4C /* BV@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48F157511CA40C2B00A5CB4C /* BV@2x.png */; };
 		48F3CE8F1D26A6D3000925EE /* Postcodes.json in Resources */ = {isa = PBXBuildFile; fileRef = 48F3CE8E1D26A6D2000925EE /* Postcodes.json */; };
@@ -673,7 +662,6 @@
 		480CE123194DA0100020F255 /* CallerIdData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallerIdData.m; sourceTree = "<group>"; };
 		480CE125194DBEC40020F255 /* CallerIdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallerIdViewController.h; sourceTree = "<group>"; };
 		480CE126194DBEC40020F255 /* CallerIdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallerIdViewController.m; sourceTree = "<group>"; };
-		480E7A2D1BFDCA7800F655E8 /* AddressesTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AddressesTab@2x.png"; sourceTree = "<group>"; };
 		4812727216487E2D00534450 /* LibPhoneNumber.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = LibPhoneNumber.js; path = External/LibPhoneNumber/LibPhoneNumber.js; sourceTree = SOURCE_ROOT; };
 		4814D54C19DCCD7C00958E33 /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
 		4814EA3217CA98F4004B7A3C /* CreditBuyCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreditBuyCell.xib; sourceTree = "<group>"; };
@@ -792,10 +780,6 @@
 		484943AC1753C00000E1D5C4 /* ThanksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThanksViewController.m; sourceTree = "<group>"; };
 		484943AF1753C44D00E1D5C4 /* ThanksView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThanksView.xib; sourceTree = "<group>"; };
 		484943B517551EB100E1D5C4 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
-		484D936A1712FBA1006FA875 /* AddressCitiesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressCitiesViewController.h; sourceTree = "<group>"; };
-		484D936B1712FBA1006FA875 /* AddressCitiesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressCitiesViewController.m; sourceTree = "<group>"; };
-		484D936E17131E96006FA875 /* AddressPostcodesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressPostcodesViewController.h; sourceTree = "<group>"; };
-		484D936F17131E97006FA875 /* AddressPostcodesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressPostcodesViewController.m; sourceTree = "<group>"; };
 		484F7C3A164C15770059A5A6 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		484F7C3D164C15EA0059A5A6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		4856E5E71D96D796001F141F /* BadgeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BadgeCell.h; sourceTree = "<group>"; };
@@ -806,8 +790,6 @@
 		485E389E17B7E1390089F0F1 /* HtmlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HtmlViewController.h; sourceTree = "<group>"; };
 		485E389F17B7E13B0089F0F1 /* HtmlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HtmlViewController.m; sourceTree = "<group>"; };
 		485E38A217B7E1960089F0F1 /* HtmlView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HtmlView.xib; sourceTree = "<group>"; };
-		485E38A517C0B7EE0089F0F1 /* AddressSalutationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressSalutationsViewController.h; sourceTree = "<group>"; };
-		485E38A617C0B7F00089F0F1 /* AddressSalutationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressSalutationsViewController.m; sourceTree = "<group>"; };
 		485E38CF17C889350089F0F1 /* WORDS.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = WORDS.txt; sourceTree = "<group>"; };
 		485ECBD71651C3B700364F08 /* BQ@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BQ@2x.png"; sourceTree = "<group>"; };
 		485ECBE016525D3600364F08 /* KeypadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeypadView.h; sourceTree = "<group>"; };
@@ -1064,8 +1046,6 @@
 		4864B3F5175668CA0006542F /* LogoFacebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LogoFacebook.png; sourceTree = "<group>"; };
 		4864B3F817566E950006542F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		4864CAE51D0C765E009B3D9C /* DenmarkMunicipalities.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = DenmarkMunicipalities.json; path = Resources/DenmarkMunicipalities.json; sourceTree = "<group>"; };
-		4864CAEC1D0C7F25009B3D9C /* AddressMunicipalitiesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressMunicipalitiesViewController.h; sourceTree = "<group>"; };
-		4864CAED1D0C7F25009B3D9C /* AddressMunicipalitiesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressMunicipalitiesViewController.m; sourceTree = "<group>"; };
 		4865A9DD1792C8B70028785F /* NumberPayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberPayCell.h; sourceTree = "<group>"; };
 		4865A9DE1792C8B70028785F /* NumberPayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberPayCell.m; sourceTree = "<group>"; };
 		486B95171CDE413A004CFD8A /* Muni-StrCode-Str.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Muni-StrCode-Str.json"; path = "Resources/Muni-StrCode-Str.json"; sourceTree = "<group>"; };
@@ -1132,8 +1112,6 @@
 		48995E0918739F46001395C2 /* Phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Phone.png; sourceTree = "<group>"; };
 		48995E0A18739F46001395C2 /* Phone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Phone@2x.png"; sourceTree = "<group>"; };
 		48995E0F18742206001395C2 /* AppledocSettings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AppledocSettings.plist; sourceTree = "<group>"; };
-		489B4B381CC95ED3002E8F54 /* AddressIdTypesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressIdTypesViewController.h; sourceTree = "<group>"; };
-		489B4B391CC95ED3002E8F54 /* AddressIdTypesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressIdTypesViewController.m; sourceTree = "<group>"; };
 		489B4B3B1CC95F51002E8F54 /* IdType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdType.h; sourceTree = "<group>"; };
 		489B4B3C1CC95F51002E8F54 /* IdType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IdType.m; sourceTree = "<group>"; };
 		48A0CE681805CFDC00B8A9F8 /* CallbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallbackViewController.h; sourceTree = "<group>"; };
@@ -1358,10 +1336,6 @@
 		48EE399816777EEC00823E09 /* libWebRTC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libWebRTC.a; path = External/WebRTC/libWebRTC.a; sourceTree = "<group>"; };
 		48EEC7361E8ACBAB006759A3 /* VerifyPhoneVoiceEnterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerifyPhoneVoiceEnterViewController.h; sourceTree = "<group>"; };
 		48EEC7371E8ACBAB006759A3 /* VerifyPhoneVoiceEnterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerifyPhoneVoiceEnterViewController.m; sourceTree = "<group>"; };
-		48F14EDC1BF9C62200541EEC /* AddressesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressesViewController.h; sourceTree = "<group>"; };
-		48F14EDD1BF9C62200541EEC /* AddressesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressesViewController.m; sourceTree = "<group>"; };
-		48F14EE41BF9C63A00541EEC /* AddressViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressViewController.h; sourceTree = "<group>"; };
-		48F14EE51BF9C63A00541EEC /* AddressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressViewController.m; sourceTree = "<group>"; };
 		48F157481CA33ABE00A5CB4C /* CountryRegions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountryRegions.h; sourceTree = "<group>"; };
 		48F157491CA33ABE00A5CB4C /* CountryRegions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountryRegions.m; sourceTree = "<group>"; };
 		48F157511CA40C2B00A5CB4C /* BV@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BV@2x.png"; sourceTree = "<group>"; };
@@ -1726,7 +1700,6 @@
 			isa = PBXGroup;
 			children = (
 				48AF451A1649788A00DFE3D8 /* AboutTab@2x.png */,
-				480E7A2D1BFDCA7800F655E8 /* AddressesTab@2x.png */,
 				48CB2C4917E6DB7700E19C3D /* NBPeopleListTab@2x.png */,
 				48CBE0931DEF833D00B1D4FC /* NBPeopleListTab.png */,
 				48AF451C1649788A00DFE3D8 /* CreditTab@2x.png */,
@@ -2364,20 +2337,6 @@
 				48F47BC018BEA850006A6436 /* Base */,
 				48AF45001649484600DFE3D8 /* AboutViewController.h */,
 				48AF45011649484600DFE3D8 /* AboutViewController.m */,
-				484D936A1712FBA1006FA875 /* AddressCitiesViewController.h */,
-				484D936B1712FBA1006FA875 /* AddressCitiesViewController.m */,
-				48F14EDC1BF9C62200541EEC /* AddressesViewController.h */,
-				48F14EDD1BF9C62200541EEC /* AddressesViewController.m */,
-				489B4B381CC95ED3002E8F54 /* AddressIdTypesViewController.h */,
-				489B4B391CC95ED3002E8F54 /* AddressIdTypesViewController.m */,
-				4864CAEC1D0C7F25009B3D9C /* AddressMunicipalitiesViewController.h */,
-				4864CAED1D0C7F25009B3D9C /* AddressMunicipalitiesViewController.m */,
-				484D936E17131E96006FA875 /* AddressPostcodesViewController.h */,
-				484D936F17131E97006FA875 /* AddressPostcodesViewController.m */,
-				485E38A517C0B7EE0089F0F1 /* AddressSalutationsViewController.h */,
-				485E38A617C0B7F00089F0F1 /* AddressSalutationsViewController.m */,
-				48F14EE41BF9C63A00541EEC /* AddressViewController.h */,
-				48F14EE51BF9C63A00541EEC /* AddressViewController.m */,
 				48A0CE681805CFDC00B8A9F8 /* CallbackViewController.h */,
 				48A0CE691805CFDC00B8A9F8 /* CallbackViewController.m */,
 				48A0CE761809BE3100B8A9F8 /* CallBaseViewController.h */,
@@ -2686,7 +2645,6 @@
 				485F6A841637270100D61365 /* CA@2x.png in Resources */,
 				485F6A861637270100D61365 /* CC@2x.png in Resources */,
 				485F6A881637270100D61365 /* CD@2x.png in Resources */,
-				480E7A2E1BFDCA7800F655E8 /* AddressesTab@2x.png in Resources */,
 				485F6A8A1637270100D61365 /* CF@2x.png in Resources */,
 				485F6A8C1637270100D61365 /* CG@2x.png in Resources */,
 				485F6A8E1637270100D61365 /* CH@2x.png in Resources */,
@@ -3107,7 +3065,6 @@
 				48AF4581164A45A100DFE3D8 /* Settings.m in Sources */,
 				48AD95DF164AE582006178E6 /* Skinning.m in Sources */,
 				488268D9164BCF8600EA58AE /* NetworkStatus.m in Sources */,
-				4864CAEE1D0C7F25009B3D9C /* AddressMunicipalitiesViewController.m in Sources */,
 				48B8134E1AADF9460019AF77 /* NBContactStructureManager.m in Sources */,
 				48D3F01E164F9284002041A9 /* CountryNames.m in Sources */,
 				48B813751AADF9F90019AF77 /* NBValueListTableViewController.m in Sources */,
@@ -3162,7 +3119,6 @@
 				4822B42A1C92EB7C004BD2F5 /* TabBadgeView.m in Sources */,
 				48FC30C51C2221360032387E /* ProofTypes.m in Sources */,
 				48232B721BFC8E5D006D667E /* AddressData.m in Sources */,
-				48F14EE61BF9C63A00541EEC /* AddressViewController.m in Sources */,
 				4823C0CD1CBA7F3800030FC7 /* WebViewController.m in Sources */,
 				48B813491AADF9380019AF77 /* NBContact.m in Sources */,
 				48FC54321C89EDA3007658FE /* CellDotView.m in Sources */,
@@ -3179,14 +3135,11 @@
 				48E678C91C9DD89000471BDE /* AddressStatus.m in Sources */,
 				4837AF6D18D9B89A00D3AEBC /* GetStartedStartViewController.m in Sources */,
 				48F157501CA3412C00A5CB4C /* CountryRegions.m in Sources */,
-				48F14EDE1BF9C62200541EEC /* AddressesViewController.m in Sources */,
 				48DDF4C41E3A788A00BDEC43 /* AFURLSessionManager.m in Sources */,
 				48F3CE991D27B070000925EE /* IncomingChargesViewController.m in Sources */,
 				48B8136D1AADF9B20019AF77 /* NBPersonCellInfo.m in Sources */,
 				48ADD0F71706791A001515EB /* UIView+AnimateHidden.m in Sources */,
 				48A0CE6A1805CFDC00B8A9F8 /* CallbackViewController.m in Sources */,
-				484D936C1712FBA1006FA875 /* AddressCitiesViewController.m in Sources */,
-				484D937017131E97006FA875 /* AddressPostcodesViewController.m in Sources */,
 				48B813461AADF92E0019AF77 /* NBAddressCell.m in Sources */,
 				48E61EF51C1A1BB900973FB2 /* AnalyticsTransmitter.m in Sources */,
 				48D60EF418B4D7A4000BE5D2 /* CountriesViewController.m in Sources */,
@@ -3204,7 +3157,6 @@
 				48B8136C1AADF9B20019AF77 /* NBPersonCellAddressInfo.m in Sources */,
 				48DDF4BF1E3A788900BDEC43 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				48A26DDC18BA7FB200736CCB /* SearchTableViewController.m in Sources */,
-				489B4B3A1CC95ED3002E8F54 /* AddressIdTypesViewController.m in Sources */,
 				4822B4321C9615FB004BD2F5 /* AddressUpdatesHandler.m in Sources */,
 				4849432F1752263600E1D5C4 /* LicensesViewController.m in Sources */,
 				484943AD1753C00100E1D5C4 /* ThanksViewController.m in Sources */,
@@ -3227,7 +3179,6 @@
 				48B8135B1AADF96F0019AF77 /* NBNameTableViewCell.m in Sources */,
 				4877EDBC17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */,
 				485E38A017B7E13C0089F0F1 /* HtmlViewController.m in Sources */,
-				485E38A717C0B7F30089F0F1 /* AddressSalutationsViewController.m in Sources */,
 				4823019C1C897E7000ECD32E /* CellBadgeView.m in Sources */,
 				487BF3321E98DF5F00A37F04 /* VerifyPhoneVoiceCallViewController.m in Sources */,
 				4814EA3717CA993F004B7A3C /* CreditBuyCell.m in Sources */,
@@ -3275,8 +3226,6 @@
 				4893880017039165005CC795 /* RecordingData.m in Sources */,
 				48ADD0F81706791A001515EB /* UIView+AnimateHidden.m in Sources */,
 				48A0CE6B1805CFDC00B8A9F8 /* CallbackViewController.m in Sources */,
-				484D936D1712FBA1006FA875 /* AddressCitiesViewController.m in Sources */,
-				484D937117131E97006FA875 /* AddressPostcodesViewController.m in Sources */,
 				483679DF1721F2E1001A02AF /* RecordingViewController.m in Sources */,
 				48367A48172552D2001A02AF /* RecordingControlsCell.m in Sources */,
 				48B0C3FA174989F500DAB3BD /* Keychain.m in Sources */,
@@ -3289,7 +3238,6 @@
 				48251B9C187F4A8A00E69C3A /* SettingsViewController.m in Sources */,
 				4877EDBD17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */,
 				485E38A117B7E13C0089F0F1 /* HtmlViewController.m in Sources */,
-				485E38A817C0B7F30089F0F1 /* AddressSalutationsViewController.m in Sources */,
 				4814EA3817CA993F004B7A3C /* CreditBuyCell.m in Sources */,
 				4814EA3F17CB1924004B7A3C /* CreditAmountCell.m in Sources */,
 				48C1D3C617D31309004F910D /* ProofImageViewController.m in Sources */,
