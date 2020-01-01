@@ -8,7 +8,6 @@
 
 #import "HelpsViewController.h"
 #import "HtmlViewController.h"
-#import "HockeySDK.h"
 #import "Common.h"
 #import "CallManager.h"
 #import "Settings.h"
@@ -266,8 +265,6 @@ typedef NS_ENUM(NSUInteger, TableRowsContactUs)
                 {
                     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-                    BITFeedbackListViewController* controller = [[BITHockeyManager sharedHockeyManager].feedbackManager feedbackListViewController:NO];
-                    [self.navigationController pushViewController:controller animated:YES];
                     break;
                 }
                 case TableRowsContactUsEmail:

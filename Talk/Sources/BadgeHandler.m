@@ -48,7 +48,7 @@
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
         {
             // Force all view controllers that can have a badge to load.
-            (void)[AppDelegate appDelegate].numbersViewController.view;
+            (void)[AppDelegate appDelegate].creditViewController.view;
 
             [sharedInstance update];
         });

@@ -412,13 +412,6 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
 
         SKProduct* product  = [self productForProductIdentifier:transaction.payment.productIdentifier];
         NSString*  itemName = [NSString stringWithFormat:@"Credit%d", [self amountOfProductIdentifier:product.productIdentifier]];
-        [Answers logPurchaseWithPrice:product.price
-                             currency:[product.priceLocale objectForKey:NSLocaleCurrencyCode]
-                              success:@(error == nil)
-                             itemName:itemName
-                             itemType:@"Credit"
-                               itemId:product.productIdentifier
-                     customAttributes:@{}];
     }];
 }
 
@@ -512,9 +505,6 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
         {
             [self processAccountTransaction:self.restoredAccountTransaction completion:^(BOOL success)
             {
-                [Answers logLoginWithMethod:@"Account Restore"
-                                    success:@(success)
-                           customAttributes:@{}];
             }];
         }
         else
@@ -587,24 +577,7 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
                     {
                         if (transaction.originalTransaction == nil)
                         {
-                            [Answers logSignUpWithMethod:@"Account Purchase"
-                                                 success:@(success)
-                                        customAttributes:@{}];
-
                             SKProduct* product = [self productForProductIdentifier:transaction.payment.productIdentifier];
-                            [Answers logPurchaseWithPrice:product.price
-                                                 currency:[product.priceLocale objectForKey:NSLocaleCurrencyCode]
-                                                  success:@(success)
-                                                 itemName:@"Account1"
-                                                 itemType:@"Account"
-                                                   itemId:product.productIdentifier
-                                         customAttributes:@{}];
-                        }
-                        else
-                        {
-                            [Answers logLoginWithMethod:@"Account Restore"
-                                                success:@(success)
-                                       customAttributes:@{}];
                         }
                     }];
                 }

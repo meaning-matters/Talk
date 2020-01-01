@@ -38,7 +38,10 @@
                                                     cancelButtonTitle:cancelButtonTitle
                                                     otherButtonTitles:otherButtonTitles
                                                             arguments:arguments];
-    [alertView show];
+    dispatch_async(dispatch_get_main_queue(), ^
+    {
+        [alertView show];
+    });
 
     va_end(arguments);
 

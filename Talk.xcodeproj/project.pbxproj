@@ -12,8 +12,6 @@
 		48017A12194E554C0059A53B /* CallableData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48017A11194E554C0059A53B /* CallableData.m */; };
 		48021B341C3A693200C40B58 /* UIViewController+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 48021B331C3A693100C40B58 /* UIViewController+Common.m */; };
 		4805E5191C5EA7FD00BA1924 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4805E5181C5EA7FD00BA1924 /* Photos.framework */; };
-		48081BCC1ED35FA1009C5BE0 /* NumberFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48081BCB1ED35FA1009C5BE0 /* NumberFilterViewController.m */; };
-		48081BD51ED402D9009C5BE0 /* NumberFilterAreasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48081BD41ED402D9009C5BE0 /* NumberFilterAreasViewController.m */; };
 		480B4FFA1BED1A890098F3A4 /* CountryCallingCodes.json in Resources */ = {isa = PBXBuildFile; fileRef = 480B4FF91BED1A890098F3A4 /* CountryCallingCodes.json */; };
 		480B4FFF1BED4AC20098F3A4 /* WD@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 480B4FFE1BED4AC20098F3A4 /* WD@2x.png */; };
 		480BEF9518D59ECA00C882E0 /* GetStartedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 480BEF9418D59ECA00C882E0 /* GetStartedView.xib */; };
@@ -35,7 +33,6 @@
 		4814EA3F17CB1924004B7A3C /* CreditAmountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4814EA3D17CB1923004B7A3C /* CreditAmountCell.m */; };
 		4816A0A01BF129A300817ED7 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBD917007CC6000ECC71 /* DataManager.m */; };
 		48172C021C07017800927BC2 /* RatesTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48172C011C07017800927BC2 /* RatesTab@2x.png */; };
-		4817A6181CB80B4700F14EED /* DestinationNumbersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4817A6111CB7EA9D00F14EED /* DestinationNumbersViewController.m */; };
 		4818DB611CAB0D380044AFE6 /* CountryRegions.json in Resources */ = {isa = PBXBuildFile; fileRef = 4818DB601CAB0D380044AFE6 /* CountryRegions.json */; };
 		481DFBAB1C70CAC1009191B0 /* RecordingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 481DFBAA1C70CAC1009191B0 /* RecordingsViewController.m */; };
 		48200D1C16EC89BA0069677E /* NumberType.m in Sources */ = {isa = PBXBuildFile; fileRef = 48200D1B16EC89BA0069677E /* NumberType.m */; };
@@ -57,8 +54,6 @@
 		482A639E165FA94400325B3F /* CallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A639C165FA94400325B3F /* CallManager.m */; };
 		482A63A1165FF73400325B3F /* NumberLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A63A0165FF73400325B3F /* NumberLabel.m */; };
 		482A63A2165FF73400325B3F /* NumberLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 482A63A0165FF73400325B3F /* NumberLabel.m */; };
-		4830462416EE269D000F9B05 /* NumberAreaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4830462316EE269D000F9B05 /* NumberAreaViewController.m */; };
-		4830462516EE269D000F9B05 /* NumberAreaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4830462316EE269D000F9B05 /* NumberAreaViewController.m */; };
 		48338F8E161628BA0033F4C1 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F8C161628BA0033F4C1 /* libcrypto.a */; };
 		48338F8F161628BA0033F4C1 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F8C161628BA0033F4C1 /* libcrypto.a */; };
 		48338F90161628BA0033F4C1 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F8D161628BA0033F4C1 /* libssl.a */; };
@@ -407,7 +402,6 @@
 		485F93D21DEF6787006E31ED /* CallStateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 485F93D11DEF6787006E31ED /* CallStateView.m */; };
 		485F93D41DEF6D3B006E31ED /* GraphicCallStateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485F93D31DEF6D3B006E31ED /* GraphicCallStateView.xib */; };
 		485F93D81DEF7C31006E31ED /* LogoIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 485F93D71DEF7C31006E31ED /* LogoIcon@2x.png */; };
-		486334781D329E3F002D0A4B /* NumberBuyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4888E17B1D30FEB000B1B307 /* NumberBuyViewController.m */; };
 		4864B3F6175668CA0006542F /* LogoFacebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 4864B3F5175668CA0006542F /* LogoFacebook.png */; };
 		4864B3F7175668CA0006542F /* LogoFacebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 4864B3F5175668CA0006542F /* LogoFacebook.png */; };
 		4864B3F917566E950006542F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4864B3F817566E950006542F /* MessageUI.framework */; };
@@ -415,12 +409,9 @@
 		4864CAEE1D0C7F25009B3D9C /* AddressMunicipalitiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4864CAED1D0C7F25009B3D9C /* AddressMunicipalitiesViewController.m */; };
 		4865A9DF1792C8B70028785F /* NumberPayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* NumberPayCell.m */; };
 		4865A9E01792C8B70028785F /* NumberPayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4865A9DE1792C8B70028785F /* NumberPayCell.m */; };
-		486803D41E5368D700ECFEF3 /* Answers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 486803D21E5368D700ECFEF3 /* Answers.framework */; };
-		486803D51E5368D700ECFEF3 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 486803D31E5368D700ECFEF3 /* Fabric.framework */; };
 		486B95261CDE80F2004CFD8A /* DenmarkCityPostcodes.json in Resources */ = {isa = PBXBuildFile; fileRef = 486B95251CDE80F2004CFD8A /* DenmarkCityPostcodes.json */; };
 		486CEF971DEDFCFD00D1E088 /* SignalDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 486CEF961DEDFCFD00D1E088 /* SignalDotView.m */; };
 		486D4A2318F06BC8004699C9 /* CallRatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 486D4A2218F06BC8004699C9 /* CallRatesViewController.m */; };
-		4872DA7C1D360AC4009F4194 /* NumberExtendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4872DA7B1D360AC4009F4194 /* NumberExtendViewController.m */; };
 		4877EDBC17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4877EDBB17AD27710013B18F /* PhoneNumberTextFieldDelegate.m */; };
 		4877EDBD17AD27710013B18F /* PhoneNumberTextFieldDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4877EDBB17AD27710013B18F /* PhoneNumberTextFieldDelegate.m */; };
 		48793369185C6A5800C08C8C /* PhonesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48793368185C6A5800C08C8C /* PhonesViewController.m */; };
@@ -448,8 +439,6 @@
 		4888D521166D1AEE00572566 /* HangupPhone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888D519166D1AEE00572566 /* HangupPhone@2x.png */; };
 		4888D527166D200E00572566 /* HangupPhoneSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888D524166D200E00572566 /* HangupPhoneSmall@2x.png */; };
 		4888D528166D200E00572566 /* HangupPhoneSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4888D524166D200E00572566 /* HangupPhoneSmall@2x.png */; };
-		488AD1EA16E799C3004D3A2A /* NumberStatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488AD1E916E799C3004D3A2A /* NumberStatesViewController.m */; };
-		488AD1EB16E799C3004D3A2A /* NumberStatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488AD1E916E799C3004D3A2A /* NumberStatesViewController.m */; };
 		488AD1ED16E799F4004D3A2A /* NumberStatesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */; };
 		488AD1EE16E799F4004D3A2A /* NumberStatesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */; };
 		488AD1F116E80A60004D3A2A /* NSObject+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 488AD1F016E80A60004D3A2A /* NSObject+Blocks.m */; };
@@ -460,7 +449,6 @@
 		488FBBE31700852F000ECC71 /* NumberData.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FBBE11700852F000ECC71 /* NumberData.m */; };
 		4890CB991E33CCB5001ED2D2 /* CallVerification@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4890CB971E33CCB5001ED2D2 /* CallVerification@2x.png */; };
 		4890CB9A1E33CCB5001ED2D2 /* CallVerification@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4890CB981E33CCB5001ED2D2 /* CallVerification@3x.png */; };
-		48931FF51D3CB0FF00A93456 /* NumberPayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48931FF41D3CB0FF00A93456 /* NumberPayViewController.m */; };
 		489387FB17039158005CC795 /* DestinationData.m in Sources */ = {isa = PBXBuildFile; fileRef = 489387FA17039158005CC795 /* DestinationData.m */; };
 		489387FC17039158005CC795 /* DestinationData.m in Sources */ = {isa = PBXBuildFile; fileRef = 489387FA17039158005CC795 /* DestinationData.m */; };
 		489387FF17039165005CC795 /* RecordingData.m in Sources */ = {isa = PBXBuildFile; fileRef = 489387FE17039165005CC795 /* RecordingData.m */; };
@@ -468,8 +456,6 @@
 		4895D19A16B1BE9200BCA581 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4895D19916B1BE9200BCA581 /* StoreKit.framework */; };
 		4895D19D16B1C4F200BCA581 /* PurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4895D19C16B1C4F200BCA581 /* PurchaseManager.m */; };
 		4895D19E16B1C4F200BCA581 /* PurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4895D19C16B1C4F200BCA581 /* PurchaseManager.m */; };
-		4896D90016EBE613008A2354 /* NumberAreasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */; };
-		4896D90116EBE613008A2354 /* NumberAreasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */; };
 		489765C41BCC4F4800D77FD7 /* WebStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 489765C31BCC4F4800D77FD7 /* WebStatus.m */; };
 		4898EC4B1DA021490010479D /* DollarCents@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4898EC491DA021490010479D /* DollarCents@2x.png */; };
 		4898EC4C1DA021490010479D /* DollarCents@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4898EC4A1DA021490010479D /* DollarCents@3x.png */; };
@@ -499,8 +485,6 @@
 		48ADD0FC170C12CD001515EB /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48ADD0FB170C12CC001515EB /* AddressBook.framework */; };
 		48ADE7D2185C67EC00E39DA2 /* PhoneData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48ADE7D1185C67EC00E39DA2 /* PhoneData.m */; };
 		48ADE7D3185C67EC00E39DA2 /* PhoneData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48ADE7D1185C67EC00E39DA2 /* PhoneData.m */; };
-		48AF44EA1649479100DFE3D8 /* NumbersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44E91649479100DFE3D8 /* NumbersViewController.m */; };
-		48AF44EB1649479100DFE3D8 /* NumbersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44E91649479100DFE3D8 /* NumbersViewController.m */; };
 		48AF44EE164947B300DFE3D8 /* CreditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44ED164947B300DFE3D8 /* CreditViewController.m */; };
 		48AF44EF164947B300DFE3D8 /* CreditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44ED164947B300DFE3D8 /* CreditViewController.m */; };
 		48AF44F2164947CE00DFE3D8 /* KeypadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44F1164947CE00DFE3D8 /* KeypadViewController.m */; };
@@ -519,27 +503,19 @@
 		48AF45341649788A00DFE3D8 /* CreditTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF451C1649788A00DFE3D8 /* CreditTab@2x.png */; };
 		48AF45371649788A00DFE3D8 /* KeypadTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF451E1649788A00DFE3D8 /* KeypadTab@2x.png */; };
 		48AF45381649788A00DFE3D8 /* KeypadTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF451E1649788A00DFE3D8 /* KeypadTab@2x.png */; };
-		48AF453B1649788A00DFE3D8 /* DestinationsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45201649788A00DFE3D8 /* DestinationsTab@2x.png */; };
-		48AF453C1649788A00DFE3D8 /* DestinationsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45201649788A00DFE3D8 /* DestinationsTab@2x.png */; };
 		48AF45431649788A00DFE3D8 /* HelpsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45241649788A00DFE3D8 /* HelpsTab@2x.png */; };
 		48AF45441649788A00DFE3D8 /* HelpsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45241649788A00DFE3D8 /* HelpsTab@2x.png */; };
-		48AF45471649788A00DFE3D8 /* NumbersTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45261649788A00DFE3D8 /* NumbersTab@2x.png */; };
-		48AF45481649788A00DFE3D8 /* NumbersTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45261649788A00DFE3D8 /* NumbersTab@2x.png */; };
 		48AF454B1649788A00DFE3D8 /* NBRecentsListTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45281649788A00DFE3D8 /* NBRecentsListTab@2x.png */; };
 		48AF454C1649788A00DFE3D8 /* NBRecentsListTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45281649788A00DFE3D8 /* NBRecentsListTab@2x.png */; };
 		48AF454F1649788A00DFE3D8 /* SettingsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF452A1649788A00DFE3D8 /* SettingsTab@2x.png */; };
 		48AF45501649788A00DFE3D8 /* SettingsTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF452A1649788A00DFE3D8 /* SettingsTab@2x.png */; };
 		48AF455B1649794B00DFE3D8 /* ShareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF455A1649794B00DFE3D8 /* ShareView.xib */; };
 		48AF455C1649794B00DFE3D8 /* ShareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF455A1649794B00DFE3D8 /* ShareView.xib */; };
-		48AF4565164979F400DFE3D8 /* DestinationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF4564164979F400DFE3D8 /* DestinationsViewController.m */; };
-		48AF4566164979F400DFE3D8 /* DestinationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF4564164979F400DFE3D8 /* DestinationsViewController.m */; };
 		48AF4581164A45A100DFE3D8 /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF4580164A45A100DFE3D8 /* Settings.m */; };
 		48B0C3F9174989F500DAB3BD /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B0C3F8174989F400DAB3BD /* Keychain.m */; };
 		48B0C3FA174989F500DAB3BD /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B0C3F8174989F400DAB3BD /* Keychain.m */; };
 		48B32A011725B65000F49182 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48B32A001725B65000F49182 /* CoreAudio.framework */; };
 		48B4BFE0201E7DC700576075 /* Application.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B4BFDF201E7D1100576075 /* Application.m */; };
-		48B5AAF216E6A58700BA4084 /* NumberCountriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */; };
-		48B5AAF316E6A58700BA4084 /* NumberCountriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */; };
 		48B8131C1AADF7390019AF77 /* CallRecordData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B8131B1AADF7390019AF77 /* CallRecordData.m */; };
 		48B8131F1AADF7530019AF77 /* NBCallsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B8131E1AADF7530019AF77 /* NBCallsView.m */; };
 		48B813231AADF79F0019AF77 /* NBRecentContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B813221AADF79F0019AF77 /* NBRecentContactViewController.m */; };
@@ -580,8 +556,6 @@
 		48B93875187B647F00132535 /* Thanks.html in Resources */ = {isa = PBXBuildFile; fileRef = 48B9386D187B647F00132535 /* Thanks.html */; };
 		48B9387A187E1E0E00132535 /* PhonesTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B93877187E1E0E00132535 /* PhonesTab@2x.png */; };
 		48B9387B187E1E0E00132535 /* PhonesTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B93877187E1E0E00132535 /* PhonesTab@2x.png */; };
-		48BC7F3C1702FDD1006671B5 /* NumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BC7F3B1702FDD1006671B5 /* NumberViewController.m */; };
-		48BC7F3D1702FDD1006671B5 /* NumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BC7F3B1702FDD1006671B5 /* NumberViewController.m */; };
 		48BD8BE81663E7A400F2CB45 /* CallBaseView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48BD8BE71663E7A400F2CB45 /* CallBaseView.xib */; };
 		48C1D3C517D31309004F910D /* ProofImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C1D3C417D31309004F910D /* ProofImageViewController.m */; };
 		48C1D3C617D31309004F910D /* ProofImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C1D3C417D31309004F910D /* ProofImageViewController.m */; };
@@ -597,10 +571,6 @@
 		48C9A2271BF7C9EC00966F80 /* KeypadMainView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48C9A2261BF7C9EC00966F80 /* KeypadMainView.xib */; };
 		48CA5036172AEEB100CB1B7B /* CueRecordBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CA5033172AEEB100CB1B7B /* CueRecordBlack@2x.png */; };
 		48CA5037172AEEB100CB1B7B /* CueRecordBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CA5033172AEEB100CB1B7B /* CueRecordBlack@2x.png */; };
-		48CA503D172C5EB400CB1B7B /* DestinationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CA503C172C5EB400CB1B7B /* DestinationViewController.m */; };
-		48CA503E172C5EB400CB1B7B /* DestinationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CA503C172C5EB400CB1B7B /* DestinationViewController.m */; };
-		48CA5042172FC6C800CB1B7B /* DestinationSequenceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CA5041172FC6C800CB1B7B /* DestinationSequenceViewController.m */; };
-		48CA5043172FC6C800CB1B7B /* DestinationSequenceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CA5041172FC6C800CB1B7B /* DestinationSequenceViewController.m */; };
 		48CB0775163D76C300B07199 /* PhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CB0774163D76C300B07199 /* PhoneNumber.m */; };
 		48CB0AFF19DB2E1B00F95369 /* WebInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CB0AF719DB2E1B00F95369 /* WebInterface.m */; };
 		48CB2C4417E6539000E19C3D /* Target.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CB2C4217E6539000E19C3D /* Target.png */; };
@@ -635,12 +605,9 @@
 		48DDF4C21E3A788900BDEC43 /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DDF4B91E3A788900BDEC43 /* AFURLRequestSerialization.m */; };
 		48DDF4C31E3A788A00BDEC43 /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DDF4BB1E3A788900BDEC43 /* AFURLResponseSerialization.m */; };
 		48DDF4C41E3A788A00BDEC43 /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DDF4BD1E3A788900BDEC43 /* AFURLSessionManager.m */; };
-		48E54B3F1DDD00E70043E1EC /* libHockeySDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E54B361DDD00BC0043E1EC /* libHockeySDK.a */; };
-		48E54B411DDD013B0043E1EC /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E54B401DDD013B0043E1EC /* CrashReporter.framework */; };
 		48E54B431DDD01560043E1EC /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E54B421DDD01560043E1EC /* AssetsLibrary.framework */; };
 		48E54B451DDD01610043E1EC /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E54B441DDD01610043E1EC /* QuickLook.framework */; };
 		48E54B471DDD017B0043E1EC /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E54B461DDD017B0043E1EC /* libz.tbd */; };
-		48E54B481DDD02430043E1EC /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 48E54B3A1DDD00BC0043E1EC /* HockeySDKResources.bundle */; };
 		48E61AF21EACF191001E3A93 /* CellButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E61AF11EACF191001E3A93 /* CellButton.m */; };
 		48E61AF51EAD1A33001E3A93 /* LanguagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E61AF41EAD1A33001E3A93 /* LanguagesViewController.m */; };
 		48E61EF51C1A1BB900973FB2 /* AnalyticsTransmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E61EF41C1A1BB900973FB2 /* AnalyticsTransmitter.m */; };
@@ -654,11 +621,8 @@
 		48F14EE61BF9C63A00541EEC /* AddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F14EE51BF9C63A00541EEC /* AddressViewController.m */; };
 		48F157501CA3412C00A5CB4C /* CountryRegions.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F157491CA33ABE00A5CB4C /* CountryRegions.m */; };
 		48F157521CA40C2B00A5CB4C /* BV@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48F157511CA40C2B00A5CB4C /* BV@2x.png */; };
-		48F1B7E117E63819003A3933 /* NumberDestinationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F1B7E017E63819003A3933 /* NumberDestinationsViewController.m */; };
-		48F1B7E217E63819003A3933 /* NumberDestinationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F1B7E017E63819003A3933 /* NumberDestinationsViewController.m */; };
 		48F3CE8F1D26A6D3000925EE /* Postcodes.json in Resources */ = {isa = PBXBuildFile; fileRef = 48F3CE8E1D26A6D2000925EE /* Postcodes.json */; };
 		48F3CE991D27B070000925EE /* IncomingChargesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F3CE981D27B070000925EE /* IncomingChargesViewController.m */; };
-		48F3CEA01D295D04000925EE /* NumberTermsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F3CE9F1D295D04000925EE /* NumberTermsViewController.m */; };
 		48F47BBF18BE9C01006A6436 /* ItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F47BBE18BE9C01006A6436 /* ItemViewController.m */; };
 		48F552611E2E39C7009A054E /* CallIncoming@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48F5525D1E2E39C7009A054E /* CallIncoming@2x.png */; };
 		48F552621E2E39C7009A054E /* CallIncoming@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48F5525E1E2E39C7009A054E /* CallIncoming@3x.png */; };
@@ -688,48 +652,6 @@
 			remoteGlobalIDString = 48884A6F1615CE920005AA79;
 			remoteInfo = Talk;
 		};
-		48E54B351DDD00BC0043E1EC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 48E54B2B1DDD00BC0043E1EC /* HockeySDK.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 1E5954F215B6F24A00A03429;
-			remoteInfo = HockeySDK;
-		};
-		48E54B371DDD00BC0043E1EC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 48E54B2B1DDD00BC0043E1EC /* HockeySDK.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 1E5A459016F0DFC200B55C04;
-			remoteInfo = HockeySDKTests;
-		};
-		48E54B391DDD00BC0043E1EC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 48E54B2B1DDD00BC0043E1EC /* HockeySDK.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 1E59550A15B6F45800A03429;
-			remoteInfo = HockeySDKResources;
-		};
-		48E54B3B1DDD00BC0043E1EC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 48E54B2B1DDD00BC0043E1EC /* HockeySDK.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 1EB6173F1B0A30480035A986;
-			remoteInfo = "HockeySDK Framework";
-		};
-		48E54B3D1DDD00BC0043E1EC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 48E54B2B1DDD00BC0043E1EC /* HockeySDK.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 1EB617491B0A30480035A986;
-			remoteInfo = "HockeySDK FrameworkTests";
-		};
-		48E54B491DDD02910043E1EC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 48E54B2B1DDD00BC0043E1EC /* HockeySDK.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 1E5954CB15B6F24A00A03429;
-			remoteInfo = HockeySDK;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -741,10 +663,6 @@
 		48021B331C3A693100C40B58 /* UIViewController+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Common.m"; sourceTree = "<group>"; };
 		4802621C1C8CCD0F00AAB11B /* Data2.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data2.2.xcdatamodel; sourceTree = "<group>"; };
 		4805E5181C5EA7FD00BA1924 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
-		48081BCA1ED35FA1009C5BE0 /* NumberFilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberFilterViewController.h; sourceTree = "<group>"; };
-		48081BCB1ED35FA1009C5BE0 /* NumberFilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberFilterViewController.m; sourceTree = "<group>"; };
-		48081BD31ED402D9009C5BE0 /* NumberFilterAreasViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberFilterAreasViewController.h; sourceTree = "<group>"; };
-		48081BD41ED402D9009C5BE0 /* NumberFilterAreasViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberFilterAreasViewController.m; sourceTree = "<group>"; };
 		480B4FF91BED1A890098F3A4 /* CountryCallingCodes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CountryCallingCodes.json; path = Resources/CountryCallingCodes.json; sourceTree = "<group>"; };
 		480B4FFE1BED4AC20098F3A4 /* WD@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WD@2x.png"; sourceTree = "<group>"; };
 		480BEF8C18D59E7400C882E0 /* GetStartedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetStartedViewController.h; sourceTree = "<group>"; };
@@ -755,7 +673,6 @@
 		480CE123194DA0100020F255 /* CallerIdData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallerIdData.m; sourceTree = "<group>"; };
 		480CE125194DBEC40020F255 /* CallerIdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallerIdViewController.h; sourceTree = "<group>"; };
 		480CE126194DBEC40020F255 /* CallerIdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallerIdViewController.m; sourceTree = "<group>"; };
-		480E524B18C510510054A791 /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CrashReporter.framework; path = "External/HockeySDK-iOS-3.5.4/Vendor/CrashReporter.framework"; sourceTree = "<group>"; };
 		480E7A2D1BFDCA7800F655E8 /* AddressesTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AddressesTab@2x.png"; sourceTree = "<group>"; };
 		4812727216487E2D00534450 /* LibPhoneNumber.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = LibPhoneNumber.js; path = External/LibPhoneNumber/LibPhoneNumber.js; sourceTree = SOURCE_ROOT; };
 		4814D54C19DCCD7C00958E33 /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
@@ -767,8 +684,6 @@
 		4814EA3D17CB1923004B7A3C /* CreditAmountCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditAmountCell.m; sourceTree = "<group>"; };
 		4816A09F1BF1043E00817ED7 /* Data2.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data2.0.xcdatamodel; sourceTree = "<group>"; };
 		48172C011C07017800927BC2 /* RatesTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RatesTab@2x.png"; sourceTree = "<group>"; };
-		4817A6101CB7EA9D00F14EED /* DestinationNumbersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinationNumbersViewController.h; sourceTree = "<group>"; };
-		4817A6111CB7EA9D00F14EED /* DestinationNumbersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DestinationNumbersViewController.m; sourceTree = "<group>"; };
 		4818DB601CAB0D380044AFE6 /* CountryRegions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CountryRegions.json; path = Resources/CountryRegions.json; sourceTree = "<group>"; };
 		481DFBA91C70CAC1009191B0 /* RecordingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordingsViewController.h; sourceTree = "<group>"; };
 		481DFBAA1C70CAC1009191B0 /* RecordingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordingsViewController.m; sourceTree = "<group>"; };
@@ -798,8 +713,6 @@
 		482A639C165FA94400325B3F /* CallManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallManager.m; sourceTree = "<group>"; };
 		482A639F165FF73400325B3F /* NumberLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberLabel.h; sourceTree = "<group>"; };
 		482A63A0165FF73400325B3F /* NumberLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberLabel.m; sourceTree = "<group>"; };
-		4830462216EE269D000F9B05 /* NumberAreaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreaViewController.h; sourceTree = "<group>"; };
-		4830462316EE269D000F9B05 /* NumberAreaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreaViewController.m; sourceTree = "<group>"; };
 		48338F8C161628BA0033F4C1 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "External/OpenSSL-for-iPhone/lib/libcrypto.a"; sourceTree = "<group>"; };
 		48338F8D161628BA0033F4C1 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "External/OpenSSL-for-iPhone/lib/libssl.a"; sourceTree = "<group>"; };
 		48338F92161700550033F4C1 /* AppledocSettings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AppledocSettings.plist; sourceTree = "<group>"; };
@@ -1155,8 +1068,6 @@
 		4864CAED1D0C7F25009B3D9C /* AddressMunicipalitiesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressMunicipalitiesViewController.m; sourceTree = "<group>"; };
 		4865A9DD1792C8B70028785F /* NumberPayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberPayCell.h; sourceTree = "<group>"; };
 		4865A9DE1792C8B70028785F /* NumberPayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberPayCell.m; sourceTree = "<group>"; };
-		486803D21E5368D700ECFEF3 /* Answers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Answers.framework; path = External/Fabric/Answers.framework; sourceTree = SOURCE_ROOT; };
-		486803D31E5368D700ECFEF3 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = External/Fabric/Fabric.framework; sourceTree = SOURCE_ROOT; };
 		486B95171CDE413A004CFD8A /* Muni-StrCode-Str.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Muni-StrCode-Str.json"; path = "Resources/Muni-StrCode-Str.json"; sourceTree = "<group>"; };
 		486B951E1CDE44E4004CFD8A /* Muni-Post-City.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Muni-Post-City.json"; path = "Resources/Muni-Post-City.json"; sourceTree = "<group>"; };
 		486B951F1CDE44E4004CFD8A /* StrCode-Post-City.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "StrCode-Post-City.json"; path = "Resources/StrCode-Post-City.json"; sourceTree = "<group>"; };
@@ -1165,8 +1076,6 @@
 		486CEF961DEDFCFD00D1E088 /* SignalDotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignalDotView.m; sourceTree = "<group>"; };
 		486D4A2118F06BC8004699C9 /* CallRatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallRatesViewController.h; sourceTree = "<group>"; };
 		486D4A2218F06BC8004699C9 /* CallRatesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallRatesViewController.m; sourceTree = "<group>"; };
-		4872DA7A1D360AC4009F4194 /* NumberExtendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberExtendViewController.h; sourceTree = "<group>"; };
-		4872DA7B1D360AC4009F4194 /* NumberExtendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberExtendViewController.m; sourceTree = "<group>"; };
 		4877EDBA17AD27700013B18F /* PhoneNumberTextFieldDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneNumberTextFieldDelegate.h; sourceTree = "<group>"; };
 		4877EDBB17AD27710013B18F /* PhoneNumberTextFieldDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneNumberTextFieldDelegate.m; sourceTree = "<group>"; };
 		48793367185C6A5800C08C8C /* PhonesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhonesViewController.h; sourceTree = "<group>"; };
@@ -1197,15 +1106,10 @@
 		4888D517166D1AEE00572566 /* Flip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Flip@2x.png"; sourceTree = "<group>"; };
 		4888D519166D1AEE00572566 /* HangupPhone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HangupPhone@2x.png"; sourceTree = "<group>"; };
 		4888D524166D200E00572566 /* HangupPhoneSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HangupPhoneSmall@2x.png"; sourceTree = "<group>"; };
-		4888E17A1D30FEB000B1B307 /* NumberBuyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberBuyViewController.h; sourceTree = "<group>"; };
-		4888E17B1D30FEB000B1B307 /* NumberBuyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberBuyViewController.m; sourceTree = "<group>"; };
-		488AD1E816E799C3004D3A2A /* NumberStatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberStatesViewController.h; sourceTree = "<group>"; };
-		488AD1E916E799C3004D3A2A /* NumberStatesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberStatesViewController.m; sourceTree = "<group>"; };
 		488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumberStatesView.xib; sourceTree = "<group>"; };
 		488AD1EF16E80A60004D3A2A /* NSObject+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Blocks.h"; sourceTree = "<group>"; };
 		488AD1F016E80A60004D3A2A /* NSObject+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Blocks.m"; sourceTree = "<group>"; };
 		488B8E5B17AFFD8E005C33A2 /* TODO.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
-		488D7753178076E300099470 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HockeySDK.framework; path = "External/HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework"; sourceTree = "<group>"; };
 		488D77551780773800099470 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		488D7758178078CC00099470 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		488FBBD817007CC6000ECC71 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
@@ -1214,8 +1118,6 @@
 		488FBBE11700852F000ECC71 /* NumberData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberData.m; sourceTree = "<group>"; };
 		4890CB971E33CCB5001ED2D2 /* CallVerification@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CallVerification@2x.png"; sourceTree = "<group>"; };
 		4890CB981E33CCB5001ED2D2 /* CallVerification@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CallVerification@3x.png"; sourceTree = "<group>"; };
-		48931FF31D3CB0FF00A93456 /* NumberPayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberPayViewController.h; sourceTree = "<group>"; };
-		48931FF41D3CB0FF00A93456 /* NumberPayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberPayViewController.m; sourceTree = "<group>"; };
 		489387F917039158005CC795 /* DestinationData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinationData.h; sourceTree = "<group>"; };
 		489387FA17039158005CC795 /* DestinationData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DestinationData.m; sourceTree = "<group>"; };
 		489387FD17039165005CC795 /* RecordingData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordingData.h; sourceTree = "<group>"; };
@@ -1223,8 +1125,6 @@
 		4895D19916B1BE9200BCA581 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		4895D19B16B1C4F100BCA581 /* PurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseManager.h; sourceTree = "<group>"; };
 		4895D19C16B1C4F200BCA581 /* PurchaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurchaseManager.m; sourceTree = "<group>"; };
-		4896D8FE16EBE612008A2354 /* NumberAreasViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberAreasViewController.h; sourceTree = "<group>"; };
-		4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberAreasViewController.m; sourceTree = "<group>"; };
 		489765C21BCC4F4800D77FD7 /* WebStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebStatus.h; sourceTree = "<group>"; };
 		489765C31BCC4F4800D77FD7 /* WebStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebStatus.m; sourceTree = "<group>"; };
 		4898EC491DA021490010479D /* DollarCents@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DollarCents@2x.png"; sourceTree = "<group>"; };
@@ -1275,8 +1175,6 @@
 		48ADE7D0185C67EC00E39DA2 /* PhoneData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PhoneData.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		48ADE7D1185C67EC00E39DA2 /* PhoneData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PhoneData.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		48AE1B1B1BB4A26C0061B92E /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
-		48AF44E81649479100DFE3D8 /* NumbersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumbersViewController.h; sourceTree = "<group>"; };
-		48AF44E91649479100DFE3D8 /* NumbersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumbersViewController.m; sourceTree = "<group>"; };
 		48AF44EC164947B300DFE3D8 /* CreditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditViewController.h; sourceTree = "<group>"; };
 		48AF44ED164947B300DFE3D8 /* CreditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditViewController.m; sourceTree = "<group>"; };
 		48AF44F0164947CD00DFE3D8 /* KeypadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeypadViewController.h; sourceTree = "<group>"; };
@@ -1293,18 +1191,14 @@
 		48AF451A1649788A00DFE3D8 /* AboutTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AboutTab@2x.png"; sourceTree = "<group>"; };
 		48AF451C1649788A00DFE3D8 /* CreditTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CreditTab@2x.png"; sourceTree = "<group>"; };
 		48AF451E1649788A00DFE3D8 /* KeypadTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "KeypadTab@2x.png"; sourceTree = "<group>"; };
-		48AF45201649788A00DFE3D8 /* DestinationsTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DestinationsTab@2x.png"; sourceTree = "<group>"; };
 		48AF45221649788A00DFE3D8 /* GroupsTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GroupsTab@2x.png"; sourceTree = "<group>"; };
 		48AF45241649788A00DFE3D8 /* HelpsTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HelpsTab@2x.png"; sourceTree = "<group>"; };
-		48AF45261649788A00DFE3D8 /* NumbersTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NumbersTab@2x.png"; sourceTree = "<group>"; };
 		48AF45281649788A00DFE3D8 /* NBRecentsListTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NBRecentsListTab@2x.png"; sourceTree = "<group>"; };
 		48AF452A1649788A00DFE3D8 /* SettingsTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SettingsTab@2x.png"; sourceTree = "<group>"; };
 		48AF452C1649788A00DFE3D8 /* ShareTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShareTab@2x.png"; sourceTree = "<group>"; };
 		48AF4555164978BE00DFE3D8 /* ShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
 		48AF4556164978BE00DFE3D8 /* ShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
 		48AF455A1649794B00DFE3D8 /* ShareView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShareView.xib; sourceTree = "<group>"; };
-		48AF4563164979F300DFE3D8 /* DestinationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinationsViewController.h; sourceTree = "<group>"; };
-		48AF4564164979F400DFE3D8 /* DestinationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DestinationsViewController.m; sourceTree = "<group>"; };
 		48AF457F164A45A000DFE3D8 /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
 		48AF4580164A45A100DFE3D8 /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
 		48B0C3F7174989F400DAB3BD /* Keychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keychain.h; sourceTree = "<group>"; };
@@ -1312,8 +1206,6 @@
 		48B32A001725B65000F49182 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		48B4BFDF201E7D1100576075 /* Application.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Application.m; sourceTree = "<group>"; };
 		48B4BFE1201E7E7D00576075 /* Application.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Application.h; sourceTree = "<group>"; };
-		48B5AAF016E6A58400BA4084 /* NumberCountriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberCountriesViewController.h; sourceTree = "<group>"; };
-		48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberCountriesViewController.m; sourceTree = "<group>"; };
 		48B813141AADF6970019AF77 /* NBAddressBook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NBAddressBook.h; path = External/NBAddressBook/NBAddressBook/NBAddressBook/NBAddressBook.h; sourceTree = SOURCE_ROOT; };
 		48B8131A1AADF7390019AF77 /* CallRecordData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CallRecordData.h; path = External/NBAddressBook/NBAddressBook/NBAddressBook/CallRecordData.h; sourceTree = SOURCE_ROOT; };
 		48B8131B1AADF7390019AF77 /* CallRecordData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CallRecordData.m; path = External/NBAddressBook/NBAddressBook/NBAddressBook/CallRecordData.m; sourceTree = SOURCE_ROOT; };
@@ -1384,8 +1276,6 @@
 		48B9386C187B647F00132535 /* Licenses.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Licenses.json; path = Resources/Licenses.json; sourceTree = "<group>"; };
 		48B9386D187B647F00132535 /* Thanks.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = Thanks.html; path = Resources/Thanks.html; sourceTree = "<group>"; };
 		48B93877187E1E0E00132535 /* PhonesTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PhonesTab@2x.png"; sourceTree = "<group>"; };
-		48BC7F3A1702FDD1006671B5 /* NumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberViewController.h; sourceTree = "<group>"; };
-		48BC7F3B1702FDD1006671B5 /* NumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberViewController.m; sourceTree = "<group>"; };
 		48BD8BE71663E7A400F2CB45 /* CallBaseView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallBaseView.xib; sourceTree = "<group>"; };
 		48C1D3C317D31308004F910D /* ProofImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProofImageViewController.h; sourceTree = "<group>"; };
 		48C1D3C417D31309004F910D /* ProofImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProofImageViewController.m; sourceTree = "<group>"; };
@@ -1400,10 +1290,6 @@
 		48C97EA218943C7300174DE9 /* PhoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneViewController.m; sourceTree = "<group>"; };
 		48C9A2261BF7C9EC00966F80 /* KeypadMainView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KeypadMainView.xib; sourceTree = "<group>"; };
 		48CA5033172AEEB100CB1B7B /* CueRecordBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CueRecordBlack@2x.png"; sourceTree = "<group>"; };
-		48CA503B172C5EB300CB1B7B /* DestinationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinationViewController.h; sourceTree = "<group>"; };
-		48CA503C172C5EB400CB1B7B /* DestinationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DestinationViewController.m; sourceTree = "<group>"; };
-		48CA5040172FC6C800CB1B7B /* DestinationSequenceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinationSequenceViewController.h; sourceTree = "<group>"; };
-		48CA5041172FC6C800CB1B7B /* DestinationSequenceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DestinationSequenceViewController.m; sourceTree = "<group>"; };
 		48CB0773163D76C300B07199 /* PhoneNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneNumber.h; sourceTree = "<group>"; };
 		48CB0774163D76C300B07199 /* PhoneNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneNumber.m; sourceTree = "<group>"; };
 		48CB0AF619DB2E1B00F95369 /* WebInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebInterface.h; sourceTree = "<group>"; };
@@ -1449,8 +1335,6 @@
 		48DDF4BC1E3A788900BDEC43 /* AFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLSessionManager.h; sourceTree = "<group>"; };
 		48DDF4BD1E3A788900BDEC43 /* AFURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLSessionManager.m; sourceTree = "<group>"; };
 		48E4AB8B170DCFCF00A4B236 /* libOpenZRTP.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOpenZRTP.a; path = External/OpenZRTP/lib/Release/libOpenZRTP.a; sourceTree = "<group>"; };
-		48E54B2B1DDD00BC0043E1EC /* HockeySDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = HockeySDK.xcodeproj; path = "External/HockeySDK-iOS-4.1.2/Support/HockeySDK.xcodeproj"; sourceTree = SOURCE_ROOT; };
-		48E54B401DDD013B0043E1EC /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CrashReporter.framework; path = "External/HockeySDK-iOS-4.1.2/Vendor/CrashReporter.framework"; sourceTree = "<group>"; };
 		48E54B421DDD01560043E1EC /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		48E54B441DDD01610043E1EC /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		48E54B461DDD017B0043E1EC /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
@@ -1481,13 +1365,9 @@
 		48F157481CA33ABE00A5CB4C /* CountryRegions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountryRegions.h; sourceTree = "<group>"; };
 		48F157491CA33ABE00A5CB4C /* CountryRegions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountryRegions.m; sourceTree = "<group>"; };
 		48F157511CA40C2B00A5CB4C /* BV@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BV@2x.png"; sourceTree = "<group>"; };
-		48F1B7DF17E63819003A3933 /* NumberDestinationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberDestinationsViewController.h; sourceTree = "<group>"; };
-		48F1B7E017E63819003A3933 /* NumberDestinationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberDestinationsViewController.m; sourceTree = "<group>"; };
 		48F3CE8E1D26A6D2000925EE /* Postcodes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Postcodes.json; sourceTree = "<group>"; };
 		48F3CE971D27B070000925EE /* IncomingChargesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IncomingChargesViewController.h; sourceTree = "<group>"; };
 		48F3CE981D27B070000925EE /* IncomingChargesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IncomingChargesViewController.m; sourceTree = "<group>"; };
-		48F3CE9E1D295D04000925EE /* NumberTermsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberTermsViewController.h; sourceTree = "<group>"; };
-		48F3CE9F1D295D04000925EE /* NumberTermsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberTermsViewController.m; sourceTree = "<group>"; };
 		48F47BBD18BE9C01006A6436 /* ItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemViewController.h; sourceTree = "<group>"; };
 		48F47BBE18BE9C01006A6436 /* ItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemViewController.m; sourceTree = "<group>"; };
 		48F5525D1E2E39C7009A054E /* CallIncoming@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CallIncoming@2x.png"; sourceTree = "<group>"; };
@@ -1524,8 +1404,6 @@
 				48E54B471DDD017B0043E1EC /* libz.tbd in Frameworks */,
 				48E54B451DDD01610043E1EC /* QuickLook.framework in Frameworks */,
 				48E54B431DDD01560043E1EC /* AssetsLibrary.framework in Frameworks */,
-				48E54B411DDD013B0043E1EC /* CrashReporter.framework in Frameworks */,
-				48E54B3F1DDD00E70043E1EC /* libHockeySDK.a in Frameworks */,
 				4805E5191C5EA7FD00BA1924 /* Photos.framework in Frameworks */,
 				4814D54D19DCCD7C00958E33 /* libresolv.dylib in Frameworks */,
 				488D7759178078CC00099470 /* QuartzCore.framework in Frameworks */,
@@ -1536,11 +1414,9 @@
 				48ADD0FC170C12CD001515EB /* AddressBook.framework in Frameworks */,
 				48ADD0FA170C12C2001515EB /* AddressBookUI.framework in Frameworks */,
 				4895D19A16B1BE9200BCA581 /* StoreKit.framework in Frameworks */,
-				486803D41E5368D700ECFEF3 /* Answers.framework in Frameworks */,
 				484F7C3E164C15EA0059A5A6 /* SystemConfiguration.framework in Frameworks */,
 				48DD72AC169F55C400CD7080 /* MobileCoreServices.framework in Frameworks */,
 				48DD727D169CCF1C00CD7080 /* CoreData.framework in Frameworks */,
-				486803D51E5368D700ECFEF3 /* Fabric.framework in Frameworks */,
 				487A7C9A16978DBE007693EE /* MediaPlayer.framework in Frameworks */,
 				4888D28F16724FCD00B55B22 /* Security.framework in Frameworks */,
 				484F7C3B164C15770059A5A6 /* CoreTelephony.framework in Frameworks */,
@@ -1854,13 +1730,11 @@
 				48CB2C4917E6DB7700E19C3D /* NBPeopleListTab@2x.png */,
 				48CBE0931DEF833D00B1D4FC /* NBPeopleListTab.png */,
 				48AF451C1649788A00DFE3D8 /* CreditTab@2x.png */,
-				48AF45201649788A00DFE3D8 /* DestinationsTab@2x.png */,
 				480037991CA7CD050083D24B /* Favorites@2x.png */,
 				48AF45221649788A00DFE3D8 /* GroupsTab@2x.png */,
 				48AF45241649788A00DFE3D8 /* HelpsTab@2x.png */,
 				48AF451E1649788A00DFE3D8 /* KeypadTab@2x.png */,
 				48CBE0951DEF834C00B1D4FC /* KeypadTab.png */,
-				48AF45261649788A00DFE3D8 /* NumbersTab@2x.png */,
 				48B93877187E1E0E00132535 /* PhonesTab@2x.png */,
 				48172C011C07017800927BC2 /* RatesTab@2x.png */,
 				48AF45281649788A00DFE3D8 /* NBRecentsListTab@2x.png */,
@@ -2284,15 +2158,6 @@
 			name = Callstate;
 			sourceTree = "<group>";
 		};
-		486803CB1E53684000ECFEF3 /* Fabric */ = {
-			isa = PBXGroup;
-			children = (
-				486803D21E5368D700ECFEF3 /* Answers.framework */,
-				486803D31E5368D700ECFEF3 /* Fabric.framework */,
-			);
-			name = Fabric;
-			sourceTree = "<group>";
-		};
 		488268D1164BCF6300EA58AE /* Networking */ = {
 			isa = PBXGroup;
 			children = (
@@ -2337,12 +2202,10 @@
 				48E54B461DDD017B0043E1EC /* libz.tbd */,
 				48E54B441DDD01610043E1EC /* QuickLook.framework */,
 				48E54B421DDD01560043E1EC /* AssetsLibrary.framework */,
-				48E54B401DDD013B0043E1EC /* CrashReporter.framework */,
 				4805E5181C5EA7FD00BA1924 /* Photos.framework */,
 				48AE1B1B1BB4A26C0061B92E /* AdSupport.framework */,
 				4814D54C19DCCD7C00958E33 /* libresolv.dylib */,
 				48CB0B0319DCC8DC00F95369 /* libsystem_dnssd.dylib */,
-				480E524B18C510510054A791 /* CrashReporter.framework */,
 				48C431A618A8405D0008FE01 /* CoreImage.framework */,
 				48A0CEBE1811430A00B8A9F8 /* CrashReporter.framework */,
 				488D7757178077A900099470 /* External */,
@@ -2423,7 +2286,6 @@
 				48EE399616777EBB00823E09 /* WebRTC */,
 				48338F55161628410033F4C1 /* OpenSSL */,
 				48338F54161628310033F4C1 /* pjsip */,
-				488D7753178076E300099470 /* HockeySDK.framework */,
 			);
 			name = External;
 			sourceTree = "<group>";
@@ -2528,14 +2390,6 @@
 				48D60EF318B4D7A4000BE5D2 /* CountriesViewController.m */,
 				48AF44EC164947B300DFE3D8 /* CreditViewController.h */,
 				48AF44ED164947B300DFE3D8 /* CreditViewController.m */,
-				4817A6101CB7EA9D00F14EED /* DestinationNumbersViewController.h */,
-				4817A6111CB7EA9D00F14EED /* DestinationNumbersViewController.m */,
-				48CA5040172FC6C800CB1B7B /* DestinationSequenceViewController.h */,
-				48CA5041172FC6C800CB1B7B /* DestinationSequenceViewController.m */,
-				48AF4563164979F300DFE3D8 /* DestinationsViewController.h */,
-				48AF4564164979F400DFE3D8 /* DestinationsViewController.m */,
-				48CA503B172C5EB300CB1B7B /* DestinationViewController.h */,
-				48CA503C172C5EB400CB1B7B /* DestinationViewController.m */,
 				4837AF7418D9DAF000D3AEBC /* GetStartedActionViewController.h */,
 				4837AF7518D9DAF000D3AEBC /* GetStartedActionViewController.m */,
 				4837AF6818D9B6EC00D3AEBC /* GetStartedRestoreViewController.h */,
@@ -2558,32 +2412,6 @@
 				48E61AF41EAD1A33001E3A93 /* LanguagesViewController.m */,
 				4849432D1752263600E1D5C4 /* LicensesViewController.h */,
 				4849432E1752263600E1D5C4 /* LicensesViewController.m */,
-				4896D8FE16EBE612008A2354 /* NumberAreasViewController.h */,
-				4896D8FF16EBE613008A2354 /* NumberAreasViewController.m */,
-				4830462216EE269D000F9B05 /* NumberAreaViewController.h */,
-				4830462316EE269D000F9B05 /* NumberAreaViewController.m */,
-				4888E17A1D30FEB000B1B307 /* NumberBuyViewController.h */,
-				4888E17B1D30FEB000B1B307 /* NumberBuyViewController.m */,
-				48B5AAF016E6A58400BA4084 /* NumberCountriesViewController.h */,
-				48B5AAF116E6A58500BA4084 /* NumberCountriesViewController.m */,
-				48F1B7DF17E63819003A3933 /* NumberDestinationsViewController.h */,
-				48F1B7E017E63819003A3933 /* NumberDestinationsViewController.m */,
-				4872DA7A1D360AC4009F4194 /* NumberExtendViewController.h */,
-				4872DA7B1D360AC4009F4194 /* NumberExtendViewController.m */,
-				48081BD31ED402D9009C5BE0 /* NumberFilterAreasViewController.h */,
-				48081BD41ED402D9009C5BE0 /* NumberFilterAreasViewController.m */,
-				48081BCA1ED35FA1009C5BE0 /* NumberFilterViewController.h */,
-				48081BCB1ED35FA1009C5BE0 /* NumberFilterViewController.m */,
-				48931FF31D3CB0FF00A93456 /* NumberPayViewController.h */,
-				48931FF41D3CB0FF00A93456 /* NumberPayViewController.m */,
-				488AD1E816E799C3004D3A2A /* NumberStatesViewController.h */,
-				488AD1E916E799C3004D3A2A /* NumberStatesViewController.m */,
-				48AF44E81649479100DFE3D8 /* NumbersViewController.h */,
-				48AF44E91649479100DFE3D8 /* NumbersViewController.m */,
-				48F3CE9E1D295D04000925EE /* NumberTermsViewController.h */,
-				48F3CE9F1D295D04000925EE /* NumberTermsViewController.m */,
-				48BC7F3A1702FDD1006671B5 /* NumberViewController.h */,
-				48BC7F3B1702FDD1006671B5 /* NumberViewController.m */,
 				48793367185C6A5800C08C8C /* PhonesViewController.h */,
 				48793368185C6A5800C08C8C /* PhonesViewController.m */,
 				48C97EA118943C7300174DE9 /* PhoneViewController.h */,
@@ -2640,8 +2468,6 @@
 		48DD7284169F548600CD7080 /* External */ = {
 			isa = PBXGroup;
 			children = (
-				486803CB1E53684000ECFEF3 /* Fabric */,
-				48E54B2B1DDD00BC0043E1EC /* HockeySDK.xcodeproj */,
 				4814D55319E9660200958E33 /* AFNetworking-3.1.0 */,
 			);
 			name = External;
@@ -2653,18 +2479,6 @@
 				48E4AB8B170DCFCF00A4B236 /* libOpenZRTP.a */,
 			);
 			name = OpenZRTP;
-			sourceTree = "<group>";
-		};
-		48E54B2C1DDD00BC0043E1EC /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				48E54B361DDD00BC0043E1EC /* libHockeySDK.a */,
-				48E54B381DDD00BC0043E1EC /* HockeySDKTests.xctest */,
-				48E54B3A1DDD00BC0043E1EC /* HockeySDKResources.bundle */,
-				48E54B3C1DDD00BC0043E1EC /* HockeySDK.framework */,
-				48E54B3E1DDD00BC0043E1EC /* HockeySDK FrameworkTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		48EDD1FC1667652A007B89DA /* Call */ = {
@@ -2749,7 +2563,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				48E54B4A1DDD02910043E1EC /* PBXTargetDependency */,
 			);
 			name = Talk;
 			productName = Talk;
@@ -2804,18 +2617,13 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				nl,
 			);
 			mainGroup = 48884A651615CE920005AA79;
 			productRefGroup = 48884A711615CE920005AA79 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 48E54B2C1DDD00BC0043E1EC /* Products */;
-					ProjectRef = 48E54B2B1DDD00BC0043E1EC /* HockeySDK.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				48884A6F1615CE920005AA79 /* Talk */,
@@ -2823,44 +2631,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		48E54B361DDD00BC0043E1EC /* libHockeySDK.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libHockeySDK.a;
-			remoteRef = 48E54B351DDD00BC0043E1EC /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		48E54B381DDD00BC0043E1EC /* HockeySDKTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = HockeySDKTests.xctest;
-			remoteRef = 48E54B371DDD00BC0043E1EC /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		48E54B3A1DDD00BC0043E1EC /* HockeySDKResources.bundle */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = HockeySDKResources.bundle;
-			remoteRef = 48E54B391DDD00BC0043E1EC /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		48E54B3C1DDD00BC0043E1EC /* HockeySDK.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = HockeySDK.framework;
-			remoteRef = 48E54B3B1DDD00BC0043E1EC /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		48E54B3E1DDD00BC0043E1EC /* HockeySDK FrameworkTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "HockeySDK FrameworkTests.xctest";
-			remoteRef = 48E54B3D1DDD00BC0043E1EC /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		48884A6E1615CE920005AA79 /* Resources */ = {
@@ -3175,9 +2945,7 @@
 				48AF452F1649788A00DFE3D8 /* AboutTab@2x.png in Resources */,
 				48AF45331649788A00DFE3D8 /* CreditTab@2x.png in Resources */,
 				48AF45371649788A00DFE3D8 /* KeypadTab@2x.png in Resources */,
-				48AF453B1649788A00DFE3D8 /* DestinationsTab@2x.png in Resources */,
 				48AF45431649788A00DFE3D8 /* HelpsTab@2x.png in Resources */,
-				48AF45471649788A00DFE3D8 /* NumbersTab@2x.png in Resources */,
 				48AF454B1649788A00DFE3D8 /* NBRecentsListTab@2x.png in Resources */,
 				48AF454F1649788A00DFE3D8 /* SettingsTab@2x.png in Resources */,
 				48F552611E2E39C7009A054E /* CallIncoming@2x.png in Resources */,
@@ -3210,7 +2978,6 @@
 				48367A2B17247B2D001A02AF /* CuePlayWhite@2x.png in Resources */,
 				48367A2F17247B2D001A02AF /* CueRecordRed@2x.png in Resources */,
 				48367A3317247B2D001A02AF /* CueRecordWhite@2x.png in Resources */,
-				48E54B481DDD02430043E1EC /* HockeySDKResources.bundle in Resources */,
 				48367A3717247B2D001A02AF /* CueReverseBlack@2x.png in Resources */,
 				48367A3B17247B2D001A02AF /* CueReverseWhite@2x.png in Resources */,
 				48367A3F17247B2D001A02AF /* CueStopBlack@2x.png in Resources */,
@@ -3239,9 +3006,7 @@
 				48AF45301649788A00DFE3D8 /* AboutTab@2x.png in Resources */,
 				48AF45341649788A00DFE3D8 /* CreditTab@2x.png in Resources */,
 				48AF45381649788A00DFE3D8 /* KeypadTab@2x.png in Resources */,
-				48AF453C1649788A00DFE3D8 /* DestinationsTab@2x.png in Resources */,
 				48AF45441649788A00DFE3D8 /* HelpsTab@2x.png in Resources */,
-				48AF45481649788A00DFE3D8 /* NumbersTab@2x.png in Resources */,
 				48AF454C1649788A00DFE3D8 /* NBRecentsListTab@2x.png in Resources */,
 				48AF45501649788A00DFE3D8 /* SettingsTab@2x.png in Resources */,
 				48AF455C1649794B00DFE3D8 /* ShareView.xib in Resources */,
@@ -3331,7 +3096,6 @@
 				48338FA516170CA80033F4C1 /* AppDelegate.m in Sources */,
 				48FD99E71618CC370061191B /* Common.m in Sources */,
 				48CB0775163D76C300B07199 /* PhoneNumber.m in Sources */,
-				48AF44EA1649479100DFE3D8 /* NumbersViewController.m in Sources */,
 				48AF44EE164947B300DFE3D8 /* CreditViewController.m in Sources */,
 				48AF44F2164947CE00DFE3D8 /* KeypadViewController.m in Sources */,
 				48C97E9F1893F2BA00174DE9 /* BlockActionSheet.m in Sources */,
@@ -3339,7 +3103,6 @@
 				48B8137B1AADFA090019AF77 /* NSString+Common.m in Sources */,
 				48B813261AADF7AE0019AF77 /* NBRecentUnknownContactViewController.m in Sources */,
 				48AF45021649484600DFE3D8 /* AboutViewController.m in Sources */,
-				48AF4565164979F400DFE3D8 /* DestinationsViewController.m in Sources */,
 				48B8136E1AADF9B20019AF77 /* NBPersonFieldTableCell.m in Sources */,
 				48AF4581164A45A100DFE3D8 /* Settings.m in Sources */,
 				48AD95DF164AE582006178E6 /* Skinning.m in Sources */,
@@ -3358,7 +3121,6 @@
 				48E61AF21EACF191001E3A93 /* CellButton.m in Sources */,
 				4837BB3C165D701F00E46C36 /* LibPhoneNumber.m in Sources */,
 				48B813291AADF7BB0019AF77 /* NBRecentCallCell.m in Sources */,
-				4817A6181CB80B4700F14EED /* DestinationNumbersViewController.m in Sources */,
 				48FC30BD1C220E300032387E /* AddressType.m in Sources */,
 				4837BB66165F726400E46C36 /* BlockAlertView.m in Sources */,
 				482A6397165F903900325B3F /* Strings.m in Sources */,
@@ -3368,7 +3130,6 @@
 				48D8646D1F0EA40F007A5D96 /* SoundWaveView.m in Sources */,
 				48B813321AADF88E0019AF77 /* NBAddressBookManager.m in Sources */,
 				48B813611AADF98C0019AF77 /* NBPeoplePickerNavigationController.m in Sources */,
-				48081BCC1ED35FA1009C5BE0 /* NumberFilterViewController.m in Sources */,
 				48DDF4BE1E3A788900BDEC43 /* AFHTTPSessionManager.m in Sources */,
 				4882748E1660E20D00B41EA1 /* DtmfPlayer.m in Sources */,
 				48C97EA318943C7300174DE9 /* PhoneViewController.m in Sources */,
@@ -3384,31 +3145,23 @@
 				48B8132E1AADF7CC0019AF77 /* NBRecentsListViewController.m in Sources */,
 				48DD7281169CD4A200CD7080 /* Data.xcdatamodeld in Sources */,
 				48017A12194E554C0059A53B /* CallableData.m in Sources */,
-				48F1B7E117E63819003A3933 /* NumberDestinationsViewController.m in Sources */,
-				48081BD51ED402D9009C5BE0 /* NumberFilterAreasViewController.m in Sources */,
 				480BEF9618D73EF900C882E0 /* GetStartedViewController.m in Sources */,
 				48B813781AADFA030019AF77 /* NSMutableString+Appending.m in Sources */,
 				48DD72D5169F5AC600CD7080 /* WebClient.m in Sources */,
 				48B813411AADF91D0019AF77 /* NBGroup.m in Sources */,
 				4895D19D16B1C4F200BCA581 /* PurchaseManager.m in Sources */,
 				48FE4F591C8752C100CC0873 /* ImagePicker.m in Sources */,
-				486334781D329E3F002D0A4B /* NumberBuyViewController.m in Sources */,
 				48F5D2ED16B9A380001576E1 /* Base64.m in Sources */,
-				48B5AAF216E6A58700BA4084 /* NumberCountriesViewController.m in Sources */,
-				488AD1EA16E799C3004D3A2A /* NumberStatesViewController.m in Sources */,
 				488AD1F116E80A60004D3A2A /* NSObject+Blocks.m in Sources */,
 				48CB0AFF19DB2E1B00F95369 /* WebInterface.m in Sources */,
 				48DDF4C11E3A788900BDEC43 /* AFSecurityPolicy.m in Sources */,
 				485F93CE1DEF5CF4006E31ED /* GraphicCallStateView.m in Sources */,
 				48EEC7381E8ACBAB006759A3 /* VerifyPhoneVoiceEnterViewController.m in Sources */,
-				48F3CEA01D295D04000925EE /* NumberTermsViewController.m in Sources */,
-				4896D90016EBE613008A2354 /* NumberAreasViewController.m in Sources */,
 				48200D1C16EC89BA0069677E /* NumberType.m in Sources */,
 				48FDF65D1DF9FE4900A2A7F6 /* UIView+LayerProperties.m in Sources */,
 				4822B42A1C92EB7C004BD2F5 /* TabBadgeView.m in Sources */,
 				48FC30C51C2221360032387E /* ProofTypes.m in Sources */,
 				48232B721BFC8E5D006D667E /* AddressData.m in Sources */,
-				4830462416EE269D000F9B05 /* NumberAreaViewController.m in Sources */,
 				48F14EE61BF9C63A00541EEC /* AddressViewController.m in Sources */,
 				4823C0CD1CBA7F3800030FC7 /* WebViewController.m in Sources */,
 				48B813491AADF9380019AF77 /* NBContact.m in Sources */,
@@ -3419,7 +3172,6 @@
 				48DDF4C31E3A788A00BDEC43 /* AFURLResponseSerialization.m in Sources */,
 				48B8135E1AADF97A0019AF77 /* NBNotesCell.m in Sources */,
 				48B8131F1AADF7530019AF77 /* NBCallsView.m in Sources */,
-				48BC7F3C1702FDD1006671B5 /* NumberViewController.m in Sources */,
 				489387FB17039158005CC795 /* DestinationData.m in Sources */,
 				489387FF17039165005CC795 /* RecordingData.m in Sources */,
 				486D4A2318F06BC8004699C9 /* CallRatesViewController.m in Sources */,
@@ -3428,7 +3180,6 @@
 				4837AF6D18D9B89A00D3AEBC /* GetStartedStartViewController.m in Sources */,
 				48F157501CA3412C00A5CB4C /* CountryRegions.m in Sources */,
 				48F14EDE1BF9C62200541EEC /* AddressesViewController.m in Sources */,
-				48931FF51D3CB0FF00A93456 /* NumberPayViewController.m in Sources */,
 				48DDF4C41E3A788A00BDEC43 /* AFURLSessionManager.m in Sources */,
 				48F3CE991D27B070000925EE /* IncomingChargesViewController.m in Sources */,
 				48B8136D1AADF9B20019AF77 /* NBPersonCellInfo.m in Sources */,
@@ -3437,7 +3188,6 @@
 				484D936C1712FBA1006FA875 /* AddressCitiesViewController.m in Sources */,
 				484D937017131E97006FA875 /* AddressPostcodesViewController.m in Sources */,
 				48B813461AADF92E0019AF77 /* NBAddressCell.m in Sources */,
-				4872DA7C1D360AC4009F4194 /* NumberExtendViewController.m in Sources */,
 				48E61EF51C1A1BB900973FB2 /* AnalyticsTransmitter.m in Sources */,
 				48D60EF418B4D7A4000BE5D2 /* CountriesViewController.m in Sources */,
 				483679DE1721F2E1001A02AF /* RecordingViewController.m in Sources */,
@@ -3445,9 +3195,7 @@
 				480CE124194DA0100020F255 /* CallerIdData.m in Sources */,
 				48367A47172552D2001A02AF /* RecordingControlsCell.m in Sources */,
 				48B8134F1AADF9460019AF77 /* NBCustomValueTableViewController.m in Sources */,
-				48CA503D172C5EB400CB1B7B /* DestinationViewController.m in Sources */,
 				481DFBAB1C70CAC1009191B0 /* RecordingsViewController.m in Sources */,
-				48CA5042172FC6C800CB1B7B /* DestinationSequenceViewController.m in Sources */,
 				485F93D21DEF6787006E31ED /* CallStateView.m in Sources */,
 				48B0C3F9174989F500DAB3BD /* Keychain.m in Sources */,
 				48A0CE781809BE3100B8A9F8 /* CallBaseViewController.m in Sources */,
@@ -3495,13 +3243,11 @@
 				48884AB41615CE920005AA79 /* TalkTests.m in Sources */,
 				48FD99E81618CC370061191B /* Common.m in Sources */,
 				4812727416487E2D00534450 /* LibPhoneNumber.js in Sources */,
-				48AF44EB1649479100DFE3D8 /* NumbersViewController.m in Sources */,
 				48AF44EF164947B300DFE3D8 /* CreditViewController.m in Sources */,
 				48AF44F3164947CE00DFE3D8 /* KeypadViewController.m in Sources */,
 				48C97EA01893F2BA00174DE9 /* BlockActionSheet.m in Sources */,
 				48AF44FF1649483600DFE3D8 /* HelpsViewController.m in Sources */,
 				48AF45031649484600DFE3D8 /* AboutViewController.m in Sources */,
-				48AF4566164979F400DFE3D8 /* DestinationsViewController.m in Sources */,
 				48AD95E0164AE582006178E6 /* Skinning.m in Sources */,
 				488268DA164BCF8600EA58AE /* NetworkStatus.m in Sources */,
 				48D3F01F164F9284002041A9 /* CountryNames.m in Sources */,
@@ -3519,18 +3265,12 @@
 				482608EF166A4707007F0844 /* NSTimer+Blocks.m in Sources */,
 				4888D1FB166E865400B55B22 /* Call.m in Sources */,
 				48DD7282169CD4A200CD7080 /* Data.xcdatamodeld in Sources */,
-				48F1B7E217E63819003A3933 /* NumberDestinationsViewController.m in Sources */,
 				48DD72D6169F5AC600CD7080 /* WebClient.m in Sources */,
 				4895D19E16B1C4F200BCA581 /* PurchaseManager.m in Sources */,
 				48F5D2EE16B9A380001576E1 /* Base64.m in Sources */,
-				48B5AAF316E6A58700BA4084 /* NumberCountriesViewController.m in Sources */,
-				488AD1EB16E799C3004D3A2A /* NumberStatesViewController.m in Sources */,
 				488AD1F216E80A60004D3A2A /* NSObject+Blocks.m in Sources */,
-				4896D90116EBE613008A2354 /* NumberAreasViewController.m in Sources */,
 				48200D1D16EC89BA0069677E /* NumberType.m in Sources */,
-				4830462516EE269D000F9B05 /* NumberAreaViewController.m in Sources */,
 				488FBBE31700852F000ECC71 /* NumberData.m in Sources */,
-				48BC7F3D1702FDD1006671B5 /* NumberViewController.m in Sources */,
 				489387FC17039158005CC795 /* DestinationData.m in Sources */,
 				4893880017039165005CC795 /* RecordingData.m in Sources */,
 				48ADD0F81706791A001515EB /* UIView+AnimateHidden.m in Sources */,
@@ -3539,8 +3279,6 @@
 				484D937117131E97006FA875 /* AddressPostcodesViewController.m in Sources */,
 				483679DF1721F2E1001A02AF /* RecordingViewController.m in Sources */,
 				48367A48172552D2001A02AF /* RecordingControlsCell.m in Sources */,
-				48CA503E172C5EB400CB1B7B /* DestinationViewController.m in Sources */,
-				48CA5043172FC6C800CB1B7B /* DestinationSequenceViewController.m in Sources */,
 				48B0C3FA174989F500DAB3BD /* Keychain.m in Sources */,
 				48A0CE791809BE3100B8A9F8 /* CallBaseViewController.m in Sources */,
 				484943301752263600E1D5C4 /* LicensesViewController.m in Sources */,
@@ -3565,11 +3303,6 @@
 			isa = PBXTargetDependency;
 			target = 48884A6F1615CE920005AA79 /* Talk */;
 			targetProxy = 48884AAA1615CE920005AA79 /* PBXContainerItemProxy */;
-		};
-		48E54B4A1DDD02910043E1EC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = HockeySDK;
-			targetProxy = 48E54B491DDD02910043E1EC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -3628,7 +3361,6 @@
 				HEADER_SEARCH_PATHS = (
 					"External/pjproject-2.0.1/install/include/",
 					External/WebRTC/GlueLogic,
-					"External/HockeySDK-iOS-3.0.0/Classes",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				ONLY_ACTIVE_ARCH = YES;
@@ -3659,7 +3391,6 @@
 				HEADER_SEARCH_PATHS = (
 					"External/pjproject-2.0.1/install/include/",
 					External/WebRTC/GlueLogic,
-					"External/HockeySDK-iOS-3.0.0/Classes",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				ONLY_ACTIVE_ARCH = NO;
@@ -3686,18 +3417,13 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/External/HockeySDK-iOS-4.1.2/Vendor",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/External/Fabric",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
-				HEADER_SEARCH_PATHS = (
-					"External/OpenSSL-for-iPhone/include",
-					"\"$(SRCROOT)/External/HockeySDK-iOS-4.1.2/Classes\"",
-				);
+				HEADER_SEARCH_PATHS = "External/OpenSSL-for-iPhone/include";
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -3735,18 +3461,13 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/External/HockeySDK-iOS-4.1.2/Vendor",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/External/Fabric",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
-				HEADER_SEARCH_PATHS = (
-					"External/OpenSSL-for-iPhone/include",
-					"\"$(SRCROOT)/External/HockeySDK-iOS-4.1.2/Classes\"",
-				);
+				HEADER_SEARCH_PATHS = "External/OpenSSL-for-iPhone/include";
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -3774,8 +3495,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"\\\"$(SDKROOT)/Developer/Library/Frameworks\\\"",
 					"\\\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\\\"",
-					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS/HockeySDK.embeddedframework",
-					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS-3/HockeySDK.embeddedframework",
 					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3801,8 +3520,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"\\\"$(SDKROOT)/Developer/Library/Frameworks\\\"",
 					"\\\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\\\"",
-					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS/HockeySDK.embeddedframework",
-					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS-3/HockeySDK.embeddedframework",
 					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3841,7 +3558,6 @@
 				HEADER_SEARCH_PATHS = (
 					"External/pjproject-2.0.1/install/include/",
 					External/WebRTC/GlueLogic,
-					"External/HockeySDK-iOS-3.0.0/Classes",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				ONLY_ACTIVE_ARCH = NO;
@@ -3869,18 +3585,13 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/External/HockeySDK-iOS-4.1.2/Vendor",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/External/Fabric",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Talk/Talk-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
-				HEADER_SEARCH_PATHS = (
-					"External/OpenSSL-for-iPhone/include",
-					"\"$(SRCROOT)/External/HockeySDK-iOS-4.1.2/Classes\"",
-				);
+				HEADER_SEARCH_PATHS = "External/OpenSSL-for-iPhone/include";
 				INFOPLIST_FILE = "Talk/Talk-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -3909,8 +3620,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"\\\"$(SDKROOT)/Developer/Library/Frameworks\\\"",
 					"\\\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\\\"",
-					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS/HockeySDK.embeddedframework",
-					"/Users/case/Projects/Talk/Talk/External/HockeySDK-iOS-3/HockeySDK.embeddedframework",
 					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

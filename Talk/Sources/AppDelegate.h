@@ -9,15 +9,12 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
-#import "HockeySDK.h"
 #import "CreditViewController.h"
 #import "NBRecentsListViewController.h"
 #import "NBPeopleListViewController.h"
 #import "NBAddressBookManager.h"
 #import "KeypadViewController.h"
 #import "PhonesViewController.h"
-#import "NumbersViewController.h"
-#import "DestinationsViewController.h"
 #import "AddressesViewController.h"
 #import "SettingsViewController.h"
 #import "HelpsViewController.h"
@@ -27,8 +24,7 @@ extern NSString* const AppDelegateRemoteNotification;
 
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate, AVAudioPlayerDelegate,
-                                      UINavigationControllerDelegate,
-                                      BITHockeyManagerDelegate, BITCrashManagerDelegate, AddressBookDelegate>
+                                      UINavigationControllerDelegate, AddressBookDelegate>
 
 @property (nonatomic, strong) UIWindow*                    window;
 @property (nonatomic, strong) UITabBarController*          tabBarController;
@@ -43,8 +39,6 @@ extern NSString* const AppDelegateRemoteNotification;
 @property (nonatomic, strong) NBPeopleListViewController*  nBPeopleListViewController;
 @property (nonatomic, strong) KeypadViewController*        keypadViewController;
 @property (nonatomic, strong) PhonesViewController*        phonesViewController;
-@property (nonatomic, strong) NumbersViewController*       numbersViewController;
-@property (nonatomic, strong) DestinationsViewController*  destinationsViewController;
 @property (nonatomic, strong) SettingsViewController*      settingsViewController;
 @property (nonatomic, strong) HelpsViewController*         helpsViewController;
 @property (nonatomic, strong) AboutViewController*         aboutViewController;
@@ -67,11 +61,5 @@ extern NSString* const AppDelegateRemoteNotification;
 - (NSString*)contactNameForId:(NSString*)contactId;
 
 - (void)checkCreditWithCompletion:(void (^)(BOOL success, NSError* error))completion;
-
-- (void)updateNumbersBadgeValue;
-
-- (void)showNumber:(NumberData*)number;
-
-- (void)refreshLocalNotifications;
 
 @end

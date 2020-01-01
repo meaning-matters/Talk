@@ -58,8 +58,6 @@
 // Returns YES when expiryDate has passed.
 - (BOOL)hasExpired;
 
-- (void)showExpiryAlertWithCompletion:(void (^)(void))completion;
-
 - (NSString*)alertTextForExpiryHours:(NSInteger)expiryHours;
 
 - (NSString*)purchaseDateString;

@@ -478,8 +478,16 @@ static Common* sharedCommon;
 // List of fonts: http://www.prepressure.com/fonts/basics/ios-6-typefaces
 + (UIFont*)phoneFontOfSize:(CGFloat)size
 {
+    UIFont* font;
+
     // Obscure ".PhonepadTwo".
-    return [UIFont fontWithName:[NSString stringWithFormat:@".%@%@Two", @"Phone", @"pad"] size:size];
+    font = [UIFont fontWithName:[NSString stringWithFormat:@"%@%@Two", @"Phone", @"pad"] size:size];
+    if (font == nil)
+    {
+        font = [UIFont fontWithName:[NSString stringWithFormat:@".%@%@Two", @"Phone", @"pad"] size:size];
+    }
+
+    return font;
 }
 
 

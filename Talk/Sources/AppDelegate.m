@@ -9,7 +9,6 @@
 //### Want to remove CoreData? http://www.gravitywell.co.uk/blog/post/how-to-quickly-add-core-data-to-an-app-in-xcode-4
 
 #import <MediaPlayer/MediaPlayer.h>
-#import "HockeySDK.h"
 #import "AppDelegate.h"
 #import "Settings.h"
 #import "PhoneNumber.h"
@@ -144,20 +143,8 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
     {
         [self setUp];
 
-        [Answers logCustomEventWithName:@"Abort"
-                       customAttributes:@{}];
-
         // abort();
     }
-
-    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"6abff73fa5eb64771ac8a5124ebc33f5" delegate:self];
-    [[BITHockeyManager sharedHockeyManager] startManager];
-    [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
-
-    [[Fabric sharedSDK] setDebug: YES];
-    [Fabric with:@[[Answers class]]];
-
-    [self refreshLocalNotifications];
 
     [[NSNotificationCenter defaultCenter] addObserverForName:NetworkStatusReachableNotification
                                                                  object:nil
@@ -174,151 +161,6 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
     }];
 
     return YES;
-}
-
-
-- (void)refreshLocalNotifications
-{
-    // This removes already fired notifications from notification center, which may result in the user not
-    // seeing them. To make sure they get seen, we show an alert if the Number's `notifiedExpiryDays` is higher
-    // than the current `expiryDays` level; this is done by `showMissedNotifications`.
-    [[UIApplication sharedApplication] cancelAllLocalNotifications];
-
-    [self scheduleNumberNotifications];
-}
-
-
-- (void)showMissedNotifications
-{
-    NSAssert([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive,
-             @"showMissedNotifications may only be called when app is active and can show alerts");
-
-    NSArray* numbers = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"];
-    for (NumberData* number in numbers)
-    {
-        // Skip pending Numbers.
-        if (number.isPending)
-        {
-            continue;
-        }
-
-        if (number.notifiedExpiryDays > [number expiryDays])
-        {
-            number.notifiedExpiryDays = [number expiryDays];
-
-            if ([number hasExpired])
-            {
-                [self.numbersViewController hideNumber:number];
-            }
-
-            [number showExpiryAlertWithCompletion:^
-            {
-                if ([number hasExpired])
-                {
-                    [[DataManager sharedManager].managedObjectContext deleteObject:number];
-                }
-            }];
-        }
-    }
-}
-
-
-- (void)updateNumbersBadgeValue
-{
-    NSPredicate* unconnectedPredicate    = [NSPredicate predicateWithFormat:@"destination == nil"];
-    NSArray*     unconnectedNumbers      = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
-                                                                                     sortKeys:nil
-                                                                                    predicate:unconnectedPredicate
-                                                                         managedObjectContext:nil];
-
-    // Because `isPending` is a calculated property, it can't be used in a CoreData fetch and would lead to a crash.
-    // That's why we fetch all Numbers below and then filter that regular array.
-    NSCalendar*       calendar           = [NSCalendar currentCalendar];
-    NSDateComponents* components         = [NSDateComponents new];  // Below adding to `day` also works around New Year.
-    components.day                       = 7;
-    NSDate*           sevenDaysDate      = [calendar dateByAddingComponents:components toDate:[NSDate date] options:0];
-    NSPredicate*      sevenDaysPredicate = [NSPredicate predicateWithFormat:@"(isPending == NO) AND (expiryDate < %@)",
-                                            sevenDaysDate];
-    NSArray*          sevenDaysNumbers   = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"];
-    sevenDaysNumbers                     = [sevenDaysNumbers filteredArrayUsingPredicate:sevenDaysPredicate];
-
-    NSUInteger unverifiedCount = 0;
-    NSArray*   numbers         = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"];
-    for (NumberData* number in numbers)
-    {
-        unverifiedCount += [AddressStatus isVerifiedAddressStatusMask:number.address.addressStatus] ? 0 : 1;
-    }
-
-    NSUInteger count = [[AddressUpdatesHandler sharedHandler] badgeCount] +
-                       unconnectedNumbers.count + sevenDaysNumbers.count + unverifiedCount;
-    [[BadgeHandler sharedHandler] setBadgeCount:count forViewController:self.numbersViewController];
-}
-
-
-- (void)scheduleNumberNotifications
-{
-    NSArray* numbers = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"];
-
-    // If past the 7, 3, and 1 day(s), the corresponding notification has fired and the user has seen it or was
-    // in the app during that seeing the red badge.
-    //
-    // The is a microscopic chance the notification's date falls right in between the fraction of a second between
-    // `cancelAllLocalNotifications` and adding them again here. We just ignore that to keep things simple.
-    for (NumberData* number in numbers)
-    {
-        // Skip pending Numbers.
-        if (number.isPending)
-        {
-            continue;
-        }
-
-        switch ([number expiryDays])
-        {
-            case INT16_MAX:
-                // It's more than 7 days until expiry, so add all notifications.
-                [self addNumberNotification:number expiryDays:7];
-                [self addNumberNotification:number expiryDays:3];
-                [self addNumberNotification:number expiryDays:1];
-                break;
-
-            case 7:
-                // We're between 7 and 3 days until expiry, so we don't add the 7 days notification again.
-                [self addNumberNotification:number expiryDays:3];
-                [self addNumberNotification:number expiryDays:1];
-                break;
-
-            case 3:
-                // We're between 3 and 1 days until expiry, so we don't add the 3 days notification again.
-                [self addNumberNotification:number expiryDays:1];
-                break;
-
-            case 1:
-                // We're past 1 day until expiry, so we don't add the 1 day notification again.
-                break;
-        }
-    }
-}
-
-
-- (void)addNumberNotification:(NumberData*)number
-                   expiryDays:(NSInteger)expiryDays
-{
-    NSCalendar*       calendar   = [NSCalendar currentCalendar];
-    NSDateComponents* components = [NSDateComponents new];  // Below adding to `day` also works around New Year.
-    NSDate*           beforeExpiryDate;
-
-    components.day   = -expiryDays;
-    beforeExpiryDate = [calendar dateByAddingComponents:components toDate:number.expiryDate options:0];
-
-    UILocalNotification* notification = [[UILocalNotification alloc] init];
-    notification.alertBody   = [number alertTextForExpiryHours:expiryDays * 24];
-    notification.alertAction = [Strings extendString];
-    notification.hasAction   = YES;
-    notification.soundName   = UILocalNotificationDefaultSoundName;
-    notification.userInfo    = @{ @"source" : @"numberExpiry", @"e164" : number.e164, @"expiryDays" : @(expiryDays) };
-    notification.fireDate    = beforeExpiryDate;
-
-    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
 }
 
 
@@ -391,7 +233,6 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
 // alerts can't occur. But it's good to be aware what's happening where/when.)
 - (void)applicationDidBecomeActive:(UIApplication*)application
 {
-    [self showMissedNotifications];
     [self checkCreditWithCompletion:nil];
     [self handleMustUpdateApp];
 
@@ -421,7 +262,7 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
     NSArray* numbers = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"];
     if (numbers.count > 0)
     {
-        [self addNumbersTab];
+        //[self addNumbersTab];
     }
 }
 
@@ -484,57 +325,7 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
         {
             [self restore];
         }
-
-        if ([source isEqualToString:@"numberExpiry"])
-        {
-            NSString* e164 = notification.userInfo[@"e164"];
-            if (e164 != nil)
-            {
-                NSPredicate* predicate = [NSPredicate predicateWithFormat:@"e164 == %@", e164];
-                NumberData*  number    = [[[DataManager sharedManager] fetchEntitiesWithName:@"Number"
-                                                                                    sortKeys:nil
-                                                                                   predicate:predicate
-                                                                        managedObjectContext:nil] lastObject];
-                if (number != nil)
-                {
-                    number.notifiedExpiryDays = [notification.userInfo[@"expiryDays"] intValue];
-                    if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
-                    {
-                        // We get here when the local notification fired while the app was in foreground.
-                        NSTimeInterval expiryInterval = [number.expiryDate timeIntervalSinceDate:[NSDate date]];
-                        NSInteger      expiryHours    = floor(expiryInterval / (60 * 60));
-                        [BlockAlertView showAlertViewWithTitle:[Strings extendNumberAlertTitleString]
-                                                       message:[number alertTextForExpiryHours:expiryHours]
-                                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
-                        {
-                            if (buttonIndex == 1)
-                            {
-                                [self showNumber:number];
-                            }
-                        }
-                                             cancelButtonTitle:[Strings cancelString]
-                                             otherButtonTitles:notification.alertAction, nil];
-                    }
-                    else
-                    {
-                        // We get here when the local notification was tapped outside the app.
-                        [self showNumber:number];
-                    }
-                }
-            }
-        }
     }
-}
-
-
-- (void)showNumber:(NumberData*)number
-{
-    // Cancel editing of More tab.
-    [self doneCustomizingTabBarViewController];
-
-    // Jump to Number screen.
-    self.tabBarController.selectedViewController = self.numbersViewController.navigationController;
-    [self.numbersViewController presentNumber:number];
 }
 
 
@@ -553,6 +344,8 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
 
 - (void)application:(UIApplication*)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+
     // The account credentials are saved with kSecAttrAccessibleAfterFirstUnlock, which means
     // that before the device is unlocked once after a reboot, `haveAccount` will return `NO`.
     // We need the account to access the server, so in this very sporadic case, we don't start
@@ -563,30 +356,17 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
     {
         [self updateAccount];
 
-        [self.nBRecentsListViewController retrieveCallRecordsWithSender:nil completion:^(NSError* error)
+        [self checkCreditWithCompletion:^(BOOL success, NSError* error)
         {
-            if (error == nil)
+            if (success)
             {
-                [self checkCreditWithCompletion:^(BOOL success, NSError* error)
+                [[DataManager sharedManager] synchronizeAll:^(NSError* error)
                 {
-                    if (success)
+                    if (error == nil)
                     {
-                        [[DataManager sharedManager] synchronizeAll:^(NSError* error)
-                        {
-                            if (error == nil)
-                            {
-                                [self updateNumbersBadgeValue];
-                                [self refreshLocalNotifications];
+                        [Settings sharedSettings].synchronizeDate = [NSDate date];
 
-                                [Settings sharedSettings].synchronizeDate = [NSDate date];
-
-                                completionHandler(UIBackgroundFetchResultNewData);
-                            }
-                            else
-                            {
-                                completionHandler(UIBackgroundFetchResultFailed);
-                            }
-                        }];
+                        completionHandler(UIBackgroundFetchResultNewData);
                     }
                     else
                     {
@@ -751,39 +531,8 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
 }
 
 
-- (void)addNumbersTab
-{
-    if (self.numbersViewController != nil)
-    {
-        return;
-    }
-
-    NSString*               className = NSStringFromClass([NumbersViewController class]);
-    UIViewController*       viewController = [[NSClassFromString(className) alloc] init];
-    UINavigationController* navigationController;
-
-    // NavigationController is workaround a nasty iOS bug: http://stackoverflow.com/a/23666520/1971013
-    navigationController = [[NavigationController alloc] initWithRootViewController:viewController];
-
-    // Set appropriate AppDelegate property.
-    SEL selector = NSSelectorFromString([@"set" stringByAppendingFormat:@"%@:", className]);
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    [self performSelector:selector withObject:[navigationController topViewController]];
-#pragma clang diagnostic pop
-
-    self.viewControllers = [self.viewControllers arrayByAddingObject:viewController];
-    self.tabBarController.viewControllers = [self.tabBarController.viewControllers arrayByAddingObject:navigationController];
-}
-
-
 - (void)tabBarController:(UITabBarController*)tabBarController willBeginCustomizingViewControllers:(NSArray*)viewControllers
 {
-    [Answers logContentViewWithName:@"Customize"
-                        contentType:@"Main"
-                          contentId:@"Customize"
-                   customAttributes:@{}];
-
     [[BadgeHandler sharedHandler] hideBadges];
 
     id customizeView = [[tabBarController view] subviews][1];
@@ -835,11 +584,6 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
     {
         // More tab.
         [Settings sharedSettings].tabBarSelectedIndex = NSNotFound;
-
-        [Answers logContentViewWithName:@"More"
-                            contentType:@"Main"
-                              contentId:@"More"
-                       customAttributes:@{}];
     }
     else
     {
@@ -849,10 +593,6 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
         if ([Settings sharedSettings].tabBarSelectedIndex <= 3)
         {
             UINavigationController* navigationController = (UINavigationController*)viewController;
-            [Answers logContentViewWithName:[self answersNameWithNavigationController:navigationController]
-                                contentType:[self answersTypeWithNavigationController:navigationController]
-                                  contentId:[self answersIdWithNavigationController:navigationController]
-                           customAttributes:@{}];
         }
     }
 }
@@ -868,11 +608,6 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
 
         // Without this, badges' left side is invisible when badge set with More tab not shown.
         [(UITableView*)viewController.view reloadData];
-
-        [Answers logContentViewWithName:@"More"
-                            contentType:@"Main"
-                              contentId:@"More"
-                       customAttributes:@{}];
     }
     else
     {
@@ -885,11 +620,6 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
             // A cell on the More tab.
             [Settings sharedSettings].tabBarSelectedIndex = index;
         }
-
-        [Answers logContentViewWithName:[self answersNameWithNavigationController:viewController.navigationController]
-                            contentType:[self answersTypeWithNavigationController:viewController.navigationController]
-                              contentId:[self answersIdWithNavigationController:viewController.navigationController]
-                       customAttributes:@{}];
     }
 }
 
@@ -1110,41 +840,6 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
 }
 
 
-- (NSString*)answersNameWithNavigationController:(UINavigationController*)navigationController
-{
-    return navigationController.viewControllers.lastObject.title;
-}
-
-
-- (NSString*)answersTypeWithNavigationController:(UINavigationController*)navigationController
-{
-    if ([navigationController.viewControllers[0] isKindOfClass:NSClassFromString(@"UIMoreListController")])
-    {
-        return navigationController.viewControllers[1].title;
-    }
-    else
-    {
-        return navigationController.viewControllers[0].title;
-    }
-}
-
-
-- (NSString*)answersIdWithNavigationController:(UINavigationController*)navigationController
-{
-    NSString* identifier = @"";
-
-    for (UIViewController* controller in navigationController.viewControllers)
-    {
-        if (![controller isKindOfClass:NSClassFromString(@"UIMoreListController")])
-        {
-            identifier = [identifier stringByAppendingFormat:@"%@.", controller.title];
-        }
-    }
-
-    return [identifier substringToIndex:(identifier.length - 1)];
-}
-
-
 #pragma mark - Utility
 
 + (AppDelegate*)appDelegate
@@ -1170,7 +865,7 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
 {
     [[WebInterface sharedInterface] cancelAllHttpRequests];
 
-    [self.numbersViewController.navigationController      popToRootViewControllerAnimated:NO];
+    //[self.numbersViewController.navigationController      popToRootViewControllerAnimated:NO];
     //[self.destinationsViewController.navigationController popToRootViewControllerAnimated:NO];
     [self.phonesViewController.navigationController       popToRootViewControllerAnimated:NO];
 

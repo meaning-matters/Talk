@@ -159,45 +159,6 @@
 }
 
 
-- (void)showExpiryAlertWithCompletion:(void (^)(void))completion
-{
-    NSTimeInterval expiryInterval = [self.expiryDate timeIntervalSinceDate:[NSDate date]];
-
-    if (expiryInterval > 0)
-    {
-        NSInteger expiryHours = floor(expiryInterval / (60 * 60));
-
-        [BlockAlertView showAlertViewWithTitle:[Strings extendNumberAlertTitleString]
-                                       message:[self alertTextForExpiryHours:expiryHours]
-                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
-        {
-            completion ? completion() : nil;
-            if (buttonIndex == 1)
-            {
-                [[AppDelegate appDelegate] showNumber:self];
-            }
-        }
-                             cancelButtonTitle:[Strings cancelString]
-                             otherButtonTitles:[Strings extendString], nil];
-    }
-    else
-    {
-        NSString* message = NSLocalizedString(@"Your Number \"%@\" has expired and can't be extended any longer. "
-                                              @"People calling will hear %@.\n\nWhere appropriate, please inform "
-                                              @"those that used this Number to reach you.", @"");
-        message = [NSString stringWithFormat:message, self.name, [Strings numberDisconnectedToneOrMessageString]];
-        [BlockAlertView showAlertViewWithTitle:NSLocalizedString(@"Number Has Expired", @"")
-                                       message:message
-                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
-        {
-            completion ? completion() : nil;
-        }
-                             cancelButtonTitle:[Strings closeString]
-                             otherButtonTitles:nil];
-    }
-}
-
-
 // Make sure that `expiryHours` is positive!
 - (NSString*)alertTextForExpiryHours:(NSInteger)expiryHours
 {
