@@ -128,6 +128,9 @@ static NSUserDefaults* userDefaults;
 
         [dictionary setObject:@"com.numberbay.app"                               forKey:ErrorDomainKey];
 
+        NSString* currencyCode = [locale objectForKey:NSLocaleCurrencyCode];
+        NSString* countryCode = [locale objectForKey:NSLocaleCountryCode];
+
         if ([[NetworkStatus sharedStatus].simIsoCountryCode length] > 0)
         {
             [dictionary setObject:[NetworkStatus sharedStatus].simIsoCountryCode forKey:HomeIsoCountryCodeKey];
@@ -135,8 +138,7 @@ static NSUserDefaults* userDefaults;
         }
         else
         {
-            NSLocale* locale = [NSLocale currentLocale];
-            [dictionary setObject:[locale objectForKey:NSLocaleCountryCode]      forKey:HomeIsoCountryCodeKey];
+            countryCode ? [dictionary setObject:countryCode                      forKey:HomeIsoCountryCodeKey] : nil;
             [dictionary setObject:@(NO)                                          forKey:UseSimIsoCountryCodeKey];
         }
 
@@ -150,8 +152,8 @@ static NSUserDefaults* userDefaults;
         [dictionary setObject:@(0)                                               forKey:SortSegmentKey];
         [dictionary setObject:@(YES)                                             forKey:ShowFootnotesKey];
         [dictionary setObject:@(0)                                               forKey:DestinationsSelectionKey];
-        [dictionary setObject:[locale objectForKey:NSLocaleCurrencyCode]         forKey:StoreCurrencyCodeKey];
-        [dictionary setObject:[locale objectForKey:NSLocaleCountryCode]          forKey:StoreCountryCodeKey];
+        currencyCode ? [dictionary setObject:currencyCode                        forKey:StoreCurrencyCodeKey] : nil;
+        countryCode  ? [dictionary setObject:countryCode                         forKey:StoreCountryCodeKey]  : nil;
         [dictionary setObject:@(0.0f)                                            forKey:CreditKey];
         [dictionary setObject:@(NO)                                              forKey:NeedsServerSyncKey];
         [dictionary setObject:@"_api"                                            forKey:DnsSrvPrefixKey];
