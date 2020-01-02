@@ -941,6 +941,7 @@ static Common* sharedCommon;
 
     viewController = [[GetStartedViewController alloc] initShowAsIntro:NO];
     navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    navigationController.modalPresentationStyle = UIModalPresentationOverFullScreen;
 
     navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [[self topViewController] presentViewController:navigationController
