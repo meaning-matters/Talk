@@ -187,7 +187,7 @@
 {
     _freeAccount = freeAccount;
 
-    if (freeAccount == NO)
+    if (freeAccount == NO && self.showAsIntro == NO)
     {
         UIBarButtonItem* rightBarButtonItem;
         rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
