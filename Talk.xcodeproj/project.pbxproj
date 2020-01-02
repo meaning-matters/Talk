@@ -548,8 +548,6 @@
 		48B9387A187E1E0E00132535 /* PhonesTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B93877187E1E0E00132535 /* PhonesTab@2x.png */; };
 		48B9387B187E1E0E00132535 /* PhonesTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B93877187E1E0E00132535 /* PhonesTab@2x.png */; };
 		48BD8BE81663E7A400F2CB45 /* CallBaseView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48BD8BE71663E7A400F2CB45 /* CallBaseView.xib */; };
-		48C1D3C517D31309004F910D /* ProofImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C1D3C417D31309004F910D /* ProofImageViewController.m */; };
-		48C1D3C617D31309004F910D /* ProofImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C1D3C417D31309004F910D /* ProofImageViewController.m */; };
 		48C3646D1F73DCA0002975B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48C3646C1F73DCA0002975B8 /* Assets.xcassets */; };
 		48C431A1189EDFB40008FE01 /* VerifyPhoneDtmfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C431A0189EDFB40008FE01 /* VerifyPhoneDtmfViewController.m */; };
 		48C431A2189EDFB40008FE01 /* VerifyPhoneDtmfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C431A0189EDFB40008FE01 /* VerifyPhoneDtmfViewController.m */; };
@@ -630,7 +628,6 @@
 		48FD99E71618CC370061191B /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FD99E61618CC370061191B /* Common.m */; };
 		48FD99E81618CC370061191B /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FD99E61618CC370061191B /* Common.m */; };
 		48FDF65D1DF9FE4900A2A7F6 /* UIView+LayerProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FDF65C1DF9FE4900A2A7F6 /* UIView+LayerProperties.m */; };
-		48FE4F591C8752C100CC0873 /* ImagePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FE4F581C8752C100CC0873 /* ImagePicker.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1255,8 +1252,6 @@
 		48B9386D187B647F00132535 /* Thanks.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = Thanks.html; path = Resources/Thanks.html; sourceTree = "<group>"; };
 		48B93877187E1E0E00132535 /* PhonesTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PhonesTab@2x.png"; sourceTree = "<group>"; };
 		48BD8BE71663E7A400F2CB45 /* CallBaseView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallBaseView.xib; sourceTree = "<group>"; };
-		48C1D3C317D31308004F910D /* ProofImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProofImageViewController.h; sourceTree = "<group>"; };
-		48C1D3C417D31309004F910D /* ProofImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProofImageViewController.m; sourceTree = "<group>"; };
 		48C3646C1F73DCA0002975B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		48C4319F189EDFB40008FE01 /* VerifyPhoneDtmfViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerifyPhoneDtmfViewController.h; sourceTree = "<group>"; };
 		48C431A0189EDFB40008FE01 /* VerifyPhoneDtmfViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerifyPhoneDtmfViewController.m; sourceTree = "<group>"; };
@@ -1366,8 +1361,6 @@
 		48FD99E61618CC370061191B /* Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Common.m; sourceTree = "<group>"; };
 		48FDF65B1DF9FE4900A2A7F6 /* UIView+LayerProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+LayerProperties.h"; sourceTree = "<group>"; };
 		48FDF65C1DF9FE4900A2A7F6 /* UIView+LayerProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+LayerProperties.m"; sourceTree = "<group>"; };
-		48FE4F571C8752C100CC0873 /* ImagePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagePicker.h; sourceTree = "<group>"; };
-		48FE4F581C8752C100CC0873 /* ImagePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagePicker.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1591,8 +1584,6 @@
 				48D3F01D164F9284002041A9 /* CountryNames.m */,
 				48F157481CA33ABE00A5CB4C /* CountryRegions.h */,
 				48F157491CA33ABE00A5CB4C /* CountryRegions.m */,
-				48FE4F571C8752C100CC0873 /* ImagePicker.h */,
-				48FE4F581C8752C100CC0873 /* ImagePicker.m */,
 				48B0C3F7174989F400DAB3BD /* Keychain.h */,
 				48B0C3F8174989F400DAB3BD /* Keychain.m */,
 				48EDD2341667729E007B89DA /* KeypadKey.h */,
@@ -2375,8 +2366,6 @@
 				48793368185C6A5800C08C8C /* PhonesViewController.m */,
 				48C97EA118943C7300174DE9 /* PhoneViewController.h */,
 				48C97EA218943C7300174DE9 /* PhoneViewController.m */,
-				48C1D3C317D31308004F910D /* ProofImageViewController.h */,
-				48C1D3C417D31309004F910D /* ProofImageViewController.m */,
 				481DFBA91C70CAC1009191B0 /* RecordingsViewController.h */,
 				481DFBAA1C70CAC1009191B0 /* RecordingsViewController.m */,
 				483679DC1721F2DF001A02AF /* RecordingViewController.h */,
@@ -3107,7 +3096,6 @@
 				48DD72D5169F5AC600CD7080 /* WebClient.m in Sources */,
 				48B813411AADF91D0019AF77 /* NBGroup.m in Sources */,
 				4895D19D16B1C4F200BCA581 /* PurchaseManager.m in Sources */,
-				48FE4F591C8752C100CC0873 /* ImagePicker.m in Sources */,
 				48F5D2ED16B9A380001576E1 /* Base64.m in Sources */,
 				488AD1F116E80A60004D3A2A /* NSObject+Blocks.m in Sources */,
 				48CB0AFF19DB2E1B00F95369 /* WebInterface.m in Sources */,
@@ -3183,7 +3171,6 @@
 				487BF3321E98DF5F00A37F04 /* VerifyPhoneVoiceCallViewController.m in Sources */,
 				4814EA3717CA993F004B7A3C /* CreditBuyCell.m in Sources */,
 				4814EA3E17CB1924004B7A3C /* CreditAmountCell.m in Sources */,
-				48C1D3C517D31309004F910D /* ProofImageViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3240,7 +3227,6 @@
 				485E38A117B7E13C0089F0F1 /* HtmlViewController.m in Sources */,
 				4814EA3817CA993F004B7A3C /* CreditBuyCell.m in Sources */,
 				4814EA3F17CB1924004B7A3C /* CreditAmountCell.m in Sources */,
-				48C1D3C617D31309004F910D /* ProofImageViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
