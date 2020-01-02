@@ -290,9 +290,12 @@
                 break;
             }
         }
-        
-        self.navigationItem.title = NSLocalizedString( allGroupsSelected ? @"CNT_TITLE_ALL" : @"CNT_TITLE", @"");
-        
+
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            self.navigationItem.title = NSLocalizedString( allGroupsSelected ? @"CNT_TITLE_ALL" : @"CNT_TITLE", @"");
+        });
+
         //Determine the contact selection
         if (allGroupsSelected)
         {

@@ -29,7 +29,6 @@ typedef enum
 {
     TableSectionShowCallerId = 1UL << 0,
     TableSectionPhones       = 1UL << 1,
-    TableSectionNumbers      = 1UL << 2,
 } TableSections;
 
 
@@ -42,7 +41,6 @@ typedef enum
 @property (nonatomic, strong) CallableData*           selectedCallable;
 @property (nonatomic, copy) void (^completion)(CallableData* selectedCallable, BOOL showCallerId);
 @property (nonatomic, strong) NSArray*                phones;
-@property (nonatomic, strong) NSArray*                numbers;
 
 @end
 
@@ -65,7 +63,6 @@ typedef enum
         self.completion           = completion;
 
         self.phones               = [self fetchPhones];
-        self.numbers              = [self fetchNumbers];
     }
 
     return self;
@@ -132,7 +129,6 @@ typedef enum
 - (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context
 {
     self.phones  = [self fetchPhones];
-    self.numbers = [self fetchNumbers];
     [self.tableView reloadData];
 }
 
@@ -146,7 +142,6 @@ typedef enum
     if ([self showCallerId] || (self.contactId == nil))
     {
         self.sections |= (self.phones.count  > 0) ? TableSectionPhones  : 0;
-        self.sections |= (self.numbers.count > 0) ? TableSectionNumbers : 0;
     }
     
     return [Common bitsSetCount:self.sections];
@@ -159,7 +154,6 @@ typedef enum
     {
         case TableSectionShowCallerId: return 1;
         case TableSectionPhones:       return self.phones.count;
-        case TableSectionNumbers:      return self.numbers.count;
     }
 }
 
@@ -179,12 +173,6 @@ typedef enum
         {
             title = NSLocalizedStringWithDefaultValue(@"SelectCallerId:Phones SectionHeader", nil, [NSBundle mainBundle],
                                                       @"Select A Phone As Caller ID", @"...");
-            break;
-        }
-        case TableSectionNumbers:
-        {
-            title = NSLocalizedStringWithDefaultValue(@"SelectCallerId:Numbers SectionHeader", nil, [NSBundle mainBundle],
-                                                      @"Select A Number As Caller ID", @"...");
             break;
         }
     }
@@ -229,26 +217,6 @@ typedef enum
             }
             break;
         }
-        case TableSectionNumbers:
-        {
-            if (self.contactId != nil)
-            {
-                title = NSLocalizedStringWithDefaultValue(@"SelectCallerId:Numbers SectionFooterA", nil, [NSBundle mainBundle],
-                                                          @"The selected Number will be used as Caller ID for all "
-                                                          @"your calls to this contact.",
-                                                          @"...\n"
-                                                          @"[* lines]");
-            }
-            else
-            {
-                title = NSLocalizedStringWithDefaultValue(@"SelectCallerId:Numbers SectionFooterB", nil, [NSBundle mainBundle],
-                                                          @"The selected Number will be used when dialling a number, or "
-                                                          @"when calling a contact you did not assign a Caller ID.",
-                                                          @"...\n"
-                                                          @"[* lines]");
-            }
-            break;
-        }
     }
     
     return title;
@@ -262,8 +230,7 @@ typedef enum
     switch ((TableSections)[Common nthBitSet:indexPath.section inValue:self.sections])
     {
         case TableSectionShowCallerId: cell = [self switchCell];                                              break;
-        case TableSectionPhones:       cell = [self callableCell:[self.phones  objectAtIndex:indexPath.row]]; break;
-        case TableSectionNumbers:      cell = [self callableCell:[self.numbers objectAtIndex:indexPath.row]]; break;
+        case TableSectionPhones:       cell = [self callableCell:[self.phones objectAtIndex:indexPath.row]]; break;
     }
 
     return cell;
@@ -347,25 +314,6 @@ typedef enum
 
             [self selectCallerId];
             [self.navigationController popViewControllerAnimated:YES];
-            break;
-        }
-        case TableSectionNumbers:
-        {
-            [Common checkCallerIdUsageOfNumber:[self.numbers objectAtIndex:indexPath.row]
-                                    completion:^(BOOL canUse)
-            {
-                if (canUse)
-                {
-                    self.selectedCallable = [self.numbers objectAtIndex:indexPath.row];
-
-                    [self selectCallerId];
-                    [self.navigationController popViewControllerAnimated:YES];
-                }
-                else
-                {
-                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-                }
-            }];
             break;
         }
     }
@@ -487,17 +435,6 @@ typedef enum
 }
 
 
-- (NSArray*)fetchNumbers
-{
-    NSArray* numbers = [[DataManager sharedManager] fetchEntitiesWithName:@"Number"
-                                                                 sortKeys:[Common sortKeys]
-                                                                predicate:nil
-                                                     managedObjectContext:self.managedObjectContext];
-
-    return [numbers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isPending == NO"]];
-}
-
-
 - (NSIndexPath*)selectedIndexPath
 {
     NSUInteger index;
@@ -506,13 +443,6 @@ typedef enum
     {
         NSInteger section = [Common nOfBit:TableSectionPhones inValue:self.sections];
         
-        return [NSIndexPath indexPathForItem:index inSection:section];
-    }
-    
-    if ((index = [self.numbers indexOfObject:self.selectedCallable]) != NSNotFound)
-    {
-        NSInteger section = [Common nOfBit:TableSectionNumbers inValue:self.sections];
-
         return [NSIndexPath indexPathForItem:index inSection:section];
     }
 

@@ -470,18 +470,21 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
                                                                   @"[Keep short]");
         message = [NSString stringWithFormat:message, description];
     }
-    
-    [BlockAlertView showAlertViewWithTitle:title
-                                   message:message
-                                completion:^(BOOL cancelled, NSInteger buttonIndex)
-    {
-        [Common enableNetworkActivityIndicator:NO];
-        self.productsRequest = nil;
 
-        [self executeLoadProductCompletionsWithSuccess:NO];
-    }
-                         cancelButtonTitle:[Strings closeString]
-                         otherButtonTitles:nil];
+    dispatch_async(dispatch_get_main_queue(), ^
+    {
+        [BlockAlertView showAlertViewWithTitle:title
+                                       message:message
+                                    completion:^(BOOL cancelled, NSInteger buttonIndex)
+        {
+            [Common enableNetworkActivityIndicator:NO];
+            self.productsRequest = nil;
+
+            [self executeLoadProductCompletionsWithSuccess:NO];
+        }
+                             cancelButtonTitle:[Strings closeString]
+                             otherButtonTitles:nil];
+    });
 
     // Force a load.
     self.loadProductsDate = nil;
