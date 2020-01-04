@@ -762,12 +762,13 @@
                     [[NBAddressBookManager sharedManager].delegate getCostForCallToNumber:cellInfo.textValue
                                                                                completion:^(NSString* costString)
                     {
+                        weakCell.accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 90, 40)];
                         UILabel* rateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 90, 40)];
                         rateLabel.textAlignment = NSTextAlignmentRight;
                         rateLabel.font          = [UIFont systemFontOfSize:14.0f];
                         rateLabel.text          = costString;
                         rateLabel.textColor     = [Skinning priceColor];
-                        weakCell.accessoryView  = rateLabel;
+                        [weakCell.accessoryView addSubview:rateLabel];
                     }];
                 }
                 else

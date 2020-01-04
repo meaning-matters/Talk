@@ -88,6 +88,12 @@
                                                                      @"...")
                           forState:UIControlStateNormal];
     }
+    else
+    {
+        self.startButton.hidden = YES;
+        self.restoreButton.hidden = YES;
+        self.pageControlBottomContstraint.constant = 0;
+    }
 
     // Set the correct alpha for all images.
     [self scrollViewDidScroll:self.scrollView];
@@ -116,12 +122,15 @@
     }
 
     self.imageViews = [[NSMutableArray alloc] initWithCapacity:self.numberOfPages];
+    CGFloat aspectRatio = [[UIScreen mainScreen] bounds].size.width / [[UIScreen mainScreen] bounds].size.height;
+    CGRect frame = CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height);
+    NSString* extention = aspectRatio < 0.5 ? @"X" : @"";
     for (int page = 0; page < self.numberOfPages; page++)
     {
-        UIImageView* imageView     = [[UIImageView alloc] initWithFrame:self.view.bounds];
+        UIImageView* imageView     = [[UIImageView alloc] initWithFrame:frame];
         imageView.contentMode      = UIViewContentModeScaleAspectFill;
         imageView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;
-        imageView.image            = [UIImage imageNamed:[NSString stringWithFormat:@"GetStarted%d.png", page + 1]];
+        imageView.image            = [UIImage imageNamed:[NSString stringWithFormat:@"GetStarted%d%@.jpg", page + 1, extention]];
         [self.imageViews addObject:imageView];
         [self.view insertSubview:imageView atIndex:0];
     }
@@ -334,6 +343,7 @@
         return;
     }
 
+    CGFloat width = [[UIScreen mainScreen] bounds].size.width;
     CGFloat scrollHeight = self.scrollView.frame.size.height;
     CGFloat bodyToScroll =  27.0f;  // Vertical distance between bottom of body and bottom of scroll view.
     CGFloat titleToBody  =  13.0f;  // Vertical distance between top of title and top of body.
@@ -341,7 +351,7 @@
     CGFloat titleHeight  =  21.0f;
     CGFloat bodyWidth    = 290.0f;
     CGFloat bodyHeight   =  75.0f;
-    CGFloat xOffset      = 320.0f * page;
+    CGFloat xOffset      = width * page;
 
     if (self.showAsIntro)
     {
@@ -349,7 +359,7 @@
     }
 
     // Add title.
-    CGRect   titleFrame                 = CGRectMake(xOffset + (320.0f - titleWidth) / 2,
+    CGRect   titleFrame                 = CGRectMake(xOffset + (width - titleWidth) / 2,
                                                      scrollHeight - bodyToScroll - bodyHeight - titleToBody,
                                                      titleWidth,
                                                      titleHeight);
@@ -363,7 +373,7 @@
     [self.scrollView addSubview:titleLabel];
 
     // Add body.
-    CGRect      bodyFrame               = CGRectMake(xOffset + (320.0f - bodyWidth) / 2,
+    CGRect      bodyFrame               = CGRectMake(xOffset + (width - bodyWidth) / 2,
                                                      scrollHeight - bodyToScroll - bodyHeight,
                                                      bodyWidth,
                                                      bodyHeight);
@@ -406,7 +416,8 @@
     }
 
     // Switch the page control indicator when more than 50% of the previous/next page is visible, except when changing.
-    NSInteger page = floor((self.scrollView.contentOffset.x - 320 / 2) / 320) + 1;
+    CGFloat width = [[UIScreen mainScreen] bounds].size.width;
+    NSInteger page = floor((self.scrollView.contentOffset.x - width / 2) / width) + 1;
     if (self.changingPage == -1)
     {
         self.pageControl.currentPage = page;

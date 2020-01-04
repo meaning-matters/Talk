@@ -12,6 +12,8 @@
 
 
 const NSTimeInterval TransitionDuration = 0.5;
+const CGFloat        SideMargin         = 24.0; // Marging between buttons and screen sides.
+const CGFloat        BetweenMargin      = 12.0; // Marging between buttons and screen sides.
 
 
 @implementation CallBaseViewController
@@ -31,6 +33,8 @@ const NSTimeInterval TransitionDuration = 0.5;
 {
     [super viewDidLoad];
 
+    [self.view layoutIfNeeded];
+
     // Clear backgrounds that are only handy for UI design.
     self.topView.backgroundColor        = [UIColor clearColor];
     self.centerRootView.backgroundColor = [UIColor clearColor];
@@ -42,11 +46,20 @@ const NSTimeInterval TransitionDuration = 0.5;
     [self drawTopImage];
     [self drawBottomImage];
 
+    CGFloat width = ([[UIScreen mainScreen] bounds].size.width / 2) - SideMargin - (BetweenMargin / 2.0);
+    self.hideButtonWidthConstraint.constant = width;
+    self.retryButtonWidthConstraint.constant = width;
+    [self.view layoutIfNeeded];
+
+    [self showLargeEndButton];
     [self drawEndButton];
     [self drawHideButton];
     [self drawRetryButton];
     self.hideButton.hidden  = YES;
     self.retryButton.hidden = YES;
+
+    CGFloat scale = [[UIScreen mainScreen] bounds].size.width / 320.0;
+    self.centerRootView.transform = CGAffineTransformMakeScale(scale, scale);
 
     [self setNeedsStatusBarAppearanceUpdate];
 }
@@ -98,13 +111,17 @@ const NSTimeInterval TransitionDuration = 0.5;
 
 - (void)showLargeEndButton
 {
-    [self showEndButtonWithWidth:272 imageName:@"HangupPhone"];
+    CGFloat width = [[UIScreen mainScreen] bounds].size.width - (2 * SideMargin);
+
+    [self showEndButtonWithWidth:width imageName:@"HangupPhone"];
 }
 
 
 - (void)showSmallEndButton
 {
-    [self showEndButtonWithWidth:122 imageName:@"HangupPhoneSmall"];
+    CGFloat width = ([[UIScreen mainScreen] bounds].size.width / 2) - SideMargin - (BetweenMargin / 2.0);
+
+    [self showEndButtonWithWidth:width imageName:@"HangupPhoneSmall"];
 }
 
 
@@ -112,51 +129,15 @@ const NSTimeInterval TransitionDuration = 0.5;
 {
     [self.endButton setHiddenAnimated:YES withDuration:(TransitionDuration / 2) completion:^
     {
-        [Common setWidth:width ofView:self.endButton];
+        self.endButtonWidthConstraint.constant = width;
+        [self.view layoutIfNeeded];
+
         [self drawEndButton];
         [self.endButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
         [self.endButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateHighlighted];
 
         [self.endButton setHiddenAnimated:NO withDuration:(TransitionDuration / 2) completion:nil];
     }];
-}
-
-
-#pragma mark - Layout
-
-- (void)viewWillLayoutSubviews
-{
-    [super viewWillLayoutSubviews];
-
-    switch ((int)self.view.frame.size.height)
-    {
-        case 480:   // 320x480 screen.
-        {
-            [Common setY:20  ofView:self.topView];
-            [Common setY:126 ofView:self.centerRootView];
-            [Common setY:387 ofView:self.bottomView];
-            break;
-        }
-        case 460:   // 320x480 screen with in-call iOS flasher at top.
-        {
-            [Common setY:116 ofView:self.centerRootView];
-            [Common setY:367 ofView:self.bottomView];
-            break;
-        }
-        case 568:   // 320x568 screen.
-        {
-            [Common setY:20  ofView:self.topView];
-            [Common setY:170 ofView:self.centerRootView];
-            [Common setY:475 ofView:self.bottomView];
-            break;
-        }
-        case 548:   // 320x568 screen with in-call iOS flasher at top.
-        {
-            [Common setY:160 ofView:self.centerRootView];
-            [Common setY:455 ofView:self.bottomView];
-            break;
-        }
-    }
 }
 
 

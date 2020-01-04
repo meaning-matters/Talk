@@ -10,13 +10,11 @@
 #import "UIViewController+Common.h"
 
 
-@interface SearchTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
-                                                         UISearchDisplayDelegate, UISearchBarDelegate>
+@interface SearchTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 
+@property (nonatomic, weak) IBOutlet UISearchBar*  searchBar;
 @property (nonatomic, weak) IBOutlet UITableView*  tableView;
 @property (nonatomic, strong) NSArray*             objectsArray;        // The main list of subclass objects.
-
-@property (nonatomic, weak) UISearchBar*           searchBar;
 
 
 //  Creates the table index.  Must be invoked by subclass each time it's objects have changed.
@@ -40,5 +38,8 @@
 
 
 - (NSString*)selectedObject;
+
+
+- (void)refreshSearch;
 
 @end

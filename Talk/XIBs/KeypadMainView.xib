@@ -1,8 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DialerViewController">
@@ -17,41 +20,84 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="1">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="Branding.png" id="218">
-                    <rect key="frame" x="0.0" y="10" width="320" height="80"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                </imageView>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="center" lineBreakMode="headTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" id="206" userLabel="Info Label">
-                    <rect key="frame" x="9" y="2" width="302" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" contentMode="left" text="" textAlignment="center" lineBreakMode="headTruncation" baselineAdjustment="alignBaselines" minimumFontSize="28" id="214" userLabel="Number Label" customClass="NumberLabel">
-                    <rect key="frame" x="9" y="24" width="302" height="44"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="38"/>
-                    <color key="textColor" red="0.33198094369999998" green="0.51831609010000002" blue="0.99859672779999997" alpha="1" colorSpace="calibratedRGB"/>
-                    <color key="highlightedColor" red="0.0" green="0.14939881860000001" blue="0.99647402760000003" alpha="1" colorSpace="calibratedRGB"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" id="205" userLabel="Name Label">
-                    <rect key="frame" x="9" y="64" width="302" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <view contentMode="scaleToFill" horizontalCompressionResistancePriority="772" verticalCompressionResistancePriority="827" id="130" customClass="KeypadView">
-                    <rect key="frame" x="0.0" y="104.99999982504552" width="320" height="373"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cdy-BX-mAy">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="128"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="Branding.png" translatesAutoresizingMaskIntoConstraints="NO" id="218">
+                            <rect key="frame" x="0.0" y="24" width="320" height="80"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="80" id="Wu1-bH-4mh"/>
+                                <constraint firstAttribute="width" constant="320" id="pTw-IN-x0C"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="center" lineBreakMode="headTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="206" userLabel="Info Label">
+                            <rect key="frame" x="9" y="17" width="302" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="3cC-ym-gZR"/>
+                                <constraint firstAttribute="width" constant="302" id="b6N-Px-cJl"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" clipsSubviews="YES" contentMode="left" text="" textAlignment="center" lineBreakMode="headTruncation" baselineAdjustment="alignBaselines" minimumFontSize="28" translatesAutoresizingMaskIntoConstraints="NO" id="214" userLabel="Number Label" customClass="NumberLabel">
+                            <rect key="frame" x="9" y="42" width="302" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="302" id="2R3-zl-0LJ"/>
+                                <constraint firstAttribute="height" constant="44" id="cu4-kM-iV8"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="38"/>
+                            <color key="textColor" red="0.33198094369999998" green="0.51831609010000002" blue="0.99859672779999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="highlightedColor" red="0.0" green="0.14939881860000001" blue="0.99647402760000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </label>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="205" userLabel="Name Label">
+                            <rect key="frame" x="9" y="83" width="302" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="AUr-d6-BrN"/>
+                                <constraint firstAttribute="width" constant="302" id="vWc-C3-5In"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="214" firstAttribute="centerY" secondItem="Cdy-BX-mAy" secondAttribute="centerY" id="0r2-lB-0i7"/>
+                        <constraint firstAttribute="trailing" secondItem="214" secondAttribute="trailing" constant="9" id="ICy-l1-HMk"/>
+                        <constraint firstItem="218" firstAttribute="centerY" secondItem="Cdy-BX-mAy" secondAttribute="centerY" id="Rq6-T1-RbA"/>
+                        <constraint firstItem="205" firstAttribute="top" secondItem="214" secondAttribute="bottom" constant="-3" id="UcX-pB-clr"/>
+                        <constraint firstItem="214" firstAttribute="top" secondItem="206" secondAttribute="bottom" constant="4" id="bEA-Sv-CrJ"/>
+                        <constraint firstAttribute="trailing" secondItem="206" secondAttribute="trailing" constant="9" id="ga8-4m-zYa"/>
+                        <constraint firstItem="206" firstAttribute="leading" secondItem="Cdy-BX-mAy" secondAttribute="leading" constant="9" id="l3c-lZ-tp2"/>
+                        <constraint firstItem="214" firstAttribute="leading" secondItem="Cdy-BX-mAy" secondAttribute="leading" constant="9" id="l9p-Pf-sbz"/>
+                        <constraint firstItem="218" firstAttribute="centerX" secondItem="Cdy-BX-mAy" secondAttribute="centerX" id="qvA-W5-BBA"/>
+                        <constraint firstItem="205" firstAttribute="leading" secondItem="Cdy-BX-mAy" secondAttribute="leading" constant="9" id="ue4-KD-3el"/>
+                        <constraint firstAttribute="trailing" secondItem="205" secondAttribute="trailing" constant="9" id="wgW-hX-MuQ"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" horizontalCompressionResistancePriority="772" verticalCompressionResistancePriority="827" translatesAutoresizingMaskIntoConstraints="NO" id="130" customClass="KeypadView">
+                    <rect key="frame" x="0.0" y="129" width="320" height="390"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="130" secondAttribute="height" multiplier="1242:1514" id="9sC-gU-wok"/>
+                    </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Cdy-BX-mAy" firstAttribute="top" secondItem="XQb-Tu-npk" secondAttribute="top" id="4O7-xq-LsP"/>
+                <constraint firstItem="130" firstAttribute="leading" secondItem="XQb-Tu-npk" secondAttribute="leading" id="Bp3-oa-jGX"/>
+                <constraint firstItem="130" firstAttribute="trailing" secondItem="XQb-Tu-npk" secondAttribute="trailing" id="CNE-Ec-DFD"/>
+                <constraint firstItem="Cdy-BX-mAy" firstAttribute="trailing" secondItem="XQb-Tu-npk" secondAttribute="trailing" id="CeX-vJ-g7I"/>
+                <constraint firstItem="130" firstAttribute="bottom" secondItem="XQb-Tu-npk" secondAttribute="bottom" id="GGA-9v-IWn"/>
+                <constraint firstItem="Cdy-BX-mAy" firstAttribute="leading" secondItem="XQb-Tu-npk" secondAttribute="leading" id="eLW-gP-Qx6"/>
+                <constraint firstItem="130" firstAttribute="top" secondItem="Cdy-BX-mAy" secondAttribute="bottom" constant="1" id="yO5-Oj-Mpi"/>
+            </constraints>
             <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="XQb-Tu-npk"/>
+            <point key="canvasLocation" x="131.25" y="153.16901408450704"/>
         </view>
     </objects>
     <resources>

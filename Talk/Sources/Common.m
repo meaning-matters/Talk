@@ -1139,7 +1139,8 @@ static Common* sharedCommon;
     static const int NumberLabelCellTag = 39562; // Some random value.
 
     NumberLabel* label = (NumberLabel*)[cell.contentView viewWithTag:NumberLabelCellTag];
-    CGRect       frame = CGRectMake(80, 9, 225, 30);
+    CGFloat      width = [[UIScreen mainScreen] bounds].size.width;
+    CGRect       frame = CGRectMake(80, 9, (width - 16 - 80), 30);
 
     label = (label == nil) ? [[NumberLabel alloc] initWithFrame:frame] : label;
 
@@ -1149,7 +1150,7 @@ static Common* sharedCommon;
     label.textAlignment          = NSTextAlignmentRight;
     label.textColor              = [UIColor grayColor];
 
-    label.menuTargetRect = CGRectMake(80, 12, 160, 8);
+    label.menuTargetRect = CGRectMake(frame.size.width - 70, 12, 1, 8);
 
     [cell.contentView addSubview:label];
 
@@ -1160,7 +1161,8 @@ static Common* sharedCommon;
 + (UITextField*)addTextFieldToCell:(UITableViewCell*)cell delegate:(id<UITextFieldDelegate>)delegate
 {
     UITextField* textField;
-    CGRect       frame = CGRectMake(80, 4, 224, 42);
+    CGFloat      width = [[UIScreen mainScreen] bounds].size.width;
+    CGRect       frame = CGRectMake(80, 4, (width - 16 - 80), 42);
 
     textField.autoresizingMask = UIViewAutoresizingFlexibleHeight;
 

@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1421" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" colorMatched="YES">
-    <device id="retina4_0" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -12,6 +12,7 @@
             <connections>
                 <outlet property="internetLabel" destination="WNx-Zt-a50" id="OjD-Ph-09q"/>
                 <outlet property="pageControl" destination="9pV-yP-tnU" id="Bcp-Un-Gj9"/>
+                <outlet property="pageControlBottomContstraint" destination="pRw-NC-139" id="BJj-AW-x4m"/>
                 <outlet property="restoreButton" destination="Vgt-N2-3xQ" id="fkC-BP-brv"/>
                 <outlet property="scrollView" destination="Tz8-7c-aKT" id="GBE-Ok-Jhd"/>
                 <outlet property="startButton" destination="xw5-ju-Qn6" id="Rcp-0z-LKl"/>
@@ -23,33 +24,35 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view alpha="0.24999999999999967" contentMode="scaleToFill" id="2wh-we-snl">
+                <view alpha="0.24999999999999967" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2wh-we-snl">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" id="Tz8-7c-aKT">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="503"/>
-                    <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tz8-7c-aKT">
+                    <rect key="frame" x="0.0" y="44" width="320" height="459"/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="e9i-cG-pXu"/>
                     </connections>
                 </scrollView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="GetStartedLogo.png" id="ZXD-Qc-qFk">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="GetStartedLogo.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZXD-Qc-qFk">
                     <rect key="frame" x="17" y="82" width="286" height="64"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="64" id="9fb-9L-3li"/>
+                        <constraint firstAttribute="width" constant="286" id="q1T-E1-8q7"/>
+                    </constraints>
                 </imageView>
-                <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" id="9pV-yP-tnU">
-                    <rect key="frame" x="0.0" y="466" width="320" height="37"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="9pV-yP-tnU">
+                    <rect key="frame" x="140.5" y="466" width="39" height="37"/>
                     <connections>
                         <action selector="changePage:" destination="-1" eventType="valueChanged" id="kR8-fa-Zh7"/>
                     </connections>
                 </pageControl>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="xw5-ju-Qn6" userLabel="Start Button">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xw5-ju-Qn6" userLabel="Start Button">
                     <rect key="frame" x="20" y="503" width="130" height="45"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="PYj-uo-GOz"/>
+                    </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <state key="normal" title="Start">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -59,9 +62,11 @@
                         <action selector="startAction:" destination="-1" eventType="touchUpInside" id="I2e-pj-lQ5"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Vgt-N2-3xQ" userLabel="Restore Button">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vgt-N2-3xQ" userLabel="Restore Button">
                     <rect key="frame" x="170" y="503" width="130" height="45"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="32w-Bq-cDX"/>
+                    </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <state key="normal" title="Restore">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -71,24 +76,45 @@
                         <action selector="restoreAction:" destination="-1" eventType="touchUpInside" id="bB1-9h-8uE"/>
                     </connections>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Please connect to Internet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="WNx-Zt-a50">
-                    <rect key="frame" x="10" y="547" width="300" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please connect to Internet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WNx-Zt-a50">
+                    <rect key="frame" x="70" y="547" width="180.5" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="oNq-7P-R1N"/>
+                    </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="WNx-Zt-a50" firstAttribute="centerX" secondItem="VFr-wf-CCJ" secondAttribute="centerX" id="1gD-Yv-M3v"/>
+                <constraint firstItem="VFr-wf-CCJ" firstAttribute="trailing" secondItem="Vgt-N2-3xQ" secondAttribute="trailing" constant="20" id="5iT-8E-HT0"/>
+                <constraint firstItem="2wh-we-snl" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="98h-iw-fe7"/>
+                <constraint firstItem="xw5-ju-Qn6" firstAttribute="width" secondItem="Vgt-N2-3xQ" secondAttribute="width" id="Dn3-u5-ePN"/>
+                <constraint firstItem="xw5-ju-Qn6" firstAttribute="leading" secondItem="VFr-wf-CCJ" secondAttribute="leading" constant="20" id="EYn-1a-bVd"/>
+                <constraint firstAttribute="bottom" secondItem="2wh-we-snl" secondAttribute="bottom" id="Fgb-aN-bEF"/>
+                <constraint firstAttribute="trailing" secondItem="2wh-we-snl" secondAttribute="trailing" id="NpD-to-ovi"/>
+                <constraint firstItem="Tz8-7c-aKT" firstAttribute="top" secondItem="VFr-wf-CCJ" secondAttribute="top" id="QGO-LZ-PUi"/>
+                <constraint firstItem="2wh-we-snl" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="R4E-y8-uPZ"/>
+                <constraint firstItem="Vgt-N2-3xQ" firstAttribute="leading" secondItem="xw5-ju-Qn6" secondAttribute="trailing" constant="20" id="Sdv-lx-4PJ"/>
+                <constraint firstItem="ZXD-Qc-qFk" firstAttribute="top" secondItem="VFr-wf-CCJ" secondAttribute="top" constant="38" id="UPY-uW-lRh"/>
+                <constraint firstItem="ZXD-Qc-qFk" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="YyZ-Bz-Jlg"/>
+                <constraint firstItem="9pV-yP-tnU" firstAttribute="centerX" secondItem="VFr-wf-CCJ" secondAttribute="centerX" id="ZVm-JG-hGd"/>
+                <constraint firstItem="VFr-wf-CCJ" firstAttribute="bottom" secondItem="WNx-Zt-a50" secondAttribute="bottom" id="e7G-TC-JU5"/>
+                <constraint firstItem="WNx-Zt-a50" firstAttribute="top" secondItem="xw5-ju-Qn6" secondAttribute="bottom" constant="-1" id="ejG-dS-1ss"/>
+                <constraint firstAttribute="trailing" secondItem="Tz8-7c-aKT" secondAttribute="trailing" id="en9-pL-VKh"/>
+                <constraint firstItem="VFr-wf-CCJ" firstAttribute="bottom" secondItem="Tz8-7c-aKT" secondAttribute="bottom" constant="65" id="lLW-Uh-RfH"/>
+                <constraint firstItem="VFr-wf-CCJ" firstAttribute="bottom" secondItem="9pV-yP-tnU" secondAttribute="bottom" constant="65" id="pRw-NC-139"/>
+                <constraint firstItem="Tz8-7c-aKT" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="xkd-w9-dOe"/>
+                <constraint firstItem="WNx-Zt-a50" firstAttribute="top" secondItem="Vgt-N2-3xQ" secondAttribute="bottom" constant="-1" id="yfv-yx-snq"/>
+            </constraints>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+            <viewLayoutGuide key="safeArea" id="VFr-wf-CCJ"/>
+            <point key="canvasLocation" x="129.375" y="153.16901408450704"/>
         </view>
     </objects>
     <resources>
-        <image name="GetStartedLogo.png" width="572" height="128"/>
+        <image name="GetStartedLogo.png" width="286" height="64"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4_0.fullscreen"/>
-    </simulatedMetricsContainer>
 </document>

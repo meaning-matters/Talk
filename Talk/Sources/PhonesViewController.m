@@ -294,6 +294,7 @@ forRowAtIndexPath:(NSIndexPath*)indexPath
 
         modalViewController = [[UINavigationController alloc] initWithRootViewController:viewController];
         modalViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        modalViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;
 
         [AppDelegate.appDelegate.tabBarController presentViewController:modalViewController
                                                                animated:YES

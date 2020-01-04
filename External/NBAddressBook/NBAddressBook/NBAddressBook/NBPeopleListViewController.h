@@ -20,7 +20,7 @@
 #define SECTION_TITLES @[@"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J", @"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z", @"#"]
 
 
-@interface NBPeopleListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate>
+@interface NBPeopleListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 {
     //Section title management
     BOOL hasEnoughContactsForSectionTitles;
@@ -56,10 +56,11 @@
 }
 
 //Handle on the table header, number label and table view
-@property (nonatomic) UIView*                     tableHeader;
-@property (nonatomic) UILabel*                    myNumberLabel;
-@property (nonatomic, weak) IBOutlet UITableView* tableView;
-@property (nonatomic, assign) BOOL                contactsAreLoaded;
+@property (nonatomic) UIView*                      tableHeader;
+@property (nonatomic) UILabel*                     myNumberLabel;
+@property (nonatomic, strong) IBOutlet UISearchBar* searchBar;
+@property (nonatomic, weak) IBOutlet UITableView*  tableView;
+@property (nonatomic, assign) BOOL                 contactsAreLoaded;
 
 //Variables used to merge a contact with a new one
 @property (strong, nonatomic) NBContact * contactToMergeWith;

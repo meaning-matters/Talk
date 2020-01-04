@@ -16,9 +16,11 @@
 @property (nonatomic, strong) NSArray*             nameIndexArray;            // Array with all first letter(s) of object names.
 @property (nonatomic, strong) NSMutableDictionary* indexedObjectsDictionary;  // Dictionary with array of objects per index string.
 @property (nonatomic, strong) NSMutableArray*      filteredObjectsArray;      // List of names selected by search.
+@property (nonatomic, assign) BOOL                 isFiltered;
 
 @property (nonatomic, assign) NSUInteger           width;
 @property (nonatomic, strong) NSIndexPath*         selectedIndexPath;
+@property (nonatomic, strong) UISearchController*  searchController;
 
 @end
 
@@ -47,9 +49,6 @@
 
     // This will remove extra separators from tableview.
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-
-    self.searchDisplayController.searchResultsTableView.delegate = self;
-    self.searchBar = self.searchDisplayController.searchBar;
 }
 
 
@@ -173,9 +172,7 @@
 
 - (NSString*)nameOnTableView:(UITableView*)tableView atIndexPath:(NSIndexPath*)indexPath
 {
-    BOOL isFiltered = (tableView == self.searchDisplayController.searchResultsTableView);
-
-    if (isFiltered)
+    if (self.isFiltered)
     {
         return [self nameForObject:self.filteredObjectsArray[indexPath.row]];
     }
@@ -190,9 +187,7 @@
 
 - (id)objectOnTableView:(UITableView*)tableView atIndexPath:(NSIndexPath*)indexPath
 {
-    BOOL isFiltered = (tableView == self.searchDisplayController.searchResultsTableView);
-
-    if (isFiltered)
+    if (self.isFiltered)
     {
         return self.filteredObjectsArray[indexPath.row];
     }
@@ -224,20 +219,56 @@
 }
 
 
-#pragma mark - UISearchDisplayControllerDelegate
-
-- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController*)controller
+- (void)refreshSearch
 {
-    self.searchDisplayController.searchBar.keyboardType = [self searchBarKeyboardType];
+    if (self.isFiltered)
+    {
+        [self searchBar:self.searchBar textDidChange:self.searchBar.text];
+    }
 }
 
 
-- (BOOL)searchDisplayController:(UISearchDisplayController*)controller shouldReloadTableForSearchString:(NSString*)searchString
-{
-    [self filterContentForSearchText:searchString];
+#pragma mark - UISearchBarDelegate
 
-    // Return YES to cause the search result table view to be reloaded.
-    return YES;
+- (void)searchBarTextDidBeginEditing:(UISearchBar*)searchBar
+{
+    self.searchBar.keyboardType = [self searchBarKeyboardType];
+
+    [self.searchBar setShowsCancelButton:YES animated:YES];
+}
+
+
+- (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
+{
+    self.isFiltered = searchText.length > 0;
+    [self filterContentForSearchText:searchText];
+
+    [self.tableView reloadData];
+}
+
+
+- (void)searchBarCancelButtonClicked:(UISearchBar*)searchBar
+{
+    self.isFiltered = NO;
+    [self.tableView reloadData];
+
+    searchBar.text = @"";
+    [searchBar resignFirstResponder];
+    [self.searchBar setShowsCancelButton:NO animated:YES];
+}
+
+
+- (void)searchBarSearchButtonClicked:(UISearchBar*)searchBar
+{
+    [searchBar resignFirstResponder];
+
+    if (searchBar.text.length == 0)
+    {
+        self.isFiltered = NO;
+        [self.tableView reloadData];
+
+        [self.searchBar setShowsCancelButton:NO animated:YES];
+    }
 }
 
 
@@ -258,33 +289,25 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    BOOL isFiltered = (tableView == self.searchDisplayController.searchResultsTableView);
-
-    return (isFiltered || self.width == 0) ? 1 : [self.nameIndexArray count];
+    return (self.isFiltered || self.width == 0) ? 1 : [self.nameIndexArray count];
 }
 
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    BOOL isFiltered = (tableView == self.searchDisplayController.searchResultsTableView);
-
-    return (isFiltered || self.width == 0) ? nil : self.nameIndexArray[section];
+    return (self.isFiltered || self.width == 0) ? nil : self.nameIndexArray[section];
 }
 
 
 - (NSArray*)sectionIndexTitlesForTableView:(UITableView*)tableView
 {
-    BOOL isFiltered = (tableView == self.searchDisplayController.searchResultsTableView);
-
-    return (isFiltered || self.width == 0) ? nil : self.nameIndexArray;
+    return (self.isFiltered || self.width == 0) ? nil : self.nameIndexArray;
 }
 
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    BOOL isFiltered = (tableView == self.searchDisplayController.searchResultsTableView);
-
-    return isFiltered ? self.filteredObjectsArray.count : [self.indexedObjectsDictionary[self.nameIndexArray[section]] count];
+    return self.isFiltered ? self.filteredObjectsArray.count : [self.indexedObjectsDictionary[self.nameIndexArray[section]] count];
 }
 
 @end

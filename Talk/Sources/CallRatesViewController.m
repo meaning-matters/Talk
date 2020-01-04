@@ -359,7 +359,7 @@
     CountryRegion region     = [Settings sharedSettings].countryRegion;
     NSString*     regionName = [[CountryRegions sharedRegions] localizedStringForRegion:region];
     NSString*     format     = NSLocalizedStringWithDefaultValue(@"NumberCountries Placeholder", nil, [NSBundle mainBundle],
-                                                                 @"Search Rates in %@",
+                                                                 @"Search rates in %@",
                                                                  @"...");
 
     return [NSString stringWithFormat:format, regionName];
@@ -374,6 +374,8 @@
     [self selectArray];
 
     self.searchBar.placeholder = [self searchBarPlaceHolder];
+
+    [self refreshSearch];
 }
 
 @end

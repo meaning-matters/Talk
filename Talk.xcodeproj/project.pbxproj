@@ -40,6 +40,8 @@
 		4822B4321C9615FB004BD2F5 /* AddressUpdatesHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 4822B4311C9615FB004BD2F5 /* AddressUpdatesHandler.m */; };
 		4823019C1C897E7000ECD32E /* CellBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4823019B1C897E7000ECD32E /* CellBadgeView.m */; };
 		48232B721BFC8E5D006D667E /* AddressData.m in Sources */ = {isa = PBXBuildFile; fileRef = 48232B701BFC8E5D006D667E /* AddressData.m */; };
+		4823393C23BF8ECE00EDC478 /* KeypadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4823393B23BF8ECE00EDC478 /* KeypadView.xib */; };
+		4823393E23BF8EFF00EDC478 /* KeypadMainView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4823393D23BF8EFF00EDC478 /* KeypadMainView.xib */; };
 		4823C0C51CBA7F0E00030FC7 /* WebView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4823C0C41CBA7F0E00030FC7 /* WebView.xib */; };
 		4823C0CD1CBA7F3800030FC7 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4823C0CC1CBA7F3800030FC7 /* WebViewController.m */; };
 		48251B9B187F4A8A00E69C3A /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48251B9A187F4A8A00E69C3A /* SettingsViewController.m */; };
@@ -58,8 +60,6 @@
 		48338F90161628BA0033F4C1 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F8D161628BA0033F4C1 /* libssl.a */; };
 		48338F91161628BA0033F4C1 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48338F8D161628BA0033F4C1 /* libssl.a */; };
 		48338FA516170CA80033F4C1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 48338FA016170CA80033F4C1 /* AppDelegate.m */; };
-		48338FB716170D8C0033F4C1 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48338FB416170D8C0033F4C1 /* Default-568h@2x.png */; };
-		48338FB916170D8C0033F4C1 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48338FB616170D8C0033F4C1 /* Default@2x.png */; };
 		483679DE1721F2E1001A02AF /* RecordingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 483679DD1721F2E0001A02AF /* RecordingViewController.m */; };
 		483679DF1721F2E1001A02AF /* RecordingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 483679DD1721F2E0001A02AF /* RecordingViewController.m */; };
 		483679F21722F2CF001A02AF /* List.png in Resources */ = {isa = PBXBuildFile; fileRef = 483679EE1722F2CF001A02AF /* List.png */; };
@@ -96,15 +96,11 @@
 		48367A4417247B2D001A02AF /* CueStopWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48367A1417247B2D001A02AF /* CueStopWhite@2x.png */; };
 		48367A47172552D2001A02AF /* RecordingControlsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48367A46172552D2001A02AF /* RecordingControlsCell.m */; };
 		48367A48172552D2001A02AF /* RecordingControlsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48367A46172552D2001A02AF /* RecordingControlsCell.m */; };
-		4837AF6218D872D500D3AEBC /* GetStarted3.png in Resources */ = {isa = PBXBuildFile; fileRef = 4837AF6118D872D500D3AEBC /* GetStarted3.png */; };
 		4837AF6418D89E8600D3AEBC /* GetStarted.json in Resources */ = {isa = PBXBuildFile; fileRef = 4837AF6318D89E8600D3AEBC /* GetStarted.json */; };
 		4837AF6A18D9B6EC00D3AEBC /* GetStartedRestoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837AF6918D9B6EC00D3AEBC /* GetStartedRestoreViewController.m */; };
 		4837AF6D18D9B89A00D3AEBC /* GetStartedStartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837AF6C18D9B89A00D3AEBC /* GetStartedStartViewController.m */; };
 		4837AF6F18D9B8C400D3AEBC /* GetStartedActionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4837AF6E18D9B8C400D3AEBC /* GetStartedActionView.xib */; };
 		4837AF7618D9DAF000D3AEBC /* GetStartedActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837AF7518D9DAF000D3AEBC /* GetStartedActionViewController.m */; };
-		4837AF7A18DDDD5500D3AEBC /* GetStarted4.png in Resources */ = {isa = PBXBuildFile; fileRef = 4837AF7718DDDD5500D3AEBC /* GetStarted4.png */; };
-		4837AF7B18DDDD5500D3AEBC /* GetStarted5.png in Resources */ = {isa = PBXBuildFile; fileRef = 4837AF7818DDDD5500D3AEBC /* GetStarted5.png */; };
-		4837AF7C18DDDD5500D3AEBC /* GetStarted6.png in Resources */ = {isa = PBXBuildFile; fileRef = 4837AF7918DDDD5500D3AEBC /* GetStarted6.png */; };
 		4837BB3C165D701F00E46C36 /* LibPhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837BB3B165D701F00E46C36 /* LibPhoneNumber.m */; };
 		4837BB3D165D701F00E46C36 /* LibPhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837BB3B165D701F00E46C36 /* LibPhoneNumber.m */; };
 		4837BB66165F726400E46C36 /* BlockAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4837BB65165F726300E46C36 /* BlockAlertView.m */; };
@@ -138,8 +134,6 @@
 		484F7C3E164C15EA0059A5A6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484F7C3D164C15EA0059A5A6 /* SystemConfiguration.framework */; };
 		4856E5E91D96D796001F141F /* BadgeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4856E5E81D96D796001F141F /* BadgeCell.m */; };
 		485A608918D768880055C176 /* GetStartedLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 485A608818D768880055C176 /* GetStartedLogo.png */; };
-		485A609018D771F60055C176 /* GetStarted1.png in Resources */ = {isa = PBXBuildFile; fileRef = 485A608F18D771F60055C176 /* GetStarted1.png */; };
-		485A609218D7AEC50055C176 /* GetStarted2.png in Resources */ = {isa = PBXBuildFile; fileRef = 485A609118D7AEC50055C176 /* GetStarted2.png */; };
 		485E38A017B7E13C0089F0F1 /* HtmlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E389F17B7E13B0089F0F1 /* HtmlViewController.m */; };
 		485E38A117B7E13C0089F0F1 /* HtmlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 485E389F17B7E13B0089F0F1 /* HtmlViewController.m */; };
 		485E38A317B7E1960089F0F1 /* HtmlView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 485E38A217B7E1960089F0F1 /* HtmlView.xib */; };
@@ -484,8 +478,6 @@
 		48AF44FF1649483600DFE3D8 /* HelpsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF44FD1649483600DFE3D8 /* HelpsViewController.m */; };
 		48AF45021649484600DFE3D8 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF45011649484600DFE3D8 /* AboutViewController.m */; };
 		48AF45031649484600DFE3D8 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF45011649484600DFE3D8 /* AboutViewController.m */; };
-		48AF450B164948CD00DFE3D8 /* KeypadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF450A164948CD00DFE3D8 /* KeypadView.xib */; };
-		48AF450C164948CD00DFE3D8 /* KeypadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF450A164948CD00DFE3D8 /* KeypadView.xib */; };
 		48AF45171649494400DFE3D8 /* AboutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45161649494400DFE3D8 /* AboutView.xib */; };
 		48AF45181649494400DFE3D8 /* AboutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48AF45161649494400DFE3D8 /* AboutView.xib */; };
 		48AF452F1649788A00DFE3D8 /* AboutTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AF451A1649788A00DFE3D8 /* AboutTab@2x.png */; };
@@ -547,17 +539,28 @@
 		48B93875187B647F00132535 /* Thanks.html in Resources */ = {isa = PBXBuildFile; fileRef = 48B9386D187B647F00132535 /* Thanks.html */; };
 		48B9387A187E1E0E00132535 /* PhonesTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B93877187E1E0E00132535 /* PhonesTab@2x.png */; };
 		48B9387B187E1E0E00132535 /* PhonesTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B93877187E1E0E00132535 /* PhonesTab@2x.png */; };
+		48BD699323C0B8C800CBBAA9 /* GetStarted5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 48BD698923C0B8C700CBBAA9 /* GetStarted5.jpg */; };
+		48BD699423C0B8C800CBBAA9 /* GetStarted1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 48BD698A23C0B8C700CBBAA9 /* GetStarted1.jpg */; };
+		48BD699523C0B8C800CBBAA9 /* GetStarted5X.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 48BD698B23C0B8C700CBBAA9 /* GetStarted5X.jpg */; };
+		48BD699623C0B8C800CBBAA9 /* GetStarted1X.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 48BD698C23C0B8C700CBBAA9 /* GetStarted1X.jpg */; };
+		48BD699723C0B8C800CBBAA9 /* GetStarted3X.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 48BD698D23C0B8C700CBBAA9 /* GetStarted3X.jpg */; };
+		48BD699823C0B8C800CBBAA9 /* GetStarted4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 48BD698E23C0B8C700CBBAA9 /* GetStarted4.jpg */; };
+		48BD699923C0B8C800CBBAA9 /* GetStarted2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 48BD698F23C0B8C700CBBAA9 /* GetStarted2.jpg */; };
+		48BD699A23C0B8C800CBBAA9 /* GetStarted3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 48BD699023C0B8C700CBBAA9 /* GetStarted3.jpg */; };
+		48BD699B23C0B8C800CBBAA9 /* GetStarted2X.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 48BD699123C0B8C700CBBAA9 /* GetStarted2X.jpg */; };
+		48BD699C23C0B8C800CBBAA9 /* GetStarted4X.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 48BD699223C0B8C700CBBAA9 /* GetStarted4X.jpg */; };
 		48BD8BE81663E7A400F2CB45 /* CallBaseView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48BD8BE71663E7A400F2CB45 /* CallBaseView.xib */; };
 		48C3646D1F73DCA0002975B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48C3646C1F73DCA0002975B8 /* Assets.xcassets */; };
 		48C431A1189EDFB40008FE01 /* VerifyPhoneDtmfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C431A0189EDFB40008FE01 /* VerifyPhoneDtmfViewController.m */; };
 		48C431A2189EDFB40008FE01 /* VerifyPhoneDtmfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C431A0189EDFB40008FE01 /* VerifyPhoneDtmfViewController.m */; };
 		48C431A4189EE0310008FE01 /* VerifyPhoneCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48C431A3189EE0310008FE01 /* VerifyPhoneCodeView.xib */; };
 		48C431A5189EE0310008FE01 /* VerifyPhoneCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48C431A3189EE0310008FE01 /* VerifyPhoneCodeView.xib */; };
+		48C7033623BF445200A46C8D /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48C7033523BF445200A46C8D /* Launch Screen.storyboard */; };
+		48C7033823BF4CD400A46C8D /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C7033723BF4CD400A46C8D /* Default.png */; };
 		48C97E9F1893F2BA00174DE9 /* BlockActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C97E9E1893F2BA00174DE9 /* BlockActionSheet.m */; };
 		48C97EA01893F2BA00174DE9 /* BlockActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C97E9E1893F2BA00174DE9 /* BlockActionSheet.m */; };
 		48C97EA318943C7300174DE9 /* PhoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C97EA218943C7300174DE9 /* PhoneViewController.m */; };
 		48C97EA418943C7300174DE9 /* PhoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C97EA218943C7300174DE9 /* PhoneViewController.m */; };
-		48C9A2271BF7C9EC00966F80 /* KeypadMainView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48C9A2261BF7C9EC00966F80 /* KeypadMainView.xib */; };
 		48CA5036172AEEB100CB1B7B /* CueRecordBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CA5033172AEEB100CB1B7B /* CueRecordBlack@2x.png */; };
 		48CA5037172AEEB100CB1B7B /* CueRecordBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48CA5033172AEEB100CB1B7B /* CueRecordBlack@2x.png */; };
 		48CB0775163D76C300B07199 /* PhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CB0774163D76C300B07199 /* PhoneNumber.m */; };
@@ -683,6 +686,8 @@
 		48232B611BFBC70B006D667E /* Data2.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Data2.1.xcdatamodel; sourceTree = "<group>"; };
 		48232B6F1BFC8E5D006D667E /* AddressData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressData.h; sourceTree = "<group>"; };
 		48232B701BFC8E5D006D667E /* AddressData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressData.m; sourceTree = "<group>"; };
+		4823393B23BF8ECE00EDC478 /* KeypadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KeypadView.xib; sourceTree = "<group>"; };
+		4823393D23BF8EFF00EDC478 /* KeypadMainView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KeypadMainView.xib; sourceTree = "<group>"; };
 		4823C0C41CBA7F0E00030FC7 /* WebView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebView.xib; sourceTree = "<group>"; };
 		4823C0CB1CBA7F3800030FC7 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		4823C0CC1CBA7F3800030FC7 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
@@ -703,8 +708,6 @@
 		48338F92161700550033F4C1 /* AppledocSettings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AppledocSettings.plist; sourceTree = "<group>"; };
 		48338F9F16170CA80033F4C1 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		48338FA016170CA80033F4C1 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		48338FB416170D8C0033F4C1 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		48338FB616170D8C0033F4C1 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		483679DC1721F2DF001A02AF /* RecordingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordingViewController.h; sourceTree = "<group>"; };
 		483679DD1721F2E0001A02AF /* RecordingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordingViewController.m; sourceTree = "<group>"; };
 		483679EE1722F2CF001A02AF /* List.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = List.png; sourceTree = "<group>"; };
@@ -725,7 +728,6 @@
 		48367A1417247B2D001A02AF /* CueStopWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CueStopWhite@2x.png"; sourceTree = "<group>"; };
 		48367A45172552D2001A02AF /* RecordingControlsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordingControlsCell.h; sourceTree = "<group>"; };
 		48367A46172552D2001A02AF /* RecordingControlsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordingControlsCell.m; sourceTree = "<group>"; };
-		4837AF6118D872D500D3AEBC /* GetStarted3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GetStarted3.png; sourceTree = "<group>"; };
 		4837AF6318D89E8600D3AEBC /* GetStarted.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = GetStarted.json; path = Resources/GetStarted.json; sourceTree = "<group>"; };
 		4837AF6818D9B6EC00D3AEBC /* GetStartedRestoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetStartedRestoreViewController.h; sourceTree = "<group>"; };
 		4837AF6918D9B6EC00D3AEBC /* GetStartedRestoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetStartedRestoreViewController.m; sourceTree = "<group>"; };
@@ -734,9 +736,6 @@
 		4837AF6E18D9B8C400D3AEBC /* GetStartedActionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GetStartedActionView.xib; sourceTree = "<group>"; };
 		4837AF7418D9DAF000D3AEBC /* GetStartedActionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetStartedActionViewController.h; sourceTree = "<group>"; };
 		4837AF7518D9DAF000D3AEBC /* GetStartedActionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetStartedActionViewController.m; sourceTree = "<group>"; };
-		4837AF7718DDDD5500D3AEBC /* GetStarted4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GetStarted4.png; sourceTree = "<group>"; };
-		4837AF7818DDDD5500D3AEBC /* GetStarted5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GetStarted5.png; sourceTree = "<group>"; };
-		4837AF7918DDDD5500D3AEBC /* GetStarted6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GetStarted6.png; sourceTree = "<group>"; };
 		4837BB3A165D701F00E46C36 /* LibPhoneNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibPhoneNumber.h; sourceTree = "<group>"; };
 		4837BB3B165D701F00E46C36 /* LibPhoneNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibPhoneNumber.m; sourceTree = "<group>"; };
 		4837BB64165F726300E46C36 /* BlockAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockAlertView.h; sourceTree = "<group>"; };
@@ -782,8 +781,6 @@
 		4856E5E71D96D796001F141F /* BadgeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BadgeCell.h; sourceTree = "<group>"; };
 		4856E5E81D96D796001F141F /* BadgeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgeCell.m; sourceTree = "<group>"; };
 		485A608818D768880055C176 /* GetStartedLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GetStartedLogo.png; sourceTree = "<group>"; };
-		485A608F18D771F60055C176 /* GetStarted1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GetStarted1.png; sourceTree = "<group>"; };
-		485A609118D7AEC50055C176 /* GetStarted2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GetStarted2.png; sourceTree = "<group>"; };
 		485E389E17B7E1390089F0F1 /* HtmlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HtmlViewController.h; sourceTree = "<group>"; };
 		485E389F17B7E13B0089F0F1 /* HtmlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HtmlViewController.m; sourceTree = "<group>"; };
 		485E38A217B7E1960089F0F1 /* HtmlView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HtmlView.xib; sourceTree = "<group>"; };
@@ -1160,7 +1157,6 @@
 		48AF44FD1649483600DFE3D8 /* HelpsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpsViewController.m; sourceTree = "<group>"; };
 		48AF45001649484600DFE3D8 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		48AF45011649484600DFE3D8 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
-		48AF450A164948CD00DFE3D8 /* KeypadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KeypadView.xib; sourceTree = "<group>"; };
 		48AF450D164948DC00DFE3D8 /* GroupsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupsView.xib; sourceTree = "<group>"; };
 		48AF45161649494400DFE3D8 /* AboutView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutView.xib; sourceTree = "<group>"; };
 		48AF451A1649788A00DFE3D8 /* AboutTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AboutTab@2x.png"; sourceTree = "<group>"; };
@@ -1251,17 +1247,28 @@
 		48B9386C187B647F00132535 /* Licenses.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Licenses.json; path = Resources/Licenses.json; sourceTree = "<group>"; };
 		48B9386D187B647F00132535 /* Thanks.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = Thanks.html; path = Resources/Thanks.html; sourceTree = "<group>"; };
 		48B93877187E1E0E00132535 /* PhonesTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PhonesTab@2x.png"; sourceTree = "<group>"; };
+		48BD698923C0B8C700CBBAA9 /* GetStarted5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = GetStarted5.jpg; sourceTree = "<group>"; };
+		48BD698A23C0B8C700CBBAA9 /* GetStarted1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = GetStarted1.jpg; sourceTree = "<group>"; };
+		48BD698B23C0B8C700CBBAA9 /* GetStarted5X.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = GetStarted5X.jpg; sourceTree = "<group>"; };
+		48BD698C23C0B8C700CBBAA9 /* GetStarted1X.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = GetStarted1X.jpg; sourceTree = "<group>"; };
+		48BD698D23C0B8C700CBBAA9 /* GetStarted3X.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = GetStarted3X.jpg; sourceTree = "<group>"; };
+		48BD698E23C0B8C700CBBAA9 /* GetStarted4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = GetStarted4.jpg; sourceTree = "<group>"; };
+		48BD698F23C0B8C700CBBAA9 /* GetStarted2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = GetStarted2.jpg; sourceTree = "<group>"; };
+		48BD699023C0B8C700CBBAA9 /* GetStarted3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = GetStarted3.jpg; sourceTree = "<group>"; };
+		48BD699123C0B8C700CBBAA9 /* GetStarted2X.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = GetStarted2X.jpg; sourceTree = "<group>"; };
+		48BD699223C0B8C700CBBAA9 /* GetStarted4X.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = GetStarted4X.jpg; sourceTree = "<group>"; };
 		48BD8BE71663E7A400F2CB45 /* CallBaseView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallBaseView.xib; sourceTree = "<group>"; };
 		48C3646C1F73DCA0002975B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		48C4319F189EDFB40008FE01 /* VerifyPhoneDtmfViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerifyPhoneDtmfViewController.h; sourceTree = "<group>"; };
 		48C431A0189EDFB40008FE01 /* VerifyPhoneDtmfViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerifyPhoneDtmfViewController.m; sourceTree = "<group>"; };
 		48C431A3189EE0310008FE01 /* VerifyPhoneCodeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VerifyPhoneCodeView.xib; sourceTree = "<group>"; };
 		48C431A618A8405D0008FE01 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		48C7033523BF445200A46C8D /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		48C7033723BF4CD400A46C8D /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		48C97E9D1893F2BA00174DE9 /* BlockActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockActionSheet.h; sourceTree = "<group>"; };
 		48C97E9E1893F2BA00174DE9 /* BlockActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockActionSheet.m; sourceTree = "<group>"; };
 		48C97EA118943C7300174DE9 /* PhoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneViewController.h; sourceTree = "<group>"; };
 		48C97EA218943C7300174DE9 /* PhoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneViewController.m; sourceTree = "<group>"; };
-		48C9A2261BF7C9EC00966F80 /* KeypadMainView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KeypadMainView.xib; sourceTree = "<group>"; };
 		48CA5033172AEEB100CB1B7B /* CueRecordBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CueRecordBlack@2x.png"; sourceTree = "<group>"; };
 		48CB0773163D76C300B07199 /* PhoneNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneNumber.h; sourceTree = "<group>"; };
 		48CB0774163D76C300B07199 /* PhoneNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneNumber.m; sourceTree = "<group>"; };
@@ -1712,8 +1719,7 @@
 		48338FB316170D8C0033F4C1 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				48338FB416170D8C0033F4C1 /* Default-568h@2x.png */,
-				48338FB616170D8C0033F4C1 /* Default@2x.png */,
+				48C7033723BF4CD400A46C8D /* Default.png */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -1815,12 +1821,16 @@
 			isa = PBXGroup;
 			children = (
 				485A608818D768880055C176 /* GetStartedLogo.png */,
-				485A608F18D771F60055C176 /* GetStarted1.png */,
-				485A609118D7AEC50055C176 /* GetStarted2.png */,
-				4837AF6118D872D500D3AEBC /* GetStarted3.png */,
-				4837AF7718DDDD5500D3AEBC /* GetStarted4.png */,
-				4837AF7818DDDD5500D3AEBC /* GetStarted5.png */,
-				4837AF7918DDDD5500D3AEBC /* GetStarted6.png */,
+				48BD698A23C0B8C700CBBAA9 /* GetStarted1.jpg */,
+				48BD698C23C0B8C700CBBAA9 /* GetStarted1X.jpg */,
+				48BD698F23C0B8C700CBBAA9 /* GetStarted2.jpg */,
+				48BD699123C0B8C700CBBAA9 /* GetStarted2X.jpg */,
+				48BD699023C0B8C700CBBAA9 /* GetStarted3.jpg */,
+				48BD698D23C0B8C700CBBAA9 /* GetStarted3X.jpg */,
+				48BD698E23C0B8C700CBBAA9 /* GetStarted4.jpg */,
+				48BD699223C0B8C700CBBAA9 /* GetStarted4X.jpg */,
+				48BD698923C0B8C700CBBAA9 /* GetStarted5.jpg */,
+				48BD698B23C0B8C700CBBAA9 /* GetStarted5X.jpg */,
 			);
 			path = GetStarted;
 			sourceTree = "<group>";
@@ -2140,6 +2150,7 @@
 		48884A651615CE920005AA79 = {
 			isa = PBXGroup;
 			children = (
+				48C7033523BF445200A46C8D /* Launch Screen.storyboard */,
 				48F3CE8E1D26A6D2000925EE /* Postcodes.json */,
 				488B8E5B17AFFD8E005C33A2 /* TODO.txt */,
 				485E38CF17C889350089F0F1 /* WORDS.txt */,
@@ -2308,8 +2319,8 @@
 				485F93D31DEF6D3B006E31ED /* GraphicCallStateView.xib */,
 				48AF450D164948DC00DFE3D8 /* GroupsView.xib */,
 				485E38A217B7E1960089F0F1 /* HtmlView.xib */,
-				48C9A2261BF7C9EC00966F80 /* KeypadMainView.xib */,
-				48AF450A164948CD00DFE3D8 /* KeypadView.xib */,
+				4823393D23BF8EFF00EDC478 /* KeypadMainView.xib */,
+				4823393B23BF8ECE00EDC478 /* KeypadView.xib */,
 				480CE120193C4D100020F255 /* NumberPayCell.xib */,
 				488AD1EC16E799F4004D3A2A /* NumberStatesView.xib */,
 				483679FA17246977001A02AF /* RecordingControlsCell.xib */,
@@ -2586,8 +2597,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4812727316487E2D00534450 /* LibPhoneNumber.js in Resources */,
-				48338FB716170D8C0033F4C1 /* Default-568h@2x.png in Resources */,
-				48338FB916170D8C0033F4C1 /* Default@2x.png in Resources */,
 				485F6A3A1637270100D61365 /* AD@2x.png in Resources */,
 				485F6A3C1637270100D61365 /* AE@2x.png in Resources */,
 				485F6A3E1637270100D61365 /* AF@2x.png in Resources */,
@@ -2614,15 +2623,16 @@
 				485F6A641637270100D61365 /* BF@2x.png in Resources */,
 				485F6A661637270100D61365 /* BG@2x.png in Resources */,
 				485F6A681637270100D61365 /* BH@2x.png in Resources */,
-				485A609018D771F60055C176 /* GetStarted1.png in Resources */,
 				485F6A6A1637270100D61365 /* BI@2x.png in Resources */,
 				485F6A6C1637270100D61365 /* BJ@2x.png in Resources */,
 				4800379A1CA7CD050083D24B /* Favorites@2x.png in Resources */,
 				486B95261CDE80F2004CFD8A /* DenmarkCityPostcodes.json in Resources */,
 				485F6A6E1637270100D61365 /* BL@2x.png in Resources */,
 				4837AF6418D89E8600D3AEBC /* GetStarted.json in Resources */,
+				48BD699723C0B8C800CBBAA9 /* GetStarted3X.jpg in Resources */,
 				485F6A701637270100D61365 /* BM@2x.png in Resources */,
 				485F6A721637270100D61365 /* BN@2x.png in Resources */,
+				48BD699523C0B8C800CBBAA9 /* GetStarted5X.jpg in Resources */,
 				485F6A741637270100D61365 /* BO@2x.png in Resources */,
 				485F6A761637270100D61365 /* BR@2x.png in Resources */,
 				485F6A781637270100D61365 /* BS@2x.png in Resources */,
@@ -2647,6 +2657,7 @@
 				485F6A9C1637270100D61365 /* CR@2x.png in Resources */,
 				4890CB9A1E33CCB5001ED2D2 /* CallVerification@3x.png in Resources */,
 				485F6A9E1637270100D61365 /* CU@2x.png in Resources */,
+				48BD699423C0B8C800CBBAA9 /* GetStarted1.jpg in Resources */,
 				485F6AA01637270100D61365 /* CV@2x.png in Resources */,
 				485F6AA21637270100D61365 /* CW@2x.png in Resources */,
 				485F6AA41637270100D61365 /* CX@2x.png in Resources */,
@@ -2656,6 +2667,7 @@
 				485F6AAA1637270100D61365 /* DE@2x.png in Resources */,
 				485F6AAC1637270100D61365 /* DJ@2x.png in Resources */,
 				485F6AAE1637270100D61365 /* DK@2x.png in Resources */,
+				48BD699A23C0B8C800CBBAA9 /* GetStarted3.jpg in Resources */,
 				48995E0B18739F46001395C2 /* Phone.png in Resources */,
 				485F6AB01637270100D61365 /* DM@2x.png in Resources */,
 				485F6AB21637270100D61365 /* DO@2x.png in Resources */,
@@ -2700,6 +2712,7 @@
 				485F6AF21637270100D61365 /* GW@2x.png in Resources */,
 				485F6AF41637270100D61365 /* GY@2x.png in Resources */,
 				485F6AF61637270100D61365 /* HK@2x.png in Resources */,
+				48BD699923C0B8C800CBBAA9 /* GetStarted2.jpg in Resources */,
 				485F6AFA1637270100D61365 /* HN@2x.png in Resources */,
 				485F6AFC1637270100D61365 /* HR@2x.png in Resources */,
 				485F6AFE1637270100D61365 /* HT@2x.png in Resources */,
@@ -2708,7 +2721,6 @@
 				485F6B041637270100D61365 /* IE@2x.png in Resources */,
 				485F6B061637270100D61365 /* IL@2x.png in Resources */,
 				485F6B081637270100D61365 /* IM@2x.png in Resources */,
-				4837AF7A18DDDD5500D3AEBC /* GetStarted4.png in Resources */,
 				485F6B0A1637270100D61365 /* IN@2x.png in Resources */,
 				485F6B0C1637270100D61365 /* IO@2x.png in Resources */,
 				4842DA031AADFB53008F35C9 /* portraitBackground.png in Resources */,
@@ -2718,7 +2730,6 @@
 				485F6B101637270100D61365 /* IR@2x.png in Resources */,
 				4842DA041AADFB53008F35C9 /* portraitLine.png in Resources */,
 				485F6B121637270100D61365 /* IS@2x.png in Resources */,
-				485A609218D7AEC50055C176 /* GetStarted2.png in Resources */,
 				485F6B141637270100D61365 /* IT@2x.png in Resources */,
 				485F6B161637270100D61365 /* JE@2x.png in Resources */,
 				485F6B181637270100D61365 /* JM@2x.png in Resources */,
@@ -2739,12 +2750,11 @@
 				485F6B341637270100D61365 /* LA@2x.png in Resources */,
 				485F6B361637270100D61365 /* LB@2x.png in Resources */,
 				4842D9FB1AADFB53008F35C9 /* editPhotoLeftButton.png in Resources */,
-				4837AF7B18DDDD5500D3AEBC /* GetStarted5.png in Resources */,
 				485F6B381637270100D61365 /* LC@2x.png in Resources */,
 				485F6B3A1637270100D61365 /* LI@2x.png in Resources */,
+				48BD699623C0B8C800CBBAA9 /* GetStarted1X.jpg in Resources */,
 				485F6B3C1637270100D61365 /* LK@2x.png in Resources */,
 				485F6B3E1637270100D61365 /* LR@2x.png in Resources */,
-				4837AF7C18DDDD5500D3AEBC /* GetStarted6.png in Resources */,
 				485F6B401637270100D61365 /* LS@2x.png in Resources */,
 				485F6B421637270100D61365 /* LT@2x.png in Resources */,
 				485F6B441637270100D61365 /* LU@2x.png in Resources */,
@@ -2759,6 +2769,7 @@
 				480B4FFA1BED1A890098F3A4 /* CountryCallingCodes.json in Resources */,
 				485F6B561637270100D61365 /* MH@2x.png in Resources */,
 				485F93D41DEF6D3B006E31ED /* GraphicCallStateView.xib in Resources */,
+				48BD699823C0B8C800CBBAA9 /* GetStarted4.jpg in Resources */,
 				485F6B581637270100D61365 /* MK@2x.png in Resources */,
 				485F6B5A1637270100D61365 /* ML@2x.png in Resources */,
 				48F571BE1ED09E32002D7C2D /* Filter@2x.png in Resources */,
@@ -2831,7 +2842,6 @@
 				485F6BCE1637270100D61365 /* SL@2x.png in Resources */,
 				485F6BD01637270100D61365 /* SM@2x.png in Resources */,
 				485F6BD21637270100D61365 /* SN@2x.png in Resources */,
-				48C9A2271BF7C9EC00966F80 /* KeypadMainView.xib in Resources */,
 				4823C0C51CBA7F0E00030FC7 /* WebView.xib in Resources */,
 				485F6BD41637270100D61365 /* SO@2x.png in Resources */,
 				485F6BD61637270100D61365 /* SR@2x.png in Resources */,
@@ -2843,6 +2853,7 @@
 				485F6BE01637270100D61365 /* SY@2x.png in Resources */,
 				485F6BE21637270100D61365 /* SZ@2x.png in Resources */,
 				485F6BE41637270100D61365 /* TC@2x.png in Resources */,
+				4823393C23BF8ECE00EDC478 /* KeypadView.xib in Resources */,
 				485F6BE61637270100D61365 /* TD@2x.png in Resources */,
 				4842D9EA1AADFB00008F35C9 /* Localizable.strings in Resources */,
 				4842D9FD1AADFB53008F35C9 /* editPhotoRightButton.png in Resources */,
@@ -2870,6 +2881,7 @@
 				485F6C0A1637270100D61365 /* US@2x.png in Resources */,
 				485F6C0C1637270100D61365 /* UY@2x.png in Resources */,
 				485F6C0E1637270100D61365 /* UZ@2x.png in Resources */,
+				4823393E23BF8EFF00EDC478 /* KeypadMainView.xib in Resources */,
 				485F6C101637270100D61365 /* VA@2x.png in Resources */,
 				485F6C121637270100D61365 /* VC@2x.png in Resources */,
 				483F23B81D8F2AD7009AFA98 /* Checkmark@3x.png in Resources */,
@@ -2878,16 +2890,15 @@
 				485F6C181637270100D61365 /* VI@2x.png in Resources */,
 				485F6C1A1637270100D61365 /* VN@2x.png in Resources */,
 				485F6C1C1637270100D61365 /* VU@2x.png in Resources */,
+				48BD699C23C0B8C800CBBAA9 /* GetStarted4X.jpg in Resources */,
 				485F6C1E1637270100D61365 /* WF@2x.png in Resources */,
 				485F6C201637270100D61365 /* WS@2x.png in Resources */,
 				485F6C221637270100D61365 /* YE@2x.png in Resources */,
 				485F6C241637270100D61365 /* YT@2x.png in Resources */,
 				485F93D81DEF7C31006E31ED /* LogoIcon@2x.png in Resources */,
 				485F6C261637270100D61365 /* ZA@2x.png in Resources */,
-				4837AF6218D872D500D3AEBC /* GetStarted3.png in Resources */,
 				485F6C281637270100D61365 /* ZM@2x.png in Resources */,
 				485F6C2A1637270100D61365 /* ZW@2x.png in Resources */,
-				48AF450B164948CD00DFE3D8 /* KeypadView.xib in Resources */,
 				48AF45171649494400DFE3D8 /* AboutView.xib in Resources */,
 				48AF452F1649788A00DFE3D8 /* AboutTab@2x.png in Resources */,
 				48AF45331649788A00DFE3D8 /* CreditTab@2x.png in Resources */,
@@ -2903,6 +2914,7 @@
 				48D0A6E61654D65200FA2D98 /* SipConfig.cfg in Resources */,
 				48D0A6EA1654D66200FA2D98 /* InfoPlist.strings in Resources */,
 				48BD8BE81663E7A400F2CB45 /* CallBaseView.xib in Resources */,
+				48BD699323C0B8C800CBBAA9 /* GetStarted5.jpg in Resources */,
 				48EDD20F1667652A007B89DA /* ColorCurves.png in Resources */,
 				48A26DDE18BA904100736CCB /* SearchTableView.xib in Resources */,
 				4888D51C166D1AEE00572566 /* Flip@2x.png in Resources */,
@@ -2921,6 +2933,7 @@
 				48367A2317247B2D001A02AF /* CuePauseWhite@2x.png in Resources */,
 				48367A2717247B2D001A02AF /* CuePlayBlack@2x.png in Resources */,
 				48CB2C4617E6539000E19C3D /* Target@2x.png in Resources */,
+				48C7033823BF4CD400A46C8D /* Default.png in Resources */,
 				48C3646D1F73DCA0002975B8 /* Assets.xcassets in Resources */,
 				48367A2B17247B2D001A02AF /* CuePlayWhite@2x.png in Resources */,
 				48367A2F17247B2D001A02AF /* CueRecordRed@2x.png in Resources */,
@@ -2935,10 +2948,12 @@
 				484943B01753C44D00E1D5C4 /* ThanksView.xib in Resources */,
 				4864B3F6175668CA0006542F /* LogoFacebook.png in Resources */,
 				483B078F1908017900E8C42D /* Terms.json in Resources */,
+				48C7033623BF445200A46C8D /* Launch Screen.storyboard in Resources */,
 				485E38A317B7E1960089F0F1 /* HtmlView.xib in Resources */,
 				480CE121193C4D100020F255 /* NumberPayCell.xib in Resources */,
 				48172C021C07017800927BC2 /* RatesTab@2x.png in Resources */,
 				4814EA3317CA98F4004B7A3C /* CreditBuyCell.xib in Resources */,
+				48BD699B23C0B8C800CBBAA9 /* GetStarted2X.jpg in Resources */,
 				4814EA3A17CB18DB004B7A3C /* CreditAmountCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2948,7 +2963,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				48884AB11615CE920005AA79 /* InfoPlist.strings in Resources */,
-				48AF450C164948CD00DFE3D8 /* KeypadView.xib in Resources */,
 				48AF45181649494400DFE3D8 /* AboutView.xib in Resources */,
 				48AF45301649788A00DFE3D8 /* AboutTab@2x.png in Resources */,
 				48AF45341649788A00DFE3D8 /* CreditTab@2x.png in Resources */,

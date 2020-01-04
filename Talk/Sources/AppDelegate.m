@@ -103,8 +103,10 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
         // Add special dial codes, for things like DNS-SRV URL setting, and other features.
         [self addSpecialDialCodes];
 
-        // Welcome stuff.
-        [self showDefaultImage];
+        if ([Settings sharedSettings].haveAccount == NO)
+        {
+            [Common showGetStartedViewController];
+        }
 
         // Trigger loading contacts.
         self.nBPeopleListViewController.view.hidden = NO;
@@ -520,7 +522,7 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
     {
         if ([Settings sharedSettings].tabBarSelectedIndex >= navigationControllers.count)
         {
-            // We may get here if the number of tabs has becomes less.
+            // We may get here if the number of tabs has become less.
             [Settings sharedSettings].tabBarSelectedIndex = 2;
         }
         
@@ -620,54 +622,6 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
             // A cell on the More tab.
             [Settings sharedSettings].tabBarSelectedIndex = index;
         }
-    }
-}
-
-
-#pragma mark - Default Image Fading
-
-- (void)showDefaultImage
-{
-    if ([UIScreen mainScreen].bounds.size.height == 480)
-    {
-        defaultFadeImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default"]];
-    }
-    else
-    {
-        defaultFadeImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default-568h"]];
-    }
-
-    [self.window addSubview:defaultFadeImage];
-
-    [self fadeDefaultImage];
-}
-
-
-- (void)fadeDefaultImage
-{
-    if (hasFadedDefaultImage)
-    {
-        return;
-    }
-    else
-    {
-        hasFadedDefaultImage = YES;
-
-        [UIView animateWithDuration:0.5
-                         animations:^
-        {
-            defaultFadeImage.alpha = 0.0f;
-        }
-                         completion:^(BOOL finished)
-        {
-            [defaultFadeImage removeFromSuperview];
-            defaultFadeImage = nil;
-
-            if ([Settings sharedSettings].haveAccount == NO)
-            {
-                [Common showGetStartedViewController];
-            }
-        }];
     }
 }
 

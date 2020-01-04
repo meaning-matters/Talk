@@ -1,8 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GetStartedActionViewController">
@@ -19,41 +22,59 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.79999999999999982" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcomeggg back!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="VNU-tz-wSd">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.79999999999999982" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcomeggg back!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VNU-tz-wSd">
                     <rect key="frame" x="20" y="77" width="280" height="35"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="280" id="3Kt-Sl-rsV"/>
+                        <constraint firstAttribute="height" constant="35" id="8gs-ct-sbO"/>
+                    </constraints>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="center" id="PYP-Zw-oJc">
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="PYP-Zw-oJc">
                     <rect key="frame" x="20" y="125" width="280" height="355"/>
-                    <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
-                    <color key="backgroundColor" white="0.90342723540145986" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="0.90342724323272705" green="0.90342724323272705" blue="0.90342724323272705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo </string>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="X92-sL-W6P">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X92-sL-W6P">
                     <rect key="frame" x="20" y="503" width="280" height="45"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="smm-zl-0JM"/>
+                    </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <state key="normal" title="Button">
-                        <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
                         <action selector="buttonAction:" destination="-1" eventType="touchUpInside" id="CNU-5z-3LI"/>
                     </connections>
                 </button>
-                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" id="C1e-xE-Kwe">
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="C1e-xE-Kwe">
                     <rect key="frame" x="142" y="508" width="37" height="37"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
-                    <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </activityIndicatorView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="PYP-Zw-oJc" firstAttribute="leading" secondItem="0f1-0I-uZb" secondAttribute="leading" constant="20" id="6UJ-V2-WnO"/>
+                <constraint firstItem="0f1-0I-uZb" firstAttribute="trailing" secondItem="PYP-Zw-oJc" secondAttribute="trailing" constant="20" id="6sq-ob-Z5N"/>
+                <constraint firstItem="X92-sL-W6P" firstAttribute="leading" secondItem="0f1-0I-uZb" secondAttribute="leading" constant="20" id="9cW-Q9-BXS"/>
+                <constraint firstItem="0f1-0I-uZb" firstAttribute="bottom" secondItem="X92-sL-W6P" secondAttribute="bottom" constant="20" id="ATt-HF-aLb"/>
+                <constraint firstItem="C1e-xE-Kwe" firstAttribute="centerX" secondItem="X92-sL-W6P" secondAttribute="centerX" id="Cty-pA-Ja9"/>
+                <constraint firstItem="C1e-xE-Kwe" firstAttribute="centerY" secondItem="X92-sL-W6P" secondAttribute="centerY" constant="1" id="DK4-uw-d6Z"/>
+                <constraint firstItem="0f1-0I-uZb" firstAttribute="trailing" secondItem="X92-sL-W6P" secondAttribute="trailing" constant="20" id="X5S-yx-XTI"/>
+                <constraint firstItem="VNU-tz-wSd" firstAttribute="top" secondItem="0f1-0I-uZb" secondAttribute="top" constant="33" id="Y0z-IY-qEO"/>
+                <constraint firstItem="PYP-Zw-oJc" firstAttribute="top" secondItem="VNU-tz-wSd" secondAttribute="bottom" constant="13" id="aub-ZT-MMX"/>
+                <constraint firstItem="X92-sL-W6P" firstAttribute="top" secondItem="PYP-Zw-oJc" secondAttribute="bottom" constant="23" id="dlU-K2-QS0"/>
+                <constraint firstItem="VNU-tz-wSd" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="kBC-QX-Zhd"/>
+            </constraints>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+            <viewLayoutGuide key="safeArea" id="0f1-0I-uZb"/>
+            <point key="canvasLocation" x="132" y="117"/>
         </view>
     </objects>
 </document>

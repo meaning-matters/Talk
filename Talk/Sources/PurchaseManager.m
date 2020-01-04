@@ -307,7 +307,10 @@ NSString* const PurchaseManagerProductsLoadedNotification = @"PurchaseManagerPro
     {
         for (void (^completion)(BOOL success) in self.loadProductsCompletions)
         {
-            completion(success);
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                completion(success);
+            });
         }
 
         [self.loadProductsCompletions removeAllObjects];

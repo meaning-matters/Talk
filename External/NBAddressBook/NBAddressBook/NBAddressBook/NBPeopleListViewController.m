@@ -112,6 +112,8 @@
     // This will remove extra separators from tableview.
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
+    self.searchBar.delegate = self;
+
     [self doLoad];
 }
 
@@ -440,6 +442,11 @@
 
         [self.navigationController pushViewController:personViewController animated:YES];
     }
+
+    if (filterEnabled)
+    {
+        [self searchBarCancelButtonClicked:self.searchBar];
+    }
 }
 
 
@@ -506,20 +513,19 @@
 }
 
 
-#pragma mark - Search Delegate
-- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller
+#pragma mark - UISearchBarDelegate
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
+    [self.searchBar setShowsCancelButton:YES animated:YES];
+
     filteredContacts = nil;
     searchString = @"";
     filterEnabled = YES;
-}
 
-
-- (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController*)controller
-{
     if (searchIndicator == nil)
     {
-        for (UIView* subview in controller.searchBar.subviews)
+        for (UIView* subview in self.searchBar.subviews)
         {
             for (UITextField* field in subview.subviews)
             {
@@ -536,58 +542,78 @@
 }
 
 
-- (void) searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller
+- (void)searchBarCancelButtonClicked:(UISearchBar*)searchBar
 {
     searchString = nil;
     filterEnabled = NO;
     [self.tableView reloadData];
+
+    searchBar.text = @"";
+    [searchBar resignFirstResponder];
+    [self.searchBar setShowsCancelButton:NO animated:YES];
 }
 
 
-- (BOOL)searchDisplayController:(UISearchDisplayController*)controller shouldReloadTableForSearchString:(NSString*)searchStringParam
+- (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
 {
-    // Show activity indicator, and remove magnifying glass.
-    [searchIndicator startAnimating];
-    [controller.searchBar setImage:[UIImage new] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
-
-    dispatch_async(searchQueue, ^
+    if (searchText.length > 0)
     {
-        if (searchStringParam.length > 0)
+        // Show activity indicator, and remove magnifying glass.
+        [searchIndicator startAnimating];
+        [self.searchBar setImage:[UIImage new] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
+
+        dispatch_async(searchQueue, ^
         {
-            // If we can build on last search' results, use that subset
-            if ([searchString length] > 0 &&
-                [searchString length] < [searchStringParam length] &&
-                [searchString rangeOfString:searchStringParam options:NSCaseInsensitiveSearch].location != 0)
+            if (searchText.length > 0)
             {
-                [self filterArrayUsingKeyword:searchStringParam];
-            }
-            else
-            {
-                // We're doing a fresh search, start from the full set of contacts
-                filteredContacts = [NSMutableArray arrayWithArray:allContacts];
-                [self filterArrayUsingKeyword:searchStringParam];
-            }
-        }
-
-        // Remember the string for future search-optimalisation
-        searchString = searchStringParam;
-
-        dispatch_sync(dispatch_get_main_queue(), ^
-        {
-            // When searching is slow, the user may have already cancelled when we get here;
-            // then the search results table is gone, a reload will crash.
-            if (filteredContacts != nil)
-            {
-                [self.searchDisplayController.searchResultsTableView reloadData];
+                // If we can build on last search' results, use that subset
+                if ([searchString length] > 0 &&
+                    [searchString length] < [searchText length] &&
+                    [searchString rangeOfString:searchText options:NSCaseInsensitiveSearch].location != 0)
+                {
+                    [self filterArrayUsingKeyword:searchText];
+                }
+                else
+                {
+                    // We're doing a fresh search, start from the full set of contacts
+                    filteredContacts = [NSMutableArray arrayWithArray:allContacts];
+                    [self filterArrayUsingKeyword:searchText];
+                }
             }
 
-            // Hide activity indicator, and restore the magnifying glass icon.
-            [searchIndicator stopAnimating];
-            [controller.searchBar setImage:nil forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
+            // Remember the string for future search-optimalisation
+            searchString = searchText;
+
+            dispatch_sync(dispatch_get_main_queue(), ^
+            {
+                // When searching is slow, the user may have already cancelled when we get here;
+                // then the search results table is gone, a reload will crash.
+                if (filteredContacts != nil)
+                {
+                    [self.tableView reloadData];
+                }
+
+                // Hide activity indicator, and restore the magnifying glass icon.
+                [searchIndicator stopAnimating];
+                [self.searchBar setImage:nil forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
+            });
         });
-    });
+    }
+}
 
-    return NO;
+
+- (void)searchBarSearchButtonClicked:(UISearchBar*)searchBar
+{
+    [searchBar resignFirstResponder];
+
+    if (searchBar.text.length == 0)
+    {
+        searchString = nil;
+        filterEnabled = NO;
+        [self.tableView reloadData];
+
+        [self.searchBar setShowsCancelButton:NO animated:YES];
+    }
 }
 
 
@@ -923,9 +949,10 @@
 }
 
 
--(void)grayViewTapped
+- (void)grayViewTapped
 {
-    [self.searchDisplayController setActive:NO animated:YES];
+    NSLog(@"$$$$$$$$$$$$$$$$$$$$$$$$");
+//    [self.searchDisplayController setActive:NO animated:YES];
 }
 
 

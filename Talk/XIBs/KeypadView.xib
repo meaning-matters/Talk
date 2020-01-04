@@ -1,7 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KeypadView">
@@ -31,17 +33,16 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="3" userLabel="1" customClass="KeypadButton">
-                    <rect key="frame" x="0.0" y="0.0" width="107" height="64"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.40000000000000002" green="0.59999999999999998" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3" userLabel="1" customClass="KeypadButton">
+                    <rect key="frame" x="0.0" y="0.0" width="106.5" height="64"/>
+                    <color key="backgroundColor" red="0.40000000000000002" green="0.59999999999999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" title="1">
-                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <state key="highlighted">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
                         <action selector="digitKeyPressAction:" destination="-1" eventType="touchDown" id="389"/>
@@ -50,17 +51,16 @@
                         <action selector="digitKeyReleaseAction:" destination="-1" eventType="touchCancel" id="463"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="10" userLabel="2" customClass="KeypadButton">
-                    <rect key="frame" x="107" y="0.0" width="106" height="64"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.20000000000000001" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="10" userLabel="2" customClass="KeypadButton">
+                    <rect key="frame" x="106.5" y="0.0" width="107" height="64"/>
+                    <color key="backgroundColor" red="0.20000000000000001" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" title="2">
-                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <state key="highlighted">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
                         <action selector="digitKeyPressAction:" destination="-1" eventType="touchDown" id="393"/>
@@ -69,17 +69,16 @@
                         <action selector="digitKeyReleaseAction:" destination="-1" eventType="touchCancel" id="464"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="89" userLabel="3" customClass="KeypadButton">
-                    <rect key="frame" x="213" y="0.0" width="107" height="64"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.40000000000000002" green="0.59999999999999998" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="89" userLabel="3" customClass="KeypadButton">
+                    <rect key="frame" x="213.5" y="0.0" width="106.5" height="64"/>
+                    <color key="backgroundColor" red="0.40000000000000002" green="0.59999999999999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" title="3">
-                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <state key="highlighted">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
                         <action selector="digitKeyPressAction:" destination="-1" eventType="touchDown" id="395"/>
@@ -88,17 +87,16 @@
                         <action selector="digitKeyReleaseAction:" destination="-1" eventType="touchCancel" id="465"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="102" userLabel="4" customClass="KeypadButton">
-                    <rect key="frame" x="0.0" y="64" width="107" height="64"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.20000000000000001" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="102" userLabel="4" customClass="KeypadButton">
+                    <rect key="frame" x="0.0" y="64" width="106.5" height="64"/>
+                    <color key="backgroundColor" red="0.20000000000000001" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" title="4">
-                        <color key="titleColor" red="0.1960784314" green="0.30980392159999998" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="0.1960784314" green="0.30980392159999998" blue="0.52156862749999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <state key="highlighted">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
                         <action selector="digitKeyPressAction:" destination="-1" eventType="touchDown" id="402"/>
@@ -107,17 +105,16 @@
                         <action selector="digitKeyReleaseAction:" destination="-1" eventType="touchCancel" id="466"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="157" userLabel="5" customClass="KeypadButton">
-                    <rect key="frame" x="107" y="64" width="106" height="64"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.40000000000000002" green="0.59999999999999998" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="157" userLabel="5" customClass="KeypadButton">
+                    <rect key="frame" x="106.5" y="64" width="107" height="64"/>
+                    <color key="backgroundColor" red="0.40000000000000002" green="0.59999999999999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" title="5">
-                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <state key="highlighted">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
                         <action selector="digitKeyPressAction:" destination="-1" eventType="touchDown" id="404"/>
@@ -126,17 +123,16 @@
                         <action selector="digitKeyReleaseAction:" destination="-1" eventType="touchCancel" id="467"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="170" userLabel="6" customClass="KeypadButton">
-                    <rect key="frame" x="213" y="64" width="107" height="64"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.20000000000000001" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="170" userLabel="6" customClass="KeypadButton">
+                    <rect key="frame" x="213.5" y="64" width="106.5" height="64"/>
+                    <color key="backgroundColor" red="0.20000000000000001" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" title="6">
-                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <state key="highlighted">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
                         <action selector="digitKeyPressAction:" destination="-1" eventType="touchDown" id="408"/>
@@ -145,17 +141,16 @@
                         <action selector="digitKeyReleaseAction:" destination="-1" eventType="touchCancel" id="468"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="185" userLabel="7" customClass="KeypadButton">
-                    <rect key="frame" x="0.0" y="128" width="107" height="64"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.40000000000000002" green="0.59999999999999998" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="185" userLabel="7" customClass="KeypadButton">
+                    <rect key="frame" x="0.0" y="128" width="106.5" height="64"/>
+                    <color key="backgroundColor" red="0.40000000000000002" green="0.59999999999999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" title="7">
-                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <state key="highlighted">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
                         <action selector="digitKeyPressAction:" destination="-1" eventType="touchDown" id="412"/>
@@ -164,17 +159,16 @@
                         <action selector="digitKeyReleaseAction:" destination="-1" eventType="touchCancel" id="469"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="196" userLabel="8" customClass="KeypadButton">
-                    <rect key="frame" x="107" y="128" width="106" height="64"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.20000000000000001" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                <button opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="196" userLabel="8" customClass="KeypadButton">
+                    <rect key="frame" x="106.5" y="128" width="107" height="64"/>
+                    <color key="backgroundColor" red="0.20000000000000001" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" title="8">
-                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <state key="highlighted">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
                         <action selector="digitKeyPressAction:" destination="-1" eventType="touchDown" id="416"/>
@@ -183,17 +177,16 @@
                         <action selector="digitKeyReleaseAction:" destination="-1" eventType="touchCancel" id="470"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="9" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="211" userLabel="9" customClass="KeypadButton">
-                    <rect key="frame" x="213" y="128" width="107" height="64"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.40000000000000002" green="0.59999999999999998" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                <button opaque="NO" tag="9" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="211" userLabel="9" customClass="KeypadButton">
+                    <rect key="frame" x="213.5" y="128" width="106.5" height="64"/>
+                    <color key="backgroundColor" red="0.40000000000000002" green="0.59999999999999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" title="9">
-                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <state key="highlighted">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
                         <action selector="digitKeyPressAction:" destination="-1" eventType="touchDown" id="420"/>
@@ -202,17 +195,16 @@
                         <action selector="digitKeyReleaseAction:" destination="-1" eventType="touchCancel" id="471"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="226" userLabel="*" customClass="KeypadButton">
-                    <rect key="frame" x="0.0" y="192" width="107" height="64"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.20000000000000001" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="226" userLabel="*" customClass="KeypadButton">
+                    <rect key="frame" x="0.0" y="192" width="106.5" height="64"/>
+                    <color key="backgroundColor" red="0.20000000000000001" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" title="*">
-                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <state key="highlighted">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
                         <action selector="digitKeyPressAction:" destination="-1" eventType="touchDown" id="424"/>
@@ -221,18 +213,17 @@
                         <action selector="digitKeyReleaseAction:" destination="-1" eventType="touchCancel" id="472"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="236" userLabel="0" customClass="KeypadButton">
-                    <rect key="frame" x="107" y="192" width="106" height="64"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.40000000000000002" green="0.59999999999999998" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="236" userLabel="0" customClass="KeypadButton">
+                    <rect key="frame" x="106.5" y="192" width="107" height="64"/>
+                    <color key="backgroundColor" red="0.40000000000000002" green="0.59999999999999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <gestureRecognizers/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" title="0">
-                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <state key="highlighted">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
                         <action selector="digitKeyPressAction:" destination="-1" eventType="touchDown" id="428"/>
@@ -242,17 +233,16 @@
                         <outletCollection property="gestureRecognizers" destination="442" appends="YES" id="443"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="250" userLabel="#" customClass="KeypadButton">
-                    <rect key="frame" x="213" y="192" width="107" height="64"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.20000000000000001" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="250" userLabel="#" customClass="KeypadButton">
+                    <rect key="frame" x="213.5" y="192" width="106.5" height="64"/>
+                    <color key="backgroundColor" red="0.20000000000000001" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" title="#">
-                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <state key="highlighted">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
                         <action selector="digitKeyPressAction:" destination="-1" eventType="touchDown" id="432"/>
@@ -261,50 +251,47 @@
                         <action selector="digitKeyReleaseAction:" destination="-1" eventType="touchCancel" id="474"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="13" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="265" userLabel="option" customClass="KeypadButton">
+                <button opaque="NO" tag="13" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="265" userLabel="option" customClass="KeypadButton">
                     <rect key="frame" x="0.0" y="256" width="79" height="64"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.40000000000000002" green="0.59999999999999998" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.40000000000000002" green="0.59999999999999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" title="option">
-                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <state key="highlighted">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
                         <action selector="keyOptionPressAction:" destination="-1" eventType="touchUpInside" id="441"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="14" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="275" userLabel="call" customClass="KeypadButton">
+                <button opaque="NO" tag="14" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="275" userLabel="call" customClass="KeypadButton">
                     <rect key="frame" x="79" y="256" width="162" height="64"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.20000000000000001" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.20000000000000001" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" title="call">
-                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <state key="highlighted">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
                         <action selector="keyCallPressAction:" destination="-1" eventType="touchUpInside" id="439"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="15" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="290" userLabel="erase" customClass="KeypadButton">
+                <button opaque="NO" tag="15" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="290" userLabel="erase" customClass="KeypadButton">
                     <rect key="frame" x="241" y="256" width="79" height="64"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.40000000000000002" green="0.59999999999999998" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.40000000000000002" green="0.59999999999999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <gestureRecognizers/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" title="erase">
-                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <state key="highlighted">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
                         <action selector="keyEraseReleaseAction:" destination="-1" eventType="touchUpInside" id="436"/>
@@ -313,8 +300,76 @@
                     </connections>
                 </button>
             </subviews>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="10" firstAttribute="leading" secondItem="3" secondAttribute="trailing" id="0xL-ue-T1o"/>
+                <constraint firstItem="170" firstAttribute="height" secondItem="3" secondAttribute="height" id="1xt-bn-xAA"/>
+                <constraint firstItem="196" firstAttribute="width" secondItem="3" secondAttribute="width" id="3w0-KJ-YNd"/>
+                <constraint firstItem="290" firstAttribute="leading" secondItem="275" secondAttribute="trailing" id="5Qs-1u-Xug"/>
+                <constraint firstItem="196" firstAttribute="leading" secondItem="185" secondAttribute="trailing" id="6J7-MG-HWu"/>
+                <constraint firstItem="170" firstAttribute="leading" secondItem="157" secondAttribute="trailing" id="7qd-5i-PeI"/>
+                <constraint firstItem="89" firstAttribute="height" secondItem="3" secondAttribute="height" id="8oy-hp-rIf"/>
+                <constraint firstAttribute="trailing" secondItem="211" secondAttribute="trailing" id="9Zk-uM-68O"/>
+                <constraint firstItem="185" firstAttribute="top" secondItem="102" secondAttribute="bottom" id="AH7-Ou-Gvo"/>
+                <constraint firstItem="3" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="BIq-eS-W43"/>
+                <constraint firstItem="236" firstAttribute="top" secondItem="196" secondAttribute="bottom" id="BPz-oL-Ej2"/>
+                <constraint firstItem="185" firstAttribute="width" secondItem="3" secondAttribute="width" id="BZo-Kx-Jen"/>
+                <constraint firstItem="170" firstAttribute="top" secondItem="89" secondAttribute="bottom" id="CEy-CX-VsB"/>
+                <constraint firstItem="170" firstAttribute="width" secondItem="3" secondAttribute="width" id="CGa-aY-hwF"/>
+                <constraint firstItem="89" firstAttribute="width" secondItem="3" secondAttribute="width" id="Cha-MZ-Bx4"/>
+                <constraint firstItem="275" firstAttribute="height" secondItem="3" secondAttribute="height" id="Cv7-2c-yEV"/>
+                <constraint firstItem="226" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="DBT-8V-6pT"/>
+                <constraint firstItem="250" firstAttribute="leading" secondItem="236" secondAttribute="trailing" id="EVE-BV-75J"/>
+                <constraint firstItem="236" firstAttribute="width" secondItem="3" secondAttribute="width" id="F72-k2-Dqb"/>
+                <constraint firstItem="250" firstAttribute="width" secondItem="3" secondAttribute="width" id="KdQ-dk-YHB"/>
+                <constraint firstItem="211" firstAttribute="height" secondItem="3" secondAttribute="height" id="NO3-uH-C8b"/>
+                <constraint firstItem="10" firstAttribute="height" secondItem="3" secondAttribute="height" id="Nkb-jx-kj9"/>
+                <constraint firstItem="102" firstAttribute="width" secondItem="3" secondAttribute="width" id="PGY-uu-1uc"/>
+                <constraint firstItem="196" firstAttribute="top" secondItem="157" secondAttribute="bottom" id="Ps5-CM-q6s"/>
+                <constraint firstItem="275" firstAttribute="top" secondItem="236" secondAttribute="bottom" id="Rr4-KW-gTD"/>
+                <constraint firstItem="290" firstAttribute="height" secondItem="3" secondAttribute="height" id="RvZ-tR-jTO"/>
+                <constraint firstItem="265" firstAttribute="top" secondItem="226" secondAttribute="bottom" id="SH3-bQ-ytL"/>
+                <constraint firstItem="102" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="SKQ-3e-cfw"/>
+                <constraint firstItem="89" firstAttribute="leading" secondItem="10" secondAttribute="trailing" id="SNR-w9-ewt"/>
+                <constraint firstItem="226" firstAttribute="top" secondItem="185" secondAttribute="bottom" id="Sww-Db-It7"/>
+                <constraint firstItem="157" firstAttribute="leading" secondItem="102" secondAttribute="trailing" id="TFj-Jr-0E9"/>
+                <constraint firstItem="226" firstAttribute="height" secondItem="3" secondAttribute="height" id="Tn2-bp-QAB"/>
+                <constraint firstItem="290" firstAttribute="width" secondItem="265" secondAttribute="width" id="U9W-cH-kic"/>
+                <constraint firstItem="275" firstAttribute="leading" secondItem="265" secondAttribute="trailing" id="UBU-Hr-lGt"/>
+                <constraint firstItem="196" firstAttribute="height" secondItem="3" secondAttribute="height" id="Vtd-rT-eOX"/>
+                <constraint firstItem="211" firstAttribute="leading" secondItem="196" secondAttribute="trailing" id="YNj-nd-mQx"/>
+                <constraint firstAttribute="trailing" secondItem="290" secondAttribute="trailing" id="aSi-xy-7Kp"/>
+                <constraint firstItem="211" firstAttribute="width" secondItem="3" secondAttribute="width" id="agp-ii-0hD"/>
+                <constraint firstItem="250" firstAttribute="height" secondItem="3" secondAttribute="height" id="aji-ex-olg"/>
+                <constraint firstItem="157" firstAttribute="height" secondItem="3" secondAttribute="height" id="awq-Ex-SYc"/>
+                <constraint firstAttribute="trailing" secondItem="250" secondAttribute="trailing" id="bdY-4V-J6Z"/>
+                <constraint firstItem="10" firstAttribute="width" secondItem="3" secondAttribute="width" id="bxY-hD-Dot"/>
+                <constraint firstItem="211" firstAttribute="top" secondItem="170" secondAttribute="bottom" id="d7v-r4-9oC"/>
+                <constraint firstItem="157" firstAttribute="width" secondItem="3" secondAttribute="width" id="dLK-eZ-WnQ"/>
+                <constraint firstItem="236" firstAttribute="height" secondItem="3" secondAttribute="height" id="feY-WP-cCL"/>
+                <constraint firstItem="275" firstAttribute="width" secondItem="265" secondAttribute="width" multiplier="162:79" id="gYj-Ft-bOw"/>
+                <constraint firstAttribute="trailing" secondItem="170" secondAttribute="trailing" id="gfl-dY-cI5"/>
+                <constraint firstAttribute="trailing" secondItem="89" secondAttribute="trailing" id="hbu-13-AlJ"/>
+                <constraint firstItem="226" firstAttribute="width" secondItem="3" secondAttribute="width" id="hff-Rv-fDS"/>
+                <constraint firstItem="185" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="jvj-8l-QEn"/>
+                <constraint firstAttribute="bottom" secondItem="275" secondAttribute="bottom" id="krt-bR-8f4"/>
+                <constraint firstItem="236" firstAttribute="leading" secondItem="226" secondAttribute="trailing" id="lc2-SO-12A"/>
+                <constraint firstItem="290" firstAttribute="top" secondItem="250" secondAttribute="bottom" id="mUm-TP-1Mh"/>
+                <constraint firstItem="89" firstAttribute="top" secondItem="1" secondAttribute="top" id="oFN-RN-gj8"/>
+                <constraint firstItem="10" firstAttribute="top" secondItem="1" secondAttribute="top" id="qoD-p6-aOB"/>
+                <constraint firstItem="102" firstAttribute="height" secondItem="3" secondAttribute="height" id="sJs-Le-Up0"/>
+                <constraint firstAttribute="bottom" secondItem="265" secondAttribute="bottom" id="saz-p3-qpK"/>
+                <constraint firstItem="157" firstAttribute="top" secondItem="10" secondAttribute="bottom" id="siq-4D-Mqd"/>
+                <constraint firstItem="250" firstAttribute="top" secondItem="211" secondAttribute="bottom" id="v7G-gM-gnk"/>
+                <constraint firstItem="102" firstAttribute="top" secondItem="3" secondAttribute="bottom" id="vcj-mi-YSL"/>
+                <constraint firstItem="3" firstAttribute="top" secondItem="1" secondAttribute="top" id="wPo-dW-gSU"/>
+                <constraint firstItem="265" firstAttribute="height" secondItem="3" secondAttribute="height" id="y1d-31-gPu"/>
+                <constraint firstItem="265" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="y1o-jl-Ldo"/>
+                <constraint firstItem="185" firstAttribute="height" secondItem="3" secondAttribute="height" id="yMN-Y7-O2O"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="132" y="154"/>
         </view>
         <pongPressGestureRecognizer cancelsTouchesInView="NO" allowableMovement="100" minimumPressDuration="0.5" id="442" userLabel="0 Long Press Gesture Recognizer">
             <connections>

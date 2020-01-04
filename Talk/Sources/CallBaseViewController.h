@@ -33,6 +33,9 @@ extern const NSTimeInterval TransitionDuration;
 @property (nonatomic, weak) IBOutlet UIButton*      hideButton;
 @property (nonatomic, weak) IBOutlet UIButton*      retryButton;
 
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint* endButtonWidthConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint* hideButtonWidthConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint* retryButtonWidthConstraint;
 
 - (IBAction)endAction:(id)sender;
 

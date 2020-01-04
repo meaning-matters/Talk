@@ -1,10 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,9 +15,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="280"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="gI2-I0-zdw" userLabel="Button 1" customClass="CellButton">
+                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gI2-I0-zdw" userLabel="Button 1" customClass="CellButton">
                         <rect key="frame" x="20" y="20" width="130" height="45"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                         <state key="normal" title="Button">
                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -28,9 +25,8 @@
                             <action selector="buyAction:" destination="6v2-a6-6AT" eventType="touchUpInside" id="qBr-bO-VSO"/>
                         </connections>
                     </button>
-                    <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="V3S-7u-h6m" userLabel="Button 2" customClass="CellButton">
+                    <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V3S-7u-h6m" userLabel="Button 2" customClass="CellButton">
                         <rect key="frame" x="170" y="20" width="130" height="45"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                         <state key="normal" title="Button">
                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -39,9 +35,8 @@
                             <action selector="buyAction:" destination="6v2-a6-6AT" eventType="touchUpInside" id="sGf-4b-xCd"/>
                         </connections>
                     </button>
-                    <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="zhj-oC-8dh" userLabel="Button 5" customClass="CellButton">
+                    <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zhj-oC-8dh" userLabel="Button 5" customClass="CellButton">
                         <rect key="frame" x="20" y="85" width="130" height="45"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                         <state key="normal" title="97300.00 Rp">
                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -50,9 +45,8 @@
                             <action selector="buyAction:" destination="6v2-a6-6AT" eventType="touchUpInside" id="4Lt-Uk-2Du"/>
                         </connections>
                     </button>
-                    <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="bru-yn-obn" userLabel="Button 10" customClass="CellButton">
+                    <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bru-yn-obn" userLabel="Button 10" customClass="CellButton">
                         <rect key="frame" x="170" y="85" width="130" height="45"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                         <state key="normal" title="Button">
                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -61,9 +55,8 @@
                             <action selector="buyAction:" destination="6v2-a6-6AT" eventType="touchUpInside" id="dEk-Ic-HbA"/>
                         </connections>
                     </button>
-                    <button opaque="NO" tag="20" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="WAn-e3-fkP" userLabel="Button 20" customClass="CellButton">
+                    <button opaque="NO" tag="20" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WAn-e3-fkP" userLabel="Button 20" customClass="CellButton">
                         <rect key="frame" x="20" y="150" width="130" height="45"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                         <state key="normal" title="Button">
                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -72,9 +65,8 @@
                             <action selector="buyAction:" destination="6v2-a6-6AT" eventType="touchUpInside" id="NEM-qj-QZA"/>
                         </connections>
                     </button>
-                    <button opaque="NO" tag="50" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="YPk-tG-lbI" userLabel="Button 50" customClass="CellButton">
+                    <button opaque="NO" tag="50" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YPk-tG-lbI" userLabel="Button 50" customClass="CellButton">
                         <rect key="frame" x="170" y="150" width="130" height="45"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                         <state key="normal" title="Button">
                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -83,9 +75,8 @@
                             <action selector="buyAction:" destination="6v2-a6-6AT" eventType="touchUpInside" id="cvT-Uv-7aS"/>
                         </connections>
                     </button>
-                    <button opaque="NO" tag="100" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="u6l-KM-jTr" userLabel="Button 100" customClass="CellButton">
+                    <button opaque="NO" tag="100" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u6l-KM-jTr" userLabel="Button 100" customClass="CellButton">
                         <rect key="frame" x="20" y="215" width="130" height="45"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                         <state key="normal" title="Button">
                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -94,9 +85,8 @@
                             <action selector="buyAction:" destination="6v2-a6-6AT" eventType="touchUpInside" id="maf-ir-LBZ"/>
                         </connections>
                     </button>
-                    <button opaque="NO" tag="200" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="QIF-Jd-vrq" userLabel="Button 200" customClass="CellButton">
+                    <button opaque="NO" tag="200" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QIF-Jd-vrq" userLabel="Button 200" customClass="CellButton">
                         <rect key="frame" x="170" y="215" width="130" height="45"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                         <state key="normal" title="Button">
                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -105,47 +95,93 @@
                             <action selector="buyAction:" destination="6v2-a6-6AT" eventType="touchUpInside" id="u8V-bl-Vv4"/>
                         </connections>
                     </button>
-                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="whiteLarge" id="lzZ-bF-33w" userLabel="Indicator 1">
-                        <rect key="frame" x="67.5" y="25" width="37" height="37"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="lzZ-bF-33w" userLabel="Indicator 1">
+                        <rect key="frame" x="66.5" y="25" width="37" height="37"/>
                         <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </activityIndicatorView>
-                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="whiteLarge" id="7x9-iz-tHF" userLabel="Indicator 2">
-                        <rect key="frame" x="217.5" y="25" width="37" height="37"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="7x9-iz-tHF" userLabel="Indicator 2">
+                        <rect key="frame" x="216.5" y="25" width="37" height="37"/>
                         <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </activityIndicatorView>
-                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="whiteLarge" id="NT3-hi-YuY" userLabel="Indicator 5">
-                        <rect key="frame" x="67.5" y="90" width="37" height="37"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="NT3-hi-YuY" userLabel="Indicator 5">
+                        <rect key="frame" x="66.5" y="90" width="37" height="37"/>
                         <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </activityIndicatorView>
-                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="whiteLarge" id="sps-fb-SVs" userLabel="Indicator 10">
-                        <rect key="frame" x="217.5" y="90" width="37" height="37"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="sps-fb-SVs" userLabel="Indicator 10">
+                        <rect key="frame" x="216.5" y="90" width="37" height="37"/>
                         <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </activityIndicatorView>
-                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="whiteLarge" id="0xR-8v-Beb" userLabel="Indicator 20">
-                        <rect key="frame" x="67.5" y="155" width="37" height="37"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="0xR-8v-Beb" userLabel="Indicator 20">
+                        <rect key="frame" x="66.5" y="155" width="37" height="37"/>
                         <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </activityIndicatorView>
-                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="whiteLarge" id="SC5-lc-PY5" userLabel="Indicator 50">
-                        <rect key="frame" x="217.5" y="155" width="37" height="37"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="SC5-lc-PY5" userLabel="Indicator 50">
+                        <rect key="frame" x="216.5" y="155" width="37" height="37"/>
                         <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </activityIndicatorView>
-                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="whiteLarge" id="A1o-lC-OV9" userLabel="Indicator 100">
-                        <rect key="frame" x="67.5" y="220" width="37" height="37"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="A1o-lC-OV9" userLabel="Indicator 100">
+                        <rect key="frame" x="66.5" y="220" width="37" height="37"/>
                         <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </activityIndicatorView>
-                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="whiteLarge" id="iHd-7v-ioq" userLabel="Indicator 200">
-                        <rect key="frame" x="217.5" y="220" width="37" height="37"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="iHd-7v-ioq" userLabel="Indicator 200">
+                        <rect key="frame" x="216.5" y="220" width="37" height="37"/>
                         <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </activityIndicatorView>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="V3S-7u-h6m" firstAttribute="height" secondItem="gI2-I0-zdw" secondAttribute="height" id="0Zx-1n-QOM"/>
+                    <constraint firstItem="A1o-lC-OV9" firstAttribute="centerX" secondItem="u6l-KM-jTr" secondAttribute="centerX" id="18o-v9-WJC"/>
+                    <constraint firstItem="lzZ-bF-33w" firstAttribute="centerY" secondItem="gI2-I0-zdw" secondAttribute="centerY" constant="1" id="1NR-0l-AHV"/>
+                    <constraint firstItem="gI2-I0-zdw" firstAttribute="leading" secondItem="oCj-x2-EBl" secondAttribute="leading" constant="20" id="3W9-xi-qxE"/>
+                    <constraint firstAttribute="trailing" secondItem="bru-yn-obn" secondAttribute="trailing" constant="20" id="3t4-2R-kyM"/>
+                    <constraint firstItem="NT3-hi-YuY" firstAttribute="centerY" secondItem="zhj-oC-8dh" secondAttribute="centerY" constant="1" id="5d6-4V-Uc9"/>
+                    <constraint firstItem="YPk-tG-lbI" firstAttribute="leading" secondItem="WAn-e3-fkP" secondAttribute="trailing" constant="20" id="8oM-Hj-yaq"/>
+                    <constraint firstAttribute="trailing" secondItem="QIF-Jd-vrq" secondAttribute="trailing" constant="20" id="BjF-ke-0IU"/>
+                    <constraint firstItem="WAn-e3-fkP" firstAttribute="top" secondItem="zhj-oC-8dh" secondAttribute="bottom" constant="20" id="FEf-Gb-J5y"/>
+                    <constraint firstItem="WAn-e3-fkP" firstAttribute="width" secondItem="gI2-I0-zdw" secondAttribute="width" id="HSQ-wF-bgh"/>
+                    <constraint firstItem="YPk-tG-lbI" firstAttribute="top" secondItem="bru-yn-obn" secondAttribute="bottom" constant="20" id="I31-uE-w6a"/>
+                    <constraint firstAttribute="trailing" secondItem="V3S-7u-h6m" secondAttribute="trailing" constant="20" id="IlJ-9R-Qky"/>
+                    <constraint firstItem="gI2-I0-zdw" firstAttribute="top" secondItem="oCj-x2-EBl" secondAttribute="top" constant="20" id="Jbm-bd-d2V"/>
+                    <constraint firstItem="SC5-lc-PY5" firstAttribute="centerY" secondItem="YPk-tG-lbI" secondAttribute="centerY" constant="1" id="JzS-sY-uum"/>
+                    <constraint firstItem="u6l-KM-jTr" firstAttribute="height" secondItem="gI2-I0-zdw" secondAttribute="height" id="KWc-2P-h7z"/>
+                    <constraint firstItem="QIF-Jd-vrq" firstAttribute="width" secondItem="gI2-I0-zdw" secondAttribute="width" id="LO6-wV-z5A"/>
+                    <constraint firstItem="0xR-8v-Beb" firstAttribute="centerX" secondItem="WAn-e3-fkP" secondAttribute="centerX" id="Ode-x7-r5U"/>
+                    <constraint firstItem="bru-yn-obn" firstAttribute="top" secondItem="V3S-7u-h6m" secondAttribute="bottom" constant="20" id="P4c-gE-pXC"/>
+                    <constraint firstItem="A1o-lC-OV9" firstAttribute="centerY" secondItem="u6l-KM-jTr" secondAttribute="centerY" constant="1" id="WV6-nB-gzm"/>
+                    <constraint firstItem="bru-yn-obn" firstAttribute="height" secondItem="gI2-I0-zdw" secondAttribute="height" id="Wft-FB-xGd"/>
+                    <constraint firstItem="zhj-oC-8dh" firstAttribute="leading" secondItem="oCj-x2-EBl" secondAttribute="leading" constant="20" id="Ww0-7J-kUU"/>
+                    <constraint firstAttribute="trailing" secondItem="YPk-tG-lbI" secondAttribute="trailing" constant="20" id="bcM-xW-vzt"/>
+                    <constraint firstItem="7x9-iz-tHF" firstAttribute="centerY" secondItem="V3S-7u-h6m" secondAttribute="centerY" constant="1" id="bdl-Yd-h8m"/>
+                    <constraint firstItem="iHd-7v-ioq" firstAttribute="centerY" secondItem="QIF-Jd-vrq" secondAttribute="centerY" constant="1" id="bll-1l-eO5"/>
+                    <constraint firstItem="WAn-e3-fkP" firstAttribute="height" secondItem="gI2-I0-zdw" secondAttribute="height" id="bxR-wk-ijV"/>
+                    <constraint firstItem="bru-yn-obn" firstAttribute="leading" secondItem="zhj-oC-8dh" secondAttribute="trailing" constant="20" id="c6j-3s-V8M"/>
+                    <constraint firstItem="zhj-oC-8dh" firstAttribute="width" secondItem="gI2-I0-zdw" secondAttribute="width" id="cQt-hv-gio"/>
+                    <constraint firstItem="u6l-KM-jTr" firstAttribute="top" secondItem="WAn-e3-fkP" secondAttribute="bottom" constant="20" id="eXz-3D-oum"/>
+                    <constraint firstItem="sps-fb-SVs" firstAttribute="centerY" secondItem="bru-yn-obn" secondAttribute="centerY" constant="1" id="f0g-KZ-eEP"/>
+                    <constraint firstItem="0xR-8v-Beb" firstAttribute="centerY" secondItem="WAn-e3-fkP" secondAttribute="centerY" constant="1" id="gir-Tc-uB3"/>
+                    <constraint firstItem="QIF-Jd-vrq" firstAttribute="top" secondItem="YPk-tG-lbI" secondAttribute="bottom" constant="20" id="hEg-AJ-eu6"/>
+                    <constraint firstItem="7x9-iz-tHF" firstAttribute="centerX" secondItem="V3S-7u-h6m" secondAttribute="centerX" id="hVS-gM-fTc"/>
+                    <constraint firstItem="sps-fb-SVs" firstAttribute="centerX" secondItem="bru-yn-obn" secondAttribute="centerX" id="i1i-o1-KOG"/>
+                    <constraint firstItem="V3S-7u-h6m" firstAttribute="leading" secondItem="gI2-I0-zdw" secondAttribute="trailing" constant="20" id="iD9-Z7-4sn"/>
+                    <constraint firstItem="QIF-Jd-vrq" firstAttribute="leading" secondItem="u6l-KM-jTr" secondAttribute="trailing" constant="20" id="kqF-Dj-D5v"/>
+                    <constraint firstItem="V3S-7u-h6m" firstAttribute="width" secondItem="gI2-I0-zdw" secondAttribute="width" id="lrV-hZ-B0V"/>
+                    <constraint firstItem="lzZ-bF-33w" firstAttribute="centerX" secondItem="gI2-I0-zdw" secondAttribute="centerX" id="m7N-kE-hOD"/>
+                    <constraint firstItem="YPk-tG-lbI" firstAttribute="height" secondItem="gI2-I0-zdw" secondAttribute="height" id="mW3-Xq-tfE"/>
+                    <constraint firstItem="V3S-7u-h6m" firstAttribute="top" secondItem="oCj-x2-EBl" secondAttribute="top" constant="20" id="mkr-im-41M"/>
+                    <constraint firstAttribute="bottom" secondItem="QIF-Jd-vrq" secondAttribute="bottom" constant="20" id="nan-M3-4hh"/>
+                    <constraint firstItem="YPk-tG-lbI" firstAttribute="width" secondItem="gI2-I0-zdw" secondAttribute="width" id="nm5-IN-Gz6"/>
+                    <constraint firstItem="zhj-oC-8dh" firstAttribute="height" secondItem="gI2-I0-zdw" secondAttribute="height" id="o5q-uo-qz9"/>
+                    <constraint firstItem="bru-yn-obn" firstAttribute="width" secondItem="gI2-I0-zdw" secondAttribute="width" id="oGQ-Df-hMp"/>
+                    <constraint firstItem="WAn-e3-fkP" firstAttribute="leading" secondItem="oCj-x2-EBl" secondAttribute="leading" constant="20" id="put-dU-9fn"/>
+                    <constraint firstItem="u6l-KM-jTr" firstAttribute="leading" secondItem="oCj-x2-EBl" secondAttribute="leading" constant="20" id="q5e-U7-WBe"/>
+                    <constraint firstItem="QIF-Jd-vrq" firstAttribute="height" secondItem="gI2-I0-zdw" secondAttribute="height" id="siZ-FL-XbZ"/>
+                    <constraint firstItem="iHd-7v-ioq" firstAttribute="centerX" secondItem="QIF-Jd-vrq" secondAttribute="centerX" id="teC-qF-w0T"/>
+                    <constraint firstItem="u6l-KM-jTr" firstAttribute="width" secondItem="gI2-I0-zdw" secondAttribute="width" id="vNa-AR-Kpp"/>
+                    <constraint firstItem="zhj-oC-8dh" firstAttribute="top" secondItem="gI2-I0-zdw" secondAttribute="bottom" constant="20" id="vvr-SM-yZU"/>
+                    <constraint firstItem="NT3-hi-YuY" firstAttribute="centerX" secondItem="zhj-oC-8dh" secondAttribute="centerX" id="wit-Xg-FuW"/>
+                    <constraint firstAttribute="bottom" secondItem="u6l-KM-jTr" secondAttribute="bottom" constant="20" id="ydP-OT-HzX"/>
+                    <constraint firstItem="SC5-lc-PY5" firstAttribute="centerX" secondItem="YPk-tG-lbI" secondAttribute="centerX" id="ydY-LN-Lbw"/>
+                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="activityIndicator1" destination="lzZ-bF-33w" id="7qu-QA-yn1"/>
@@ -165,11 +201,7 @@
                 <outlet property="button5" destination="zhj-oC-8dh" id="Khm-Fn-r6Y"/>
                 <outlet property="button50" destination="YPk-tG-lbI" id="JUY-YD-4RR"/>
             </connections>
+            <point key="canvasLocation" x="133" y="155"/>
         </tableViewCell>
     </objects>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
-    </simulatedMetricsContainer>
 </document>
