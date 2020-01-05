@@ -107,6 +107,12 @@ static Common* sharedCommon;
 }
 
 
++ (NSString*)webFormUrlString
+{
+    return @"https://www.numberbay.com/#contact-section";
+}
+
+
 + (void)openAppStoreDetailsPage
 {
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[self appStoreUrlString]]];

@@ -432,7 +432,8 @@ NSString* const AppDelegateRemoteNotification = @"AppDelegateRemoteNotification"
 
         [Common dispatchAfterInterval:4 onMain:^
         {
-            WebViewController*      webViewController = [[WebViewController alloc] initWithUrlString:urlString];
+            WebViewController*      webViewController = [[WebViewController alloc] initWithUrlString:urlString
+                                                                                               title:@"web URL"];
             UINavigationController* modalViewController;
 
             modalViewController = [[UINavigationController alloc] initWithRootViewController:webViewController];

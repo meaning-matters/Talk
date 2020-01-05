@@ -41,6 +41,8 @@ static const NSInteger CommonUseButton1Tag    = 30469;
 
 + (NSString*)appStoreUrlString;
 
++ (NSString*)webFormUrlString;
+
 + (void)openAppStoreDetailsPage;
 
 + (void)openAppStoreReviewPage;

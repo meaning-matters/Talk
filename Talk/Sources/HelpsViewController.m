@@ -15,6 +15,7 @@
 #import "Strings.h"
 #import "Skinning.h"
 #import "GetStartedViewController.h"
+#import "WebViewController.h"
 
 
 typedef NS_ENUM(NSUInteger, TableSections)
@@ -27,8 +28,9 @@ typedef NS_ENUM(NSUInteger, TableSections)
 typedef NS_ENUM(NSUInteger, TableRowsContactUs)
 {
     TableRowsContactUsEmail    = 1UL << 0,
-    TableRowsContactUsAppStore = 1UL << 1,
-    TableRowsContactUsCall     = 1UL << 2,  // Not used at the moment.
+    TableRowsContactUsWebForm  = 1UL << 1,
+    TableRowsContactUsAppStore = 1UL << 2,
+    TableRowsContactUsCall     = 1UL << 3,  // Not used at the moment.
 };
 
 
@@ -64,6 +66,7 @@ typedef NS_ENUM(NSUInteger, TableRowsContactUs)
         sections      |= TableSectionTexts;
 
         rowsContactUs |= TableRowsContactUsEmail;
+        rowsContactUs |= TableRowsContactUsWebForm;
         rowsContactUs |= TableRowsContactUsAppStore;
 
         [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification
@@ -181,10 +184,20 @@ typedef NS_ENUM(NSUInteger, TableRowsContactUs)
                 case TableRowsContactUsEmail:
                 {
                     text = NSLocalizedStringWithDefaultValue(@"Helps EmailContactUsText", nil, [NSBundle mainBundle],
-                                                             @"Send Email",
+                                                             @"Send us an email",
                                                              @"....\n"
                                                              @"[1 line larger font].");
                     cell.accessoryType = UITableViewCellAccessoryNone;
+                    cell.textLabel.textColor = [Skinning tintColor];
+                    break;
+                }
+                case TableRowsContactUsWebForm:
+                {
+                    text = NSLocalizedStringWithDefaultValue(@"Helps RateTheAppText", nil, [NSBundle mainBundle],
+                                                             @"Message us directly",
+                                                             @"....\n"
+                                                             @"[1 line larger font].");
+                    cell.accessoryType  = UITableViewCellAccessoryNone;
                     cell.textLabel.textColor = [Skinning tintColor];
                     break;
                 }
@@ -257,6 +270,14 @@ typedef NS_ENUM(NSUInteger, TableRowsContactUs)
                                 subject:[Settings sharedSettings].callbackE164
                                    body:nil
                              completion:nil];
+                    break;
+                }
+                case TableRowsContactUsWebForm:
+                {
+                    NSString* urlString = [Common webFormUrlString];
+                    WebViewController* webViewController = [[WebViewController alloc] initWithUrlString:urlString
+                                                                                                  title:@"Message Us Directly"];
+                    [self.navigationController pushViewController:webViewController animated:YES];
                     break;
                 }
                 case TableRowsContactUsAppStore:

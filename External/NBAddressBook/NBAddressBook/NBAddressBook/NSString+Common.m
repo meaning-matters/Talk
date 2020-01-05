@@ -13,14 +13,13 @@
 
 #pragma mark - Popup display
 
-- (void) displayToUserWithTitle:(NSString *)title andButton:(NSString *)button
+- (void)displayToUserWithTitle:(NSString *)title andButton:(NSString *)button
 {
     dispatch_block_t block = ^
     {
-        UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle:title message:self
-                              delegate:self cancelButtonTitle:nil
-                              otherButtonTitles:button, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:self
+                                                       delegate:self cancelButtonTitle:nil
+                                              otherButtonTitles:button, nil];
         [alert show];
     };
     
