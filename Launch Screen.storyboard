@@ -16,7 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default.png" translatesAutoresizingMaskIntoConstraints="NO" id="gC6-jd-aSo">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default" translatesAutoresizingMaskIntoConstraints="NO" id="gC6-jd-aSo">
                                 <rect key="frame" x="0.0" y="73" width="414" height="414"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="gC6-jd-aSo" secondAttribute="height" multiplier="1:1" id="ITM-6t-AQM"/>
@@ -38,6 +38,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Default.png" width="1991" height="1991"/>
+        <image name="Default" width="375" height="375"/>
     </resources>
 </document>
