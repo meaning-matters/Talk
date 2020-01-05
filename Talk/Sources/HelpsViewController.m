@@ -184,7 +184,7 @@ typedef NS_ENUM(NSUInteger, TableRowsContactUs)
                 case TableRowsContactUsEmail:
                 {
                     text = NSLocalizedStringWithDefaultValue(@"Helps EmailContactUsText", nil, [NSBundle mainBundle],
-                                                             @"Send us an email",
+                                                             @"Send Us an Email",
                                                              @"....\n"
                                                              @"[1 line larger font].");
                     cell.accessoryType = UITableViewCellAccessoryNone;
@@ -194,7 +194,7 @@ typedef NS_ENUM(NSUInteger, TableRowsContactUs)
                 case TableRowsContactUsWebForm:
                 {
                     text = NSLocalizedStringWithDefaultValue(@"Helps RateTheAppText", nil, [NSBundle mainBundle],
-                                                             @"Message us directly",
+                                                             @"Message Us Directly",
                                                              @"....\n"
                                                              @"[1 line larger font].");
                     cell.accessoryType  = UITableViewCellAccessoryNone;
